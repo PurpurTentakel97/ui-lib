@@ -11,7 +11,6 @@ target_include_directories(ui_lib
 
 target_link_libraries(ui_lib
                       PUBLIC
-                      cpt_lib
                       PRIVATE:
                       project_options
 )
