@@ -1,6 +1,3 @@
 [submodule "vcpkg"]
 	path = vcpkg
 	url = https://github.com/microsoft/vcpkg.git
-[submodule "cpt-lib"]
-	path = cpt-lib
-	url = https://github.com/PurpurTentakel97/cpt-lib.git
