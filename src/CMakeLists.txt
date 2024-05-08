@@ -10,7 +10,6 @@ target_include_directories(ui_lib
 )
 
 target_link_libraries(ui_lib
-                      PUBLIC
-                      PRIVATE:
+                      PRIVATE
                       project_options
 )
