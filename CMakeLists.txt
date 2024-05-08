@@ -1,4 +1,23 @@
 cmake_minimum_required(VERSION 3.28)
+set(CMAKE_TOOLCHAIN_FILE "${CMAKE_CURRENT_LIST_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake")
 project(ui_lib)
 
 set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+set(VCPKG_MANIFEST_FILE "${PROJECT_SOURCE_DIR}/vcpkg.json")
+
+include(${PROJECT_SOURCE_DIR}/project_options.cmake)
+include(${PROJECT_SOURCE_DIR}/lib_dependencies.cmake)
+find_lib_packages()
+add_subdirectory(${PROJECT_SOURCE_DIR}/src bin)
+
+if (${ui_lib_tests})
+    enable_testing()
+
+    include(${PROJECT_SOURCE_DIR}/test_dependencies.cmake)
+    find_test_packages()
+
+    add_subdirectory(${PROJECT_SOURCE_DIR}/test)
+endif ()
