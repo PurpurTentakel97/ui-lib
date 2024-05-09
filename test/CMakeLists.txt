@@ -4,7 +4,7 @@ add_executable(lib_tests
 
 target_link_libraries(lib_tests
                       PRIVATE
-                      project_options
+                      ui_lib_project_options
                       ui_lib
                       GTest::gtest_main
 )
