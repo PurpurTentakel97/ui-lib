@@ -6,8 +6,6 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-set(VCPKG_MANIFEST_FILE "${PROJECT_SOURCE_DIR}/vcpkg.json")
-
 include(${PROJECT_SOURCE_DIR}/project_options.cmake)
 include(${PROJECT_SOURCE_DIR}/lib_dependencies.cmake)
 find_lib_packages()
