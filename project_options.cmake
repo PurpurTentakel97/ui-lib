@@ -20,25 +20,25 @@ endmacro()
 check_sanitizer_support()
 
 if (PROJECT_IS_TOP_LEVEL)
-    option(warnings_as_errors "Treat warnings as errors" ON)
-    option(enable_undefined_behavior_sanitizer "Enable undefined behavior sanitizer" ${supports_ubsan})
-    option(enable_address_sanitizer "Enable address sanitizer" ${supports_asan})
+    option(ui_lib_warnings_as_errors "Treat warnings as errors" ON)
+    option(ui_lib_enable_undefined_behavior_sanitizer "Enable undefined behavior sanitizer" ${supports_ubsan})
+    option(ui_lib_enable_address_sanitizer "Enable address sanitizer" ${supports_asan})
     option(ui_lib_tests "Build tests using Google Test" ON)
 else ()
-    option(warnings_as_errors "Treat warnings as errors" OFF)
-    option(enable_undefined_behavior_sanitizer "Enable undefined behavior sanitizer" OFF)
-    option(enable_address_sanitizer "Enable address sanitizer" OFF)
+    option(ui_lib_warnings_as_errors "Treat warnings as errors" OFF)
+    option(ui_lib_enable_undefined_behavior_sanitizer "Enable undefined behavior sanitizer" OFF)
+    option(ui_lib_enable_address_sanitizer "Enable address sanitizer" OFF)
     option(ui_lib_tests "Build tests using Google Test" OFF)
 endif ()
 
-add_library(warnings INTERFACE)
-set_warnings(warnings ${warnings_as_errors})
+add_library(ui_lib_warnings INTERFACE)
+set_warnings(ui_lib_warnings ${ui_lib_warnings_as_errors})
 
-add_library(sanitizers INTERFACE)
-enable_sanitizers(sanitizers ${enable_address_sanitizer} ${enable_undefined_behavior_sanitizer})
+add_library(ui_lib_sanitizers INTERFACE)
+enable_sanitizers(ui_lib_sanitizers ${ui_lib_enable_address_sanitizer} ${ui_lib_enable_undefined_behavior_sanitizer})
 
-add_library(project_options INTERFACE)
-target_link_libraries(project_options
-                      INTERFACE warnings
-                      INTERFACE sanitizers
+add_library(ui_lib_project_options INTERFACE)
+target_link_libraries(ui_lib_project_options
+                      INTERFACE ui_lib_warnings
+                      INTERFACE ui_lib_sanitizers
 )
