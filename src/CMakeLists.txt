@@ -1,15 +1,20 @@
-add_library(ui_lib
-            STATIC
-            include/uil/test.hpp
-            test.cpp
+add_library(ui_lib)
+
+target_sources(ui_lib
+               PRIVATE
+               test.cpp
+
+               PUBLIC FILE_SET HEADERS
+               BASE_DIRS include FILES
+               include/uil/test.hpp
 )
 
 target_include_directories(ui_lib
-                           PRIVATE include/uil
-                           INTERFACE include
+                           PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+                           PUBLIC $<INSTALL_INTERFACE:include>
 )
 
 target_link_libraries(ui_lib
                       PRIVATE
-                      ui_lib_project_options
+                      $<BUILD_INTERFACE:ui_lib_project_options>
 )

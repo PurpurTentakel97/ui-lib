@@ -60,7 +60,7 @@ jobs:
           # The key includes: hash of the vcpkg.json file, the hash of the vcpkg Git commit id, and the used vcpkg's triplet. The vcpkg's commit id would suffice, but computing an hash out it does not harm.
           # Note: given a key, the cache content is immutable. If a cache entry has been created improperly, in order the recreate the right content the key must be changed as well, and it must be brand new (i.e. not existing already).
           key: |
-            ${{ hashFiles( 'vcpkg.json' ) }}-${{ hashFiles( 'vcpgk/versions/baseline.json')}}-${{ matrix.triplet }}
+            ${{ hashFiles( 'vcpkg.json' ) }}-${{ matrix.triplet }}
 
       - name: Show content of workspace after cache has been restored
         run: find $RUNNER_WORKSPACE
@@ -81,13 +81,19 @@ jobs:
       # Run CMake to generate Ninja project files, using the vcpkg's toolchain file to resolve and install the dependencies as specified in vcpkg.json.
       - name: Install dependencies and generate project files
         run: |
-          cmake -S . -B build -G "Ninja" -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}
+          cmake -S . -B build -G "Ninja" -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }} -DCMAKE_INSTALL_PREFIX=INSTALL
         working-directory: "${{ github.workspace }}"
 
       # Build the whole project with Ninja (which is spawn by CMake).
       - name: Build ${{matrix.os}} / ${{matrix.build}}
         run: |
           cmake --build build --config ${{matrix.build}}
+        working-directory: "${{ github.workspace }}"
+
+      # install the whole project
+      - name: Install ${{matrix.os}} / ${{matrix.build}}
+        run: |
+          cmake --install build
         working-directory: "${{ github.workspace }}"
 
       - name: Show content of workspace at its completion
