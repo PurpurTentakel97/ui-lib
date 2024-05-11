@@ -1,12 +1,12 @@
-add_library(ui_lib)
+add_library(ui_lib STATIC)
 
 target_sources(ui_lib
                PRIVATE
-               test.cpp
+               temp.cpp
 
                PUBLIC FILE_SET HEADERS
                BASE_DIRS include FILES
-               include/uil/test.hpp
+               include/uil/temp.hpp
 )
 
 target_include_directories(ui_lib
@@ -15,6 +15,8 @@ target_include_directories(ui_lib
 )
 
 target_link_libraries(ui_lib
+                      PUBLIC
+                      cpt::cpt_lib
                       PRIVATE
                       $<BUILD_INTERFACE:ui_lib_project_options>
 )
