@@ -2,10 +2,26 @@
   "name": "ui-lib",
   "version-string": "1.0.0",
   "builtin-baseline": "a34c873a9717a888f58dc05268dea15592c2f0ff",
+  "vcpkg-configuration": {
+    "registries": [
+      {
+        "kind": "git",
+        "repository": "https://github.com/PurpurTentakel97/vcpkg-registry",
+        "baseline": "321b39ffc7df3977701fa2a582144eb7eddfe351",
+        "packages": [
+          "cpt-lib"
+        ]
+      }
+    ]
+  },
   "dependencies": [
     {
       "name": "gtest",
       "version>=": "1.14.0"
+    },
+    {
+      "name": "cpt-lib",
+      "version>=": "1.0.0"
     }
   ]
 }
