@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.28)
+cmake_minimum_required(VERSION 3.22.1)
 
 include(FetchContent)
 FetchContent_Declare(vcpkg
@@ -18,7 +18,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 include(${PROJECT_SOURCE_DIR}/project_options.cmake)
 include(${PROJECT_SOURCE_DIR}/lib_dependencies.cmake)
 find_lib_packages()
-add_subdirectory(${PROJECT_SOURCE_DIR}/src bin)
+add_subdirectory(src bin)
 
 if (${ui_lib_tests})
     enable_testing()
@@ -28,3 +28,11 @@ if (${ui_lib_tests})
 
     add_subdirectory(${PROJECT_SOURCE_DIR}/test)
 endif ()
+
+install(EXPORT ui-lib-targets
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/cmake
+)
+
+install(FILES cmake/ui-lib-config.cmake
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/cmake
+)
