@@ -10,6 +10,7 @@ FetchContent_MakeAvailable(vcpkg)
 set(CMAKE_TOOLCHAIN_FILE "${vcpkg_SOURCE_DIR}/scripts/buildsystems/vcpkg.cmake" CACHE FILEPATH "")
 
 project(ui_lib)
+include(GNUInstallDirs)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -29,10 +30,13 @@ if (${ui_lib_tests})
     add_subdirectory(${PROJECT_SOURCE_DIR}/test)
 endif ()
 
-install(EXPORT ui-lib-targets
-        DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/cmake
+install(TARGETS ui_lib EXPORT ui-lib-targets ARCHIVE
+        FILE_SET HEADERS
 )
-
-install(FILES cmake/ui-lib-config.cmake
-        DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/cmake
+install(EXPORT ui-lib-targets
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake
+        NAMESPACE cpt
+)
+install(FILES "cmake/ui-lib-config.cmake"
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake
 )
