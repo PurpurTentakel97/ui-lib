@@ -7,7 +7,7 @@
       {
         "kind": "git",
         "repository": "https://github.com/PurpurTentakel97/vcpkg-registry",
-        "baseline": "321b39ffc7df3977701fa2a582144eb7eddfe351",
+        "baseline": "3ec9c750f89ec773203df77ddf69996f82aea42a",
         "packages": [
           "cpt-lib"
         ]

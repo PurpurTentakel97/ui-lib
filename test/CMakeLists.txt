@@ -1,5 +1,5 @@
 add_executable(lib_tests
-               default.cpp
+               temp-test.cpp
 )
 
 target_link_libraries(lib_tests
