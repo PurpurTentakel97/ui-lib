@@ -35,7 +35,7 @@ install(TARGETS ui_lib EXPORT ui-lib-targets ARCHIVE
 )
 install(EXPORT ui-lib-targets
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake
-        NAMESPACE cpt
+        NAMESPACE cpt::
 )
 install(FILES "cmake/ui-lib-config.cmake"
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake
