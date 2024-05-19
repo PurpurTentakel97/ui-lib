@@ -15,13 +15,7 @@
     ]
   },
   "dependencies": [
-    {
-      "name": "gtest",
-      "version>=": "1.14.0"
-    },
-    {
-      "name": "cpt-lib",
-      "version>=": "1.0.0"
-    }
+    "gtest",
+    "cpt-lib"
   ]
 }
