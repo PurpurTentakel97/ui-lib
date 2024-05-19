@@ -10,14 +10,10 @@
 #include <concepts>
 #include <cpt/Types.hpp>
 #include <functional>
-#include <stdexcept>
+#include <uil/Exception.hpp>
 #include <vector>
 
 namespace uil {
-    class CallbackException final : public std::runtime_error {
-        using std::runtime_error::runtime_error;
-    };
-
     template<typename... C>
     class Callback final {
     private:
