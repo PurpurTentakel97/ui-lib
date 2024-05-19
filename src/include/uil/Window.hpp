@@ -24,7 +24,7 @@ namespace uil {
         void set_resolution_helper(int width, int height);
 
     public:
-        Window();
+        Window(int width, int height, char const* title);
         Window(Window const&) = delete;
         Window(Window&& other) noexcept;
         Window& operator=(Window const&) = delete;
@@ -43,7 +43,8 @@ namespace uil {
         Window& set_resolution(int width, int height) &;
         Window set_resolution(int width, int height) &&;
 
-        Window& set_fps(int fps);
+        Window& set_fps(int fps) &;
+        Window set_fps(int fps) &&;
     };
 
 } // namespace uil

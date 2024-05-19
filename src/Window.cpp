@@ -69,8 +69,9 @@ namespace uil {
         SetWindowSize(m_resolution_usize.first, m_resolution_usize.second);
     }
 
-    Window::Window() {
-        InitWindow(m_resolution_usize.first, m_resolution_usize.second, "ui-lib");
+    Window::Window(int const width, int const height, char const* title) {
+        m_resolution_usize = { width, height };
+        InitWindow(width, height, title);
         SetExitKey(0);
         m_owner = true;
     }
@@ -135,9 +136,14 @@ namespace uil {
         return std::move(*this);
     }
 
-    Window& Window::set_fps(int const fps) {
+    Window& Window::set_fps(int const fps) & {
         SetTargetFPS(fps);
         return *this;
+    }
+
+    Window Window::set_fps(int const fps) && {
+        SetTargetFPS(fps);
+        return std::move(*this);
     }
 
 
