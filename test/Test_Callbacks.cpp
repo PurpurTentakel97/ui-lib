@@ -28,6 +28,21 @@ TEST(Callbacks, CallsCallbackClear) {
     EXPECT_TRUE(callbacks.is_empty());
 }
 
+TEST(Callbacks, MultipleCallbacks) {
+    auto callbacks = uil::Callback();
+    auto counter_1   = 0;
+    auto counter_2   = 0;
+    callbacks += [&counter_1]() { ++counter_1; };
+    callbacks += [&counter_2]() { ++counter_2; };
+
+    EXPECT_EQ(counter_1, 0);
+    EXPECT_EQ(counter_2, 0);
+    callbacks.invoke();
+    EXPECT_EQ(counter_1, 1);
+    EXPECT_EQ(counter_2, 1);
+    EXPECT_EQ(callbacks.size(), 2);
+}
+
 TEST(Callbacks, AddInvalidFunction) {
     auto callbacks = uil::Callback();
     std::function<void()> func;
@@ -40,3 +55,4 @@ TEST(Callbacks, AddInvalidFunction) {
         EXPECT_STREQ(e.what(), "register of bad callback function");
     }
 }
+
