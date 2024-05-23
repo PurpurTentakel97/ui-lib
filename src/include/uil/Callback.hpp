@@ -10,7 +10,7 @@
 #include <concepts>
 #include <cpt/Types.hpp>
 #include <functional>
-#include <uil/Exception.hpp>
+#include <uil/exception.hpp>
 #include <vector>
 
 namespace uil {

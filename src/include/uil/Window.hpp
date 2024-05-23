@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include <uil/Resolution.hpp>
+#include <uil/resolution.hpp>
 #include <utility>
 
 namespace uil {
@@ -36,7 +36,9 @@ namespace uil {
 
         [[nodiscard]] bool should_close() const;
 
+        void start_frame();
         void update();
+        void end_frame();
 
         Window& set_resolution(Resolution resolution) &;
         Window set_resolution(Resolution resolution) &&;

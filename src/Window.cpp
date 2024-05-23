@@ -5,8 +5,8 @@
 
 #include <cassert>
 #include <raylib.h>
-#include <uil/Exception.hpp>
-#include <uil/Window.hpp>
+#include <uil/exception.hpp>
+#include <uil/window.hpp>
 
 namespace uil {
     [[nodiscard]] Window::resolution_ty Window::int_from_resolution(Resolution const resolution) const {
@@ -111,8 +111,15 @@ namespace uil {
     bool Window::should_close() const {
         return WindowShouldClose();
     }
-    void Window::update() {
+    void Window::start_frame() {
         BeginDrawing();
+    }
+
+    void Window::update() {
+        // update stuff here
+    }
+
+    void Window::end_frame() {
         EndDrawing();
     }
 
