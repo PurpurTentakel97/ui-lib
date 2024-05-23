@@ -15,4 +15,8 @@ namespace uil {
     class BadResolution final : public std::logic_error {
         using std::logic_error::logic_error;
     };
+
+    class BadAlignment final : public std::logic_error {
+        using std::logic_error::logic_error;
+    };
 } // namespace uil
