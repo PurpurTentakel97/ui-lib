@@ -1,5 +1,6 @@
 add_executable(lib_tests
-               Test_Callbacks.cpp
+               test_alignment.cpp
+               test_callbacks.cpp
 )
 
 target_link_libraries(lib_tests

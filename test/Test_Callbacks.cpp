@@ -4,7 +4,7 @@
 //
 
 #include <gtest/gtest.h>
-#include <uil/Callback.hpp>
+#include <uil/callback.hpp>
 
 TEST(Callbacks, CallsCallbackOnce) {
     auto callbacks = uil::Callback();

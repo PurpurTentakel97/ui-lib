@@ -2,14 +2,22 @@ add_library(ui_lib STATIC)
 
 target_sources(ui_lib
                PRIVATE
-               Window.cpp
+               alignment.cpp
+               ui_element.cpp
+               window.cpp
 
                PUBLIC FILE_SET HEADERS
                BASE_DIRS include FILES
-               include/uil/Callback.hpp
-               include/uil/Exception.hpp
-               include/uil/Resolution.hpp
-               include/uil/Window.hpp
+               include/uil/alignment.hpp
+               include/uil/callback.hpp
+               include/uil/exception.hpp
+               include/uil/resolution.hpp
+               include/uil/scene.hpp
+               include/uil/ui_element.hpp
+               include/uil/utils.hpp
+               include/uil/window.hpp
+
+
 
 )
 
@@ -20,7 +28,7 @@ target_include_directories(ui_lib
 
 target_link_libraries(ui_lib
                       PUBLIC
-                      cpt::cpt_lib
+                      cpt::cpt-lib
                       PRIVATE
                       raylib
                       $<BUILD_INTERFACE:ui_lib_project_options>
