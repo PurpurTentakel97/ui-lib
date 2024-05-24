@@ -111,15 +111,14 @@ namespace uil {
     bool Window::should_close() const {
         return WindowShouldClose();
     }
-    void Window::start_frame() {
-        BeginDrawing();
-    }
 
     void Window::update() {
-        // update stuff here
-    }
+        // update events
+        // maybe resize here too
+        m_scene_manager.update();
 
-    void Window::end_frame() {
+        BeginDrawing();
+        m_scene_manager.render();
         EndDrawing();
     }
 
@@ -151,6 +150,14 @@ namespace uil {
     Window Window::set_fps(int const fps) && {
         SetTargetFPS(fps);
         return std::move(*this);
+    }
+
+    Resolution Window::resolution() const {
+        return m_resolution;
+    }
+
+    cpt::Vec2i Window::resolution_usize() const {
+        return m_resolution_usize;
     }
 
 

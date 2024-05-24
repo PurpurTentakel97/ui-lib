@@ -7,6 +7,7 @@
 
 #include <cpt/Vec2.hpp>
 #include <uil/resolution.hpp>
+#include <uil/scene_manager.hpp>
 #include <utility>
 
 namespace uil {
@@ -15,6 +16,7 @@ namespace uil {
         bool m_owner                  = false;
         cpt::Vec2i m_resolution_usize = { 100, 100 };
         Resolution m_resolution       = Resolution::CUSTOM;
+        SceneManager m_scene_manager{};
 
         [[nodiscard]] cpt::Vec2i int_from_resolution(Resolution resolution) const;
 
@@ -34,17 +36,15 @@ namespace uil {
 
         [[nodiscard]] bool should_close() const;
 
-        void start_frame();
         void update();
-        void end_frame();
 
         Window& set_resolution(Resolution resolution) &;
         Window set_resolution(Resolution resolution) &&;
         Window& set_resolution(cpt::Vec2i resolution) &;
         Window set_resolution(cpt::Vec2i resolution) &&;
 
-        // [[nodiscard]] Resolution resolution() const;
-        // [[nodiscard]] cpt::Vec2i resolution() const;
+        [[nodiscard]] Resolution resolution() const;
+        [[nodiscard]] cpt::Vec2i resolution_usize() const;
 
         Window& set_fps(int fps) &;
         Window set_fps(int fps) &&;

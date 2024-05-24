@@ -6,19 +6,23 @@
 #pragma once
 
 #include <cpt/Vec2.hpp>
+#include <uil/ui_element.hpp>
+#include <uil/update_render_helper.hpp>
 #include <vector>
 
-class UIElement;
 class InputEvent;
 
 namespace uil {
-    class Scene {
+    class Scene : public UpdateRenderHelper {
+    public:
+        friend class SceneManager;
+
     private:
         std::vector<UIElement> m_elements{};
 
     protected:
-        virtual bool handle_event(InputEvent const& event);
-        virtual bool update();
+        [[nodiscard]] virtual bool handle_event(InputEvent const& event);
+        [[nodiscard]] virtual bool update();
         virtual void resize(cpt::Vec2i resolution);
         virtual void render();
 
