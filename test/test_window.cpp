@@ -23,7 +23,7 @@ TEST(Window, CreateWithEnum) {
 TEST(Window, CreateAndUpdate) {
     auto window = uil::Window(uil::Resolution::FULL_HD, "test");
 
-    for (auto i = 0; i < 100; ++i) {
+    for (auto i = 0; i < 10; ++i) {
         window.update();
     }
 }

@@ -6,24 +6,16 @@
 #include "uil/rect.hpp"
 
 namespace uil {
-    Rect uil::collider_from_relative(Rect const relative, cpt::Vec2i const resolution) {
-        // clang-format off
-        return {
-            relative.x * resolution.x,
-            relative.y * resolution.y,
-            relative.width * resolution.x,
-            relative.height * resolution.y
-        };
-        // clang-format on
+    Rect collider_from_relative(Rect const relative, cpt::Vec2i const resolution) {
+        return { relative.x * static_cast<float>(resolution.x),
+                 relative.y * static_cast<float>(resolution.y),
+                 relative.width * static_cast<float>(resolution.x),
+                 relative.height * static_cast<float>(resolution.y) };
     }
-    Rect uil::relative_from_collider(Rect const collider, cpt::Vec2i const resolution) {
-        return {
-            // clang-format off
-            collider.x / resolution.x,
-            collider.y / resolution.y,
-            collider.width / resolution.x,
-            collider.height / resolution.y
-            // clang-format on
-        };
+    Rect relative_from_collider(Rect const collider, cpt::Vec2i const resolution) {
+        return { collider.x / static_cast<float>(resolution.x),
+                 collider.y / static_cast<float>(resolution.y),
+                 collider.width / static_cast<float>(resolution.x),
+                 collider.height / static_cast<float>(resolution.y) };
     }
 } // namespace uil

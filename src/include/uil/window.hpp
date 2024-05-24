@@ -13,14 +13,12 @@
 namespace uil {
     class Window final {
     private:
-        bool m_owner                  = false;
         cpt::Vec2i m_resolution_usize = { 100, 100 };
         Resolution m_resolution       = Resolution::CUSTOM;
+        bool m_owner                  = false;
         SceneManager m_scene_manager{};
         cpt::usize m_fps = 60;
         bool m_draw_fps  = false;
-
-        [[nodiscard]] cpt::Vec2i int_from_resolution(Resolution resolution) const;
 
         void set_resolution_helper(Resolution resolution);
         void set_resolution_helper(cpt::Vec2i resolution);

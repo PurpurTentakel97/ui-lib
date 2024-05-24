@@ -3,50 +3,12 @@
 // 19.05.24
 //
 
-#include <cassert>
 #include <raylib.h>
 #include <uil/exception.hpp>
+#include <uil/resolution.hpp>
 #include <uil/window.hpp>
 
 namespace uil {
-    [[nodiscard]] cpt::Vec2i Window::int_from_resolution(Resolution const resolution) const {
-        switch (resolution) {
-            // 16:9
-            case Resolution::UHD2: return { 7600, 4320 };
-            case Resolution::_5K: return { 5120, 2160 };
-            case Resolution::UHD1: return { 3840, 2162 };
-            case Resolution::WQHD: return { 2560, 1440 };
-            case Resolution::FULL_HD: return { 1920, 1080 };
-            case Resolution::HD: return { 1280, 720 };
-
-            // 21:9
-            case Resolution::_5K_ULTRA_WIDE: return { 5120, 2460 };
-            case Resolution::UWQHD: return { 3440, 1440 };
-            case Resolution::UWHD: return { 2560, 1080 };
-
-            // 4:3
-            case Resolution::QXGA: return { 2048, 1536 };
-            case Resolution::UXGA: return { 1600, 1200 };
-            case Resolution::SXGA_Plus: return { 1400, 1050 };
-            case Resolution::XGA_plus: return { 1152, 864 };
-            case Resolution::XGA: return { 1024, 768 };
-            case Resolution::SVGA: return { 800, 600 };
-            case Resolution::PAL: return { 768, 576 };
-            case Resolution::VGA: return { 640, 480 };
-
-
-            case Resolution::SCREEN: {
-                auto const screen{ GetCurrentMonitor() };
-                auto const height{ GetMonitorHeight(screen) };
-                auto const width{ GetMonitorWidth(screen) };
-
-                return { width, height };
-            }
-            case Resolution::CUSTOM: return m_resolution_usize;
-        }
-        assert(false and "unecpected resolution in switch case");
-        return { 100, 100 };
-    }
     void Window::set_resolution_helper(Resolution const resolution) {
         if (resolution == Resolution::CUSTOM) {
             throw BadResolution("not able to set custom resolution with enum. use int overload instead");
@@ -56,7 +18,7 @@ namespace uil {
         }
 
         m_resolution       = resolution;
-        m_resolution_usize = int_from_resolution(m_resolution);
+        m_resolution_usize = vec_from_resolution(m_resolution, m_resolution_usize);
         SetWindowSize(m_resolution_usize.x, m_resolution_usize.y);
     }
 
@@ -64,6 +26,7 @@ namespace uil {
         if (not is_possible_resolution(resolution)) {
             throw BadResolution("not able to set resolution bigger than screen");
         }
+
         m_resolution       = Resolution::CUSTOM;
         m_resolution_usize = resolution;
         SetWindowSize(m_resolution_usize.x, m_resolution_usize.y);
@@ -79,7 +42,7 @@ namespace uil {
 
     Window::Window(Resolution const resolution, char const* title) {
         m_resolution       = resolution;
-        m_resolution_usize = int_from_resolution(resolution);
+        m_resolution_usize = vec_from_resolution(m_resolution, m_resolution_usize);
         InitWindow(m_resolution_usize.x, m_resolution_usize.y, title);
         SetExitKey(0);
         SetTargetFPS(static_cast<int>(m_fps));
@@ -116,12 +79,12 @@ namespace uil {
     }
 
     bool Window::is_possible_resolution(Resolution const resolution) const {
-        auto const res = int_from_resolution(resolution);
+        auto const res = vec_from_resolution(resolution, m_resolution_usize);
         return is_possible_resolution(res);
     }
 
     bool Window::is_possible_resolution(cpt::Vec2i const resolution) const {
-        auto const screen = int_from_resolution(Resolution::SCREEN);
+        auto const screen = vec_from_resolution(Resolution::SCREEN, m_resolution_usize);
         return resolution.x <= screen.x and resolution.y <= screen.y;
     }
 
@@ -184,7 +147,7 @@ namespace uil {
     }
 
     cpt::usize Window::current_fps() {
-        return GetFPS();
+        return static_cast<cpt::usize>(GetFPS());
     }
 
     Window& Window::set_draw_fps(bool const draw) & {
