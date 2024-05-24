@@ -23,7 +23,7 @@ namespace uil {
         Alignment m_alignment;
 
     protected:
-        virtual bool handle_event(InputEvent const& event);
+        virtual bool handle_event(InputEvent const& event) = 0;
         virtual bool update();
         virtual void resize(cpt::Vec2i resolution);
         virtual void render() = 0;
