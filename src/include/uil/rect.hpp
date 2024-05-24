@@ -16,6 +16,6 @@ namespace uil {
         float height;
     };
 
-    [[nodiscard]] Rect collider_from_relative(cpt::Vec2f pos, cpt::Vec2f size, cpt::Vec2i resolution);
-    [[nodiscard]] std::pair<cpt::Vec2f, cpt::Vec2f> relative_from_collider(Rect collider, cpt::Vec2i resolution);
+    [[nodiscard]] Rect collider_from_relative(Rect relative, cpt::Vec2i resolution);
+    [[nodiscard]] Rect relative_from_collider(Rect collider, cpt::Vec2i resolution);
 } // namespace uil

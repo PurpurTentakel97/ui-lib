@@ -18,7 +18,7 @@ namespace uil {
         friend class Scene;
 
     private:
-        cpt::Vec2f m_pos, m_size;
+        Rect m_relative;
         Rect m_collider;
         Alignment m_alignment;
 
@@ -29,7 +29,7 @@ namespace uil {
         virtual void render() = 0;
 
     public:
-        UIElement(cpt::Vec2f pos, cpt::Vec2f size, cpt::Vec2i resolution, Alignment alignment);
+        UIElement(Rect relative, cpt::Vec2i resolution, Alignment alignment);
         UIElement(UIElement const&)            = default;
         UIElement(UIElement&&)                 = default;
         UIElement& operator=(UIElement const&) = default;

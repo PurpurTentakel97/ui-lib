@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include <cpt/Vec2.hpp>
+#include <uil/rect.hpp>
 
 namespace uil {
     enum class Alignment {
@@ -21,6 +21,6 @@ namespace uil {
     };
 
 
-    [[nodiscard]] cpt::Vec2f aligned_position(cpt::Vec2f pos, cpt::Vec2f size, Alignment alignment);
-    [[nodiscard]] cpt::Vec2f aligned_position_reversed(cpt::Vec2f pos, cpt::Vec2f size, Alignment alignment);
+    [[nodiscard]] Rect aligned_position(Rect relative, Alignment alignment);
+    [[nodiscard]] Rect aligned_position_reversed(Rect relative, Alignment alignment);
 } // namespace uil
