@@ -6,9 +6,9 @@
 #pragma once
 
 #include <cpt/Vec2.hpp>
-#include <uil/Utils.hpp>
-#include <uil/update_render_helper.hpp>
 #include <uil/alignment.hpp>
+#include <uil/rect.hpp>
+#include <uil/update_render_helper.hpp>
 
 class InputEvent;
 
@@ -20,12 +20,13 @@ namespace uil {
     private:
         cpt::Vec2f m_pos, m_size;
         Rect m_collider;
+        Alignment m_alignment;
 
     protected:
         virtual bool handle_event(InputEvent const& event);
         virtual bool update();
         virtual void resize(cpt::Vec2i resolution);
-        virtual void render();
+        virtual void render() = 0;
 
     public:
         UIElement(cpt::Vec2f pos, cpt::Vec2f size, cpt::Vec2i resolution, Alignment alignment);
