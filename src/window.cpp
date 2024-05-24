@@ -69,10 +69,20 @@ namespace uil {
         SetWindowSize(m_resolution_usize.x, m_resolution_usize.y);
     }
 
-    Window::Window(cpt::Vec2i resolution, char const* title) {
+    Window::Window(cpt::Vec2i const resolution, char const* title) {
         m_resolution_usize = resolution;
         InitWindow(resolution.x, resolution.y, title);
         SetExitKey(0);
+        SetTargetFPS(static_cast<int>(m_fps));
+        m_owner = true;
+    }
+
+    Window::Window(Resolution const resolution, char const* title) {
+        m_resolution       = resolution;
+        m_resolution_usize = int_from_resolution(resolution);
+        InitWindow(m_resolution_usize.x, m_resolution_usize.y, title);
+        SetExitKey(0);
+        SetTargetFPS(static_cast<int>(m_fps));
         m_owner = true;
     }
 
@@ -80,6 +90,9 @@ namespace uil {
         std::swap(m_resolution, other.m_resolution);
         std::swap(m_resolution_usize, other.m_resolution_usize);
         std::swap(m_owner, other.m_owner);
+        std::swap(m_scene_manager, other.m_scene_manager);
+        std::swap(m_fps, other.m_fps);
+        std::swap(m_draw_fps, other.m_draw_fps);
     }
 
     Window& Window::operator=(Window&& other) noexcept {
@@ -89,6 +102,10 @@ namespace uil {
         std::swap(m_resolution, other.m_resolution);
         std::swap(m_resolution_usize, other.m_resolution_usize);
         std::swap(m_owner, other.m_owner);
+        std::swap(m_scene_manager, other.m_scene_manager);
+        std::swap(m_fps, other.m_fps);
+        std::swap(m_draw_fps, other.m_draw_fps);
+
         return *this;
     }
 
@@ -108,7 +125,7 @@ namespace uil {
         return resolution.x <= screen.x and resolution.y <= screen.y;
     }
 
-    bool Window::should_close() const {
+    bool Window::should_close() {
         return WindowShouldClose();
     }
 
@@ -142,16 +159,6 @@ namespace uil {
         return std::move(*this);
     }
 
-    Window& Window::set_fps(int const fps) & {
-        SetTargetFPS(fps);
-        return *this;
-    }
-
-    Window Window::set_fps(int const fps) && {
-        SetTargetFPS(fps);
-        return std::move(*this);
-    }
-
     Resolution Window::resolution() const {
         return m_resolution;
     }
@@ -160,5 +167,37 @@ namespace uil {
         return m_resolution_usize;
     }
 
+    Window& Window::set_fps(cpt::usize const fps) & {
+        m_fps = fps;
+        SetTargetFPS(static_cast<int>(fps));
+        return *this;
+    }
 
+    Window Window::set_fps(cpt::usize const fps) && {
+        m_fps = fps;
+        SetTargetFPS(static_cast<int>(fps));
+        return std::move(*this);
+    }
+
+    cpt::usize Window::fps() const {
+        return m_fps;
+    }
+
+    cpt::usize Window::current_fps() {
+        return GetFPS();
+    }
+
+    Window& Window::set_draw_fps(bool const draw) & {
+        m_draw_fps = draw;
+        return *this;
+    }
+
+    Window Window::set_draw_fps(bool const draw) && {
+        m_draw_fps = draw;
+        return std::move(*this);
+    }
+
+    cpt::usize Window::draw_fps() const {
+        return m_draw_fps;
+    }
 } // namespace uil

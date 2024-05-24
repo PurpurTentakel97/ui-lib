@@ -17,6 +17,8 @@ namespace uil {
         cpt::Vec2i m_resolution_usize = { 100, 100 };
         Resolution m_resolution       = Resolution::CUSTOM;
         SceneManager m_scene_manager{};
+        cpt::usize m_fps = 60;
+        bool m_draw_fps  = false;
 
         [[nodiscard]] cpt::Vec2i int_from_resolution(Resolution resolution) const;
 
@@ -25,6 +27,7 @@ namespace uil {
 
     public:
         Window(cpt::Vec2i resolution, char const* title);
+        Window(Resolution resolution, char const* title);
         Window(Window const&) = delete;
         Window(Window&& other) noexcept;
         Window& operator=(Window const&) = delete;
@@ -34,7 +37,7 @@ namespace uil {
         [[nodiscard]] bool is_possible_resolution(Resolution resolution) const;
         [[nodiscard]] bool is_possible_resolution(cpt::Vec2i resolution) const;
 
-        [[nodiscard]] bool should_close() const;
+        [[nodiscard]] static bool should_close();
 
         void update();
 
@@ -46,8 +49,16 @@ namespace uil {
         [[nodiscard]] Resolution resolution() const;
         [[nodiscard]] cpt::Vec2i resolution_usize() const;
 
-        Window& set_fps(int fps) &;
-        Window set_fps(int fps) &&;
+        Window& set_fps(cpt::usize fps) &;
+        Window set_fps(cpt::usize fps) &&;
+
+        [[nodiscard]] cpt::usize fps() const;
+        [[nodiscard]] static cpt::usize current_fps();
+
+        Window& set_draw_fps(bool draw) &;
+        Window set_draw_fps(bool draw) &&;
+
+        [[nodiscard]] cpt::usize draw_fps() const;
     };
 
 } // namespace uil
