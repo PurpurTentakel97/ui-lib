@@ -8,80 +8,78 @@
 #include <uil/alignment.hpp>
 #include <uil/exception.hpp>
 
-class AlignmentFictures
-    : public testing::TestWithParam<std::tuple<cpt::Vec2f, cpt::Vec2f, uil::Alignment, cpt::Vec2f>> { };
+class AlignmentFictures : public testing::TestWithParam<std::tuple<uil::Rect, uil::Alignment, uil::Rect>> { };
 
 TEST_P(AlignmentFictures, Sucsess) {
     auto const unaligned = std::get<0>(GetParam());
-    auto const size      = std::get<1>(GetParam());
-    auto const alignment = std::get<2>(GetParam());
-    auto const aligned   = std::get<3>(GetParam());
+    auto const alignment = std::get<1>(GetParam());
+    auto const aligned   = std::get<2>(GetParam());
 
-    auto const result = uil::aligned_position(unaligned, size, alignment);
+    auto const result = uil::aligned_position(unaligned, alignment);
     EXPECT_FLOAT_EQ(result.x, aligned.x);
     EXPECT_FLOAT_EQ(result.y, aligned.y);
+
+    EXPECT_FLOAT_EQ(result.width, aligned.width);
+    EXPECT_FLOAT_EQ(result.width, unaligned.width);
+
+    EXPECT_FLOAT_EQ(result.y, aligned.y);
+    EXPECT_FLOAT_EQ(result.y, unaligned.y);
 }
 
 INSTANTIATE_TEST_SUITE_P(ALIGNMENT,
                          AlignmentFictures,
-                         ::testing::Values(std::make_tuple(cpt::Vec2f{ 0.25f, 0.25f },
-                                                           cpt::Vec2f{ 0.5f, 0.5f },
+                         ::testing::Values(std::make_tuple(uil::Rect{ 0.25f, 0.25f, 0.5f, 0.5f },
                                                            uil::Alignment::TopLeft,
-                                                           cpt::Vec2f{ 0.25f, 0.25f }),
-                                           std::make_tuple(cpt::Vec2f{ 0.5f, 0.25f },
-                                                           cpt::Vec2f{ 0.5f, 0.5f },
+                                                           uil::Rect{ 0.25f, 0.25f, 0.5f, 0.5f }),
+                                           std::make_tuple(uil::Rect{ 0.5f, 0.25f, 0.5f, 0.5f },
                                                            uil::Alignment::TopMid,
-                                                           cpt::Vec2f{ 0.25f, 0.25f }),
-                                           std::make_tuple(cpt::Vec2f{ 0.75f, 0.25f },
-                                                           cpt::Vec2f{ 0.5f, 0.5f },
+                                                           uil::Rect{ 0.25f, 0.25f, 0.5f, 0.5f }),
+                                           std::make_tuple(uil::Rect{ 0.75f, 0.25f, 0.5f, 0.5f },
                                                            uil::Alignment::TopRight,
-                                                           cpt::Vec2f{ 0.25f, 0.25f }),
-                                           std::make_tuple(cpt::Vec2f{ 0.25f, 0.5f },
-                                                           cpt::Vec2f{ 0.5f, 0.5f },
+                                                           uil::Rect{ 0.25f, 0.25f, 0.5f, 0.5f }),
+                                           std::make_tuple(uil::Rect{ 0.25f, 0.5f, 0.5f, 0.5f },
                                                            uil::Alignment::MidLeft,
-                                                           cpt::Vec2f{ 0.25f, 0.25f }),
-                                           std::make_tuple(cpt::Vec2f{ 0.5f, 0.5f },
-                                                           cpt::Vec2f{ 0.5f, 0.5f },
+                                                           uil::Rect{ 0.25f, 0.25f, 0.5f, 0.5f }),
+                                           std::make_tuple(uil::Rect{ 0.5f, 0.5f, 0.5f, 0.5f },
                                                            uil::Alignment::MidMid,
-                                                           cpt::Vec2f{ 0.25f, 0.25f }),
-                                           std::make_tuple(cpt::Vec2f{ 0.75f, 0.5f },
-                                                           cpt::Vec2f{ 0.5f, 0.5f },
+                                                           uil::Rect{ 0.25f, 0.25f, 0.5f, 0.5f }),
+                                           std::make_tuple(uil::Rect{ 0.75f, 0.5f, 0.5f, 0.5f },
                                                            uil::Alignment::MidRight,
-                                                           cpt::Vec2f{ 0.25f, 0.25f }),
-                                           std::make_tuple(cpt::Vec2f{ 0.25f, 0.75f },
-                                                           cpt::Vec2f{ 0.5f, 0.5f },
+                                                           uil::Rect{ 0.25f, 0.25f, 0.5f, 0.5f }),
+                                           std::make_tuple(uil::Rect{ 0.25f, 0.75f, 0.5f, 0.5f },
                                                            uil::Alignment::BottomLeft,
-                                                           cpt::Vec2f{ 0.25f, 0.25f }),
-                                           std::make_tuple(cpt::Vec2f{ 0.5f, 0.75f },
-                                                           cpt::Vec2f{ 0.5f, 0.5f },
+                                                           uil::Rect{ 0.25f, 0.25f, 0.5f, 0.5f }),
+                                           std::make_tuple(uil::Rect{ 0.5f, 0.75f, 0.5f, 0.5f },
                                                            uil::Alignment::BottomMid,
-                                                           cpt::Vec2f{ 0.25f, 0.25f }),
-                                           std::make_tuple(cpt::Vec2f{ 0.75f, 0.75f },
-                                                           cpt::Vec2f{ 0.5f, 0.5f },
+                                                           uil::Rect{ 0.25f, 0.25f, 0.5f, 0.5f }),
+                                           std::make_tuple(uil::Rect{ 0.75f, 0.75f, 0.5f, 0.5f },
                                                            uil::Alignment::BottomRight,
-                                                           cpt::Vec2f{ 0.25f, 0.25f })));
+                                                           uil::Rect{ 0.25f, 0.25f, 0.5f, 0.5f })));
 
 TEST(Alignment, PositionException) {
     auto constexpr value = static_cast<uil::Alignment>(100);
 
     try {
-        [[maybe_unused]] auto const result =
-                uil::aligned_position(cpt::Vec2f{ 0.0f, 0.0f }, cpt::Vec2f{ 0.0f, 0.0f }, value);
+        [[maybe_unused]] auto const result = uil::aligned_position(uil::Rect{ 0.0f, 0.0f, 0.0f, 0.0f }, value);
         GTEST_FAIL() << "exception uil::BadAlignment not thrown";
     } catch (uil::BadAlignment const& e) { EXPECT_STREQ(e.what(), "invalid alignment enum"); }
 }
 
 class AlignmentRevesedFixuteres
-    : public testing::TestWithParam<std::tuple<cpt::Vec2f, cpt::Vec2f, uil::Alignment, cpt::Vec2f>> { };
+    : public testing::TestWithParam<std::tuple<uil::Rect, uil::Alignment, uil::Rect>> { };
 
 TEST_P(AlignmentRevesedFixuteres, Success) {
     auto const unaligned = std::get<0>(GetParam());
-    auto const size      = std::get<1>(GetParam());
-    auto const alignemnt = std::get<2>(GetParam());
-    auto const aligned   = std::get<3>(GetParam());
+    auto const alignment = std::get<1>(GetParam());
+    auto const aligned   = std::get<2>(GetParam());
 
-    auto const result = uil::aligned_position_reversed(unaligned, size, alignemnt);
+    auto const result = uil::aligned_position_reversed(unaligned, alignment);
     EXPECT_FLOAT_EQ(result.x, aligned.x);
+    EXPECT_FLOAT_EQ(result.y, aligned.y);
+
+    EXPECT_FLOAT_EQ(result.y, aligned.y);
+    EXPECT_FLOAT_EQ(result.y, aligned.y);
+    EXPECT_FLOAT_EQ(result.y, aligned.y);
     EXPECT_FLOAT_EQ(result.y, aligned.y);
 }
 
