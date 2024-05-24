@@ -5,26 +5,24 @@
 
 #pragma once
 
+#include <cpt/Vec2.hpp>
 #include <uil/resolution.hpp>
 #include <utility>
 
 namespace uil {
     class Window final {
-    public:
-        using resolution_ty = std::pair<int, int>;
-
     private:
-        bool m_owner                     = false;
-        resolution_ty m_resolution_usize = { 100, 100 };
-        Resolution m_resolution          = Resolution::CUSTOM;
+        bool m_owner                  = false;
+        cpt::Vec2i m_resolution_usize = { 100, 100 };
+        Resolution m_resolution       = Resolution::CUSTOM;
 
-        [[nodiscard]] resolution_ty int_from_resolution(Resolution resolution) const;
+        [[nodiscard]] cpt::Vec2i int_from_resolution(Resolution resolution) const;
 
         void set_resolution_helper(Resolution resolution);
-        void set_resolution_helper(int width, int height);
+        void set_resolution_helper(cpt::Vec2i resolution);
 
     public:
-        Window(int width, int height, char const* title);
+        Window(cpt::Vec2i resolution, char const* title);
         Window(Window const&) = delete;
         Window(Window&& other) noexcept;
         Window& operator=(Window const&) = delete;
@@ -32,7 +30,7 @@ namespace uil {
         ~Window();
 
         [[nodiscard]] bool is_possible_resolution(Resolution resolution) const;
-        [[nodiscard]] bool is_possible_resolution(int width, int height) const;
+        [[nodiscard]] bool is_possible_resolution(cpt::Vec2i resolution) const;
 
         [[nodiscard]] bool should_close() const;
 
@@ -42,8 +40,11 @@ namespace uil {
 
         Window& set_resolution(Resolution resolution) &;
         Window set_resolution(Resolution resolution) &&;
-        Window& set_resolution(int width, int height) &;
-        Window set_resolution(int width, int height) &&;
+        Window& set_resolution(cpt::Vec2i resolution) &;
+        Window set_resolution(cpt::Vec2i resolution) &&;
+
+        // [[nodiscard]] Resolution resolution() const;
+        // [[nodiscard]] cpt::Vec2i resolution() const;
 
         Window& set_fps(int fps) &;
         Window set_fps(int fps) &&;
