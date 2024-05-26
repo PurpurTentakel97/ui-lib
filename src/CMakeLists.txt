@@ -3,7 +3,7 @@ add_library(ui_lib STATIC)
 target_sources(ui_lib
                PRIVATE
                alignment.cpp
-               rect.cpp
+               helper_rect.cpp
                resolution.cpp
                ui_element.cpp
                update_render_helper.cpp
@@ -11,20 +11,17 @@ target_sources(ui_lib
                scene_manager.cpp
                window.cpp
 
-               rect_helper.hpp
-
                PUBLIC FILE_SET HEADERS
                BASE_DIRS include FILES
                include/uil/alignment.hpp
                include/uil/callback.hpp
                include/uil/exception.hpp
-               include/uil/rect.hpp
+               include/uil/helper_rect.hpp
                include/uil/resolution.hpp
                include/uil/scene.hpp
                include/uil/scene_manager.hpp
                include/uil/ui_element.hpp
                include/uil/update_render_helper.hpp
-               include/uil/utils.hpp
                include/uil/window.hpp
 
 

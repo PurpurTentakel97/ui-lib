@@ -22,7 +22,7 @@ namespace uil {
         SetWindowSize(m_resolution_usize.x, m_resolution_usize.y);
     }
 
-    void Window::set_resolution_helper(cpt::Vec2i const resolution) {
+    void Window::set_resolution_helper(cpt::Vec2_i const resolution) {
         if (not is_possible_resolution(resolution)) {
             throw BadResolution("not able to set resolution bigger than screen");
         }
@@ -32,7 +32,7 @@ namespace uil {
         SetWindowSize(m_resolution_usize.x, m_resolution_usize.y);
     }
 
-    Window::Window(cpt::Vec2i const resolution, char const* title) {
+    Window::Window(cpt::Vec2_i const resolution, char const* title) {
         m_resolution_usize = resolution;
         InitWindow(resolution.x, resolution.y, title);
         SetExitKey(0);
@@ -83,7 +83,7 @@ namespace uil {
         return is_possible_resolution(res);
     }
 
-    bool Window::is_possible_resolution(cpt::Vec2i const resolution) const {
+    bool Window::is_possible_resolution(cpt::Vec2_i const resolution) const {
         auto const screen = vec_from_resolution(Resolution::SCREEN, m_resolution_usize);
         return resolution.x <= screen.x and resolution.y <= screen.y;
     }
@@ -112,12 +112,12 @@ namespace uil {
         return std::move(*this);
     }
 
-    Window& Window::set_resolution(cpt::Vec2i const resolution) & {
+    Window& Window::set_resolution(cpt::Vec2_i const resolution) & {
         set_resolution_helper(resolution);
         return *this;
     }
 
-    Window Window::set_resolution(cpt::Vec2i const resolution) && {
+    Window Window::set_resolution(cpt::Vec2_i const resolution) && {
         set_resolution_helper(resolution);
         return std::move(*this);
     }
@@ -126,7 +126,7 @@ namespace uil {
         return m_resolution;
     }
 
-    cpt::Vec2i Window::resolution_usize() const {
+    cpt::Vec2_i Window::resolution_usize() const {
         return m_resolution_usize;
     }
 

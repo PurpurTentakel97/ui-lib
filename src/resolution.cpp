@@ -9,7 +9,7 @@
 #include <uil/resolution.hpp>
 
 namespace uil {
-    cpt::Vec2i vec_from_resolution(Resolution const resolution, cpt::Vec2i current_resolution) {
+    cpt::Vec2_i vec_from_resolution(Resolution const resolution, cpt::Vec2_i current_resolution) {
         switch (resolution) {
                 // clang-format off
             // 16:9
@@ -48,7 +48,7 @@ namespace uil {
         throw BadResolution("unecpected resolution in vec switch case");
     }
 
-    std::string str_from_resolution(Resolution resolution, cpt::Vec2i current_resolution) {
+    std::string str_from_resolution(Resolution resolution, cpt::Vec2_i current_resolution) {
         auto const res = vec_from_resolution(resolution, current_resolution);
         switch (resolution) {
                 // clang-format off
@@ -82,7 +82,7 @@ namespace uil {
         throw BadResolution("unecpected resolution in string switch case");
     }
 
-    std::vector<std::string> all_string_from_resolution(cpt::Vec2i const current_resolution) {
+    std::vector<std::string> all_string_from_resolution(cpt::Vec2_i const current_resolution) {
         auto current   = static_cast<Resolution>(0);
         auto const inc = [&current]() -> bool {
             if (current == Resolution::CUSTOM) {

@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include <cpt/Vec2.hpp>
+#include <cpt/vec2.hpp>
 #include <string>
 #include <vector>
 
@@ -38,8 +38,8 @@ namespace uil {
         CUSTOM, // CUSTOM needs to stay last entry
     };
 
-    [[nodiscard]] cpt::Vec2i vec_from_resolution(Resolution resolution, cpt::Vec2i current_resolution);
-    [[nodiscard]] std::string str_from_resolution(Resolution resolution, cpt::Vec2i current_resolution);
-    [[nodiscard]] std::vector<std::string> all_string_from_resolution(cpt::Vec2i current_resolution);
+    [[nodiscard]] cpt::Vec2_i vec_from_resolution(Resolution resolution, cpt::Vec2_i current_resolution);
+    [[nodiscard]] std::string str_from_resolution(Resolution resolution, cpt::Vec2_i current_resolution);
+    [[nodiscard]] std::vector<std::string> all_string_from_resolution(cpt::Vec2_i current_resolution);
 
 } // namespace uil

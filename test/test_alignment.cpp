@@ -8,7 +8,7 @@
 #include <uil/alignment.hpp>
 #include <uil/exception.hpp>
 
-class AlignmentFictures : public testing::TestWithParam<std::tuple<uil::Rect, uil::Alignment, uil::Rect>> { };
+class AlignmentFictures : public testing::TestWithParam<std::tuple<cpt::Rect_f, uil::Alignment, cpt::Rect_f>> { };
 
 TEST_P(AlignmentFictures, Sucsess) {
     auto const unaligned = std::get<0>(GetParam());
@@ -28,44 +28,44 @@ TEST_P(AlignmentFictures, Sucsess) {
 
 INSTANTIATE_TEST_SUITE_P(ALIGNMENT,
                          AlignmentFictures,
-                         ::testing::Values(std::make_tuple(uil::Rect{ 0.25f, 0.25f, 0.5f, 0.5f },
+                         ::testing::Values(std::make_tuple(cpt::Rect_f{ 0.25f, 0.25f, 0.5f, 0.5f },
                                                            uil::Alignment::TopLeft,
-                                                           uil::Rect{ 0.25f, 0.25f, 0.5f, 0.5f }),
-                                           std::make_tuple(uil::Rect{ 0.5f, 0.25f, 0.5f, 0.5f },
+                                                           cpt::Rect_f{ 0.25f, 0.25f, 0.5f, 0.5f }),
+                                           std::make_tuple(cpt::Rect_f{ 0.5f, 0.25f, 0.5f, 0.5f },
                                                            uil::Alignment::TopMid,
-                                                           uil::Rect{ 0.25f, 0.25f, 0.5f, 0.5f }),
-                                           std::make_tuple(uil::Rect{ 0.75f, 0.25f, 0.5f, 0.5f },
+                                                           cpt::Rect_f{ 0.25f, 0.25f, 0.5f, 0.5f }),
+                                           std::make_tuple(cpt::Rect_f{ 0.75f, 0.25f, 0.5f, 0.5f },
                                                            uil::Alignment::TopRight,
-                                                           uil::Rect{ 0.25f, 0.25f, 0.5f, 0.5f }),
-                                           std::make_tuple(uil::Rect{ 0.25f, 0.5f, 0.5f, 0.5f },
+                                                           cpt::Rect_f{ 0.25f, 0.25f, 0.5f, 0.5f }),
+                                           std::make_tuple(cpt::Rect_f{ 0.25f, 0.5f, 0.5f, 0.5f },
                                                            uil::Alignment::MidLeft,
-                                                           uil::Rect{ 0.25f, 0.25f, 0.5f, 0.5f }),
-                                           std::make_tuple(uil::Rect{ 0.5f, 0.5f, 0.5f, 0.5f },
+                                                           cpt::Rect_f{ 0.25f, 0.25f, 0.5f, 0.5f }),
+                                           std::make_tuple(cpt::Rect_f{ 0.5f, 0.5f, 0.5f, 0.5f },
                                                            uil::Alignment::MidMid,
-                                                           uil::Rect{ 0.25f, 0.25f, 0.5f, 0.5f }),
-                                           std::make_tuple(uil::Rect{ 0.75f, 0.5f, 0.5f, 0.5f },
+                                                           cpt::Rect_f{ 0.25f, 0.25f, 0.5f, 0.5f }),
+                                           std::make_tuple(cpt::Rect_f{ 0.75f, 0.5f, 0.5f, 0.5f },
                                                            uil::Alignment::MidRight,
-                                                           uil::Rect{ 0.25f, 0.25f, 0.5f, 0.5f }),
-                                           std::make_tuple(uil::Rect{ 0.25f, 0.75f, 0.5f, 0.5f },
+                                                           cpt::Rect_f{ 0.25f, 0.25f, 0.5f, 0.5f }),
+                                           std::make_tuple(cpt::Rect_f{ 0.25f, 0.75f, 0.5f, 0.5f },
                                                            uil::Alignment::BottomLeft,
-                                                           uil::Rect{ 0.25f, 0.25f, 0.5f, 0.5f }),
-                                           std::make_tuple(uil::Rect{ 0.5f, 0.75f, 0.5f, 0.5f },
+                                                           cpt::Rect_f{ 0.25f, 0.25f, 0.5f, 0.5f }),
+                                           std::make_tuple(cpt::Rect_f{ 0.5f, 0.75f, 0.5f, 0.5f },
                                                            uil::Alignment::BottomMid,
-                                                           uil::Rect{ 0.25f, 0.25f, 0.5f, 0.5f }),
-                                           std::make_tuple(uil::Rect{ 0.75f, 0.75f, 0.5f, 0.5f },
+                                                           cpt::Rect_f{ 0.25f, 0.25f, 0.5f, 0.5f }),
+                                           std::make_tuple(cpt::Rect_f{ 0.75f, 0.75f, 0.5f, 0.5f },
                                                            uil::Alignment::BottomRight,
-                                                           uil::Rect{ 0.25f, 0.25f, 0.5f, 0.5f })));
+                                                           cpt::Rect_f{ 0.25f, 0.25f, 0.5f, 0.5f })));
 
 TEST(Alignment, PositionException) {
     auto constexpr value = static_cast<uil::Alignment>(100);
 
     try {
-        [[maybe_unused]] auto const result = uil::aligned_position(uil::Rect{ 0.0f, 0.0f, 0.0f, 0.0f }, value);
+        [[maybe_unused]] auto const result = uil::aligned_position(cpt::Rect_f{ 0.0f, 0.0f, 0.0f, 0.0f }, value);
         GTEST_FAIL() << "exception uil::BadAlignment not thrown";
     } catch (uil::BadAlignment const& e) { EXPECT_STREQ(e.what(), "invalid alignment enum"); }
 }
 
-class AlignmentRevesedFixuteres : public testing::TestWithParam<std::tuple<uil::Rect, uil::Alignment, uil::Rect>> { };
+class AlignmentRevesedFixuteres : public testing::TestWithParam<std::tuple<cpt::Rect_f, uil::Alignment, cpt::Rect_f>> { };
 
 TEST_P(AlignmentRevesedFixuteres, Success) {
     auto const unaligned = std::get<0>(GetParam());
@@ -85,39 +85,39 @@ TEST_P(AlignmentRevesedFixuteres, Success) {
 
 INSTANTIATE_TEST_SUITE_P(ALIGNMENT,
                          AlignmentRevesedFixuteres,
-                         ::testing::Values(std::make_tuple(uil::Rect{ 0.25f, 0.25f, 0.5f, 0.5f },
+                         ::testing::Values(std::make_tuple(cpt::Rect_f{ 0.25f, 0.25f, 0.5f, 0.5f },
                                                            uil::Alignment::TopLeft,
-                                                           uil::Rect{ 0.25f, 0.25f, 0.5f, 0.5f }),
-                                           std::make_tuple(uil::Rect{ 0.25f, 0.25f, 0.5f, 0.5f },
+                                                           cpt::Rect_f{ 0.25f, 0.25f, 0.5f, 0.5f }),
+                                           std::make_tuple(cpt::Rect_f{ 0.25f, 0.25f, 0.5f, 0.5f },
                                                            uil::Alignment::TopMid,
-                                                           uil::Rect{ 0.5f, 0.25f, 0.5f, 0.5f }),
-                                           std::make_tuple(uil::Rect{ 0.25f, 0.25f, 0.5f, 0.5f },
+                                                           cpt::Rect_f{ 0.5f, 0.25f, 0.5f, 0.5f }),
+                                           std::make_tuple(cpt::Rect_f{ 0.25f, 0.25f, 0.5f, 0.5f },
                                                            uil::Alignment::TopRight,
-                                                           uil::Rect{ 0.75f, 0.25f, 0.5f, 0.5f }),
-                                           std::make_tuple(uil::Rect{ 0.25f, 0.25f, 0.5f, 0.5f },
+                                                           cpt::Rect_f{ 0.75f, 0.25f, 0.5f, 0.5f }),
+                                           std::make_tuple(cpt::Rect_f{ 0.25f, 0.25f, 0.5f, 0.5f },
                                                            uil::Alignment::MidLeft,
-                                                           uil::Rect{ 0.25f, 0.5f, 0.5f, 0.5f }),
-                                           std::make_tuple(uil::Rect{ 0.25f, 0.25f, 0.5f, 0.5f },
+                                                           cpt::Rect_f{ 0.25f, 0.5f, 0.5f, 0.5f }),
+                                           std::make_tuple(cpt::Rect_f{ 0.25f, 0.25f, 0.5f, 0.5f },
                                                            uil::Alignment::MidMid,
-                                                           uil::Rect{ 0.5f, 0.5f, 0.5f, 0.5f }),
-                                           std::make_tuple(uil::Rect{ 0.25f, 0.25f, 0.5f, 0.5f },
+                                                           cpt::Rect_f{ 0.5f, 0.5f, 0.5f, 0.5f }),
+                                           std::make_tuple(cpt::Rect_f{ 0.25f, 0.25f, 0.5f, 0.5f },
                                                            uil::Alignment::MidRight,
-                                                           uil::Rect{ 0.75f, 0.5f, 0.5f, 0.5f }),
-                                           std::make_tuple(uil::Rect{ 0.25f, 0.25f, 0.5f, 0.5f },
+                                                           cpt::Rect_f{ 0.75f, 0.5f, 0.5f, 0.5f }),
+                                           std::make_tuple(cpt::Rect_f{ 0.25f, 0.25f, 0.5f, 0.5f },
                                                            uil::Alignment::BottomLeft,
-                                                           uil::Rect{ 0.25f, 0.75f, 0.5f, 0.5f }),
-                                           std::make_tuple(uil::Rect{ 0.25f, 0.25f, 0.5f, 0.5f },
+                                                           cpt::Rect_f{ 0.25f, 0.75f, 0.5f, 0.5f }),
+                                           std::make_tuple(cpt::Rect_f{ 0.25f, 0.25f, 0.5f, 0.5f },
                                                            uil::Alignment::BottomMid,
-                                                           uil::Rect{ 0.5f, 0.75f, 0.5f, 0.5f }),
-                                           std::make_tuple(uil::Rect{ 0.25f, 0.25f, 0.5f, 0.5f },
+                                                           cpt::Rect_f{ 0.5f, 0.75f, 0.5f, 0.5f }),
+                                           std::make_tuple(cpt::Rect_f{ 0.25f, 0.25f, 0.5f, 0.5f },
                                                            uil::Alignment::BottomRight,
-                                                           uil::Rect{ 0.75f, 0.75f, 0.5f, 0.5f })));
+                                                           cpt::Rect_f{ 0.75f, 0.75f, 0.5f, 0.5f })));
 
 TEST(Alignment, PositionReversedException) {
     auto constexpr value = static_cast<uil::Alignment>(100);
 
     try {
-        [[maybe_unused]] auto const result = uil::aligned_position_reversed(uil::Rect{ 0.0f, 0.0f, 0.0f, 0.0f }, value);
+        [[maybe_unused]] auto const result = uil::aligned_position_reversed(cpt::Rect_f{ 0.0f, 0.0f, 0.0f, 0.0f }, value);
         GTEST_FAIL() << "exception uil::BadAlignment not thrown";
     } catch (uil::BadAlignment const& e) { EXPECT_STREQ(e.what(), "invalid alignment enum"); }
 }
@@ -126,7 +126,7 @@ class DoubleAlignmentFixtures : public testing::TestWithParam<uil::Alignment> { 
 
 TEST_P(DoubleAlignmentFixtures, DoubleConvert) {
     auto const alignement    = GetParam();
-    auto constexpr unaligned = uil::Rect{ 0.25f, 0.25f, 0.5f, 0.5f };
+    auto constexpr unaligned = cpt::Rect_f{ 0.25f, 0.25f, 0.5f, 0.5f };
 
     auto const temp   = uil::aligned_position(unaligned, alignement);
     auto const result = uil::aligned_position_reversed(temp, alignement);

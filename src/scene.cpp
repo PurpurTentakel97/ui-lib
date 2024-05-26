@@ -27,7 +27,7 @@ namespace uil {
         return m_keep_updating;
     }
 
-    void Scene::resize(cpt::Vec2i resolution) {
+    void Scene::resize(cpt::Vec2_i resolution) {
         for (auto& element : m_elements) {
             element.resize(resolution);
         }

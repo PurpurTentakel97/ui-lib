@@ -11,11 +11,11 @@ namespace uil {
         return true;
     }
 
-    void UIElement::resize(cpt::Vec2i const resolution) {
+    void UIElement::resize(cpt::Vec2_i const resolution) {
         m_collider = collider_from_relative(m_relative, resolution);
     }
 
-    UIElement::UIElement(Rect const relative, cpt::Vec2i const resolution, Alignment const alignment)
+    UIElement::UIElement(cpt::Rect_f const relative, cpt::Vec2_i const resolution, Alignment const alignment)
         : m_relative{ relative },
           m_collider{ 0.0f, 0.0f, 0.0f, 0.0f },
           m_alignment{ alignment } {
