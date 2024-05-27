@@ -15,9 +15,7 @@
 TEST(Collider, Exception) {
     auto constexpr relative    = cpt::Rect_f{ 0.1f, 0.1f, 0.1f, 0.1f };
     auto constexpr resolutions = std::array<cpt::Vec2_i, 3>{
-        cpt::Vec2_i{ 0, 1 },
-        cpt::Vec2_i{ 1, 0 },
-        cpt::Vec2_i{ 0, 0 }
+        { { 0, 1 }, { 1, 0 }, { 0, 0 } }
     };
 
     for (auto const& resolution : resolutions) {
