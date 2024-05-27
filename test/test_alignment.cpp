@@ -125,11 +125,11 @@ TEST(Alignment, PositionReversedException) {
 class DoubleAlignmentFixtures : public testing::TestWithParam<uil::Alignment> { };
 
 TEST_P(DoubleAlignmentFixtures, DoubleConvert) {
-    auto const alignement    = GetParam();
+    auto const alignment    = GetParam();
     auto constexpr unaligned = cpt::Rect_f{ 0.25f, 0.25f, 0.5f, 0.5f };
 
-    auto const temp   = uil::aligned_position(unaligned, alignement);
-    auto const result = uil::aligned_position_reversed(temp, alignement);
+    auto const temp   = uil::aligned_position(unaligned, alignment);
+    auto const result = uil::aligned_position_reversed(temp, alignment);
 
     EXPECT_FLOAT_EQ(result.x, unaligned.x);
     EXPECT_FLOAT_EQ(result.y, unaligned.y);
