@@ -16,6 +16,16 @@ TEST(Exception, CallbackException) {
     }
 }
 
+TEST(Exception, DivideByZero) {
+    try {
+        throw uil::DivideByZero("some divide by zero fail");
+    } catch (std::runtime_error const& e) {
+        EXPECT_STREQ(e.what(), "some divide by zero fail");
+    } catch ([[maybe_unused]] std::exception const& e) {
+        GTEST_FAIL() << "uil::DivideByZero is no std::runtime_error";
+    }
+}
+
 TEST(Exception, BadResolution) {
     try {
         throw uil::BadResolution("some resolution fail");
