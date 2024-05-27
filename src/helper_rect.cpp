@@ -4,7 +4,7 @@
 //
 
 #include <uil/helper_rect.hpp>
-#include <uil//exception.hpp>
+#include <uil/exception.hpp>
 
 namespace uil {
     cpt::Rect_f collider_from_relative(cpt::Rect_f const relative, cpt::Vec2_i const resolution) {

@@ -3,6 +3,7 @@ add_executable(lib_tests
                test_callbacks.cpp
                test_exception.cpp
                test_rect.cpp
+               test_resolution.cpp
 )
 
 target_link_libraries(lib_tests

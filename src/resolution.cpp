@@ -14,7 +14,7 @@ namespace uil {
                 // clang-format off
             // 16:9
             case Resolution::UHD2:    return { 7600, 4320 };
-            case Resolution::_5K:     return { 5120, 2160 };
+            case Resolution::_5K:     return { 4800, 2700 };
             case Resolution::UHD1:    return { 3840, 2162 };
             case Resolution::WQHD:    return { 2560, 1440 };
             case Resolution::FULL_HD: return { 1920, 1080 };
@@ -28,8 +28,6 @@ namespace uil {
             // 4:3
             case Resolution::QXGA:      return { 2048, 1536 };
             case Resolution::UXGA:      return { 1600, 1200 };
-            case Resolution::SXGA_Plus: return { 1400, 1050 };
-            case Resolution::XGA_Plus:  return { 1152, 864  };
             case Resolution::XGA:       return { 1024, 768  };
             case Resolution::SVGA:      return { 800,  600  };
             case Resolution::PAL:       return { 768,  576  };
@@ -68,8 +66,6 @@ namespace uil {
             // 4:3
             case Resolution::QXGA:      return std::format("QXGA: {} x {}",      res.x, res.y);
             case Resolution::UXGA:      return std::format("UXGA: {} x {}",      res.x, res.y);
-            case Resolution::SXGA_Plus: return std::format("SXGA plus: {} x {}", res.x, res.y);
-            case Resolution::XGA_Plus:  return std::format("XGA plus: {} x {}",  res.x, res.y);
             case Resolution::XGA:       return std::format("XGA: {} x {}",       res.x, res.y);
             case Resolution::SVGA:      return std::format("SVGA: {} x {}",      res.x, res.y);
             case Resolution::PAL:       return std::format("PAL: {} x {}",       res.x, res.y);
@@ -79,7 +75,7 @@ namespace uil {
             case Resolution::CUSTOM: return std::format("Custom: {} x {}", res.x, res.y);
                 // clang-format on
         }
-        throw BadResolution("unecpected resolution in string switch case");
+        throw BadResolution("unexpected resolution in string switch case");
     }
 
     std::vector<std::string> all_string_from_resolution(cpt::Vec2_i const current_resolution) {
