@@ -1,12 +1,13 @@
 add_executable(lib_tests
-               Test_Callbacks.cpp
+        test_alignment.cpp
+        test_callbacks.cpp
 )
 
 target_link_libraries(lib_tests
-                      PRIVATE
-                      ui_lib_project_options
-                      ui_lib
-                      GTest::gtest_main
+        PRIVATE
+        ui_lib_project_options
+        ui_lib
+        GTest::gtest_main
 )
 
 include(GoogleTest)

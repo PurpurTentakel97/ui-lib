@@ -8,16 +8,12 @@
 #include <algorithm>
 #include <cassert>
 #include <concepts>
-#include <cpt/Types.hpp>
+#include <cpt/types.hpp>
 #include <functional>
-#include <stdexcept>
+#include <uil/exception.hpp>
 #include <vector>
 
 namespace uil {
-    class CallbackException final : public std::runtime_error {
-        using std::runtime_error::runtime_error;
-    };
-
     template<typename... C>
     class Callback final {
     private:
