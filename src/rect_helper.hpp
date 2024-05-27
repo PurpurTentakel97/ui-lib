@@ -5,8 +5,8 @@
 
 #pragma once
 
+#include <helper_rect.hpp>
 #include <raylib.h>
-#include <uil/rect.hpp>
 
 namespace uil {
     [[nodiscard]] inline Rectangle rect_to_ray(Rect rect) {

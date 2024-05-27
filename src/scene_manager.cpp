@@ -27,7 +27,7 @@ namespace uil {
         return true;
     }
 
-    void SceneManager::resize(cpt::Vec2i const resolution) {
+    void SceneManager::resize(cpt::Vec2_i const resolution) {
         for (auto& scene : m_scenes) {
             scene.resize(resolution);
         }

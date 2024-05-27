@@ -8,7 +8,7 @@
 #include <algorithm>
 #include <cassert>
 #include <concepts>
-#include <cpt/Types.hpp>
+#include <cpt/types.hpp>
 #include <functional>
 #include <uil/exception.hpp>
 #include <vector>

@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include <cpt/Vec2.hpp>
+#include <cpt/vec2.hpp>
 #include <uil/ui_element.hpp>
 #include <uil/update_render_helper.hpp>
 #include <vector>
@@ -23,7 +23,7 @@ namespace uil {
     protected:
         [[nodiscard]] virtual bool handle_event(InputEvent const& event);
         [[nodiscard]] virtual bool update();
-        virtual void resize(cpt::Vec2i resolution);
+        virtual void resize(cpt::Vec2_i resolution);
         virtual void render();
 
     public:

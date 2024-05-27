@@ -19,7 +19,7 @@ namespace uil {
     protected:
         bool handle_event(InputEvent const& event);
         bool update();
-        void resize(cpt::Vec2i resolution);
+        void resize(cpt::Vec2_i resolution);
         void render();
 
     public:
