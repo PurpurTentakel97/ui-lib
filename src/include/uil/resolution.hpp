@@ -12,27 +12,39 @@
 namespace uil {
     enum class Resolution {
         // 16:9
-        UHD2,
-        UHD1,
-        QUAD_HD,
+        QUAD_UHD,
+        FULL_UHD,
+        UHD_Plus,
+        UHD,
+        WQHD,
         FULL_HD,
         HD,
-        SD_3,
-        SD_2,
-        SD_1,
+        HD_540,
+        HD_360,
+
+        // 18:9
+        FULL_HD_Plus,
+        Quad_HD_Plus,
 
         // 21:9
-        _5K_ULTRA_WIDE,
         UWQHD,
-        UWHD,
+        WUHD,
+        UWFHD,
 
         // 4:3
+        HUXGA,
+        HXGA,
+        QUXGA,
+        QSXGA_Plus,
         QXGA,
         UXGA,
+        SXGA_Plus,
+        SXVGA,
         XGA,
         SVGA,
-        PAL,
         VGA,
+        QSVGA,
+        QVGA,
 
         SCREEN,
         CUSTOM, // CUSTOM needs to stay last entry
