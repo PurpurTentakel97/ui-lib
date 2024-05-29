@@ -22,7 +22,7 @@ TEST(Resolution, StrThrow) {
     try {
         [[maybe_unused]] auto const result = uil::str_from_resolution(res, { 1, 1 });
         GTEST_FAIL() << "exception uil::BadResolution not thrown";
-    } catch (uil::BadResolution const& e) { EXPECT_STREQ(e.what(), "unexpected resolution in vec switch case"); }
+    } catch (uil::BadResolution const& e) { EXPECT_STREQ(e.what(), "unexpected resolution in string switch case"); }
 }
 
 TEST(Resolution, AllStringCount) {

@@ -7,6 +7,7 @@
 #include <raylib.h>
 #include <uil/exception.hpp>
 #include <uil/resolution.hpp>
+#include <functional>
 
 namespace uil {
     cpt::Vec2_i vec_from_resolution(Resolution const resolution, cpt::Vec2_i current_resolution) {
@@ -61,7 +62,11 @@ namespace uil {
     }
 
     std::string str_from_resolution(Resolution resolution, cpt::Vec2_i current_resolution) {
-        auto const res = vec_from_resolution(resolution, current_resolution);
+        auto const res = std::invoke([resolution, current_resolution] {
+            try {
+                return vec_from_resolution(resolution, current_resolution);
+            } catch (BadResolution const&) { throw BadResolution("unexpected resolution in string switch case"); }
+        });
         switch (resolution) {
                 // clang-format off
             // 16:9
