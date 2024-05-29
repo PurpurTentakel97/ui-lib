@@ -4,6 +4,7 @@
 //
 
 #include <uil/helper_rect.hpp>
+#include <uil/exception.hpp>
 
 namespace uil {
     cpt::Rect_f collider_from_relative(cpt::Rect_f const relative, cpt::Vec2_i const resolution) {
@@ -12,7 +13,11 @@ namespace uil {
                  relative.width * static_cast<float>(resolution.x),
                  relative.height * static_cast<float>(resolution.y) };
     }
+
     cpt::Rect_f relative_from_collider(cpt::Rect_f const collider, cpt::Vec2_i const resolution) {
+        if (resolution.x == 0 or resolution.y == 0){
+            throw DivideByZero("resolution width or height was zero");
+        }
         return { collider.x / static_cast<float>(resolution.x),
                  collider.y / static_cast<float>(resolution.y),
                  collider.width / static_cast<float>(resolution.x),

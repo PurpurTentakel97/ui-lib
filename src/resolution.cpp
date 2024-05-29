@@ -7,33 +7,46 @@
 #include <raylib.h>
 #include <uil/exception.hpp>
 #include <uil/resolution.hpp>
+#include <functional>
 
 namespace uil {
     cpt::Vec2_i vec_from_resolution(Resolution const resolution, cpt::Vec2_i current_resolution) {
         switch (resolution) {
                 // clang-format off
             // 16:9
-            case Resolution::UHD2:    return { 7600, 4320 };
-            case Resolution::_5K:     return { 5120, 2160 };
-            case Resolution::UHD1:    return { 3840, 2162 };
-            case Resolution::WQHD:    return { 2560, 1440 };
-            case Resolution::FULL_HD: return { 1920, 1080 };
-            case Resolution::HD:      return { 1280, 720  };
+            case Resolution::QUAD_UHD:  return { 15360, 8640 };
+            case Resolution::FULL_UHD:  return { 7680,  4320 };
+            case Resolution::UHD_Plus:  return { 5120,  2880 };
+            case Resolution::UHD:       return { 3840,  2160 };
+            case Resolution::WQHD:      return { 2560,  1440 };
+            case Resolution::FULL_HD:   return { 1920,  1080 };
+            case Resolution::HD:        return { 1280,  720  };
+            case Resolution::HD_540:    return { 960,   540  };
+            case Resolution::HD_360:    return { 640,   360  };
+
+            // 18:9
+            case Resolution::Quad_HD_Plus: return { 2880, 1440 };
+            case Resolution::FULL_HD_Plus: return { 2160, 1080 };
 
             // 21:9
-            case Resolution::_5K_ULTRA_WIDE: return { 5120, 2460 };
-            case Resolution::UWQHD:          return { 3440, 1440 };
-            case Resolution::UWHD:           return { 2560, 1080 };
+            case Resolution::WUHD:  return { 5120, 2160 };
+            case Resolution::UWQHD: return { 3440, 1440 };
+            case Resolution::UWFHD: return { 2560, 1080 };
 
             // 4:3
-            case Resolution::QXGA:      return { 2048, 1536 };
-            case Resolution::UXGA:      return { 1600, 1200 };
-            case Resolution::SXGA_Plus: return { 1400, 1050 };
-            case Resolution::XGA_Plus:  return { 1152, 864  };
-            case Resolution::XGA:       return { 1024, 768  };
-            case Resolution::SVGA:      return { 800,  600  };
-            case Resolution::PAL:       return { 768,  576  };
-            case Resolution::VGA:       return { 640,  480  };
+            case Resolution::HUXGA:      return { 6400, 4800 };
+            case Resolution::HXGA:       return { 4096, 3072 };
+            case Resolution::QUXGA:      return { 3200, 2400 };
+            case Resolution::QSXGA_Plus: return { 2800, 2100 };
+            case Resolution::QXGA:       return { 2048, 1536 };
+            case Resolution::UXGA:       return { 1600, 1200 };
+            case Resolution::SXGA_Plus:  return { 1400, 1050 };
+            case Resolution::SXVGA:      return { 1280, 960  };
+            case Resolution::XGA:        return { 1024, 768  };
+            case Resolution::SVGA:       return { 800,  600  };
+            case Resolution::VGA:        return { 640,  480  };
+            case Resolution::QSVGA:      return { 400,  300  };
+            case Resolution::QVGA:       return { 320,  240  };
                 // clang-format on
 
             case Resolution::SCREEN: {
@@ -45,41 +58,56 @@ namespace uil {
             }
             case Resolution::CUSTOM: return current_resolution;
         }
-        throw BadResolution("unecpected resolution in vec switch case");
+        throw BadResolution("unexpected resolution in vec switch case");
     }
 
     std::string str_from_resolution(Resolution resolution, cpt::Vec2_i current_resolution) {
-        auto const res = vec_from_resolution(resolution, current_resolution);
+        auto const res = std::invoke([resolution, current_resolution] {
+            try {
+                return vec_from_resolution(resolution, current_resolution);
+            } catch (BadResolution const&) { throw BadResolution("unexpected resolution in string switch case"); }
+        });
         switch (resolution) {
                 // clang-format off
             // 16:9
-            case Resolution::UHD2:    return std::format("UHD2: {} x {}",    res.x, res.y);
-            case Resolution::_5K:     return std::format("5K: {} x {}",      res.x, res.y);
-            case Resolution::UHD1:    return std::format("UHD1: {} x {}",    res.x, res.y);
-            case Resolution::WQHD:    return std::format("WQHD: {} x {}",    res.x, res.y);
-            case Resolution::FULL_HD: return std::format("Full HD: {} x {}", res.x, res.y);
-            case Resolution::HD:      return std::format("HD: {} x {}",      res.x, res.y);
+            case Resolution::QUAD_UHD: return std::format("QUAD_UHD ({} x {})", res.x, res.y);
+            case Resolution::FULL_UHD: return std::format("FULL_UHD ({} x {})", res.x, res.y);
+            case Resolution::UHD_Plus: return std::format("UHD_Plus ({} x {})", res.x, res.y);
+            case Resolution::UHD:      return std::format("UHD ({} x {})",      res.x, res.y);
+            case Resolution::WQHD:     return std::format("WQHD ({} x {})",     res.x, res.y);
+            case Resolution::FULL_HD:  return std::format("FULL_HD ({} x {})",  res.x, res.y);
+            case Resolution::HD:       return std::format("HD ({} x {})",       res.x, res.y);
+            case Resolution::HD_540:   return std::format("HD_540 ({} x {})",   res.x, res.y);
+            case Resolution::HD_360:   return std::format("HD_360 ({} x {})",   res.x, res.y);
+
+            // 18:9
+            case Resolution::FULL_HD_Plus: return std::format("FULL_HD_Plus ({} x {})", res.x, res.y);
+            case Resolution::Quad_HD_Plus: return std::format("Quad_HD_Plus ({} x {})", res.x, res.y);
 
             // 21:9
-            case Resolution::_5K_ULTRA_WIDE: return std::format("5k ultra wide: {} x {}", res.x, res.y);
-            case Resolution::UWQHD:          return std::format("UWQHD: {} x {}",         res.x, res.y);
-            case Resolution::UWHD:           return std::format("UWHD: {} x {}",          res.x, res.y);
+            case Resolution::UWQHD: return std::format("UWQHD ({} x {})", res.x, res.y);
+            case Resolution::WUHD:  return std::format("WUHD ({} x {})",  res.x, res.y);
+            case Resolution::UWFHD: return std::format("UWFHD ({} x {})", res.x, res.y);
 
             // 4:3
-            case Resolution::QXGA:      return std::format("QXGA: {} x {}",      res.x, res.y);
-            case Resolution::UXGA:      return std::format("UXGA: {} x {}",      res.x, res.y);
-            case Resolution::SXGA_Plus: return std::format("SXGA plus: {} x {}", res.x, res.y);
-            case Resolution::XGA_Plus:  return std::format("XGA plus: {} x {}",  res.x, res.y);
-            case Resolution::XGA:       return std::format("XGA: {} x {}",       res.x, res.y);
-            case Resolution::SVGA:      return std::format("SVGA: {} x {}",      res.x, res.y);
-            case Resolution::PAL:       return std::format("PAL: {} x {}",       res.x, res.y);
-            case Resolution::VGA:       return std::format("VGA: {} x {}",       res.x, res.y);
-
-            case Resolution::SCREEN: return std::format("Screen: {} x {}", res.x, res.y);
-            case Resolution::CUSTOM: return std::format("Custom: {} x {}", res.x, res.y);
+            case Resolution::HUXGA:      return std::format("HUXGA ({} x {})",      res.x, res.y);
+            case Resolution::HXGA:       return std::format("HXGA ({} x {})",       res.x, res.y);
+            case Resolution::QUXGA:      return std::format("QUXGA ({} x {})",      res.x, res.y);
+            case Resolution::QSXGA_Plus: return std::format("QSXGA_Plus ({} x {})", res.x, res.y);
+            case Resolution::QXGA:       return std::format("QXGA ({} x {})",       res.x, res.y);
+            case Resolution::UXGA:       return std::format("UXGA ({} x {})",       res.x, res.y);
+            case Resolution::SXGA_Plus:  return std::format("SXGA_Plus ({} x {})",  res.x, res.y);
+            case Resolution::SXVGA:      return std::format("SXVGA ({} x {})",      res.x, res.y);
+            case Resolution::XGA:        return std::format("XGA ({} x {})",        res.x, res.y);
+            case Resolution::SVGA:       return std::format("SVGA ({} x {})",       res.x, res.y);
+            case Resolution::VGA:        return std::format("VGA ({} x {})",        res.x, res.y);
+            case Resolution::QSVGA:      return std::format("QSVGA ({} x {})",      res.x, res.y);
+            case Resolution::QVGA:       return std::format("QVGA ({} x {})",       res.x, res.y);
+            case Resolution::SCREEN:     return std::format("SCREEN ({} x {})",     res.x, res.y);
+            case Resolution::CUSTOM:     return std::format("CUSTOM ({} x {})",     res.x, res.y);
                 // clang-format on
         }
-        throw BadResolution("unecpected resolution in string switch case");
+        throw BadResolution("unexpected resolution in string switch case");
     }
 
     std::vector<std::string> all_string_from_resolution(cpt::Vec2_i const current_resolution) {
