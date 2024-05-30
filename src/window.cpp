@@ -3,7 +3,10 @@
 // 19.05.24
 //
 
+#include <cpt/types.hpp>
+#include <iostream>
 #include <raylib.h>
+#include <string>
 #include <uil/exception.hpp>
 #include <uil/resolution.hpp>
 #include <uil/window.hpp>
@@ -98,7 +101,16 @@ namespace uil {
         m_scene_manager.update();
 
         BeginDrawing();
+        ClearBackground(BLACK);
         m_scene_manager.render();
+
+        if (m_draw_fps) {
+            auto const fps = current_fps();
+            auto const size = static_cast<int>(m_resolution_usize.to<float>().y * 0.05f);
+            auto const spacing_x = static_cast<int>(m_resolution_usize.to<float>().x * 0.005f);
+            auto const spacing_y = static_cast<int>(m_resolution_usize.to<float>().y * 0.005f);
+            DrawText(std::to_string(fps).c_str(), spacing_x, spacing_y, size, WHITE);
+        }
         EndDrawing();
     }
 
