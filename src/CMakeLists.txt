@@ -3,6 +3,7 @@ add_library(ui_lib STATIC)
 target_sources(ui_lib
                PRIVATE
                alignment.cpp
+               event_manager.cpp
                helper_rect.cpp
                resolution.cpp
                window.cpp
@@ -11,7 +12,9 @@ target_sources(ui_lib
                BASE_DIRS include FILES
                include/uil/alignment.hpp
                include/uil/callback.hpp
+               include/uil/event_manager.hpp
                include/uil/exception.hpp
+               include/uil/game_button.hpp
                include/uil/helper_rect.hpp
                include/uil/resolution.hpp
                include/uil/window.hpp
