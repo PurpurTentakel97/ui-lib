@@ -5,10 +5,6 @@ target_sources(ui_lib
                alignment.cpp
                helper_rect.cpp
                resolution.cpp
-               ui_element.cpp
-               update_render_helper.cpp
-               scene.cpp
-               scene_manager.cpp
                window.cpp
 
                PUBLIC FILE_SET HEADERS
@@ -18,13 +14,7 @@ target_sources(ui_lib
                include/uil/exception.hpp
                include/uil/helper_rect.hpp
                include/uil/resolution.hpp
-               include/uil/scene.hpp
-               include/uil/scene_manager.hpp
-               include/uil/ui_element.hpp
-               include/uil/update_render_helper.hpp
                include/uil/window.hpp
-
-
 )
 
 target_include_directories(ui_lib
