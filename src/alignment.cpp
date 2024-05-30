@@ -7,7 +7,7 @@
 #include <uil/exception.hpp>
 
 namespace uil {
-    cpt::Rect_f aligned_position(cpt::Rect_f relative, Alignment alignment) {
+    Rectangle aligned_position(Rectangle relative, Alignment alignment) {
         switch (alignment) {
                 // clang-format off
             case Alignment::TopLeft:
@@ -47,7 +47,7 @@ namespace uil {
         return relative;
     }
 
-    cpt::Rect_f aligned_position_reversed(cpt::Rect_f relative, Alignment alignment) {
+    Rectangle aligned_position_reversed(Rectangle relative, Alignment alignment) {
         switch (alignment) {
                 // clang-format off
             case Alignment::TopLeft:

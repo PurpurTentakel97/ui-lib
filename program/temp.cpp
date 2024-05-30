@@ -3,10 +3,13 @@
 //
 
 #include <uil/window.hpp>
-#include <iostream>
+
 int main() {
-    auto window = uil::Window({ 1280, 720 }, "ui-lib").set_fps(60).set_draw_fps(true);
-    while (not window.should_close()) {
+    auto window = uil::Window({ 1280, 720 }, "ui-lib");
+    window.set_fps(60);
+    window.set_draw_fps(true);
+
+    while (not WindowShouldClose()) {
         window.update();
     }
 }

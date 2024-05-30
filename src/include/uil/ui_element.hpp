@@ -5,9 +5,9 @@
 
 #pragma once
 
-#include <uil/helper_rect.hpp>
 #include <cpt/vec2.hpp>
 #include <uil/alignment.hpp>
+#include <raylib.h>
 #include <uil/update_render_helper.hpp>
 
 class InputEvent;
@@ -18,8 +18,8 @@ namespace uil {
         friend class Scene;
 
     private:
-        cpt::Rect_f m_relative;
-        cpt::Rect_f m_collider;
+        Rectangle m_relative;
+        Rectangle m_collider;
         Alignment m_alignment;
 
     protected:
@@ -29,7 +29,7 @@ namespace uil {
         virtual void render() = 0;
 
     public:
-        UIElement(cpt::Rect_f relative, cpt::Vec2_i resolution, Alignment alignment);
+        UIElement(Rectangle relative, cpt::Vec2_i resolution, Alignment alignment);
         UIElement(UIElement const&)            = default;
         UIElement(UIElement&&)                 = default;
         UIElement& operator=(UIElement const&) = default;

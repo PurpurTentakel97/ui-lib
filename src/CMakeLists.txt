@@ -35,7 +35,7 @@ target_include_directories(ui_lib
 target_link_libraries(ui_lib
                       PUBLIC
                       cpt::cpt-lib
-                      PRIVATE
                       raylib
+                      PRIVATE
                       $<BUILD_INTERFACE:ui_lib_project_options>
 )

@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include <uil/helper_rect.hpp>
+#include <raylib.h>
 
 namespace uil {
     enum class Alignment {
@@ -21,6 +21,6 @@ namespace uil {
     };
 
 
-    [[nodiscard]] cpt::Rect_f aligned_position(cpt::Rect_f relative, Alignment alignment);
-    [[nodiscard]] cpt::Rect_f aligned_position_reversed(cpt::Rect_f relative, Alignment alignment);
+    [[nodiscard]] Rectangle aligned_position(Rectangle relative, Alignment alignment);
+    [[nodiscard]] Rectangle aligned_position_reversed(Rectangle relative, Alignment alignment);
 } // namespace uil

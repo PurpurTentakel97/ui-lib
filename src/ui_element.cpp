@@ -4,6 +4,7 @@
 //
 
 #include <uil/ui_element.hpp>
+#include <uil/helper_rect.hpp>
 
 namespace uil {
     bool UIElement::update() {
@@ -15,7 +16,7 @@ namespace uil {
         m_collider = collider_from_relative(m_relative, resolution);
     }
 
-    UIElement::UIElement(cpt::Rect_f const relative, cpt::Vec2_i const resolution, Alignment const alignment)
+    UIElement::UIElement(Rectangle const relative, cpt::Vec2_i const resolution, Alignment const alignment)
         : m_relative{ relative },
           m_collider{ 0.0f, 0.0f, 0.0f, 0.0f },
           m_alignment{ alignment } {

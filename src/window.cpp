@@ -4,7 +4,6 @@
 //
 
 #include <cpt/types.hpp>
-#include <iostream>
 #include <raylib.h>
 #include <string>
 #include <uil/exception.hpp>
@@ -12,29 +11,6 @@
 #include <uil/window.hpp>
 
 namespace uil {
-    void Window::set_resolution_helper(Resolution const resolution) {
-        if (resolution == Resolution::CUSTOM) {
-            throw BadResolution("not able to set custom resolution with enum. use int overload instead");
-        }
-        if (not is_possible_resolution(resolution)) {
-            throw BadResolution("not able to set resolution bigger than screen");
-        }
-
-        m_resolution       = resolution;
-        m_resolution_usize = vec_from_resolution(m_resolution, m_resolution_usize);
-        SetWindowSize(m_resolution_usize.x, m_resolution_usize.y);
-    }
-
-    void Window::set_resolution_helper(cpt::Vec2_i const resolution) {
-        if (not is_possible_resolution(resolution)) {
-            throw BadResolution("not able to set resolution bigger than screen");
-        }
-
-        m_resolution       = Resolution::CUSTOM;
-        m_resolution_usize = resolution;
-        SetWindowSize(m_resolution_usize.x, m_resolution_usize.y);
-    }
-
     Window::Window(cpt::Vec2_i const resolution, char const* title) {
         m_resolution_usize = resolution;
         InitWindow(resolution.x, resolution.y, title);
@@ -91,10 +67,6 @@ namespace uil {
         return resolution.x <= screen.x and resolution.y <= screen.y;
     }
 
-    bool Window::should_close() {
-        return WindowShouldClose();
-    }
-
     void Window::update() {
         // update events
         // maybe resize here too
@@ -105,7 +77,7 @@ namespace uil {
         m_scene_manager.render();
 
         if (m_draw_fps) {
-            auto const fps = current_fps();
+            auto const fps = GetFPS();
             auto const size = static_cast<int>(m_resolution_usize.to<float>().y * 0.05f);
             auto const spacing_x = static_cast<int>(m_resolution_usize.to<float>().x * 0.005f);
             auto const spacing_y = static_cast<int>(m_resolution_usize.to<float>().y * 0.005f);
@@ -114,24 +86,27 @@ namespace uil {
         EndDrawing();
     }
 
-    Window& Window::set_resolution(Resolution const resolution) & {
-        set_resolution_helper(resolution);
-        return *this;
+    void Window::set_resolution(Resolution const resolution)  {
+        if (resolution == Resolution::CUSTOM) {
+            throw BadResolution("not able to set custom resolution with enum. use int overload instead");
+        }
+        if (not is_possible_resolution(resolution)) {
+            throw BadResolution("not able to set resolution bigger than screen");
+        }
+
+        m_resolution       = resolution;
+        m_resolution_usize = vec_from_resolution(m_resolution, m_resolution_usize);
+        SetWindowSize(m_resolution_usize.x, m_resolution_usize.y);
     }
 
-    Window Window::set_resolution(Resolution const resolution) && {
-        set_resolution_helper(resolution);
-        return std::move(*this);
-    }
+    void Window::set_resolution(cpt::Vec2_i const resolution)  {
+        if (not is_possible_resolution(resolution)) {
+            throw BadResolution("not able to set resolution bigger than screen");
+        }
 
-    Window& Window::set_resolution(cpt::Vec2_i const resolution) & {
-        set_resolution_helper(resolution);
-        return *this;
-    }
-
-    Window Window::set_resolution(cpt::Vec2_i const resolution) && {
-        set_resolution_helper(resolution);
-        return std::move(*this);
+        m_resolution       = Resolution::CUSTOM;
+        m_resolution_usize = resolution;
+        SetWindowSize(m_resolution_usize.x, m_resolution_usize.y);
     }
 
     Resolution Window::resolution() const {
@@ -142,37 +117,20 @@ namespace uil {
         return m_resolution_usize;
     }
 
-    Window& Window::set_fps(cpt::usize const fps) & {
+    void Window::set_fps(cpt::usize const fps) {
         m_fps = fps;
         SetTargetFPS(static_cast<int>(fps));
-        return *this;
-    }
-
-    Window Window::set_fps(cpt::usize const fps) && {
-        m_fps = fps;
-        SetTargetFPS(static_cast<int>(fps));
-        return std::move(*this);
     }
 
     cpt::usize Window::fps() const {
         return m_fps;
     }
 
-    cpt::usize Window::current_fps() {
-        return static_cast<cpt::usize>(GetFPS());
-    }
-
-    Window& Window::set_draw_fps(bool const draw) & {
+    void Window::set_draw_fps(bool const draw) {
         m_draw_fps = draw;
-        return *this;
     }
 
-    Window Window::set_draw_fps(bool const draw) && {
-        m_draw_fps = draw;
-        return std::move(*this);
-    }
-
-    cpt::usize Window::draw_fps() const {
+    bool Window::draw_fps() const {
         return m_draw_fps;
     }
 } // namespace uil
