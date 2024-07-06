@@ -5,17 +5,26 @@ target_sources(ui_lib
                alignment.cpp
                helper_rect.cpp
                resolution.cpp
+               scene.cpp
+               scene_manager.cpp
+               ui_element.cpp
                window.cpp
+               test_element.cpp
+               test_scene.cpp
 
                PUBLIC FILE_SET HEADERS
                BASE_DIRS include FILES
                include/uil/alignment.hpp
                include/uil/callback.hpp
                include/uil/exception.hpp
-               include/uil/game_button.hpp
                include/uil/helper_rect.hpp
                include/uil/resolution.hpp
+               include/uil/scene.hpp
+               include/uil/scene_manager.hpp
+               include/uil/ui_element.hpp
                include/uil/window.hpp
+               include/uil/test_element.hpp
+               include/uil/test_scene.hpp
 )
 
 target_include_directories(ui_lib

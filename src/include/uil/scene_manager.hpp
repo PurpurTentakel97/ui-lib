@@ -1,0 +1,24 @@
+//
+// Purpur Tentakel
+// 06.07.24
+//
+
+#pragma once
+#include <memory>
+#include <vector>
+#include <uil/scene.hpp>
+
+namespace uil {
+    class SceneManager final {
+    private:
+        std::vector<std::unique_ptr<Scene>> m_scenes{};
+
+    public:
+        void add_scene(std::unique_ptr<Scene> scene);
+
+        // [[nodiscard]] bool check(Vector2 mousePosition);
+        // [[nodiscard]] bool update();
+        bool render() const;
+        // void resize();
+    };
+} // namespace uil

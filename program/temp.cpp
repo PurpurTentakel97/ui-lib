@@ -9,9 +9,7 @@ int main() {
     auto window = uil::Window({ 1280, 720 }, "ui-lib");
     window.set_draw_fps(true);
 
-    auto window2 = std::move(window);
-
     while (not WindowShouldClose()) {
-        window2.update();
+        window.update();
     }
 }

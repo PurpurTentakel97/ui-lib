@@ -5,24 +5,13 @@
 
 #include <raylib.h>
 #include <string>
+#include <uil/test_scene.hpp>
 #include <uil/window.hpp>
 
 namespace uil {
-
     Window::Window(cpt::Vec2_i const resolution, char const* const title) {
         InitWindow(resolution.x, resolution.y, title);
-    }
-
-    Window::Window(Window&& window) noexcept : m_owner{ false } {
-        std::swap(m_owner, window.m_owner);
-        std::swap(m_draw_fps, window.m_draw_fps);
-    }
-
-    Window& Window::operator=(Window&& window) noexcept {
-        m_owner = false;
-        std::swap(m_owner, window.m_owner);
-        std::swap(m_draw_fps, window.m_draw_fps);
-        return *this;
+        m_scene_manager.add_scene(std::make_unique<TestScene>(resolution));
     }
 
     Window::~Window() {
@@ -39,6 +28,8 @@ namespace uil {
         BeginDrawing();
         ClearBackground(BLACK);
         // render
+
+        m_scene_manager.render();
 
         if (m_draw_fps) {
             DrawText(std::to_string(GetFPS()).c_str(), 10, 10, 50, WHITE);
