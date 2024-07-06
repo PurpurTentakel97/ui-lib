@@ -10,7 +10,7 @@
 #include <functional>
 
 namespace uil {
-    cpt::Vec2_i vec_from_resolution(Resolution const resolution, cpt::Vec2_i current_resolution) {
+    cpt::Vec2_i vec_from_resolution(Resolution const resolution) {
         switch (resolution) {
                 // clang-format off
             // 16:9
@@ -56,15 +56,14 @@ namespace uil {
 
                 return { width, height };
             }
-            case Resolution::CUSTOM: return current_resolution;
         }
         throw BadResolution("unexpected resolution in vec switch case");
     }
 
-    std::string str_from_resolution(Resolution resolution, cpt::Vec2_i current_resolution) {
-        auto const res = std::invoke([resolution, current_resolution] {
+    std::string str_from_resolution(Resolution resolution) {
+        auto const res = std::invoke([resolution] {
             try {
-                return vec_from_resolution(resolution, current_resolution);
+                return vec_from_resolution(resolution);
             } catch (BadResolution const&) { throw BadResolution("unexpected resolution in string switch case"); }
         });
         switch (resolution) {
@@ -104,16 +103,15 @@ namespace uil {
             case Resolution::QSVGA:      return std::format("QSVGA ({} x {})",      res.x, res.y);
             case Resolution::QVGA:       return std::format("QVGA ({} x {})",       res.x, res.y);
             case Resolution::SCREEN:     return std::format("SCREEN ({} x {})",     res.x, res.y);
-            case Resolution::CUSTOM:     return std::format("CUSTOM ({} x {})",     res.x, res.y);
                 // clang-format on
         }
         throw BadResolution("unexpected resolution in string switch case");
     }
 
-    std::vector<std::string> all_string_from_resolution(cpt::Vec2_i const current_resolution) {
+    std::vector<std::string> all_string_from_resolution() {
         auto current   = static_cast<Resolution>(0);
         auto const inc = [&current]() -> bool {
-            if (current == Resolution::CUSTOM) {
+            if (current == Resolution::SCREEN) {
                 return false;
             }
             auto temp = static_cast<int>(current);
@@ -124,7 +122,7 @@ namespace uil {
 
         std::vector<std::string> to_return{};
         do {
-            to_return.emplace_back(str_from_resolution(current, current_resolution));
+            to_return.emplace_back(str_from_resolution(current));
         } while (inc());
 
         return to_return;

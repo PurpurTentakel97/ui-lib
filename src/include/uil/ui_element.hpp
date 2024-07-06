@@ -1,39 +1,35 @@
 //
 // Purpur Tentakel
-// 19.05.24
+// 06.07.24
 //
 
 #pragma once
-
-#include <uil/helper_rect.hpp>
-#include <cpt/vec2.hpp>
+#include <raylib.h>
 #include <uil/alignment.hpp>
-#include <uil/update_render_helper.hpp>
-
-class InputEvent;
+#include <uil/helper_rect.hpp>
 
 namespace uil {
-    class UIElement : public UpdateRenderHelper {
-    public:
-        friend class Scene;
-
+    class UIElement {
     private:
-        cpt::Rect_f m_relative;
-        cpt::Rect_f m_collider;
-        Alignment m_alignment;
+        Rectangle m_relative{}; // m_relative needs to be initialized bevor m_collider
+        Rectangle m_collider{}; // m_relative needs to be initialized bevor m_collider
 
     protected:
-        virtual bool handle_event(InputEvent const& event) = 0;
-        virtual bool update();
-        virtual void resize(cpt::Vec2_i resolution);
-        virtual void render() = 0;
+        [[nodiscard]] Rectangle relative() const;
+        [[nodiscard]] Rectangle collider() const;
 
     public:
-        UIElement(cpt::Rect_f relative, cpt::Vec2_i resolution, Alignment alignment);
-        UIElement(UIElement const&)            = default;
-        UIElement(UIElement&&)                 = default;
-        UIElement& operator=(UIElement const&) = default;
-        UIElement& operator=(UIElement&&)      = default;
+        UIElement(Rectangle relative, Alignment alignment, cpt::Vec2_i resolution);
+
+        UIElement(UIElement const&)            = delete;
+        UIElement(UIElement&&)                 = delete;
+        UIElement& operator=(UIElement const&) = delete;
+        UIElement& operator=(UIElement&&)      = delete;
         virtual ~UIElement()                   = default;
+
+        // [[nodiscard]] virtual bool check(Vector2 mousePosition);
+        // [[nodiscard]] virtual bool update();
+        [[nodiscard]] virtual bool render() const = 0;
+        // virtual void resize();
     };
 } // namespace uil

@@ -1,40 +1,33 @@
 //
 // Purpur Tentakel
-// 19.05.24
+// 06.07.24
 //
 
 #pragma once
 
-#include <cpt/vec2.hpp>
+#include <memory>
 #include <uil/ui_element.hpp>
-#include <uil/update_render_helper.hpp>
 #include <vector>
 
-class InputEvent;
-
 namespace uil {
-    class Scene : public UpdateRenderHelper {
-    public:
-        friend class SceneManager;
-
+    class Scene {
     private:
-        std::vector<UIElement> m_elements{};
+        std::vector<std::unique_ptr<UIElement>> m_elements{};
 
     protected:
-        [[nodiscard]] virtual bool handle_event(InputEvent const& event);
-        [[nodiscard]] virtual bool update();
-        virtual void resize(cpt::Vec2_i resolution);
-        virtual void render();
+        void add_element(std::unique_ptr<UIElement> element);
 
     public:
         Scene()                        = default;
-        Scene(Scene const&)            = default;
-        Scene(Scene&&)                 = default;
-        Scene& operator=(Scene const&) = default;
-        Scene& operator=(Scene&&)      = default;
+        Scene(Scene const&)            = delete;
+        Scene(Scene&&)                 = delete;
+        Scene& operator=(Scene const&) = delete;
+        Scene& operator=(Scene&&)      = delete;
         virtual ~Scene()               = default;
 
-        void add(UIElement element);
-        void add(std::vector<UIElement> element);
+        // [[nodiscard]] virtual bool check(Vector2 mousePosition);
+        // [[nodiscard]] virtual bool update();
+        [[nodiscard]] virtual bool render() const;
+        // virtual void resize();
     };
-} // namespace uil
+}; // namespace uil

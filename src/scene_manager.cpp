@@ -1,41 +1,21 @@
 //
 // Purpur Tentakel
-// 14.05.24
+// 06.07.24
 //
 
-#include <ranges>
 #include <uil/scene_manager.hpp>
 
 namespace uil {
-    bool SceneManager::handle_event(InputEvent const& event) {
-        for (auto& scene : std::ranges::views::reverse(m_scenes)) {
-            auto const handled = scene.handle_event(event);
-            if (handled) {
+    void SceneManager::add_scene(std::unique_ptr<Scene> scene) {
+        m_scenes.push_back(std::move(scene));
+    }
+
+    bool SceneManager::render() const {
+        for (auto const& s : m_scenes) {
+            if (not s->render()) {
                 return false;
             }
         }
         return true;
-    }
-
-    bool SceneManager::update() {
-        for (auto& scene : std::ranges::views::reverse(m_scenes)) {
-            auto const stop_updating = scene.update();
-            if (stop_updating) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    void SceneManager::resize(cpt::Vec2_i const resolution) {
-        for (auto& scene : m_scenes) {
-            scene.resize(resolution);
-        }
-    }
-
-    void SceneManager::render() {
-        for (auto& scene : m_scenes) {
-            scene.render();
-        }
     }
 } // namespace uil

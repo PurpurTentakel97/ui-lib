@@ -1,25 +1,20 @@
 //
 // Purpur Tentakel
-// 23.05.24
+// 06.07.24
 //
 
 #include <uil/ui_element.hpp>
 
 namespace uil {
-    bool UIElement::update() {
-        // TODO: implement some moving stuff here
-        return true;
+    Rectangle UIElement::relative() const {
+        return m_relative;
     }
 
-    void UIElement::resize(cpt::Vec2_i const resolution) {
-        m_collider = collider_from_relative(m_relative, resolution);
+    Rectangle UIElement::collider() const {
+        return m_collider;
     }
 
-    UIElement::UIElement(cpt::Rect_f const relative, cpt::Vec2_i const resolution, Alignment const alignment)
-        : m_relative{ relative },
-          m_collider{ 0.0f, 0.0f, 0.0f, 0.0f },
-          m_alignment{ alignment } {
-        m_relative = aligned_position(m_relative, m_alignment);
-        m_collider = collider_from_relative(m_relative, resolution);
-    }
+    UIElement::UIElement(Rectangle const relative, Alignment const alignment, cpt::Vec2_i const resolution)
+        : m_relative{ aligned_position(relative, alignment) },
+          m_collider{ collider_from_relative(m_relative, resolution) } { }
 } // namespace uil

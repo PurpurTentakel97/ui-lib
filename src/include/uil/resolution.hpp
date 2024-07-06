@@ -46,12 +46,11 @@ namespace uil {
         QSVGA,
         QVGA,
 
-        SCREEN,
-        CUSTOM, // CUSTOM needs to stay last entry
+        SCREEN, // screen needs to stay last
     };
 
-    [[nodiscard]] cpt::Vec2_i vec_from_resolution(Resolution resolution, cpt::Vec2_i current_resolution);
-    [[nodiscard]] std::string str_from_resolution(Resolution resolution, cpt::Vec2_i current_resolution);
-    [[nodiscard]] std::vector<std::string> all_string_from_resolution(cpt::Vec2_i current_resolution);
+    [[nodiscard]] cpt::Vec2_i vec_from_resolution(Resolution resolution);
+    [[nodiscard]] std::string str_from_resolution(Resolution resolution);
+    [[nodiscard]] std::vector<std::string> all_string_from_resolution();
 
 } // namespace uil
