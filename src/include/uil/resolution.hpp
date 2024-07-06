@@ -46,8 +46,7 @@ namespace uil {
         QSVGA,
         QVGA,
 
-        SCREEN,
-        CUSTOM, // CUSTOM needs to stay last entry
+        SCREEN, // screen needs to stay last
     };
 
     [[nodiscard]] cpt::Vec2_i vec_from_resolution(Resolution resolution);

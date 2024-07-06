@@ -5,7 +5,6 @@
 
 #include <uil/alignment.hpp>
 #include <uil/exception.hpp>
-#include <unordered_map>
 
 namespace uil {
     Rectangle aligned_position(Rectangle relative, Alignment const alignment) {

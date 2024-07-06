@@ -1,5 +1,4 @@
 add_executable(program
-               include/program/temp.hpp
                temp.cpp
 )
 

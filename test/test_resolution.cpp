@@ -27,5 +27,5 @@ TEST(Resolution, StrThrow) {
 
 TEST(Resolution, AllStringCount) {
     auto const string_vec = uil::all_string_from_resolution();
-    EXPECT_EQ(string_vec.size(), 29);
+    EXPECT_EQ(string_vec.size(), 28);
 }

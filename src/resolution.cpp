@@ -56,7 +56,6 @@ namespace uil {
 
                 return { width, height };
             }
-            // case Resolution::CUSTOM: return current_resolution;
         }
         throw BadResolution("unexpected resolution in vec switch case");
     }
@@ -104,7 +103,6 @@ namespace uil {
             case Resolution::QSVGA:      return std::format("QSVGA ({} x {})",      res.x, res.y);
             case Resolution::QVGA:       return std::format("QVGA ({} x {})",       res.x, res.y);
             case Resolution::SCREEN:     return std::format("SCREEN ({} x {})",     res.x, res.y);
-            case Resolution::CUSTOM:     return std::format("CUSTOM ({} x {})",     res.x, res.y);
                 // clang-format on
         }
         throw BadResolution("unexpected resolution in string switch case");
@@ -113,7 +111,7 @@ namespace uil {
     std::vector<std::string> all_string_from_resolution() {
         auto current   = static_cast<Resolution>(0);
         auto const inc = [&current]() -> bool {
-            if (current == Resolution::CUSTOM) {
+            if (current == Resolution::SCREEN) {
                 return false;
             }
             auto temp = static_cast<int>(current);
