@@ -1,5 +1,8 @@
 add_executable(lib_tests
-               test_alignment.cpp
+               test_alignment_conversion.cpp
+               test_alignment_horizontal.cpp
+               test_alignment_standard.cpp
+               test_alignment_vertical.cpp
                test_callbacks.cpp
                test_exception.cpp
                test_rect.cpp

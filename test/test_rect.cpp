@@ -4,7 +4,6 @@
 //
 
 #include <array>
-#include <cpt/rect.hpp>
 #include <cpt/vec2.hpp>
 #include <gtest/gtest.h>
 #include <tuple>
@@ -13,7 +12,7 @@
 
 
 TEST(Collider, Exception) {
-    auto constexpr relative    = cpt::Rect_f{ 0.1f, 0.1f, 0.1f, 0.1f };
+    auto constexpr relative    = Rectangle{ 0.1f, 0.1f, 0.1f, 0.1f };
     auto constexpr resolutions = std::array<cpt::Vec2_i, 3>{
         { { 0, 1 }, { 1, 0 }, { 0, 0 } }
     };
@@ -26,7 +25,7 @@ TEST(Collider, Exception) {
     }
 }
 
-class ColiderFixtures : public testing::TestWithParam<std::tuple<cpt::Rect_f, cpt::Vec2_i, cpt::Rect_f>> { };
+class ColiderFixtures : public testing::TestWithParam<std::tuple<Rectangle, cpt::Vec2_i, Rectangle>> { };
 
 TEST_P(ColiderFixtures, ColiderFromRelative) {
     auto const relative   = std::get<0>(GetParam());
@@ -54,21 +53,21 @@ TEST_P(ColiderFixtures, RelativeFromColider) {
 
 INSTANTIATE_TEST_SUITE_P(ALIGNMENT,
                          ColiderFixtures,
-                         ::testing::Values(std::make_tuple(cpt::Rect_f{ 1.0f, 1.0f, 1.0f, 1.0f },
+                         ::testing::Values(std::make_tuple(Rectangle{ 1.0f, 1.0f, 1.0f, 1.0f },
                                                            cpt::Vec2_i{ 1000, 1000 },
-                                                           cpt::Rect_f{ 1000.0f, 1000.0f, 1000.0f, 1000.0f }),
-                                           std::make_tuple(cpt::Rect_f{ 0.5f, 0.5f, 0.5f, 0.5f },
+                                                           Rectangle{ 1000.0f, 1000.0f, 1000.0f, 1000.0f }),
+                                           std::make_tuple(Rectangle{ 0.5f, 0.5f, 0.5f, 0.5f },
                                                            cpt::Vec2_i{ 1000, 1000 },
-                                                           cpt::Rect_f{ 500.0f, 500.0f, 500.0f, 500.0f }),
-                                           std::make_tuple(cpt::Rect_f{ 0.5f, 1.0f, 1.0f, 1.0f },
+                                                           Rectangle{ 500.0f, 500.0f, 500.0f, 500.0f }),
+                                           std::make_tuple(Rectangle{ 0.5f, 1.0f, 1.0f, 1.0f },
                                                            cpt::Vec2_i{ 1000, 1000 },
-                                                           cpt::Rect_f{ 500.0f, 1000.0f, 1000.0f, 1000.0f }),
-                                           std::make_tuple(cpt::Rect_f{ 1.0f, 0.5f, 1.0f, 1.0f },
+                                                           Rectangle{ 500.0f, 1000.0f, 1000.0f, 1000.0f }),
+                                           std::make_tuple(Rectangle{ 1.0f, 0.5f, 1.0f, 1.0f },
                                                            cpt::Vec2_i{ 1000, 1000 },
-                                                           cpt::Rect_f{ 1000.0f, 500.0f, 1000.0f, 1000.0f }),
-                                           std::make_tuple(cpt::Rect_f{ 1.0f, 1.0f, 0.5f, 1.0f },
+                                                           Rectangle{ 1000.0f, 500.0f, 1000.0f, 1000.0f }),
+                                           std::make_tuple(Rectangle{ 1.0f, 1.0f, 0.5f, 1.0f },
                                                            cpt::Vec2_i{ 1000, 1000 },
-                                                           cpt::Rect_f{ 1000.0f, 1000.0f, 500.0f, 1000.0f }),
-                                           std::make_tuple(cpt::Rect_f{ 1.0f, 1.0f, 1.0f, 0.5f },
+                                                           Rectangle{ 1000.0f, 1000.0f, 500.0f, 1000.0f }),
+                                           std::make_tuple(Rectangle{ 1.0f, 1.0f, 1.0f, 0.5f },
                                                            cpt::Vec2_i{ 1000, 1000 },
-                                                           cpt::Rect_f{ 1000.0f, 1000.0f, 1000.0f, 500.0f })));
+                                                           Rectangle{ 1000.0f, 1000.0f, 1000.0f, 500.0f })));
