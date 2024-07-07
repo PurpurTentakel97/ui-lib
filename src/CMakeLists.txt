@@ -7,9 +7,9 @@ target_sources(ui_lib
                resolution.cpp
                scene.cpp
                scene_manager.cpp
+               text.cpp
                ui_element.cpp
                window.cpp
-               test_element.cpp
                test_scene.cpp
 
                PUBLIC FILE_SET HEADERS
@@ -21,9 +21,9 @@ target_sources(ui_lib
                include/uil/resolution.hpp
                include/uil/scene.hpp
                include/uil/scene_manager.hpp
+               include/uil/text.hpp
                include/uil/ui_element.hpp
                include/uil/window.hpp
-               include/uil/test_element.hpp
                include/uil/test_scene.hpp
 )
 

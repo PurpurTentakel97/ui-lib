@@ -12,9 +12,9 @@ namespace uil {
         m_elements.push_back(std::move(element));
     }
 
-    bool Scene::render() const {
+    bool Scene::render(Font const* const font) const {
         for (auto const& e : m_elements) {
-            if (not e->render()) {
+            if (not e->render(font)) {
                 return false;
             }
         }

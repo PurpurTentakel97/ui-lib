@@ -11,6 +11,7 @@
 namespace uil {
     Window::Window(cpt::Vec2_i const resolution, char const* const title) {
         InitWindow(resolution.x, resolution.y, title);
+        m_font = LoadFont("../default_assets/font.ttf"); // @TODO Move this into a extra data data member
         m_scene_manager.add_scene(std::make_unique<TestScene>(resolution));
     }
 
@@ -29,7 +30,7 @@ namespace uil {
         ClearBackground(BLACK);
         // render
 
-        m_scene_manager.render();
+        m_scene_manager.render(&m_font);
 
         if (m_draw_fps) {
             DrawText(std::to_string(GetFPS()).c_str(), 10, 10, 50, WHITE);

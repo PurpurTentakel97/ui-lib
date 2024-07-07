@@ -3,14 +3,13 @@
 // 06.07.24
 //
 
-#include <uil/test_element.hpp>
 #include <uil/test_scene.hpp>
+#include <uil/text.hpp>
+
 
 namespace uil {
     TestScene::TestScene(cpt::Vec2_i const resolution) {
-        add_element(std::make_unique<TestElement>(
-                Rectangle{ 0.5f, 0.5f, 0.7f, 0.7f }, Alignment::MidMid, resolution, false));
-        add_element(std::make_unique<TestElement>(
-                Rectangle{ 0.5f, 0.5f, 0.5f, 0.5f }, Alignment::MidMid, resolution, true));
+        add_element(std::make_unique<Text>(
+                Rectangle{ 0.5f, 0.5f, 0.5f, 0.5f }, Alignment::MidMid, resolution, 0.1f, "Bester Text"));
     }
 } // namespace uil

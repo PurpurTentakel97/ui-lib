@@ -10,9 +10,9 @@ namespace uil {
         m_scenes.push_back(std::move(scene));
     }
 
-    bool SceneManager::render() const {
+    bool SceneManager::render(Font const* const font) const {
         for (auto const& s : m_scenes) {
-            if (not s->render()) {
+            if (not s->render(font)) {
                 return false;
             }
         }
