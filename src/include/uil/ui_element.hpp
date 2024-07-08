@@ -22,9 +22,9 @@ namespace uil {
         UIElement(Rectangle relative, Alignment alignment, cpt::Vec2_i resolution);
 
         UIElement(UIElement const&)            = delete;
-        UIElement(UIElement&&)                 = delete;
+        UIElement(UIElement&&)                 = default;
         UIElement& operator=(UIElement const&) = delete;
-        UIElement& operator=(UIElement&&)      = delete;
+        UIElement& operator=(UIElement&&)      = default;
         virtual ~UIElement()                   = default;
 
         // [[nodiscard]] virtual bool check(Vector2 mousePosition);

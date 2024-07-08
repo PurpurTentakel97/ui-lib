@@ -18,36 +18,56 @@ namespace uil {
     Text::Text(Rectangle const relative, Alignment const alignment, cpt::Vec2_i const resolution, float const font_size)
         : Text{ relative, alignment, resolution, font_size, std::string{} } { }
 
-    Text& Text::set_text(std::string text) {
+    Text& Text::set_text(std::string text) & {
         m_text = std::move(text);
         return *this;
+    }
+
+    Text Text::set_text(std::string text) && {
+        m_text = std::move(text);
+        return std::move(*this);
     }
 
     std::string Text::text() const {
         return m_text;
     }
 
-    Text& Text::set_spacing(float const spacing) {
+    Text& Text::set_spacing(float const spacing) & {
         m_spacing = spacing;
         return *this;
+    }
+
+    Text Text::set_spacing(float const spacing) && {
+        m_spacing = spacing;
+        return std::move(*this);
     }
 
     float Text::spacing() const {
         return m_spacing;
     }
 
-    Text& Text::set_color(Color const color) {
+    Text& Text::set_color(Color const color) & {
         m_color = color;
         return *this;
+    }
+
+    Text Text::set_color(Color const color) && {
+        m_color = color;
+        return std::move(*this);
     }
 
     Color Text::color() const {
         return m_color;
     }
 
-    Text& Text::set_render_collider(bool const render_collider) {
+    Text& Text::set_render_collider(bool const render_collider) & {
         m_render_collider = render_collider;
         return *this;
+    }
+
+    Text Text::set_render_collider(bool const render_collider) && {
+        m_render_collider = render_collider;
+        return std::move(*this);
     }
 
     bool Text::render_collider() const {
