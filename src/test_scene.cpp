@@ -9,7 +9,10 @@
 
 namespace uil {
     TestScene::TestScene(cpt::Vec2_i const resolution) {
-        m_text = &emplace_element<Text>(Rectangle{ 0.5f, 0.5f, 0.5f, 0.5f }, Alignment::MidMid, resolution, 0.1f, "Bester Text");
-        m_text->set_color(PURPLE);
+        m_text = &emplace_element<Text>(Rectangle{ 0.5f, 0.5f, 0.5f, 0.5f }, Alignment::MidMid, resolution, 0.1f);
+        m_text->set_color(PURPLE)
+            .set_spacing(3.0f)
+            .set_text("Bester Text")
+            .set_render_collider(true);
     }
 } // namespace uil
