@@ -9,7 +9,7 @@
 
 namespace uil {
     TestScene::TestScene(cpt::Vec2_i const resolution) {
-        add_element(std::make_unique<Text>(
-                Rectangle{ 0.5f, 0.5f, 0.5f, 0.5f }, Alignment::MidMid, resolution, 0.1f, "Bester Text"));
+        m_text = &emplace_element<Text>(Rectangle{ 0.5f, 0.5f, 0.5f, 0.5f }, Alignment::MidMid, resolution, 0.1f, "Bester Text");
+        m_text->set_color(PURPLE);
     }
 } // namespace uil

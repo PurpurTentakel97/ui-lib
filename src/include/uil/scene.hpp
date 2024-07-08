@@ -15,7 +15,15 @@ namespace uil {
         std::vector<std::unique_ptr<UIElement>> m_elements{};
 
     protected:
-        void add_element(std::unique_ptr<UIElement> element);
+        template<std::derived_from<UIElement> T, typename... Args>
+        T& emplace_element(Args&&... args)
+            requires(std::constructible_from<T, Args...>)
+        {
+            auto elem       = std::make_unique<T>(std::forward<Args>(args)...);
+            auto const temp = elem.get();
+            m_elements.push_back(std::move(elem));
+            return *temp;
+        }
 
     public:
         Scene()                        = default;

@@ -35,7 +35,7 @@ namespace uil {
     }
 
     bool Text::render(Font const* const font) const {
-        DrawTextEx(*font, m_text.c_str(), { collider().x, collider().y }, m_font_size, 1.0f, m_color);
+        DrawTextEx(*font, m_text.c_str(), { collider().x, collider().y }, m_font_size, 2.0f, m_color);
 
         DrawRectangleLinesEx(collider(), 2.0f, WHITE);
 
