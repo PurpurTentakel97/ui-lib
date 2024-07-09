@@ -20,6 +20,14 @@ namespace uil {
           m_relative{ aligned_position(relative, alignment) },
           m_collider{ collider_from_relative(m_relative, resolution) } { }
 
+    bool UIElement::check(Vector2 const&) {
+        return true;
+    }
+
+    bool UIElement::update() {
+        return true;
+    }
+
     void UIElement::resize(cpt::Vec2_i const& resolution) {
         m_resolution = resolution;
         m_collider   = collider_from_relative(m_relative, m_resolution);

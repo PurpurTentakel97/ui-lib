@@ -33,8 +33,8 @@ namespace uil {
         Scene& operator=(Scene&&)      = delete;
         virtual ~Scene()               = default;
 
-        // [[nodiscard]] virtual bool check(Vector2 mousePosition);
-        // [[nodiscard]] virtual bool update();
+        [[nodiscard]] virtual bool check(Vector2 const& mousePosition) const;
+        [[nodiscard]] virtual bool update() const;
         [[nodiscard]] virtual bool render(Font const* font) const;
         virtual void resize(cpt::Vec2_i const& resolution) const;
     };

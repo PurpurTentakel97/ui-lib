@@ -5,8 +5,8 @@
 
 #pragma once
 #include <memory>
-#include <vector>
 #include <uil/scene.hpp>
+#include <vector>
 
 namespace uil {
     class SceneManager final {
@@ -16,9 +16,9 @@ namespace uil {
     public:
         void add_scene(std::unique_ptr<Scene> scene);
 
-        // [[nodiscard]] bool check(Vector2 mousePosition);
-        // [[nodiscard]] bool update();
-        bool render(Font const* font) const;
+        [[nodiscard]] bool check(Vector2 const& mousePosition) const;
+        [[nodiscard]] bool update() const;
+        [[nodiscard]] bool render(Font const* font) const;
         void resize(cpt::Vec2_i const& resolution) const;
     };
 } // namespace uil

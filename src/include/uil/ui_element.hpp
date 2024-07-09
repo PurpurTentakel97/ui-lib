@@ -28,8 +28,8 @@ namespace uil {
         UIElement& operator=(UIElement&&)      = default;
         virtual ~UIElement()                   = default;
 
-        // [[nodiscard]] virtual bool check(Vector2 mousePosition);
-        // [[nodiscard]] virtual bool update();
+        [[nodiscard]] virtual bool check(Vector2 const& mousePosition);
+        [[nodiscard]] virtual bool update();
         [[nodiscard]] virtual bool render(Font const* font) const = 0;
         virtual void resize(cpt::Vec2_i const& resolution);
 

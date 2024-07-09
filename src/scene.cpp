@@ -7,6 +7,24 @@
 #include <uil/ui_element.hpp>
 
 namespace uil {
+    bool Scene::check(Vector2 const& mousePosition) const {
+        for (auto const& e : m_elements) {
+            if (not e->check(mousePosition)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    bool Scene::update() const {
+        for (auto const& e : m_elements) {
+            if (not e->update()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     bool Scene::render(Font const* const font) const {
         for (auto const& e : m_elements) {
             if (not e->render(font)) {
