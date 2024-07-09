@@ -19,6 +19,6 @@ namespace uil {
         // [[nodiscard]] bool check(Vector2 mousePosition);
         // [[nodiscard]] bool update();
         bool render(Font const* font) const;
-        // void resize();
+        void resize(cpt::Vec2_i const& resolution) const;
     };
 } // namespace uil

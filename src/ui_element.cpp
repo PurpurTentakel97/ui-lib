@@ -17,4 +17,8 @@ namespace uil {
     UIElement::UIElement(Rectangle const relative, Alignment const alignment, cpt::Vec2_i const resolution)
         : m_relative{ aligned_position(relative, alignment) },
           m_collider{ collider_from_relative(m_relative, resolution) } { }
+
+    void UIElement::resize(cpt::Vec2_i const& resolution) {
+        m_collider = collider_from_relative(m_relative, resolution);
+    }
 } // namespace uil

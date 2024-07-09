@@ -15,4 +15,10 @@ namespace uil {
         }
         return true;
     }
+
+    void Scene::resize(cpt::Vec2_i const& resolution) const {
+        for (auto const& e : m_elements) {
+            e->resize(resolution);
+        }
+    }
 } // namespace uil

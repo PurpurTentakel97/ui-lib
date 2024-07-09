@@ -18,4 +18,10 @@ namespace uil {
         }
         return true;
     }
+
+    void SceneManager::resize(cpt::Vec2_i const& resolution) const {
+        for (auto const& s : m_scenes) {
+            s->resize(resolution);
+        }
+    }
 } // namespace uil

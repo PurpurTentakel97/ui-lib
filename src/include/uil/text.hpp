@@ -9,6 +9,7 @@
 namespace uil {
     class Text : public UIElement {
     private:
+        float m_relative_font_size;
         float m_font_size;
         std::string m_text{};
         float m_spacing        = 3.0f;
@@ -32,5 +33,6 @@ namespace uil {
         [[nodiscard]] bool render_collider() const;
 
         [[nodiscard]] bool render(Font const* font) const override;
+        void resize(cpt::Vec2_i const& resolution) override;
     };
 } // namespace uil

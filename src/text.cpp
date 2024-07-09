@@ -12,7 +12,8 @@ namespace uil {
                float const font_size,
                std::string text)
         : UIElement{ relative, alignment, resolution },
-          m_font_size{ font_size * collider().height },
+          m_relative_font_size{ font_size },
+          m_font_size{ m_relative_font_size * collider().height },
           m_text{ std::move(text) } { }
 
     Text::Text(Rectangle const relative, Alignment const alignment, cpt::Vec2_i const resolution, float const font_size)
@@ -58,5 +59,10 @@ namespace uil {
         }
 
         return true;
+    }
+
+    void Text::resize(cpt::Vec2_i const& resolution) {
+        UIElement::resize(resolution);
+        m_font_size = m_relative_font_size * collider().height;
     }
 } // namespace uil
