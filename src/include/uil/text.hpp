@@ -23,6 +23,12 @@ namespace uil {
         void set_text(std::string text);
         [[nodiscard]] std::string text() const;
 
+        void set_relative_font_size(float size);
+        [[nodiscard]] float relative_font_size() const;
+
+        void set_absolute_font_size(float size);
+        [[nodiscard]] float absolute_font_size() const;
+
         void set_spacing(float spacing);
         [[nodiscard]] float spacing() const;
 

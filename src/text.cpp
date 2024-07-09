@@ -27,6 +27,24 @@ namespace uil {
         return m_text;
     }
 
+    void Text::set_relative_font_size(float const size) {
+        m_relative_font_size = size;
+        m_font_size          = m_relative_font_size * collider().height;
+    }
+
+    float Text::relative_font_size() const {
+        return m_relative_font_size;
+    }
+
+    void Text::set_absolute_font_size(float const size) {
+        m_font_size          = size;
+        m_relative_font_size = collider().height / m_font_size;
+    }
+
+    float Text::absolute_font_size() const {
+        return m_relative_font_size;
+    }
+
     void Text::set_spacing(float const spacing) {
         m_spacing = spacing;
     }
