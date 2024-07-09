@@ -3,6 +3,7 @@
 // 06.07.24
 //
 
+#include <iostream>
 #include <uil/test_scene.hpp>
 #include <uil/text.hpp>
 

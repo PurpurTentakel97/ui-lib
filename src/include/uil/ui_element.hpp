@@ -11,12 +11,13 @@
 namespace uil {
     class UIElement {
     private:
+        cpt::Vec2_i m_resolution;
+        Alignment m_alignment;
         Rectangle m_relative{}; // m_relative needs to be initialized bevor m_collider
         Rectangle m_collider{}; // m_relative needs to be initialized bevor m_collider
 
-    protected:
-        [[nodiscard]] Rectangle relative() const;
-        [[nodiscard]] Rectangle collider() const;
+        void update_relative();
+        void update_collider();
 
     public:
         UIElement(Rectangle relative, Alignment alignment, cpt::Vec2_i resolution);
@@ -31,5 +32,18 @@ namespace uil {
         // [[nodiscard]] virtual bool update();
         [[nodiscard]] virtual bool render(Font const* font) const = 0;
         virtual void resize(cpt::Vec2_i const& resolution);
+
+        void set_relative_position(Vector2 position);
+        void set_relative_size(Vector2 size);
+        void set_relative(Rectangle relative);
+        [[nodiscard]] Rectangle relative() const;
+
+        void set_absolute_position(Vector2 position);
+        void set_absolute_size(Vector2 size);
+        void set_collider(Rectangle collider);
+        [[nodiscard]] Rectangle collider() const;
+
+        void set_alignment(Alignment alignment);
+        [[nodiscard]] Alignment alignment() const;
     };
 } // namespace uil
