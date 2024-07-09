@@ -9,8 +9,11 @@
 #include <cpt/vec2.hpp>
 
 namespace uil {
+    class Text;
+
     class TestScene final : public Scene {
     private:
+        Text* m_text{};
     public:
         explicit TestScene(cpt::Vec2_i resolution);
     };

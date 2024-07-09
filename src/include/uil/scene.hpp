@@ -15,7 +15,15 @@ namespace uil {
         std::vector<std::unique_ptr<UIElement>> m_elements{};
 
     protected:
-        void add_element(std::unique_ptr<UIElement> element);
+        template<std::derived_from<UIElement> T, typename... Args>
+        T& emplace_element(Args&&... args)
+            requires(std::constructible_from<T, Args...>)
+        {
+            auto elem       = std::make_unique<T>(std::forward<Args>(args)...);
+            auto const temp = elem.get();
+            m_elements.push_back(std::move(elem));
+            return *temp;
+        }
 
     public:
         Scene()                        = default;
@@ -25,9 +33,9 @@ namespace uil {
         Scene& operator=(Scene&&)      = delete;
         virtual ~Scene()               = default;
 
-        // [[nodiscard]] virtual bool check(Vector2 mousePosition);
-        // [[nodiscard]] virtual bool update();
-        [[nodiscard]] virtual bool render() const;
-        // virtual void resize();
+        [[nodiscard]] virtual bool check(Vector2 const& mousePosition) const;
+        [[nodiscard]] virtual bool update() const;
+        [[nodiscard]] virtual bool render(Font const* font) const;
+        virtual void resize(cpt::Vec2_i const& resolution) const;
     };
 }; // namespace uil

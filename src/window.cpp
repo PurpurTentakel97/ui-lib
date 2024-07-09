@@ -11,6 +11,7 @@
 namespace uil {
     Window::Window(cpt::Vec2_i const resolution, char const* const title) {
         InitWindow(resolution.x, resolution.y, title);
+        m_font = LoadFont("../default_assets/font.ttf"); // @TODO Move this into a extra data data member
         m_scene_manager.add_scene(std::make_unique<TestScene>(resolution));
     }
 
@@ -21,20 +22,17 @@ namespace uil {
     }
 
     void Window::update() {
-        // handle events m_scene_manger.handle_event(event, event_manager, auto_player, vec2 mouse_position);
-        // check m_scene_manager.check(event_manager, audio_player, vec2 mouse_position);
-        // update m_scene_manager.update();
+        // updating
+        [[maybe_unused]] auto const t1 = m_scene_manager.check(GetMousePosition());
+        [[maybe_unused]] auto const t2 = m_scene_manager.update();
 
+        // rendering
         BeginDrawing();
         ClearBackground(BLACK);
-        // render
-
-        m_scene_manager.render();
-
+        [[maybe_unused]] auto const t3 = m_scene_manager.render(&m_font);
         if (m_draw_fps) {
             DrawText(std::to_string(GetFPS()).c_str(), 10, 10, 50, WHITE);
         }
-
         EndDrawing();
     }
 

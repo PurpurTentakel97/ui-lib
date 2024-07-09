@@ -10,12 +10,36 @@ namespace uil {
         m_scenes.push_back(std::move(scene));
     }
 
-    bool SceneManager::render() const {
+    bool SceneManager::check(Vector2 const& mousePosition) const {
         for (auto const& s : m_scenes) {
-            if (not s->render()) {
+            if (not s->check(mousePosition)) {
                 return false;
             }
         }
         return true;
+    }
+
+    bool SceneManager::update() const {
+        for (auto const& s : m_scenes) {
+            if (not s->update()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    bool SceneManager::render(Font const* const font) const {
+        for (auto const& s : m_scenes) {
+            if (not s->render(font)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    void SceneManager::resize(cpt::Vec2_i const& resolution) const {
+        for (auto const& s : m_scenes) {
+            s->resize(resolution);
+        }
     }
 } // namespace uil

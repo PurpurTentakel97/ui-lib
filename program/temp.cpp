@@ -6,7 +6,7 @@
 #include <uil/window.hpp>
 
 int main() {
-    auto window = uil::Window({ 1280, 720 }, "ui-lib");
+    auto window = uil::Window({ 1920, 1080 }, "ui-lib");
     window.set_draw_fps(true);
 
     while (not WindowShouldClose()) {

@@ -3,14 +3,17 @@
 // 06.07.24
 //
 
-#include <uil/test_element.hpp>
+#include <iostream>
 #include <uil/test_scene.hpp>
+#include <uil/text.hpp>
+
 
 namespace uil {
     TestScene::TestScene(cpt::Vec2_i const resolution) {
-        add_element(std::make_unique<TestElement>(
-                Rectangle{ 0.5f, 0.5f, 0.7f, 0.7f }, Alignment::MidMid, resolution, false));
-        add_element(std::make_unique<TestElement>(
-                Rectangle{ 0.5f, 0.5f, 0.5f, 0.5f }, Alignment::MidMid, resolution, true));
+        m_text = &emplace_element<Text>(Rectangle{ 0.5f, 0.5f, 0.5f, 0.5f }, Alignment::MidMid, resolution, 0.1f);
+        m_text->set_color(PURPLE);
+        m_text->set_spacing(3.0f);
+        m_text->set_text("Bester Text");
+        m_text->set_render_collider(true);
     }
 } // namespace uil

@@ -3,21 +3,40 @@
 // 06.07.24
 //
 
-#include <algorithm>
 #include <uil/scene.hpp>
 #include <uil/ui_element.hpp>
 
 namespace uil {
-    void Scene::add_element(std::unique_ptr<UIElement> element) {
-        m_elements.push_back(std::move(element));
-    }
-
-    bool Scene::render() const {
+    bool Scene::check(Vector2 const& mousePosition) const {
         for (auto const& e : m_elements) {
-            if (not e->render()) {
+            if (not e->check(mousePosition)) {
                 return false;
             }
         }
         return true;
+    }
+
+    bool Scene::update() const {
+        for (auto const& e : m_elements) {
+            if (not e->update()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    bool Scene::render(Font const* const font) const {
+        for (auto const& e : m_elements) {
+            if (not e->render(font)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    void Scene::resize(cpt::Vec2_i const& resolution) const {
+        for (auto const& e : m_elements) {
+            e->resize(resolution);
+        }
     }
 } // namespace uil
