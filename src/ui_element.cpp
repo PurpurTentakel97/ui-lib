@@ -3,6 +3,8 @@
 // 06.07.24
 //
 
+#include "uil/exception.hpp"
+#include "uil/helper_vec.hpp"
 #include <uil/ui_element.hpp>
 
 namespace uil {
@@ -20,25 +22,13 @@ namespace uil {
           m_relative{ aligned_position(relative, alignment) },
           m_collider{ collider_from_relative(m_relative, resolution) } { }
 
-    bool UIElement::check(Vector2 const&) {
-        return true;
-    }
-
-    bool UIElement::update() {
-        return true;
-    }
-
-    void UIElement::resize(cpt::Vec2_i const& resolution) {
-        m_resolution = resolution;
-        m_collider   = collider_from_relative(m_relative, m_resolution);
-    }
-
     void UIElement::set_relative_position(Vector2 const position) {
         m_relative.x = position.x;
         m_relative.y = position.y;
         m_relative   = aligned_position(m_relative, m_alignment);
         update_collider();
     }
+
 
     void UIElement::set_relative_size(Vector2 const size) {
         m_relative        = aligned_position_reversed(m_relative, m_alignment);
@@ -90,5 +80,59 @@ namespace uil {
 
     Alignment UIElement::alignment() const {
         return m_alignment;
+    }
+
+    void UIElement::move_to_linear(Vector2 const destination, float const speed) {
+        m_move_type            = MoveType::Linear;
+        m_relative_destination = destination;
+        m_move_speed           = speed;
+    }
+
+    void UIElement::move_to_fast_to_slow(Vector2 const destination, float const speed) {
+        m_move_type            = MoveType::Fast_To_Slow;
+        m_relative_origin      = { relative().x, relative().y };
+        m_relative_destination = destination;
+        m_move_speed           = speed;
+    }
+
+    void UIElement::move_to_slow_to_fast(Vector2 const destination, float const speed) {
+        m_move_type            = MoveType::Slow_To_Fast;
+        m_relative_origin      = { relative().x, relative().y };
+        m_relative_destination = destination;
+        m_move_speed           = speed;
+    }
+
+    void UIElement::move_constant(Vector2 const direction, float const speed) {
+        m_move_type      = MoveType::Constant;
+        m_move_direction = normalize(direction);
+        m_move_speed     = speed;
+    }
+
+    void UIElement::move_stop() {
+        m_move_type = MoveType::None;
+    }
+
+    bool UIElement::check(Vector2 const&) {
+        return true;
+    }
+
+    bool UIElement::update() {
+        switch (m_move_type) {
+                // clang-format off
+            case MoveType::None:                         break;
+            case MoveType::Linear:       /*linear();*/       break;
+            case MoveType::Slow_To_Fast: /*slow_to_fast();*/ break;
+            case MoveType::Fast_To_Slow: /*fast_to_slow();*/ break;
+            case MoveType::Constant:     /*constant();*/     break;
+            default:
+                throw BadMovementType("unexpected movement type while updating UIElement");
+                // clang-format on
+        }
+        return true;
+    }
+
+    void UIElement::resize(cpt::Vec2_i const& resolution) {
+        m_resolution = resolution;
+        m_collider   = collider_from_relative(m_relative, m_resolution);
     }
 } // namespace uil
