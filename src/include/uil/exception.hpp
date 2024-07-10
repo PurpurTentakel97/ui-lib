@@ -23,4 +23,8 @@ namespace uil {
     class BadAlignment final : public std::logic_error {
         using std::logic_error::logic_error;
     };
+
+    class BadMovementType final : public std::logic_error {
+        using std::logic_error::logic_error;
+    };
 } // namespace uil
