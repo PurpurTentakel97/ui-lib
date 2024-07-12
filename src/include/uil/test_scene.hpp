@@ -16,5 +16,7 @@ namespace uil {
         Text* m_text{};
     public:
         explicit TestScene(cpt::Vec2_i resolution);
+
+        [[nodiscard]] bool check(Vector2 const& mousePosition) const override;
     };
 } // namespace uil

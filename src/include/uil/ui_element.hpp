@@ -56,11 +56,13 @@ namespace uil {
         void set_relative_size(Vector2 size);
         void set_relative(Rectangle relative);
         [[nodiscard]] Rectangle relative() const;
+        [[nodiscard]] Rectangle relative_aligned() const;
 
         void set_absolute_position(Vector2 position);
         void set_absolute_size(Vector2 size);
         void set_collider(Rectangle collider);
         [[nodiscard]] Rectangle collider() const;
+        [[nodiscard]] Rectangle collider_aligned() const;
 
         void set_alignment(Alignment alignment);
         [[nodiscard]] Alignment alignment() const;

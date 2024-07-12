@@ -13,7 +13,7 @@ namespace uil {
                std::string text)
         : UIElement{ relative, alignment, resolution },
           m_relative_font_size{ font_size },
-          m_font_size{ m_relative_font_size * collider().height },
+          m_font_size{ m_relative_font_size * collider_aligned().height },
           m_text{ std::move(text) } { }
 
     Text::Text(Rectangle const relative, Alignment const alignment, cpt::Vec2_i const resolution, float const font_size)
@@ -29,7 +29,7 @@ namespace uil {
 
     void Text::set_relative_font_size(float const size) {
         m_relative_font_size = size;
-        m_font_size          = m_relative_font_size * collider().height;
+        m_font_size          = m_relative_font_size * collider_aligned().height;
     }
 
     float Text::relative_font_size() const {
@@ -38,7 +38,7 @@ namespace uil {
 
     void Text::set_absolute_font_size(float const size) {
         m_font_size          = size;
-        m_relative_font_size = collider().height / m_font_size;
+        m_relative_font_size = collider_aligned().height / m_font_size;
     }
 
     float Text::absolute_font_size() const {
@@ -70,10 +70,10 @@ namespace uil {
     }
 
     bool Text::render(Font const* const font) const {
-        DrawTextEx(*font, m_text.c_str(), { collider().x, collider().y }, m_font_size, m_spacing, m_color);
+        DrawTextEx(*font, m_text.c_str(), { collider_aligned().x, collider_aligned().y }, m_font_size, m_spacing, m_color);
 
         if (m_render_collider) {
-            DrawRectangleLinesEx(collider(), 2.0f, WHITE);
+            DrawRectangleLinesEx(collider_aligned(), 2.0f, WHITE);
         }
 
         return true;
@@ -81,6 +81,6 @@ namespace uil {
 
     void Text::resize(cpt::Vec2_i const& resolution) {
         UIElement::resize(resolution);
-        m_font_size = m_relative_font_size * collider().height;
+        m_font_size = m_relative_font_size * collider_aligned().height;
     }
 } // namespace uil

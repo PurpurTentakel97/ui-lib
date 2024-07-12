@@ -10,10 +10,34 @@
 
 namespace uil {
     TestScene::TestScene(cpt::Vec2_i const resolution) {
-        m_text = &emplace_element<Text>(Rectangle{ 0.5f, 0.5f, 0.5f, 0.5f }, Alignment::MidMid, resolution, 0.1f);
+        m_text = &emplace_element<Text>(Rectangle{ 0.25f, 0.5f, 0.25f, 0.25f }, Alignment::MidMid, resolution, 0.1f);
         m_text->set_color(PURPLE);
         m_text->set_spacing(3.0f);
         m_text->set_text("Bester Text");
         m_text->set_render_collider(true);
+    }
+    bool TestScene::check(Vector2 const& mousePosition) const {
+        auto const result = Scene::check(mousePosition);
+
+        auto constexpr left_border  = 0.3f;
+        auto constexpr right_border = 0.7f;
+        auto constexpr speed        = 0.1f;
+        static bool right                  = true;
+
+        if (m_text->relative().x < left_border) {
+            right = true;
+        } else if (m_text->relative().x > right_border) {
+            right = false;
+        }
+
+        if (IsMouseButtonDown(MouseButton::MOUSE_BUTTON_LEFT)) {
+            m_text->move_stop();
+        } else if (right) {
+            m_text->move_constant(Vector2{ 1.0f, 0.0f }, speed);
+        } else {
+            m_text->move_constant(Vector2{ -1.0f, 0.0f }, speed);
+        }
+
+        return result;
     }
 } // namespace uil

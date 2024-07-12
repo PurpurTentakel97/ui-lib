@@ -16,6 +16,18 @@ namespace uil {
         m_collider = collider_from_relative(m_relative, m_resolution);
     }
 
+    void UIElement::move(Vector2 const& relative_distance) {
+        m_relative.x += relative_distance.x;
+        m_relative.y += relative_distance.y;
+        update_collider();
+    }
+
+    void UIElement::constant() {
+        auto const time     = GetFrameTime();
+        auto const distance = m_move_direction * time * m_move_speed;
+        move(distance);
+    }
+
     UIElement::UIElement(Rectangle const relative, Alignment const alignment, cpt::Vec2_i const resolution)
         : m_resolution{ resolution },
           m_alignment{ alignment },
@@ -44,6 +56,10 @@ namespace uil {
     }
 
     Rectangle UIElement::relative() const {
+        return aligned_position_reversed(m_relative, m_alignment);
+    }
+
+    Rectangle UIElement::relative_aligned() const {
         return m_relative;
     }
 
@@ -68,6 +84,10 @@ namespace uil {
     }
 
     Rectangle UIElement::collider() const {
+        return aligned_position_reversed(m_collider, m_alignment);
+    }
+
+    Rectangle UIElement::collider_aligned() const {
         return m_collider;
     }
 
@@ -123,7 +143,7 @@ namespace uil {
             case MoveType::Linear:       /*linear();*/       break;
             case MoveType::Slow_To_Fast: /*slow_to_fast();*/ break;
             case MoveType::Fast_To_Slow: /*fast_to_slow();*/ break;
-            case MoveType::Constant:     /*constant();*/     break;
+            case MoveType::Constant:     constant();     break;
             default:
                 throw BadMovementType("unexpected movement type while updating UIElement");
                 // clang-format on
