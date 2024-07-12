@@ -7,7 +7,6 @@
 #include <uil/test_scene.hpp>
 #include <uil/text.hpp>
 
-
 namespace uil {
     TestScene::TestScene(cpt::Vec2_i const resolution) {
         m_text = &emplace_element<Text>(Rectangle{ 0.25f, 0.5f, 0.25f, 0.25f }, Alignment::MidMid, resolution, 0.1f);
@@ -19,24 +18,30 @@ namespace uil {
     bool TestScene::check(Vector2 const& mousePosition) const {
         auto const result = Scene::check(mousePosition);
 
-        auto constexpr left_border  = 0.3f;
-        auto constexpr right_border = 0.7f;
+        auto constexpr top_left     = Vector2(0.25f, 0.25f);
+        auto constexpr bottom_left  = Vector2(0.25f, 0.75f);
+        auto constexpr bottom_right = Vector2(0.75f, 0.75f);
+        auto constexpr top_right    = Vector2(0.75f, 0.25f);
         auto constexpr speed        = 0.1f;
-        static bool right                  = true;
+        static auto index           = 0;
+        auto const inc              = [&i = index]() {
+            ++i;
+            if (index > 4) {
+                index = 0;
+            }
+        };
 
-        if (m_text->relative().x < left_border) {
-            right = true;
-        } else if (m_text->relative().x > right_border) {
-            right = false;
+        if (not m_text->is_moving()) {
+            std::cout << index << '\n';
+            switch (index) {
+                case 0: m_text->move_to_linear(bottom_left, speed); break;
+                case 1: m_text->move_to_linear(bottom_right, speed); break;
+                case 2: m_text->move_to_linear(top_right, speed); break;
+                case 3: m_text->move_to_linear(top_left, speed); break;
+            }
+            inc();
         }
 
-        if (IsMouseButtonDown(MouseButton::MOUSE_BUTTON_LEFT)) {
-            m_text->move_stop();
-        } else if (right) {
-            m_text->move_constant(Vector2{ 1.0f, 0.0f }, speed);
-        } else {
-            m_text->move_constant(Vector2{ -1.0f, 0.0f }, speed);
-        }
 
         return result;
     }

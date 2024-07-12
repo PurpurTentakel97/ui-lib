@@ -35,6 +35,7 @@ namespace uil {
         void update_relative();
         void update_collider();
 
+        [[nodiscard]] bool arriving(Vector2 const& distance) const;
         void move(Vector2 const& relative_distance);
         void linear();
         void fast_to_slow();
@@ -68,6 +69,7 @@ namespace uil {
         [[nodiscard]] Alignment alignment() const;
 
         // movement
+        [[nodiscard]] bool is_moving() const;
         void move_to_linear(Vector2 destination, float speed);
         void move_to_fast_to_slow(Vector2 destination, float speed);
         void move_to_slow_to_fast(Vector2 destination, float speed);

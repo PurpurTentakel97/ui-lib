@@ -22,6 +22,20 @@ namespace uil {
         update_collider();
     }
 
+    void UIElement::linear() {
+        auto direction = m_relative_destination - m_relative_origin;
+        direction *= GetFrameTime() * m_move_speed;
+        auto const rect = Rectangle(m_relative.x, m_relative.y, direction.x, direction.y);
+        if (CheckCollisionPointRec(m_relative_destination, rect)) {
+            m_relative.x = m_relative_destination.x;
+            m_relative.y = m_relative_destination.y;
+            update_collider();
+            m_move_type = MoveType::None;
+        } else {
+            move(direction);
+        }
+    }
+
     void UIElement::constant() {
         auto const time     = GetFrameTime();
         auto const distance = m_move_direction * time * m_move_speed;
@@ -102,6 +116,10 @@ namespace uil {
         return m_alignment;
     }
 
+    bool UIElement::is_moving() const {
+        return m_move_type != MoveType::None;
+    }
+
     void UIElement::move_to_linear(Vector2 const destination, float const speed) {
         m_move_type            = MoveType::Linear;
         m_relative_destination = destination;
@@ -140,7 +158,7 @@ namespace uil {
         switch (m_move_type) {
                 // clang-format off
             case MoveType::None:                         break;
-            case MoveType::Linear:       /*linear();*/       break;
+            case MoveType::Linear:       linear();       break;
             case MoveType::Slow_To_Fast: /*slow_to_fast();*/ break;
             case MoveType::Fast_To_Slow: /*fast_to_slow();*/ break;
             case MoveType::Constant:     constant();     break;
