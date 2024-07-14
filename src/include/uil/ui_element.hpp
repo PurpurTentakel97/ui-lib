@@ -13,8 +13,8 @@ namespace uil {
     private:
         enum class MoveType {
             None,
-            Linear_Time,  // moves linear to a certain point
-            Linear_Speed, // moves linear to a certain point
+            Linear_Time,  // moves linear to a certain point in a certain time
+            Linear_Speed, // moves linear to a certain point in a certain speed
             Slow_To_Fast, // getting faster while moving to a certain point
             Fast_To_Slow, // getting slower while moving to a certain point
             Constant,     // moves at a constant speed until it gets stoppt manualy
