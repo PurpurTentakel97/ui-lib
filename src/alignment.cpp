@@ -3,6 +3,7 @@
 // 23.05.24
 //
 
+#include "uil/helper_rect.hpp"
 #include <uil/alignment.hpp>
 #include <uil/exception.hpp>
 
@@ -164,6 +165,42 @@ namespace uil {
         return relative;
     }
 
+    Vector2 aligned_position(Vector2 const& point, Vector2 const& size, Alignment const& alignment) {
+        auto const temp = aligned_position(rect_from_point_and_size(point, size), alignment);
+        return point_from_rect(temp);
+    }
+
+    Vector2 aligned_position_reversed(Vector2 const& point, Vector2 const& size, Alignment const& alignment) {
+        auto const temp = aligned_position_reversed(rect_from_point_and_size(point, size), alignment);
+        return point_from_rect(temp);
+    }
+
+    Vector2 horizontal_aligned_position(Vector2 const& point,
+                                        Vector2 const& size,
+                                        HorizontalAlignment const& alignment) {
+        auto const temp = horizontal_aligned_position(rect_from_point_and_size(point, size), alignment);
+        return point_from_rect(temp);
+    }
+
+    Vector2 horizontal_aligned_position_reversed(Vector2 const& point,
+                                                 Vector2 const& size,
+                                                 HorizontalAlignment const& alignment) {
+        auto const temp = horizontal_aligned_position_reversed(rect_from_point_and_size(point, size), alignment);
+        return point_from_rect(temp);
+    }
+
+    Vector2 vertical_aligned_position(Vector2 const& point, Vector2 const& size, VerticalAlignment const& alignment) {
+        auto const temp = vertical_aligned_position(rect_from_point_and_size(point, size), alignment);
+        return point_from_rect(temp);
+    }
+
+    Vector2 vertical_aligned_position_reversed(Vector2 const& point,
+                                               Vector2 const& size,
+                                               VerticalAlignment const& alignment) {
+        auto const temp = vertical_aligned_position_reversed(rect_from_point_and_size(point, size), alignment);
+        return point_from_rect(temp);
+    }
+
     HorizontalAlignment to_horizontal_alignment(Alignment const alignment) {
         switch (alignment) {
             case Alignment::TopLeft:
@@ -204,8 +241,7 @@ namespace uil {
         }
     }
 
-    Alignment to_alignment(VerticalAlignment const vertical_alignment,
-                            HorizontalAlignment const horizontal_alignment) {
+    Alignment to_alignment(VerticalAlignment const vertical_alignment, HorizontalAlignment const horizontal_alignment) {
         switch (vertical_alignment) {
             case VerticalAlignment::Top:
                 switch (horizontal_alignment) {

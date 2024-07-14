@@ -9,6 +9,13 @@
 #include <uil/window.hpp>
 
 namespace uil {
+    void Window::check_resolution() const {
+        if (IsWindowResized()) {
+            auto const resolution = cpt::Vec2_i{ GetRenderWidth(), GetRenderHeight() };
+            m_scene_manager.resize(resolution);
+        }
+    }
+
     Window::Window(cpt::Vec2_i const resolution, char const* const title) {
         InitWindow(resolution.x, resolution.y, title);
         m_font = LoadFont("../default_assets/font.ttf"); // @TODO Move this into a extra data data member
@@ -23,6 +30,7 @@ namespace uil {
 
     void Window::update() {
         // updating
+        check_resolution();
         [[maybe_unused]] auto const t1 = m_scene_manager.check(GetMousePosition());
         [[maybe_unused]] auto const t2 = m_scene_manager.update();
 
@@ -42,6 +50,18 @@ namespace uil {
 
     bool Window::draw_fps() const {
         return m_draw_fps;
+    }
+
+    void Window::set_config_flag(ConfigFlags const flag, bool const enable) {
+        if (enable) {
+            SetWindowState(flag);
+        } else {
+            ClearWindowState(flag);
+        }
+    }
+
+    bool Window::is_config_flag(ConfigFlags const flag) const {
+        return IsWindowState(flag);
     }
 
 } // namespace uil

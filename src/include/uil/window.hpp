@@ -15,6 +15,8 @@ namespace uil {
         SceneManager m_scene_manager{};
         Font m_font{};
 
+        void check_resolution() const;
+
     public:
         Window(cpt::Vec2_i resolution, char const* title);
         Window(Window const&)              = delete;
@@ -27,5 +29,8 @@ namespace uil {
 
         void set_draw_fps(bool draw_fps);
         [[nodiscard]] bool draw_fps() const;
+
+        void set_config_flag(ConfigFlags flag, bool enable);
+        [[nodiscard]] bool is_config_flag(ConfigFlags flag) const;
     };
 } // namespace uil

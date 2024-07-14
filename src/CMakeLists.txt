@@ -4,6 +4,7 @@ target_sources(ui_lib
                PRIVATE
                alignment.cpp
                helper_rect.cpp
+               helper_vec.cpp
                resolution.cpp
                scene.cpp
                scene_manager.cpp
@@ -18,6 +19,7 @@ target_sources(ui_lib
                include/uil/callback.hpp
                include/uil/exception.hpp
                include/uil/helper_rect.hpp
+               include/uil/helper_vec.hpp
                include/uil/resolution.hpp
                include/uil/scene.hpp
                include/uil/scene_manager.hpp
