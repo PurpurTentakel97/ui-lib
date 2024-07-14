@@ -5,8 +5,8 @@
 
 #pragma once
 
-#include <uil/scene.hpp>
 #include <cpt/vec2.hpp>
+#include <uil/scene.hpp>
 
 namespace uil {
     class Text;
@@ -14,9 +14,15 @@ namespace uil {
     class TestScene final : public Scene {
     private:
         Text* m_text{};
+        Vector2 m_top_left     = { 0.25f, 0.25f };
+        Vector2 m_bottom_left  = { 0.25f, 0.75f };
+        Vector2 m_bottom_right = { 0.75f, 0.75f };
+        Vector2 m_top_right    = { 0.75f, 0.25f };
+
     public:
         explicit TestScene(cpt::Vec2_i resolution);
 
         [[nodiscard]] bool check(Vector2 const& mousePosition) const override;
+        [[nodiscard]] bool render(Font const* font) const override;
     };
 } // namespace uil
