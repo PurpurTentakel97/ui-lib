@@ -12,6 +12,7 @@ namespace uil {
 
     [[nodiscard]] Vector2 normalize(Vector2 const& vec);
 } // namespace uil
+
 inline Vector2& operator+=(Vector2& lhs, Vector2 const& rhs) {
     lhs.x += rhs.x;
     lhs.y += rhs.y;

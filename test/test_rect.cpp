@@ -71,3 +71,23 @@ INSTANTIATE_TEST_SUITE_P(ALIGNMENT,
                                            std::make_tuple(Rectangle{ 1.0f, 1.0f, 1.0f, 0.5f },
                                                            cpt::Vec2_i{ 1000, 1000 },
                                                            Rectangle{ 1000.0f, 1000.0f, 1000.0f, 500.0f })));
+
+class PointAndSizeFromRectFixtures : public testing::TestWithParam<Rectangle> { };
+
+TEST_P(PointAndSizeFromRectFixtures, Succsess) {
+    auto const rect = GetParam();
+
+    auto const point_result = uil::point_from_rect(rect);
+    auto const size_result  = uil::size_from_rect(rect);
+
+    EXPECT_FLOAT_EQ(rect.x, point_result.x);
+    EXPECT_FLOAT_EQ(rect.y, point_result.y);
+    EXPECT_FLOAT_EQ(rect.width, size_result.x);
+    EXPECT_FLOAT_EQ(rect.height, size_result.y);
+}
+
+INSTANTIATE_TEST_SUITE_P(Rectangle,
+                         PointAndSizeFromRectFixtures,
+                         ::testing::Values(Rectangle{ 0.5f, 0.5f, 0.5f, 0.5f },
+                                           Rectangle{ 0.1f, 0.2f, 0.3f, 0.4f },
+                                           Rectangle{ 1.0f, -2.0f, 10000.0f, 0.00052641f }));

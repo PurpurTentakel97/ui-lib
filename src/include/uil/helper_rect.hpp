@@ -10,5 +10,10 @@
 
 namespace uil {
     [[nodiscard]] Rectangle collider_from_relative(Rectangle relative, cpt::Vec2_i resolution);
+
     [[nodiscard]] Rectangle relative_from_collider(Rectangle collider, cpt::Vec2_i resolution);
+
+    [[nodiscard]] Vector2 point_from_rect(Rectangle const& rect);
+
+    [[nodiscard]] Vector2 size_from_rect(Rectangle const& rect);
 } // namespace uil
