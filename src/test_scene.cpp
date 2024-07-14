@@ -3,9 +3,9 @@
 // 06.07.24
 //
 
+#include <iostream>
 #include <uil/test_scene.hpp>
 #include <uil/text.hpp>
-#include <iostream>
 
 namespace uil {
     TestScene::TestScene(cpt::Vec2_i const resolution) {
@@ -19,8 +19,8 @@ namespace uil {
         auto const result = Scene::check(mousePosition);
 
         static auto start = GetTime();
-        static auto index      = 0;
-        auto const inc         = [&i = index]() {
+        static auto index = 0;
+        auto const inc    = [&i = index]() {
             ++i;
             start = GetTime();
             if (index > 7) {
@@ -32,17 +32,16 @@ namespace uil {
             auto const stop = GetTime();
             std::cout << "time: " << stop - start << '\n';
             switch (index) {
-                case 0: m_text->move_to_fast_to_slow(m_bottom_left, 0.1f); break;
+                case 0: m_text->move_to_slow_to_fast(m_bottom_left, 0.1f); break;
                 case 1: m_text->move_to_fast_to_slow(m_bottom_right, 0.2f); break;
-                case 2: m_text->move_to_fast_to_slow(m_top_right, 0.5f); break;
-                case 3: m_text->move_to_fast_to_slow(m_top_left, 1.0f); break;
-                case 4: m_text->move_to_fast_to_slow(m_bottom_right, 2.0f); break;
+                case 2: m_text->move_to_linear_speed(m_top_right, 0.5f); break;
+                case 3: m_text->move_to_linear_time(m_top_left, 1.0f); break;
+                case 4: m_text->move_to_slow_to_fast(m_bottom_right, 2.0f); break;
                 case 5: m_text->move_to_fast_to_slow(m_top_right, 5.0); break;
-                case 6: m_text->move_to_fast_to_slow(m_bottom_left, 10.0f); break;
-                case 7: m_text->move_to_fast_to_slow(m_top_left, 15.0f); break;
+                case 6: m_text->move_to_linear_speed(m_bottom_left, 10.0f); break;
+                case 7: m_text->move_to_linear_time(m_top_left, 15.0f); break;
             }
             inc();
-
         }
 
 

@@ -78,6 +78,19 @@ namespace uil {
         }
     }
 
+    void UIElement::slow_to_fast() {
+        auto const distance      = m_relative_destination - m_relative_origin;
+        auto already_moved = magnitude(point_from_rect(m_relative) - m_relative_origin);
+        already_moved = already_moved> 0.001f ? already_moved  : 0.001f;
+        auto direction           = normalize(m_relative_destination - point_from_rect(m_relative));
+        direction *= GetFrameTime() * m_move_speed * (already_moved / magnitude(distance));
+        if (is_arriving(direction)) {
+            arriving();
+        } else {
+            move(direction);
+        }
+    }
+
     void UIElement::constant() {
         auto const time     = GetFrameTime();
         auto const distance = m_move_direction * time * m_move_speed;
@@ -169,7 +182,7 @@ namespace uil {
         m_move_time            = time;
     }
 
-    void UIElement::move_to_linear_speed(Vector2 destination, float speed) {
+    void UIElement::move_to_linear_speed(Vector2 const destination, float const speed) {
         m_move_type            = MoveType::Linear_Speed;
         m_relative_origin      = point_from_rect(m_relative);
         m_relative_destination = aligned_position(destination, size_from_rect(m_relative), m_alignment);
@@ -178,14 +191,14 @@ namespace uil {
 
     void UIElement::move_to_fast_to_slow(Vector2 const destination, float const speed) {
         m_move_type            = MoveType::Fast_To_Slow;
-        m_relative_origin      = { relative().x, relative().y };
+        m_relative_origin      = point_from_rect(m_relative);
         m_relative_destination = aligned_position(destination, size_from_rect(m_relative), m_alignment);
         m_move_speed           = speed;
     }
 
     void UIElement::move_to_slow_to_fast(Vector2 const destination, float const speed) {
         m_move_type            = MoveType::Slow_To_Fast;
-        m_relative_origin      = { relative().x, relative().y };
+        m_relative_origin      = point_from_rect(m_relative);
         m_relative_destination = aligned_position(destination, size_from_rect(m_relative), m_alignment);
         m_move_speed           = speed;
     }
@@ -210,7 +223,7 @@ namespace uil {
             case MoveType::None:                         break;
             case MoveType::Linear_Time:  linear_time();  break;
             case MoveType::Linear_Speed: linear_speed(); break;
-            case MoveType::Slow_To_Fast: /*slow_to_fast();*/ break;
+            case MoveType::Slow_To_Fast: slow_to_fast(); break;
             case MoveType::Fast_To_Slow: fast_to_slow(); break;
             case MoveType::Constant:     constant();     break;
             default:
