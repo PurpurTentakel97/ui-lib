@@ -19,6 +19,10 @@ namespace uil {
         Vector2 m_bottom_right = { 0.75f, 0.75f };
         Vector2 m_top_right    = { 0.75f, 0.25f };
 
+        void start_callback(UIElement const& text) const;
+        void stop_callback(UIElement const& text) const;
+        void arrived_callback(UIElement const& text) const;
+
     public:
         explicit TestScene(cpt::Vec2_i resolution);
 

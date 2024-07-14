@@ -4,6 +4,7 @@
 //
 
 #pragma once
+#include "callback.hpp"
 #include <raylib.h>
 #include <uil/alignment.hpp>
 #include <uil/helper_rect.hpp>
@@ -27,7 +28,8 @@ namespace uil {
         Rectangle m_collider{}; // m_relative needs to be initialized bevor m_collider
 
         // movement
-        MoveType m_move_type = MoveType::None;
+        MoveType m_move_type      = MoveType::None;
+        MoveType m_last_move_type = MoveType::None;
         float m_move_speed{};
         float m_move_time{};
         Vector2 m_relative_origin{};
@@ -50,6 +52,15 @@ namespace uil {
 
 
     public:
+        Callback<UIElement&> on_movement_start{};
+        Callback<UIElement&> on_movement_stop{};
+        Callback<UIElement&> on_arrived{};
+        Callback<UIElement&> on_checked{};
+        Callback<UIElement&> on_updated{};
+        Callback<UIElement const&> on_drawn{};
+        Callback<UIElement&> on_resized{};
+
+
         UIElement(Rectangle relative, Alignment alignment, cpt::Vec2_i resolution);
 
         UIElement(UIElement const&)            = delete;
@@ -83,10 +94,13 @@ namespace uil {
         void move_constant(Vector2 direction, float speed);
         void move_stop();
 
+        [[nodiscard]] bool has_started_moving() const;
+        [[nodiscard]] bool has_stopped_moving() const;
+
         // polymorphic
         [[nodiscard]] virtual bool check(Vector2 const& mousePosition);
         [[nodiscard]] virtual bool update();
-        [[nodiscard]] virtual bool render(Font const* font) const = 0;
+        [[nodiscard]] virtual bool render(Font const* font) const;
         virtual void resize(cpt::Vec2_i const& resolution);
     };
 } // namespace uil

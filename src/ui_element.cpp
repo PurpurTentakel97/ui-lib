@@ -38,6 +38,8 @@ namespace uil {
         m_relative.y = m_relative_destination.y;
         update_collider();
         m_move_type = MoveType::None;
+        on_arrived.invoke(*this);
+        on_movement_stop.invoke(*this);
     }
 
     void UIElement::move(Vector2 const& relative_distance) {
@@ -79,10 +81,10 @@ namespace uil {
     }
 
     void UIElement::slow_to_fast() {
-        auto const distance      = m_relative_destination - m_relative_origin;
-        auto already_moved = magnitude(point_from_rect(m_relative) - m_relative_origin);
-        already_moved = already_moved> 0.001f ? already_moved  : 0.001f;
-        auto direction           = normalize(m_relative_destination - point_from_rect(m_relative));
+        auto const distance = m_relative_destination - m_relative_origin;
+        auto already_moved  = magnitude(point_from_rect(m_relative) - m_relative_origin);
+        already_moved       = already_moved > 0.001f ? already_moved : 0.001f;
+        auto direction      = normalize(m_relative_destination - point_from_rect(m_relative));
         direction *= GetFrameTime() * m_move_speed * (already_moved / magnitude(distance));
         if (is_arriving(direction)) {
             arriving();
@@ -180,6 +182,7 @@ namespace uil {
         m_relative_origin      = point_from_rect(m_relative);
         m_relative_destination = aligned_position(destination, size_from_rect(m_relative), m_alignment);
         m_move_time            = time;
+        on_movement_start.invoke(*this);
     }
 
     void UIElement::move_to_linear_speed(Vector2 const destination, float const speed) {
@@ -187,6 +190,7 @@ namespace uil {
         m_relative_origin      = point_from_rect(m_relative);
         m_relative_destination = aligned_position(destination, size_from_rect(m_relative), m_alignment);
         m_move_speed           = speed;
+        on_movement_start.invoke(*this);
     }
 
     void UIElement::move_to_fast_to_slow(Vector2 const destination, float const speed) {
@@ -194,6 +198,7 @@ namespace uil {
         m_relative_origin      = point_from_rect(m_relative);
         m_relative_destination = aligned_position(destination, size_from_rect(m_relative), m_alignment);
         m_move_speed           = speed;
+        on_movement_start.invoke(*this);
     }
 
     void UIElement::move_to_slow_to_fast(Vector2 const destination, float const speed) {
@@ -201,19 +206,32 @@ namespace uil {
         m_relative_origin      = point_from_rect(m_relative);
         m_relative_destination = aligned_position(destination, size_from_rect(m_relative), m_alignment);
         m_move_speed           = speed;
+        on_movement_start.invoke(*this);
     }
 
     void UIElement::move_constant(Vector2 const direction, float const speed) {
         m_move_type      = MoveType::Constant;
         m_move_direction = normalize(direction);
         m_move_speed     = speed;
+        on_movement_start.invoke(*this);
     }
 
     void UIElement::move_stop() {
         m_move_type = MoveType::None;
+        on_movement_stop.invoke(*this);
+    }
+
+    bool UIElement::has_started_moving() const {
+        return m_last_move_type == MoveType::None and m_move_type != MoveType::None;
+    }
+
+    bool UIElement::has_stopped_moving() const {
+        return m_last_move_type != MoveType::None and m_move_type == MoveType::None;
     }
 
     bool UIElement::check(Vector2 const&) {
+        m_last_move_type = m_move_type;
+        on_checked.invoke(*this);
         return true;
     }
 
@@ -230,11 +248,17 @@ namespace uil {
                 throw BadMovementType("unexpected movement type while updating UIElement");
                 // clang-format on
         }
+        on_updated.invoke(*this);
+        return true;
+    }
+    bool UIElement::render(Font const*) const {
+        on_drawn.invoke(*this);
         return true;
     }
 
     void UIElement::resize(cpt::Vec2_i const& resolution) {
         m_resolution = resolution;
         m_collider   = collider_from_relative(m_relative, m_resolution);
+        on_resized.invoke(*this);
     }
 } // namespace uil

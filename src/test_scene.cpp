@@ -8,13 +8,29 @@
 #include <uil/text.hpp>
 
 namespace uil {
+    void TestScene::start_callback(UIElement const& text) const {
+        std::cout << "started moving - moving: " << text.has_started_moving() << '\n';
+    }
+
+    void TestScene::stop_callback(UIElement const& text) const {
+        std::cout << "stopped moving - stopped: " << text.has_stopped_moving() << '\n';
+    }
+
+    void TestScene::arrived_callback(UIElement const& text) const {
+        std::cout << "arrived - stopped: " << text.has_stopped_moving() << '\n';
+    }
+
     TestScene::TestScene(cpt::Vec2_i const resolution) {
         m_text = &emplace_element<Text>(Rectangle{ 0.25f, 0.5f, 0.25f, 0.25f }, Alignment::MidMid, resolution, 0.1f);
         m_text->set_color(PURPLE);
         m_text->set_spacing(3.0f);
         m_text->set_text("Bester Text");
         m_text->set_render_collider(true);
+        m_text->on_movement_start += [this](UIElement const& text) { this->start_callback(text); };
+        m_text->on_movement_stop += [this](UIElement const& text) { this->stop_callback(text); };
+        m_text->on_arrived += [this](UIElement const& text) { this->arrived_callback(text); };
     }
+
     bool TestScene::check(Vector2 const& mousePosition) const {
         auto const result = Scene::check(mousePosition);
 
@@ -32,7 +48,7 @@ namespace uil {
             auto const stop = GetTime();
             std::cout << "time: " << stop - start << '\n';
             switch (index) {
-                case 0: m_text->move_to_slow_to_fast(m_bottom_left, 0.1f); break;
+                case 0: m_text->move_to_slow_to_fast(m_bottom_left, 0.5f); break;
                 case 1: m_text->move_to_fast_to_slow(m_bottom_right, 0.2f); break;
                 case 2: m_text->move_to_linear_speed(m_top_right, 0.5f); break;
                 case 3: m_text->move_to_linear_time(m_top_left, 1.0f); break;
