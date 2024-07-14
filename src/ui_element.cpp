@@ -16,6 +16,23 @@ namespace uil {
         m_collider = collider_from_relative(m_relative, m_resolution);
     }
 
+    bool UIElement::arriving(Vector2 const& distance) const {
+        auto arrived_x = false;
+        if (m_relative_origin.x <= m_relative_destination.x) {
+            arrived_x = m_relative.x + distance.x >= m_relative_destination.x;
+        } else {
+            arrived_x = m_relative.x + distance.x <= m_relative_destination.x;
+        }
+        auto arrived_y = false;
+        if (m_relative_origin.y <= m_relative_destination.y) {
+            arrived_y = m_relative.y + distance.y >= m_relative_destination.y;
+        } else {
+            arrived_y = m_relative.y + distance.y <= m_relative_destination.y;
+        }
+
+        return arrived_x and arrived_y;
+    }
+
     void UIElement::move(Vector2 const& relative_distance) {
         m_relative.x += relative_distance.x;
         m_relative.y += relative_distance.y;
@@ -23,10 +40,9 @@ namespace uil {
     }
 
     void UIElement::linear() {
-        auto direction = m_relative_destination - m_relative_origin;
+        auto direction = normalize(m_relative_destination - m_relative_origin);
         direction *= GetFrameTime() * m_move_speed;
-        auto const rect = Rectangle(m_relative.x, m_relative.y, direction.x, direction.y);
-        if (CheckCollisionPointRec(m_relative_destination, rect)) {
+        if (arriving(direction)) {
             m_relative.x = m_relative_destination.x;
             m_relative.y = m_relative_destination.y;
             update_collider();
@@ -122,6 +138,7 @@ namespace uil {
 
     void UIElement::move_to_linear(Vector2 const destination, float const speed) {
         m_move_type            = MoveType::Linear;
+        m_relative_origin      = point_from_rect(m_relative);
         m_relative_destination = destination;
         m_move_speed           = speed;
     }
