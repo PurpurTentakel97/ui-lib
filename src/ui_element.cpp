@@ -139,21 +139,21 @@ namespace uil {
     void UIElement::move_to_linear(Vector2 const destination, float const speed) {
         m_move_type            = MoveType::Linear;
         m_relative_origin      = point_from_rect(m_relative);
-        m_relative_destination = destination;
+        m_relative_destination = aligned_position(destination, size_from_rect(m_relative), m_alignment);
         m_move_speed           = speed;
     }
 
     void UIElement::move_to_fast_to_slow(Vector2 const destination, float const speed) {
         m_move_type            = MoveType::Fast_To_Slow;
         m_relative_origin      = { relative().x, relative().y };
-        m_relative_destination = destination;
+        m_relative_destination = aligned_position(destination, size_from_rect(m_relative), m_alignment);
         m_move_speed           = speed;
     }
 
     void UIElement::move_to_slow_to_fast(Vector2 const destination, float const speed) {
         m_move_type            = MoveType::Slow_To_Fast;
         m_relative_origin      = { relative().x, relative().y };
-        m_relative_destination = destination;
+        m_relative_destination = aligned_position(destination, size_from_rect(m_relative), m_alignment);
         m_move_speed           = speed;
     }
 
