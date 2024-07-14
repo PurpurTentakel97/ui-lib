@@ -15,6 +15,8 @@ namespace uil {
         SceneManager m_scene_manager{};
         Font m_font{};
 
+        void check_resolution() const;
+
     public:
         Window(cpt::Vec2_i resolution, char const* title);
         Window(Window const&)              = delete;
