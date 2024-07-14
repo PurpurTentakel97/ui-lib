@@ -44,4 +44,16 @@ namespace uil {
         return m_draw_fps;
     }
 
+    void Window::set_config_flag(ConfigFlags const flag, bool const enable) {
+        if (enable) {
+            SetWindowState(flag);
+        } else {
+            ClearWindowState(flag);
+        }
+    }
+
+    bool Window::is_config_flag(ConfigFlags const flag) const {
+        return IsWindowState(flag);
+    }
+
 } // namespace uil
