@@ -70,13 +70,15 @@ namespace uil {
     }
 
     bool Text::render(Font const* const font) const {
-        DrawTextEx(*font, m_text.c_str(), { collider_aligned().x, collider_aligned().y }, m_font_size, m_spacing, m_color);
+        auto const keep_updating = UIElement::render(font);
+        DrawTextEx(
+                *font, m_text.c_str(), { collider_aligned().x, collider_aligned().y }, m_font_size, m_spacing, m_color);
 
         if (m_render_collider) {
             DrawRectangleLinesEx(collider_aligned(), 2.0f, WHITE);
         }
 
-        return true;
+        return keep_updating;
     }
 
     void Text::resize(cpt::Vec2_i const& resolution) {
