@@ -13,7 +13,8 @@ namespace uil {
     private:
         enum class MoveType {
             None,
-            Linear,       // moves linear to a certain point
+            Linear_Time,  // moves linear to a certain point
+            Linear_Speed, // moves linear to a certain point
             Slow_To_Fast, // getting faster while moving to a certain point
             Fast_To_Slow, // getting slower while moving to a certain point
             Constant,     // moves at a constant speed until it gets stoppt manualy
@@ -28,6 +29,7 @@ namespace uil {
         // movement
         MoveType m_move_type = MoveType::None;
         float m_move_speed{};
+        float m_move_time{};
         Vector2 m_relative_origin{};
         Vector2 m_relative_destination{};
         Vector2 m_move_direction{};
@@ -35,9 +37,13 @@ namespace uil {
         void update_relative();
         void update_collider();
 
-        [[nodiscard]] bool arriving(Vector2 const& distance) const;
+        [[nodiscard]] bool is_arriving(Vector2 const& distance) const;
+        void arriving();
+
         void move(Vector2 const& relative_distance);
-        void linear();
+        void linear_time();
+        void linear_speed();
+        void linear(Vector2 const& direction);
         void fast_to_slow();
         void slow_to_fast();
         void constant();
@@ -70,7 +76,8 @@ namespace uil {
 
         // movement
         [[nodiscard]] bool is_moving() const;
-        void move_to_linear(Vector2 destination, float speed);
+        void move_to_linear_time(Vector2 destination, float time);
+        void move_to_linear_speed(Vector2 destination, float speed);
         void move_to_fast_to_slow(Vector2 destination, float speed);
         void move_to_slow_to_fast(Vector2 destination, float speed);
         void move_constant(Vector2 direction, float speed);
