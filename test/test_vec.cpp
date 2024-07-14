@@ -180,3 +180,44 @@ TEST(Vector2, DevideByZeroExpectionDivide) {
         EXPECT_STREQ(e.what(), "Devide by zero while deviding a vector by a float");
     }
 }
+
+class Vector2ToAbsoluteFixtures : public testing::TestWithParam<std::tuple<Vector2, cpt::Vec2_i, Vector2>> { };
+
+TEST_P(Vector2ToAbsoluteFixtures, Succsess) {
+    auto const relative   = std::get<0>(GetParam());
+    auto const resolution = std::get<1>(GetParam());
+    auto const expected   = std::get<2>(GetParam());
+
+    auto const result = uil::to_absolute(relative, resolution);
+
+    EXPECT_FLOAT_EQ(expected.x, result.x);
+    EXPECT_FLOAT_EQ(expected.y, result.y);
+}
+
+INSTANTIATE_TEST_SUITE_P(
+        VECTOR2,
+        Vector2ToAbsoluteFixtures,
+        ::testing::Values(
+                std::make_tuple(Vector2{ 0.25f, 0.25f }, cpt::Vec2_i{ 1000, 1000 }, Vector2{ 250.0f, 250.0f }),
+                std::make_tuple(Vector2{ 0.1f, 0.2f }, cpt::Vec2_i{ 1000, 500 }, Vector2{ 100.0f, 100.0f })));
+
+
+class Vector2ToRealtiveFixtures : public testing::TestWithParam<std::tuple<Vector2, cpt::Vec2_i, Vector2>> { };
+
+TEST_P(Vector2ToRealtiveFixtures, Succsess) {
+    auto const absolute   = std::get<0>(GetParam());
+    auto const resolution = std::get<1>(GetParam());
+    auto const expected   = std::get<2>(GetParam());
+
+    auto const result = uil::to_relative(absolute, resolution);
+
+    EXPECT_FLOAT_EQ(expected.x, result.x);
+    EXPECT_FLOAT_EQ(expected.y, result.y);
+}
+
+INSTANTIATE_TEST_SUITE_P(
+        VECTOR2,
+        Vector2ToRealtiveFixtures,
+        ::testing::Values(
+                std::make_tuple(Vector2{ 250.0f, 250.0f }, cpt::Vec2_i{ 1000, 1000 }, Vector2{ 0.25f, 0.25f }),
+                std::make_tuple(Vector2{ 100.0f, 100.0f }, cpt::Vec2_i{ 1000, 500 }, Vector2{ 0.1f, 0.2f })));

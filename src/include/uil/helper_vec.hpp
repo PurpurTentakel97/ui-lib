@@ -4,6 +4,7 @@
 //
 
 #pragma once
+#include <cpt/vec2.hpp>
 #include <raylib.h>
 #include <uil/exception.hpp>
 
@@ -11,6 +12,10 @@ namespace uil {
     [[nodiscard]] float magnitude(Vector2 const& vec);
 
     [[nodiscard]] Vector2 normalize(Vector2 const& vec);
+
+    [[nodiscard]] Vector2 to_absolute(Vector2 const& relative, cpt::Vec2_i const& resolution);
+
+    [[nodiscard]] Vector2 to_relative(Vector2 const& absolute, cpt::Vec2_i const& resolution);
 } // namespace uil
 
 inline Vector2& operator+=(Vector2& lhs, Vector2 const& rhs) {
