@@ -31,4 +31,8 @@ namespace uil {
     Vector2 size_from_rect(Rectangle const& rect) {
         return { rect.width, rect.height };
     }
+
+    Rectangle rect_from_point_and_size(Vector2 const& point, Vector2 const& size) {
+        return { point.x, point.y, size.x, size.y };
+    }
 } // namespace uil

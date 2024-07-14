@@ -16,4 +16,6 @@ namespace uil {
     [[nodiscard]] Vector2 point_from_rect(Rectangle const& rect);
 
     [[nodiscard]] Vector2 size_from_rect(Rectangle const& rect);
+
+    [[nodiscard]] Rectangle rect_from_point_and_size(Vector2 const& point, Vector2 const& size);
 } // namespace uil

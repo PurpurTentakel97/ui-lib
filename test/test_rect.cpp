@@ -91,3 +91,24 @@ INSTANTIATE_TEST_SUITE_P(Rectangle,
                          ::testing::Values(Rectangle{ 0.5f, 0.5f, 0.5f, 0.5f },
                                            Rectangle{ 0.1f, 0.2f, 0.3f, 0.4f },
                                            Rectangle{ 1.0f, -2.0f, 10000.0f, 0.00052641f }));
+
+class RectFromPointAndSize : public testing::TestWithParam<std::tuple<Vector2, Vector2>> { };
+
+TEST_P(RectFromPointAndSize, Success) {
+    auto const point = std::get<0>(GetParam());
+    auto const size  = std::get<1>(GetParam());
+
+    auto const rect_result = uil::rect_from_point_and_size(point, size);
+
+    EXPECT_FLOAT_EQ(point.x, rect_result.x);
+    EXPECT_FLOAT_EQ(point.y, rect_result.y);
+    EXPECT_FLOAT_EQ(size.x, rect_result.width);
+    EXPECT_FLOAT_EQ(size.y, rect_result.height);
+}
+
+
+INSTANTIATE_TEST_SUITE_P(Rectangle,
+                         RectFromPointAndSize,
+                         ::testing::Values(std::make_tuple(Vector2{ 0.5f, 0.5f }, Vector2{ 0.5f, 0.5f }),
+                                           std::make_tuple(Vector2{ 0.1f, 0.2f }, Vector2{ 0.3f, 0.4f }),
+                                           std::make_tuple(Vector2{ -0.1f, -0.2f }, Vector2{ -0.3f, -0.4f })));
