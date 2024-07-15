@@ -14,9 +14,13 @@ namespace uil {
         std::string m_text{};
         float m_spacing        = 3.0f;
         Color m_color          = WHITE;
-        bool m_render_collider = false;
 
     public:
+        Callback<Text&, float> on_text_size_chanced{};
+        Callback<Text&, std::string> on_text_chanced{};
+        Callback<Text&, float> on_spacing_chanced{};
+        Callback<Text&, Color> on_color_chanced{};
+
         Text(Rectangle relative, Alignment alignment, cpt::Vec2_i resolution, float font_size, std::string text);
         Text(Rectangle relative, Alignment alignment, cpt::Vec2_i resolution, float font_size);
 
@@ -34,9 +38,6 @@ namespace uil {
 
         void set_color(Color color);
         [[nodiscard]] Color color() const;
-
-        void set_render_collider(bool render_collider);
-        [[nodiscard]] bool render_collider() const;
 
         [[nodiscard]] bool render(Font const* font) const override;
         void resize(cpt::Vec2_i const& resolution) override;

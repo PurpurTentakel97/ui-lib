@@ -26,6 +26,11 @@ namespace uil {
         }
 
     public:
+        Callback<Scene const&> on_check{};
+        Callback<Scene const&> on_update{};
+        Callback<Scene const&> on_render{};
+        Callback<Scene const&> on_resize{};
+
         Scene()                        = default;
         Scene(Scene const&)            = delete;
         Scene(Scene&&)                 = delete;
