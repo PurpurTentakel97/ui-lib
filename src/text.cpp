@@ -59,7 +59,7 @@ namespace uil {
 
     void Text::set_color(Color const color) {
         auto const temp = std::exchange(m_color, color);
-        on_color_chanced.invoke(*this, color);
+        on_color_chanced.invoke(*this, temp);
     }
 
     Color Text::color() const {
