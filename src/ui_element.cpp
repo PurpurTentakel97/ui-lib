@@ -231,7 +231,7 @@ namespace uil {
 
     bool UIElement::check(Vector2 const&) {
         m_last_move_type = m_move_type;
-        on_checked.invoke(*this);
+        on_check.invoke(*this);
         return true;
     }
 
@@ -248,17 +248,17 @@ namespace uil {
                 throw BadMovementType("unexpected movement type while updating UIElement");
                 // clang-format on
         }
-        on_updated.invoke(*this);
+        on_update.invoke(*this);
         return true;
     }
     bool UIElement::render(Font const*) const {
-        on_drawn.invoke(*this);
+        on_draw.invoke(*this);
         return true;
     }
 
     void UIElement::resize(cpt::Vec2_i const& resolution) {
         m_resolution = resolution;
         m_collider   = collider_from_relative(m_relative, m_resolution);
-        on_resized.invoke(*this);
+        on_resize.invoke(*this);
     }
 } // namespace uil

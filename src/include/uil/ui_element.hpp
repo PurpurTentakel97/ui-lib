@@ -55,10 +55,10 @@ namespace uil {
         Callback<UIElement&> on_movement_start{};
         Callback<UIElement&> on_movement_stop{};
         Callback<UIElement&> on_arrived{};
-        Callback<UIElement&> on_checked{};
-        Callback<UIElement&> on_updated{};
-        Callback<UIElement const&> on_drawn{};
-        Callback<UIElement&> on_resized{};
+        Callback<UIElement&> on_check{};
+        Callback<UIElement&> on_update{};
+        Callback<UIElement const&> on_draw{};
+        Callback<UIElement&> on_resize{};
 
 
         UIElement(Rectangle relative, Alignment alignment, cpt::Vec2_i resolution);
