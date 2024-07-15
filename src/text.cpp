@@ -20,7 +20,8 @@ namespace uil {
         : Text{ relative, alignment, resolution, font_size, std::string{} } { }
 
     void Text::set_text(std::string text) {
-        m_text = std::move(text);
+        auto temp = std::exchange(m_text, std::move(text));
+        on_text_chanced.invoke(*this, std::move(temp));
     }
 
     std::string Text::text() const {
@@ -28,8 +29,9 @@ namespace uil {
     }
 
     void Text::set_relative_font_size(float const size) {
-        m_relative_font_size = size;
-        m_font_size          = m_relative_font_size * collider_aligned().height;
+        auto const temp = std::exchange(m_relative_font_size, size);
+        m_font_size     = m_relative_font_size * collider_aligned().height;
+        on_text_size_chanced.invoke(*this, temp);
     }
 
     float Text::relative_font_size() const {
@@ -37,8 +39,9 @@ namespace uil {
     }
 
     void Text::set_absolute_font_size(float const size) {
-        m_font_size          = size;
-        m_relative_font_size = collider_aligned().height / m_font_size;
+        m_font_size     = size;
+        auto const temp = std::exchange(m_relative_font_size, (collider_aligned().height / m_font_size));
+        on_text_size_chanced.invoke(*this, temp);
     }
 
     float Text::absolute_font_size() const {
@@ -46,7 +49,8 @@ namespace uil {
     }
 
     void Text::set_spacing(float const spacing) {
-        m_spacing = spacing;
+        auto const temp = std::exchange(m_spacing, spacing);
+        on_spacing_chanced.invoke(*this, temp);
     }
 
     float Text::spacing() const {
@@ -54,7 +58,8 @@ namespace uil {
     }
 
     void Text::set_color(Color const color) {
-        m_color = color;
+        auto const temp = std::exchange(m_color, color);
+        on_color_chanced.invoke(*this, color);
     }
 
     Color Text::color() const {
@@ -71,8 +76,16 @@ namespace uil {
 
     bool Text::render(Font const* const font) const {
         auto const keep_updating = UIElement::render(font);
+        // clang-format off
         DrawTextEx(
-                *font, m_text.c_str(), { collider_aligned().x, collider_aligned().y }, m_font_size, m_spacing, m_color);
+                *font,
+                m_text.c_str(),
+                { collider_aligned().x, collider_aligned().y },
+                m_font_size,
+                m_spacing,
+                m_color
+                );
+        // clang-format on
 
         if (m_render_collider) {
             DrawRectangleLinesEx(collider_aligned(), 2.0f, WHITE);
