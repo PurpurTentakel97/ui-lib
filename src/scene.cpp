@@ -13,6 +13,7 @@ namespace uil {
                 return false;
             }
         }
+        on_check.invoke(*this);
         return true;
     }
 
@@ -22,6 +23,7 @@ namespace uil {
                 return false;
             }
         }
+        on_update.invoke(*this);
         return true;
     }
 
@@ -31,6 +33,7 @@ namespace uil {
                 return false;
             }
         }
+        on_render.invoke(*this);
         return true;
     }
 
@@ -38,5 +41,6 @@ namespace uil {
         for (auto const& e : m_elements) {
             e->resize(resolution);
         }
+        on_resize.invoke(*this);
     }
 } // namespace uil
