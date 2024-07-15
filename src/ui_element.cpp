@@ -173,6 +173,14 @@ namespace uil {
         return m_alignment;
     }
 
+    void UIElement::set_render_collider(bool const render) {
+        m_render_collider = render;
+    }
+
+    bool UIElement::render_collider() const {
+        return m_render_collider;
+    }
+
     bool UIElement::is_moving() const {
         return m_move_type != MoveType::None;
     }
@@ -252,6 +260,9 @@ namespace uil {
         return true;
     }
     bool UIElement::render(Font const*) const {
+        if (m_render_collider) {
+            DrawRectangleLinesEx(m_collider, 2.0f, WHITE);
+        }
         on_draw.invoke(*this);
         return true;
     }

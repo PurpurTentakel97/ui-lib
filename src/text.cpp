@@ -66,14 +66,6 @@ namespace uil {
         return m_color;
     }
 
-    void Text::set_render_collider(bool const render_collider) {
-        m_render_collider = render_collider;
-    }
-
-    bool Text::render_collider() const {
-        return m_render_collider;
-    }
-
     bool Text::render(Font const* const font) const {
         auto const keep_updating = UIElement::render(font);
         // clang-format off
@@ -86,10 +78,6 @@ namespace uil {
                 m_color
                 );
         // clang-format on
-
-        if (m_render_collider) {
-            DrawRectangleLinesEx(collider_aligned(), 2.0f, WHITE);
-        }
 
         return keep_updating;
     }
