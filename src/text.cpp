@@ -21,7 +21,7 @@ namespace uil {
 
     void Text::set_text(std::string text) {
         auto temp = std::exchange(m_text, std::move(text));
-        on_text_chanced.invoke(*this, std::move(temp));
+        on_text_changed.invoke(*this, std::move(temp));
     }
 
     std::string Text::text() const {
@@ -31,7 +31,7 @@ namespace uil {
     void Text::set_relative_font_size(float const size) {
         auto const temp = std::exchange(m_relative_font_size, size);
         m_font_size     = m_relative_font_size * collider_aligned().height;
-        on_text_size_chanced.invoke(*this, temp);
+        on_text_size_changed.invoke(*this, temp);
     }
 
     float Text::relative_font_size() const {
@@ -41,7 +41,7 @@ namespace uil {
     void Text::set_absolute_font_size(float const size) {
         m_font_size     = size;
         auto const temp = std::exchange(m_relative_font_size, (collider_aligned().height / m_font_size));
-        on_text_size_chanced.invoke(*this, temp);
+        on_text_size_changed.invoke(*this, temp);
     }
 
     float Text::absolute_font_size() const {
@@ -50,7 +50,7 @@ namespace uil {
 
     void Text::set_spacing(float const spacing) {
         auto const temp = std::exchange(m_spacing, spacing);
-        on_spacing_chanced.invoke(*this, temp);
+        on_spacing_changed.invoke(*this, temp);
     }
 
     float Text::spacing() const {
@@ -59,7 +59,7 @@ namespace uil {
 
     void Text::set_color(Color const color) {
         auto const temp = std::exchange(m_color, color);
-        on_color_chanced.invoke(*this, temp);
+        on_color_changed.invoke(*this, temp);
     }
 
     Color Text::color() const {
