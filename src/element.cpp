@@ -3,9 +3,10 @@
 // 06.07.24
 //
 
-#include "uil/exception.hpp"
-#include "uil/helper_vec.hpp"
-#include <uil/ui_element.hpp>
+#include <uil/context.hpp>
+#include <uil/element.hpp>
+#include <uil/exception.hpp>
+#include <uil/h_vec.hpp>
 
 namespace uil {
     void UIElement::update_relative() {
@@ -237,13 +238,13 @@ namespace uil {
         return m_last_move_type != MoveType::None and m_move_type == MoveType::None;
     }
 
-    bool UIElement::check(Vector2 const&) {
+    bool UIElement::check(Context const&) {
         m_last_move_type = m_move_type;
         on_check.invoke(*this);
         return true;
     }
 
-    bool UIElement::update() {
+    bool UIElement::update(Context const&) {
         switch (m_move_type) {
                 // clang-format off
             case MoveType::None:                         break;
@@ -259,7 +260,7 @@ namespace uil {
         on_update.invoke(*this);
         return true;
     }
-    bool UIElement::render(Font const*) const {
+    bool UIElement::render(Context const&) const {
         if (m_render_collider) {
             DrawRectangleLinesEx(m_collider, 2.0f, WHITE);
         }
@@ -267,8 +268,8 @@ namespace uil {
         return true;
     }
 
-    void UIElement::resize(cpt::Vec2_i const& resolution) {
-        m_resolution = resolution;
+    void UIElement::resize(Context const& context) {
+        m_resolution = context.resolution;
         m_collider   = collider_from_relative(m_relative, m_resolution);
         on_resize.invoke(*this);
     }

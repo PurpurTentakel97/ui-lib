@@ -26,7 +26,7 @@ namespace uil {
     public:
         explicit TestScene(cpt::Vec2_i resolution);
 
-        [[nodiscard]] bool check(Vector2 const& mousePosition) const override;
-        [[nodiscard]] bool render(Font const* font) const override;
+        [[nodiscard]] bool check(Context const& context) const override;
+        [[nodiscard]] bool render(Context const& context) const override;
     };
 } // namespace uil

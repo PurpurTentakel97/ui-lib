@@ -12,6 +12,7 @@ namespace uil {
     private:
         bool m_owner    = true;
         bool m_draw_fps = false;
+        cpt::Vec2_i m_resolution;
         SceneManager m_scene_manager{};
         Font m_font{};
 

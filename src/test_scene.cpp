@@ -4,6 +4,7 @@
 //
 
 #include <iostream>
+#include <uil/context.hpp>
 #include <uil/test_scene.hpp>
 #include <uil/text.hpp>
 
@@ -21,8 +22,7 @@ namespace uil {
     }
 
     TestScene::TestScene(cpt::Vec2_i const resolution) {
-        m_text = &emplace_element<Text>(
-                Rectangle{ 0.25f, 0.5f, 0.25f, 0.25f }, Alignment::MidMid, resolution, 0.1f);
+        m_text = &emplace_element<Text>(Rectangle{ 0.25f, 0.5f, 0.25f, 0.25f }, Alignment::MidMid, resolution, 0.1f);
         m_text->set_color(PURPLE);
         m_text->set_spacing(3.0f);
         m_text->set_text("Bester Text");
@@ -32,8 +32,8 @@ namespace uil {
         m_text->on_arrived += [this](UIElement const& text) { this->arrived_callback(text); };
     }
 
-    bool TestScene::check(Vector2 const& mousePosition) const {
-        auto const result = Scene::check(mousePosition);
+    bool TestScene::check(Context const& context) const {
+        auto const result = Scene::check(context);
 
         static auto start = GetTime();
         static auto index = 0;
@@ -65,8 +65,8 @@ namespace uil {
         return result;
     }
 
-    bool TestScene::render(Font const* font) const {
-        auto const result = Scene::render(font);
+    bool TestScene::render(Context const& context) const {
+        auto const result = Scene::render(context);
 
         // clang-format off
         DrawCircle(

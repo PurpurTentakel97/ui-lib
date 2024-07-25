@@ -4,42 +4,43 @@
 //
 
 #include <uil/scene_manager.hpp>
+#include <uil/context.hpp>
 
 namespace uil {
     void SceneManager::add_scene(std::unique_ptr<Scene> scene) {
         m_scenes.push_back(std::move(scene));
     }
 
-    bool SceneManager::check(Vector2 const& mousePosition) const {
+    bool SceneManager::check(Context const& context) const {
         for (auto const& s : m_scenes) {
-            if (not s->check(mousePosition)) {
+            if (not s->check(context)) {
                 return false;
             }
         }
         return true;
     }
 
-    bool SceneManager::update() const {
+    bool SceneManager::update(Context const& context) const {
         for (auto const& s : m_scenes) {
-            if (not s->update()) {
+            if (not s->update(context)) {
                 return false;
             }
         }
         return true;
     }
 
-    bool SceneManager::render(Font const* const font) const {
+    bool SceneManager::render(Context const& context) const {
         for (auto const& s : m_scenes) {
-            if (not s->render(font)) {
+            if (not s->render(context)) {
                 return false;
             }
         }
         return true;
     }
 
-    void SceneManager::resize(cpt::Vec2_i const& resolution) const {
+    void SceneManager::resize(Context const& context) const {
         for (auto const& s : m_scenes) {
-            s->resize(resolution);
+            s->resize(context);
         }
     }
 } // namespace uil

@@ -3,6 +3,7 @@
 // 30.05.24
 //
 
+#include <uil/context.hpp>
 #include <raylib.h>
 #include <string>
 #include <uil/test_scene.hpp>
@@ -12,11 +13,12 @@ namespace uil {
     void Window::check_resolution() const {
         if (IsWindowResized()) {
             auto const resolution = cpt::Vec2_i{ GetRenderWidth(), GetRenderHeight() };
-            m_scene_manager.resize(resolution);
+            auto const context    = Context{ GetMousePosition(), &m_font, resolution };
+            m_scene_manager.resize(context);
         }
     }
 
-    Window::Window(cpt::Vec2_i const resolution, char const* const title) {
+    Window::Window(cpt::Vec2_i const resolution, char const* const title) : m_resolution{ resolution } {
         InitWindow(resolution.x, resolution.y, title);
         m_font = LoadFont("../default_assets/font.ttf"); // @TODO Move this into a extra data data member
         m_scene_manager.add_scene(std::make_unique<TestScene>(resolution));
@@ -29,15 +31,17 @@ namespace uil {
     }
 
     void Window::update() {
+        auto const context = Context(GetMousePosition(), &m_font, m_resolution);
+
         // updating
         check_resolution();
-        [[maybe_unused]] auto const t1 = m_scene_manager.check(GetMousePosition());
-        [[maybe_unused]] auto const t2 = m_scene_manager.update();
+        [[maybe_unused]] auto const t1 = m_scene_manager.check(context);
+        [[maybe_unused]] auto const t2 = m_scene_manager.update(context);
 
         // rendering
         BeginDrawing();
         ClearBackground(BLACK);
-        [[maybe_unused]] auto const t3 = m_scene_manager.render(&m_font);
+        [[maybe_unused]] auto const t3 = m_scene_manager.render(context);
         if (m_draw_fps) {
             DrawText(std::to_string(GetFPS()).c_str(), 10, 10, 50, WHITE);
         }

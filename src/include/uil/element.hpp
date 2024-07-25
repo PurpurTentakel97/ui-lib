@@ -7,9 +7,11 @@
 #include "callback.hpp"
 #include <raylib.h>
 #include <uil/alignment.hpp>
-#include <uil/helper_rect.hpp>
+#include <uil/h_rect.hpp>
 
 namespace uil {
+    struct Context;
+
     class UIElement {
     private:
         enum class MoveType {
@@ -102,9 +104,9 @@ namespace uil {
         [[nodiscard]] bool has_stopped_moving() const;
 
         // polymorphic
-        [[nodiscard]] virtual bool check(Vector2 const& mousePosition);
-        [[nodiscard]] virtual bool update();
-        [[nodiscard]] virtual bool render(Font const* font) const;
-        virtual void resize(cpt::Vec2_i const& resolution);
+        [[nodiscard]] virtual bool check(Context const& context);
+        [[nodiscard]] virtual bool update(Context const& context);
+        [[nodiscard]] virtual bool render(Context const& context) const;
+        virtual void resize(Context const& context);
     };
 } // namespace uil

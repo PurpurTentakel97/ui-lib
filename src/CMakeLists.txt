@@ -3,13 +3,13 @@ add_library(ui_lib STATIC)
 target_sources(ui_lib
                PRIVATE
                alignment.cpp
-               helper_rect.cpp
-               helper_vec.cpp
+               element.cpp
+               h_rect.cpp
+               h_vec.cpp
                resolution.cpp
                scene.cpp
                scene_manager.cpp
                text.cpp
-               ui_element.cpp
                window.cpp
                test_scene.cpp
 
@@ -17,14 +17,15 @@ target_sources(ui_lib
                BASE_DIRS include FILES
                include/uil/alignment.hpp
                include/uil/callback.hpp
+               include/uil/context.hpp
+               include/uil/element.hpp
                include/uil/exception.hpp
-               include/uil/helper_rect.hpp
-               include/uil/helper_vec.hpp
+               include/uil/h_rect.hpp
+               include/uil/h_vec.hpp
                include/uil/resolution.hpp
                include/uil/scene.hpp
                include/uil/scene_manager.hpp
                include/uil/text.hpp
-               include/uil/ui_element.hpp
                include/uil/window.hpp
                include/uil/test_scene.hpp
 )
