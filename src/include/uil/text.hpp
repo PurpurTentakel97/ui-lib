@@ -11,17 +11,17 @@ namespace uil {
     private:
         float m_relative_font_size;
         float m_font_size;
+        Alignment m_text_alignment = Alignment::TopLeft;
         std::string m_text{};
         float m_spacing        = 3.0f;
         Color m_color          = WHITE;
 
     public:
-        Callback<Text&, float> on_text_size_changed{};
-        Callback<Text&, std::string> on_text_changed{};
-        Callback<Text&, float> on_spacing_changed{};
-        Callback<Text&, Color> on_color_changed{};
+        Callback<Text&> on_text_size_changed{};
+        Callback<Text&> on_text_changed{};
+        Callback<Text&> on_spacing_changed{};
+        Callback<Text&> on_color_changed{};
 
-        Text(Rectangle relative, Alignment alignment, cpt::Vec2_i resolution, float font_size, std::string text);
         Text(Rectangle relative, Alignment alignment, cpt::Vec2_i resolution, float font_size);
 
         void set_text(std::string text);

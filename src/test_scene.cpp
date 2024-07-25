@@ -21,7 +21,8 @@ namespace uil {
     }
 
     TestScene::TestScene(cpt::Vec2_i const resolution) {
-        m_text = &emplace_element<Text>(Rectangle{ 0.25f, 0.5f, 0.25f, 0.25f }, Alignment::MidMid, resolution, 0.1f);
+        m_text = &emplace_element<Text>(
+                Rectangle{ 0.25f, 0.5f, 0.25f, 0.25f }, Alignment::MidMid, resolution, 0.1f);
         m_text->set_color(PURPLE);
         m_text->set_spacing(3.0f);
         m_text->set_text("Bester Text");
