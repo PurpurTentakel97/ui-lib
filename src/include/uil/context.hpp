@@ -10,8 +10,8 @@
 
 namespace uil {
     struct Context final {
-        Vector2 mouse_position{};
-        Font const* font{};
-        cpt::Vec2_i resolution{};
+        Vector2 mouse_position;
+        Font const* font;
+        cpt::Vec2_i resolution;
     };
 }

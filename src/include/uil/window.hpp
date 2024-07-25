@@ -8,6 +8,8 @@
 #include <uil/scene_manager.hpp>
 
 namespace uil {
+    struct Context;
+
     class Window final {
     private:
         bool m_owner    = true;
@@ -16,7 +18,8 @@ namespace uil {
         SceneManager m_scene_manager{};
         Font m_font{};
 
-        void check_resolution() const;
+        void update_resolution();
+        [[nodiscard]] Context create_context() const;
 
     public:
         Window(cpt::Vec2_i resolution, char const* title);

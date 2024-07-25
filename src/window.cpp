@@ -3,19 +3,22 @@
 // 30.05.24
 //
 
-#include <uil/context.hpp>
 #include <raylib.h>
 #include <string>
+#include <uil/context.hpp>
 #include <uil/test_scene.hpp>
 #include <uil/window.hpp>
 
 namespace uil {
-    void Window::check_resolution() const {
+    void Window::update_resolution() {
         if (IsWindowResized()) {
-            auto const resolution = cpt::Vec2_i{ GetRenderWidth(), GetRenderHeight() };
-            auto const context    = Context{ GetMousePosition(), &m_font, resolution };
-            m_scene_manager.resize(context);
+            m_resolution       = cpt::Vec2_i{ GetRenderWidth(), GetRenderHeight() };
+            m_scene_manager.resize(create_context());
         }
+    }
+
+    Context Window::create_context() const {
+        return Context{ GetMousePosition(), &m_font, m_resolution };
     }
 
     Window::Window(cpt::Vec2_i const resolution, char const* const title) : m_resolution{ resolution } {
@@ -31,10 +34,10 @@ namespace uil {
     }
 
     void Window::update() {
-        auto const context = Context(GetMousePosition(), &m_font, m_resolution);
+        auto const context = create_context();
 
         // updating
-        check_resolution();
+        update_resolution();
         [[maybe_unused]] auto const t1 = m_scene_manager.check(context);
         [[maybe_unused]] auto const t2 = m_scene_manager.update(context);
 
