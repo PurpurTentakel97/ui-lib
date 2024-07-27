@@ -24,8 +24,8 @@ namespace uil {
                 "dijidiholleri. Und jedza moand, !");
 
         auto constexpr points = std::array<Vector2, 2>{
-            Vector2{ 0.5f,  0.5f },
-            Vector2{ 0.6f,  0.5f },
+            Vector2{ 0.5f, 0.5f },
+            Vector2{ 0.6f, 0.5f },
         };
 
         // clang-format off
@@ -42,8 +42,9 @@ namespace uil {
         };
         // clang-format on
 
-        auto constexpr colors = std::array<Color,2>{
-            WHITE, RED,
+        auto constexpr colors = std::array<Color, 2>{
+            WHITE,
+            RED,
         };
 
         for (cpt::usize i = 0; i < 2; ++i) {
