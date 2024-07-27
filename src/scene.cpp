@@ -6,10 +6,11 @@
 #include <uil/context.hpp>
 #include <uil/element.hpp>
 #include <uil/scene.hpp>
+#include <ranges>
 
 namespace uil {
     bool Scene::check(Context const& context) const {
-        for (auto const& e : m_elements) {
+        for (auto const& e : std::ranges::views::reverse(m_elements)) {
             if (not e->check(context)) {
                 return false;
             }
@@ -19,7 +20,7 @@ namespace uil {
     }
 
     bool Scene::update(Context const& context) const {
-        for (auto const& e : m_elements) {
+        for (auto const& e : std::ranges::views::reverse(m_elements)) {
             if (not e->update(context)) {
                 return false;
             }
