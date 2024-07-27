@@ -4,12 +4,14 @@
 //
 
 #pragma once
-#include "callback.hpp"
 #include <raylib.h>
 #include <uil/alignment.hpp>
-#include <uil/helper_rect.hpp>
+#include <uil/callback.hpp>
+#include <uil/h_rect.hpp>
 
 namespace uil {
+    struct Context;
+
     class UIElement {
     private:
         enum class MoveType {
@@ -52,6 +54,9 @@ namespace uil {
         void constant();
 
 
+    protected:
+        [[nodiscard]] cpt::Vec2_i resolution() const;
+
     public:
         Callback<UIElement&> on_movement_start{};
         Callback<UIElement&> on_movement_stop{};
@@ -86,8 +91,8 @@ namespace uil {
         void set_alignment(Alignment alignment);
         [[nodiscard]] Alignment alignment() const;
 
-        void set_render_collider(bool render);
-        [[nodiscard]] bool render_collider() const;
+        void set_render_collider_debug(bool render);
+        [[nodiscard]] bool render_collider_debug() const;
 
         // movement
         [[nodiscard]] bool is_moving() const;
@@ -102,9 +107,9 @@ namespace uil {
         [[nodiscard]] bool has_stopped_moving() const;
 
         // polymorphic
-        [[nodiscard]] virtual bool check(Vector2 const& mousePosition);
-        [[nodiscard]] virtual bool update();
-        [[nodiscard]] virtual bool render(Font const* font) const;
-        virtual void resize(cpt::Vec2_i const& resolution);
+        [[nodiscard]] virtual bool check(Context const& context);
+        [[nodiscard]] virtual bool update(Context const& context);
+        [[nodiscard]] virtual bool render(Context const& context) const;
+        virtual void resize(Context const& context);
     };
 } // namespace uil

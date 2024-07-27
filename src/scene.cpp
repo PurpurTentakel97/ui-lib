@@ -3,13 +3,14 @@
 // 06.07.24
 //
 
+#include <uil/context.hpp>
+#include <uil/element.hpp>
 #include <uil/scene.hpp>
-#include <uil/ui_element.hpp>
 
 namespace uil {
-    bool Scene::check(Vector2 const& mousePosition) const {
+    bool Scene::check(Context const& context) const {
         for (auto const& e : m_elements) {
-            if (not e->check(mousePosition)) {
+            if (not e->check(context)) {
                 return false;
             }
         }
@@ -17,9 +18,9 @@ namespace uil {
         return true;
     }
 
-    bool Scene::update() const {
+    bool Scene::update(Context const& context) const {
         for (auto const& e : m_elements) {
-            if (not e->update()) {
+            if (not e->update(context)) {
                 return false;
             }
         }
@@ -27,9 +28,9 @@ namespace uil {
         return true;
     }
 
-    bool Scene::render(Font const* const font) const {
+    bool Scene::render(Context const& context) const {
         for (auto const& e : m_elements) {
-            if (not e->render(font)) {
+            if (not e->render(context)) {
                 return false;
             }
         }
@@ -37,9 +38,9 @@ namespace uil {
         return true;
     }
 
-    void Scene::resize(cpt::Vec2_i const& resolution) const {
+    void Scene::resize(Context const& context) const {
         for (auto const& e : m_elements) {
-            e->resize(resolution);
+            e->resize(context);
         }
         on_resize.invoke(*this);
     }

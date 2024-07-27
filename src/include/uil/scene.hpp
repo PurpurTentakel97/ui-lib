@@ -6,10 +6,12 @@
 #pragma once
 
 #include <memory>
-#include <uil/ui_element.hpp>
+#include <uil/element.hpp>
 #include <vector>
 
 namespace uil {
+    struct Context;
+
     class Scene {
     private:
         std::vector<std::unique_ptr<UIElement>> m_elements{};
@@ -38,9 +40,9 @@ namespace uil {
         Scene& operator=(Scene&&)      = delete;
         virtual ~Scene()               = default;
 
-        [[nodiscard]] virtual bool check(Vector2 const& mousePosition) const;
-        [[nodiscard]] virtual bool update() const;
-        [[nodiscard]] virtual bool render(Font const* font) const;
-        virtual void resize(cpt::Vec2_i const& resolution) const;
+        [[nodiscard]] virtual bool check(Context const& context) const;
+        [[nodiscard]] virtual bool update(Context const& context) const;
+        [[nodiscard]] virtual bool render(Context const& context) const;
+        virtual void resize(Context const& context) const;
     };
 }; // namespace uil
