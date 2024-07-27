@@ -87,7 +87,6 @@ namespace uil {
                 auto const last_size = text_size(last.second);
                 auto const spacing   = next_paragraph ? m_paragraph_spacing : m_line_spacing;
                 next_paragraph       = false;
-
                 m_draw_text.emplace_back(Vector2(0.0f, last.first.y + last_size.y + spacing),
                                          m_raw_text.substr(lhs, rhs - lhs));
             }
@@ -127,6 +126,8 @@ namespace uil {
                 rhs                  = lower_rhs == std::string::npos ? rhs_temp : lower_rhs;
                 add();
             }
+
+            rhs = rhs_temp;
             ++rhs;
         }
     }
