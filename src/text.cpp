@@ -3,7 +3,6 @@
 // 07.07.24
 //
 
-#include <iostream>
 #include <uil/context.hpp>
 #include <uil/text.hpp>
 
@@ -59,9 +58,6 @@ namespace uil {
 
         height(to_vertical_alignment(m_text_alignment));
         width(to_horizontal_alignment(m_text_alignment));
-
-        std::cout << "TODO: text.cpp - align() // Need to implement\n"; // @todo remove iostream import
-        // @todo implement alignment here
     }
 
     void Text::break_() {
@@ -231,11 +227,13 @@ namespace uil {
             m_draw_text = {
                 { Vector2(0.0f, 0.0f), m_raw_text }
             };
+            on_draw_text_updated.invoke(*this);
             return;
         }
 
         break_();
         align();
+        on_draw_text_updated.invoke(*this);
     }
 
     bool Text::check(Context const& context) {

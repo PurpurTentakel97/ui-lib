@@ -41,6 +41,7 @@ namespace uil {
         Callback<Text&, float, float> on_paragraph_spacing_chanced{};
         Callback<Text&, Alignment, Alignment> on_text_alignment_chanced{};
         Callback<Text&, bool, bool> on_breaking_chanced{};
+        Callback<Text&> on_draw_text_updated{};
 
         Text(Rectangle relative, Alignment alignment, cpt::Vec2_i resolution);
 
