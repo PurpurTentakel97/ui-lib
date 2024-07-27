@@ -29,6 +29,7 @@ namespace uil {
         Rectangle m_relative{}; // m_relative needs to be initialized bevor m_collider
         Rectangle m_collider{}; // m_relative needs to be initialized bevor m_collider
         bool m_render_collider = false;
+        bool m_hovered         = false;
 
         // movement
         MoveType m_move_type      = MoveType::None;
@@ -93,6 +94,8 @@ namespace uil {
 
         void set_render_collider_debug(bool render);
         [[nodiscard]] bool render_collider_debug() const;
+
+        [[nodiscard]] bool hovered() const;
 
         // movement
         [[nodiscard]] bool is_moving() const;

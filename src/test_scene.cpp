@@ -3,11 +3,10 @@
 // 06.07.24
 //
 
-
 #include <array>
 #include <string>
+#include <uil/link.hpp>
 #include <uil/test_scene.hpp>
-#include <uil/text.hpp>
 
 namespace uil {
 
@@ -24,16 +23,9 @@ namespace uil {
                 "Wos obandln nix Gwiass woass ma ned oamoi und sei hawadere midananda Broadwurschtbudn trihöleridi "
                 "dijidiholleri. Und jedza moand, !");
 
-        auto constexpr points = std::array<Vector2, 9>{
-            Vector2{ 0.16f, 0.16f },
-            Vector2{ 0.5f,  0.16f },
-            Vector2{ 0.83f, 0.16f },
-            Vector2{ 0.16f, 0.5f  },
-            Vector2{ 0.5f,  0.5f  },
-            Vector2{ 0.83f, 0.5f  },
-            Vector2{ 0.16f, 0.83f },
-            Vector2{ 0.5f,  0.83f },
-            Vector2{ 0.83f, 0.83f },
+        auto constexpr points = std::array<Vector2, 2>{
+            Vector2{ 0.5f, 0.5f },
+            Vector2{ 0.6f, 0.5f },
         };
 
         // clang-format off
@@ -50,11 +42,18 @@ namespace uil {
         };
         // clang-format on
 
-        for (cpt::usize i = 0; i < 9; ++i) {
-            [[maybe_unused]] auto const text = &emplace_element<Text>(
+        auto constexpr colors = std::array<Color, 2>{
+            WHITE,
+            RED,
+        };
+
+        for (cpt::usize i = 0; i < 2; ++i) {
+            [[maybe_unused]] auto const text = &emplace_element<Link>(
                     Rectangle{ points[i].x, points[i].y, 0.3f, 0.3f }, Alignment::MidMid, resolution);
             text->set_text(raw_text);
+            text->set_link("https://test-conf.de");
             // text->set_render_collider_debug(true);
+            text->set_color(colors[i]);
             text->set_text_alignment(alignment[i]);
             text->set_breaking(true);
             text->update_text();

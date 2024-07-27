@@ -6,6 +6,7 @@ target_sources(ui_lib
                element.cpp
                h_rect.cpp
                h_vec.cpp
+               link.cpp
                resolution.cpp
                scene.cpp
                scene_manager.cpp
@@ -22,6 +23,7 @@ target_sources(ui_lib
                include/uil/exception.hpp
                include/uil/h_rect.hpp
                include/uil/h_vec.hpp
+               include/uil/link.hpp
                include/uil/resolution.hpp
                include/uil/scene.hpp
                include/uil/scene_manager.hpp

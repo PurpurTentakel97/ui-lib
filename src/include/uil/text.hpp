@@ -32,6 +32,15 @@ namespace uil {
         void align();
         void break_();
 
+    protected:
+        void render_text(Context const& context, Color color) const;
+        [[nodiscard]] DrawText draw_text() const;
+        [[nodiscard]] float absolute_font_size() const;
+        [[nodiscard]] float absolute_letter_spacing() const;
+        [[nodiscard]] float absolute_line_spacing() const;
+        [[nodiscard]] float absolute_paragraph_spacing() const;
+
+
     public:
         Callback<Text&, float, float> on_text_size_changed{};
         Callback<Text&, std::string const&, std::string const&> on_text_changed{};

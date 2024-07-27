@@ -9,23 +9,23 @@
 
 namespace uil {
     bool Scene::check(Context const& context) const {
+        auto keep_checking = true;
         for (auto const& e : m_elements) {
-            if (not e->check(context)) {
-                return false;
-            }
+            keep_checking &= e->check(context);
         }
         on_check.invoke(*this);
-        return true;
+        return keep_checking;
+
+
     }
 
     bool Scene::update(Context const& context) const {
+        auto keep_updating = true;
         for (auto const& e : m_elements) {
-            if (not e->update(context)) {
-                return false;
-            }
+            keep_updating &= e->update(context);
         }
         on_update.invoke(*this);
-        return true;
+        return keep_updating;
     }
 
     bool Scene::render(Context const& context) const {

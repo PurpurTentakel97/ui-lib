@@ -186,6 +186,10 @@ namespace uil {
         return m_render_collider;
     }
 
+    bool UIElement::hovered() const {
+        return m_hovered;
+    }
+
     bool UIElement::is_moving() const {
         return m_move_type != MoveType::None;
     }
@@ -242,8 +246,9 @@ namespace uil {
         return m_last_move_type != MoveType::None and m_move_type == MoveType::None;
     }
 
-    bool UIElement::check(Context const&) {
+    bool UIElement::check(Context const& context) {
         m_last_move_type = m_move_type;
+        m_hovered        = CheckCollisionPointRec(context.mouse_position, m_collider);
         on_check.invoke(*this);
         return true;
     }
