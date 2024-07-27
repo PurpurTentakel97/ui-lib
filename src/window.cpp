@@ -12,7 +12,7 @@
 namespace uil {
     void Window::update_resolution() {
         if (IsWindowResized()) {
-            m_resolution       = cpt::Vec2_i{ GetRenderWidth(), GetRenderHeight() };
+            m_resolution = cpt::Vec2_i{ GetRenderWidth(), GetRenderHeight() };
             m_scene_manager.resize(create_context());
         }
     }
@@ -23,14 +23,12 @@ namespace uil {
 
     Window::Window(cpt::Vec2_i const resolution, char const* const title) : m_resolution{ resolution } {
         InitWindow(resolution.x, resolution.y, title);
-        m_font = LoadFont("../default_assets/font.ttf"); // @TODO Move this into a extra data data member
+        m_font = LoadFont("assets/font.ttf");
         m_scene_manager.add_scene(std::make_unique<TestScene>(resolution));
     }
 
     Window::~Window() {
-        if (m_owner) {
-            CloseWindow();
-        }
+        CloseWindow();
     }
 
     void Window::update() {
@@ -45,17 +43,19 @@ namespace uil {
         BeginDrawing();
         ClearBackground(BLACK);
         [[maybe_unused]] auto const t3 = m_scene_manager.render(context);
+#ifdef _DEBUG
         if (m_draw_fps) {
             DrawText(std::to_string(GetFPS()).c_str(), 10, 10, 50, WHITE);
         }
+#endif
         EndDrawing();
     }
 
-    void Window::set_draw_fps(bool const draw_fps) {
+    void Window::set_draw_fps_debug(bool const draw_fps) {
         m_draw_fps = draw_fps;
     }
 
-    bool Window::draw_fps() const {
+    bool Window::draw_fps_debug() const {
         return m_draw_fps;
     }
 
