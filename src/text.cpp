@@ -97,8 +97,8 @@ namespace uil {
           m_paragraph_spacing{ static_cast<float>(resolution.y) * m_relative_paragraph_spacing } { }
 
     void Text::set_text(std::string text) {
-        m_raw_text = std::move(text);
-        on_text_changed.invoke(*this);
+        auto const old = std::exchange(m_raw_text, std::move(text));
+        on_text_changed.invoke(*this, m_raw_text, old);
     }
 
     std::string Text::text() const {
@@ -106,9 +106,9 @@ namespace uil {
     }
 
     void Text::set_font_size(float const size) {
-        m_relative_font_size = size;
-        m_font_size          = m_relative_font_size * static_cast<float>(resolution().y);
-        on_text_size_changed.invoke(*this);
+        auto const old = std::exchange(m_relative_font_size, size);
+        m_font_size    = m_relative_font_size * static_cast<float>(resolution().y);
+        on_text_size_changed.invoke(*this, m_relative_font_size, old);
     }
 
     float Text::font_size() const {
@@ -116,9 +116,9 @@ namespace uil {
     }
 
     void Text::set_letter_spacing(float const spacing) {
-        m_relative_letter_spacing = spacing;
-        m_letter_spacing          = static_cast<float>(resolution().x) * m_relative_letter_spacing;
-        on_letter_spacing_changed.invoke(*this);
+        auto const old   = std::exchange(m_relative_line_spacing, spacing);
+        m_letter_spacing = static_cast<float>(resolution().x) * m_relative_letter_spacing;
+        on_letter_spacing_changed.invoke(*this, m_relative_letter_spacing, old);
     }
 
     float Text::letter_spacing() const {
@@ -126,8 +126,9 @@ namespace uil {
     }
 
     void Text::set_line_spacing(float const spacing) {
-        m_relative_line_spacing = spacing;
-        m_line_spacing          = static_cast<float>(resolution().y) * m_relative_line_spacing;
+        auto const old = std::exchange(m_relative_line_spacing, spacing);
+        m_line_spacing = static_cast<float>(resolution().y) * m_relative_line_spacing;
+        on_line_spacing_chanced.invoke(*this, m_relative_line_spacing, old);
     }
 
     float Text::line_spacing() const {
@@ -135,8 +136,9 @@ namespace uil {
     }
 
     void Text::set_paragraph_spacing(float const spacing) {
-        m_relative_paragraph_spacing = spacing;
-        m_paragraph_spacing          = static_cast<float>(resolution().y) * m_relative_paragraph_spacing;
+        auto const old      = std::exchange(m_relative_paragraph_spacing, spacing);
+        m_paragraph_spacing = static_cast<float>(resolution().y) * m_relative_paragraph_spacing;
+        on_paragraph_spacing_chanced.invoke(*this, m_relative_paragraph_spacing, old);
     }
 
     float Text::paragraph_spacing() const {
@@ -144,8 +146,8 @@ namespace uil {
     }
 
     void Text::set_color(Color const color) {
-        m_color = color;
-        on_color_changed.invoke(*this);
+        auto const old = std::exchange(m_color, color);
+        on_color_changed.invoke(*this, m_color, old);
     }
 
     Color Text::color() const {
@@ -153,7 +155,8 @@ namespace uil {
     }
 
     void Text::set_text_alignment(Alignment const alignment) {
-        m_text_alignment = alignment;
+        auto const old = std::exchange(m_text_alignment, alignment);
+        on_text_alignment_chanced.invoke(*this, m_text_alignment, old);
     }
 
     Alignment Text::text_alignment() const {
@@ -161,18 +164,19 @@ namespace uil {
     }
 
     void Text::set_breaking(bool const breaking) {
-        m_breaking = breaking;
+        auto const old = std::exchange(m_breaking, breaking);
+        on_breaking_chanced.invoke(*this, m_breaking, old);
     }
 
     bool Text::breaking() const {
         return m_breaking;
     }
 
-    void Text::set_render_line_collider(bool const draw) {
+    void Text::set_render_line_collider_debug(bool const draw) {
         m_render_line_collider = draw;
     }
 
-    bool Text::render_line_collider() const {
+    bool Text::render_line_collider_debug() const {
         return m_render_line_collider;
     }
 
@@ -214,6 +218,7 @@ namespace uil {
                     );
             // clang-format on
 
+#ifdef _DEBUG
             if (m_render_line_collider) {
                 auto const text_size = [size = m_font_size, font = context.font, spacing = m_letter_spacing](
                                                std::string const& text) -> Vector2 {
@@ -226,6 +231,8 @@ namespace uil {
                                    static_cast<int>(text_size.y),
                                    WHITE);
             }
+#endif
+
         }
         return keep_updating;
     }

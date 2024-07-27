@@ -91,8 +91,8 @@ namespace uil {
         void set_alignment(Alignment alignment);
         [[nodiscard]] Alignment alignment() const;
 
-        void set_render_collider(bool render);
-        [[nodiscard]] bool render_collider() const;
+        void set_render_collider_debug(bool render);
+        [[nodiscard]] bool render_collider_debug() const;
 
         // movement
         [[nodiscard]] bool is_moving() const;

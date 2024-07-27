@@ -33,10 +33,14 @@ namespace uil {
         void break_();
 
     public:
-        Callback<Text&> on_text_size_changed{};
-        Callback<Text&> on_text_changed{};
-        Callback<Text&> on_letter_spacing_changed{};
-        Callback<Text&> on_color_changed{};
+        Callback<Text&, float, float> on_text_size_changed{};
+        Callback<Text&, std::string const&, std::string const&> on_text_changed{};
+        Callback<Text&, float, float> on_letter_spacing_changed{};
+        Callback<Text&, Color, Color> on_color_changed{};
+        Callback<Text&, float, float> on_line_spacing_chanced{};
+        Callback<Text&, float, float> on_paragraph_spacing_chanced{};
+        Callback<Text&, Alignment, Alignment> on_text_alignment_chanced{};
+        Callback<Text&, bool, bool> on_breaking_chanced{};
 
         Text(Rectangle relative, Alignment alignment, cpt::Vec2_i resolution);
 
@@ -64,8 +68,8 @@ namespace uil {
         void set_breaking(bool breaking);
         [[nodiscard]] bool breaking() const;
 
-        void set_render_line_collider(bool draw);
-        [[nodiscard]] bool render_line_collider() const;
+        void set_render_line_collider_debug(bool draw);
+        [[nodiscard]] bool render_line_collider_debug() const;
 
         void update_text();
 

@@ -178,11 +178,11 @@ namespace uil {
         return m_alignment;
     }
 
-    void UIElement::set_render_collider(bool const render) {
+    void UIElement::set_render_collider_debug(bool const render) {
         m_render_collider = render;
     }
 
-    bool UIElement::render_collider() const {
+    bool UIElement::render_collider_debug() const {
         return m_render_collider;
     }
 
@@ -265,9 +265,11 @@ namespace uil {
         return true;
     }
     bool UIElement::render(Context const&) const {
+#ifdef _DEBUG
         if (m_render_collider) {
             DrawRectangleLinesEx(m_collider, 2.0f, WHITE);
         }
+#endif
         on_draw.invoke(*this);
         return true;
     }
