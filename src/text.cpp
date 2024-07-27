@@ -132,6 +132,57 @@ namespace uil {
         }
     }
 
+    void Text::render_text(Context const& context, Color const color) const {
+
+        for (auto const& e : m_draw_text) {
+            // clang-format off
+            DrawTextEx(
+                    *(context.font),
+                    e.second.c_str(),
+                    { collider_aligned().x + e.first.x, collider_aligned().y + e.first.y },
+                    m_font_size,
+                    m_letter_spacing,
+                    color
+                    );
+            // clang-format on
+
+#ifdef _DEBUG
+            if (m_render_line_collider) {
+                auto const text_size = [size = m_font_size, font = context.font, spacing = m_letter_spacing](
+                                               std::string const& text) -> Vector2 {
+                    return MeasureTextEx(*font, text.c_str(), size, spacing);
+                }(e.second);
+
+                DrawRectangleLines(static_cast<int>(collider_aligned().x + e.first.x),
+                                   static_cast<int>(collider_aligned().y + e.first.y),
+                                   static_cast<int>(text_size.x),
+                                   static_cast<int>(text_size.y),
+                                   WHITE);
+            }
+#endif
+        }
+    }
+
+    Text::DrawText Text::draw_text() const {
+        return m_draw_text;
+    }
+
+    float Text::absolute_font_size() const {
+        return m_font_size;
+    }
+
+    float Text::absolute_letter_spacing() const {
+        return m_letter_spacing;
+    }
+
+    float Text::absolute_line_spacing() const {
+        return m_line_spacing;
+    }
+
+    float Text::absolute_paragraph_spacing() const {
+        return m_paragraph_spacing;
+    }
+
     Text::Text(Rectangle const relative, Alignment const alignment, cpt::Vec2_i const resolution)
         : UIElement{ relative, alignment, resolution },
           m_font_size{ m_relative_font_size * static_cast<float>(resolution.y) },
@@ -165,7 +216,7 @@ namespace uil {
     }
 
     float Text::letter_spacing() const {
-        return m_letter_spacing;
+        return m_relative_letter_spacing;
     }
 
     void Text::set_line_spacing(float const spacing) {
@@ -251,33 +302,8 @@ namespace uil {
     bool Text::render(Context const& context) const {
         auto const keep_updating = UIElement::render(context);
 
-        for (auto const& e : m_draw_text) {
-            // clang-format off
-            DrawTextEx(
-                    *(context.font),
-                    e.second.c_str(),
-                    { collider_aligned().x + e.first.x, collider_aligned().y + e.first.y },
-                    m_font_size,
-                    m_letter_spacing,
-                    m_color
-                    );
-            // clang-format on
+        render_text(context, m_color);
 
-#ifdef _DEBUG
-            if (m_render_line_collider) {
-                auto const text_size = [size = m_font_size, font = context.font, spacing = m_letter_spacing](
-                                               std::string const& text) -> Vector2 {
-                    return MeasureTextEx(*font, text.c_str(), size, spacing);
-                }(e.second);
-
-                DrawRectangleLines(static_cast<int>(collider_aligned().x + e.first.x),
-                                   static_cast<int>(collider_aligned().y + e.first.y),
-                                   static_cast<int>(text_size.x),
-                                   static_cast<int>(text_size.y),
-                                   WHITE);
-            }
-#endif
-        }
         return keep_updating;
     }
 
