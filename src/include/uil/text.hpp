@@ -18,7 +18,7 @@ namespace uil {
         Alignment m_text_alignment         = Alignment::TopLeft;
         bool m_breaking                    = false;
         bool m_render_line_collider        = false;
-        float m_relative_font_size         = 0.05f;
+        float m_relative_font_size         = 0.015f;
         float m_relative_letter_spacing    = 0.001f;
         float m_relative_line_spacing      = 0.001f;
         float m_relative_paragraph_spacing = 0.01f;

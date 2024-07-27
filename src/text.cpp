@@ -134,7 +134,7 @@ namespace uil {
 
     Text::Text(Rectangle const relative, Alignment const alignment, cpt::Vec2_i const resolution)
         : UIElement{ relative, alignment, resolution },
-          m_font_size{ m_relative_font_size * collider_aligned().height },
+          m_font_size{ m_relative_font_size * static_cast<float>(resolution.y) },
           m_letter_spacing{ static_cast<float>(resolution.x) * m_relative_letter_spacing },
           m_line_spacing{ static_cast<float>(resolution.y) * m_relative_line_spacing },
           m_paragraph_spacing{ static_cast<float>(resolution.y) * m_relative_paragraph_spacing } { }
@@ -283,7 +283,10 @@ namespace uil {
 
     void Text::resize(Context const& context) {
         UIElement::resize(context);
-        m_font_size = m_relative_font_size * collider_aligned().height;
+        m_font_size         = m_relative_font_size * static_cast<float>(context.resolution.y);
+        m_letter_spacing    = m_relative_letter_spacing * static_cast<float>(context.resolution.x);
+        m_line_spacing      = m_relative_line_spacing * static_cast<float>(context.resolution.y);
+        m_paragraph_spacing = m_relative_paragraph_spacing * static_cast<float>(context.resolution.y);
         update_text();
     }
 } // namespace uil
