@@ -50,7 +50,7 @@ namespace uil {
         };
         // clang-format on
 
-        for (auto i = 0; i < 9; ++i) {
+        for (cpt::usize i = 0; i < 9; ++i) {
             [[maybe_unused]] auto const text = &emplace_element<Text>(
                     Rectangle{ points[i].x, points[i].y, 0.3f, 0.3f }, Alignment::MidMid, resolution);
             text->set_text(raw_text);
