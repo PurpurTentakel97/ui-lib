@@ -14,6 +14,52 @@ namespace uil {
             return;
         }
 
+        auto const single_line_size = [&](std::string const& text) {
+            return MeasureTextEx(*m_font, text.c_str(), m_font_size, m_letter_spacing);
+        };
+
+        auto const total_height = [&]() {
+            if (m_draw_text.empty()) {
+                return 0.0f;
+            }
+            if (m_draw_text.size() == 1) {
+                return single_line_size(m_draw_text.front().second).y;
+            }
+            return m_draw_text.back().first.y - m_draw_text.front().first.y
+                 + single_line_size(m_draw_text.back().second).y;
+        }();
+
+        auto const height = [&](VerticalAlignment const alignment) {
+            if (alignment == VerticalAlignment::Top) {
+                return;
+            }
+            auto const offset = (collider_aligned().height - total_height);
+            for (auto& t : m_draw_text) {
+                if (alignment == VerticalAlignment::Mid) {
+                    t.first.y += offset / 2.0f;
+                    continue;
+                }
+                t.first.y += offset;
+            }
+        };
+        auto const width = [&](HorizontalAlignment const alignment) {
+            if (alignment == HorizontalAlignment::Left) {
+                return;
+            }
+            for (auto& t : m_draw_text) {
+                auto const length = single_line_size(t.second).x;
+                auto const offset = (collider_aligned().width - length);
+                if (alignment == HorizontalAlignment::Mid) {
+                    t.first.x += offset / 2.0f;
+                    continue;
+                }
+                t.first.x += offset;
+            }
+        };
+
+        height(to_vertical_alignment(m_text_alignment));
+        width(to_horizontal_alignment(m_text_alignment));
+
         std::cout << "TODO: text.cpp - align() // Need to implement\n"; // @todo remove iostream import
         // @todo implement alignment here
     }
@@ -232,7 +278,6 @@ namespace uil {
                                    WHITE);
             }
 #endif
-
         }
         return keep_updating;
     }

@@ -54,11 +54,11 @@ namespace uil {
             [[maybe_unused]] auto const text = &emplace_element<Text>(
                     Rectangle{ points[i].x, points[i].y, 0.3f, 0.3f }, Alignment::MidMid, resolution);
             text->set_text(raw_text);
-            text->set_render_collider_debug(true);
+            // text->set_render_collider_debug(true);
             text->set_text_alignment(alignment[i]);
             text->set_breaking(true);
             text->update_text();
-            text->set_render_line_collider_debug(true);
+            // text->set_render_line_collider_debug(true);
         }
     }
 
