@@ -100,6 +100,10 @@ namespace uil {
         move(distance);
     }
 
+    cpt::Vec2_i UIElement::resolution() const {
+        return m_resolution;
+    }
+
     UIElement::UIElement(Rectangle const relative, Alignment const alignment, cpt::Vec2_i const resolution)
         : m_resolution{ resolution },
           m_alignment{ alignment },

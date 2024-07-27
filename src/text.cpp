@@ -8,17 +8,6 @@
 #include <uil/text.hpp>
 
 namespace uil {
-    void Text::update_() {
-        m_aligned_text = m_raw_text;
-
-        if (not m_font) {
-            return;
-        }
-
-        break_();
-        align();
-    }
-
     void Text::align() {
 
         if (not m_font) { // also checked in update_(). just to be shure because it could be called directly
@@ -30,26 +19,85 @@ namespace uil {
     }
 
     void Text::break_() {
-
-        if (not m_font) { // also checked in update_(). just to be shure because it could be called directly
+        auto const extra_breaking = m_breaking or m_font != nullptr;
+        if (not extra_breaking) {
+            m_draw_text = {
+                { Vector2(0.0f, 0.0f), m_raw_text }
+            };
             return;
         }
 
-        if (not m_breaking) {
-            return;
+        cpt::usize lhs      = 0;
+        cpt::usize rhs      = 0;
+        m_draw_text         = DrawText();
+        bool next_paragraph = false;
+
+        auto const text_size
+                = [size = m_font_size, font = m_font, spacing = m_letter_spacing](std::string const& text) {
+                      return MeasureTextEx(*font, text.c_str(), size, spacing);
+                  };
+
+        auto const add = [&]() {
+            if (m_draw_text.empty()) {
+                m_draw_text.emplace_back(Vector2(0.0f, 0.0f), m_raw_text.substr(lhs, rhs - lhs));
+            } else {
+                auto const last      = m_draw_text.back();
+                auto const last_size = text_size(last.second);
+                auto const spacing   = next_paragraph ? m_paragraph_spacing : m_line_spacing;
+                next_paragraph       = false;
+
+                m_draw_text.emplace_back(Vector2(0.0f, last.first.y + last_size.y + spacing),
+                                         m_raw_text.substr(lhs, rhs - lhs));
+            }
+
+            if (rhs == std::string::npos) {
+                return;
+            }
+
+            ++rhs;
+            lhs = rhs;
+        };
+
+
+        while (true) {
+            auto rhs_temp = m_raw_text.find_first_of('\n', rhs);
+            if (rhs_temp != std::string::npos) {
+                auto const size = text_size(m_raw_text.substr(lhs, rhs_temp - lhs));
+                if (size.x < collider_aligned().width) {
+                    rhs = rhs_temp;
+                    add();
+                    next_paragraph = true;
+                    continue;
+                }
+            }
+
+            rhs_temp = m_raw_text.find_first_of(' ', rhs);
+
+            if (rhs_temp == std::string::npos) {
+                rhs = rhs_temp;
+                add();
+                break;
+            }
+
+            auto const size = text_size(m_raw_text.substr(lhs, rhs_temp - lhs));
+            if (size.x > collider_aligned().width) {
+                auto const lower_rhs = m_raw_text.find_last_of(' ', rhs - 1);
+                rhs                  = lower_rhs == std::string::npos ? rhs_temp : lower_rhs;
+                add();
+            }
+            ++rhs;
         }
-        std::cout << "TODO: text.cpp - break_() // Need to implement\n"; // @todo remove iostream import
-        // @todo implement break here
     }
 
-    Text::Text(Rectangle const relative, Alignment const alignment, cpt::Vec2_i const resolution, float const font_size)
+    Text::Text(Rectangle const relative, Alignment const alignment, cpt::Vec2_i const resolution)
         : UIElement{ relative, alignment, resolution },
-          m_relative_font_size{ font_size },
-          m_font_size{ m_relative_font_size * collider_aligned().height } { }
+          m_font_size{ m_relative_font_size * collider_aligned().height },
+          m_letter_spacing{ static_cast<float>(resolution.x) * m_relative_letter_spacing },
+          m_line_spacing{ static_cast<float>(resolution.y) * m_relative_line_spacing },
+          m_paragraph_spacing{ static_cast<float>(resolution.y) * m_relative_paragraph_spacing } { }
 
     void Text::set_text(std::string text) {
         m_raw_text = std::move(text);
-        update_();
         on_text_changed.invoke(*this);
     }
 
@@ -57,33 +105,42 @@ namespace uil {
         return m_raw_text;
     }
 
-    void Text::set_relative_font_size(float const size) {
+    void Text::set_font_size(float const size) {
         m_relative_font_size = size;
-        m_font_size          = m_relative_font_size * collider_aligned().height;
+        m_font_size          = m_relative_font_size * static_cast<float>(resolution().y);
         on_text_size_changed.invoke(*this);
     }
 
-    float Text::relative_font_size() const {
+    float Text::font_size() const {
         return m_relative_font_size;
     }
 
-    void Text::set_absolute_font_size(float const size) {
-        m_font_size          = size;
-        m_relative_font_size = collider_aligned().height / m_font_size;
-        on_text_size_changed.invoke(*this);
+    void Text::set_letter_spacing(float const spacing) {
+        m_relative_letter_spacing = spacing;
+        m_letter_spacing          = static_cast<float>(resolution().x) * m_relative_letter_spacing;
+        on_letter_spacing_changed.invoke(*this);
     }
 
-    float Text::absolute_font_size() const {
-        return m_relative_font_size;
+    float Text::letter_spacing() const {
+        return m_letter_spacing;
     }
 
-    void Text::set_spacing(float const spacing) {
-        m_spacing = spacing;
-        on_spacing_changed.invoke(*this);
+    void Text::set_line_spacing(float const spacing) {
+        m_relative_line_spacing = spacing;
+        m_line_spacing          = static_cast<float>(resolution().y) * m_relative_line_spacing;
     }
 
-    float Text::spacing() const {
-        return m_spacing;
+    float Text::line_spacing() const {
+        return m_relative_line_spacing;
+    }
+
+    void Text::set_paragraph_spacing(float const spacing) {
+        m_relative_paragraph_spacing = spacing;
+        m_paragraph_spacing          = static_cast<float>(resolution().y) * m_relative_paragraph_spacing;
+    }
+
+    float Text::paragraph_spacing() const {
+        return m_relative_paragraph_spacing;
     }
 
     void Text::set_color(Color const color) {
@@ -97,7 +154,6 @@ namespace uil {
 
     void Text::set_text_alignment(Alignment const alignment) {
         m_text_alignment = alignment;
-        update_();
     }
 
     Alignment Text::text_alignment() const {
@@ -106,11 +162,30 @@ namespace uil {
 
     void Text::set_breaking(bool const breaking) {
         m_breaking = breaking;
-        update_();
     }
 
     bool Text::breaking() const {
         return m_breaking;
+    }
+
+    void Text::set_render_line_collider(bool const draw) {
+        m_render_line_collider = draw;
+    }
+
+    bool Text::render_line_collider() const {
+        return m_render_line_collider;
+    }
+
+    void Text::update_text() {
+        if (not m_font) {
+            m_draw_text = {
+                { Vector2(0.0f, 0.0f), m_raw_text }
+            };
+            return;
+        }
+
+        break_();
+        align();
     }
 
     bool Text::check(Context const& context) {
@@ -118,7 +193,7 @@ namespace uil {
 
         if (m_font != context.font) {
             m_font = context.font;
-            update_();
+            update_text();
         }
 
         return keep_checking;
@@ -126,22 +201,38 @@ namespace uil {
 
     bool Text::render(Context const& context) const {
         auto const keep_updating = UIElement::render(context);
-        // clang-format off
-        DrawTextEx(
-                *(context.font),
-                m_aligned_text.c_str(),
-                { collider_aligned().x, collider_aligned().y },
-                m_font_size,
-                m_spacing,
-                m_color
-                );
-        // clang-format on
 
+        for (auto const& e : m_draw_text) {
+            // clang-format off
+            DrawTextEx(
+                    *(context.font),
+                    e.second.c_str(),
+                    { collider_aligned().x + e.first.x, collider_aligned().y + e.first.y },
+                    m_font_size,
+                    m_letter_spacing,
+                    m_color
+                    );
+            // clang-format on
+
+            if (m_render_line_collider) {
+                auto const text_size = [size = m_font_size, font = context.font, spacing = m_letter_spacing](
+                                               std::string const& text) -> Vector2 {
+                    return MeasureTextEx(*font, text.c_str(), size, spacing);
+                }(e.second);
+
+                DrawRectangleLines(static_cast<int>(collider_aligned().x + e.first.x),
+                                   static_cast<int>(collider_aligned().y + e.first.y),
+                                   static_cast<int>(text_size.x),
+                                   static_cast<int>(text_size.y),
+                                   WHITE);
+            }
+        }
         return keep_updating;
     }
 
     void Text::resize(Context const& context) {
         UIElement::resize(context);
         m_font_size = m_relative_font_size * collider_aligned().height;
+        update_text();
     }
 } // namespace uil

@@ -3,98 +3,63 @@
 // 06.07.24
 //
 
-#include <iostream>
-#include <uil/context.hpp>
+
+#include <array>
+#include <string>
 #include <uil/test_scene.hpp>
 #include <uil/text.hpp>
 
 namespace uil {
-    void TestScene::start_callback(UIElement const& text) const {
-        std::cout << "started moving - moving: " << text.has_started_moving() << '\n';
-    }
-
-    void TestScene::stop_callback(UIElement const& text) const {
-        std::cout << "stopped moving - stopped: " << text.has_stopped_moving() << '\n';
-    }
-
-    void TestScene::arrived_callback(UIElement const& text) const {
-        std::cout << "arrived - stopped: " << text.has_stopped_moving() << '\n';
-    }
 
     TestScene::TestScene(cpt::Vec2_i const resolution) {
-        m_text = &emplace_element<Text>(Rectangle{ 0.25f, 0.5f, 0.25f, 0.25f }, Alignment::MidMid, resolution, 0.1f);
-        m_text->set_color(PURPLE);
-        m_text->set_spacing(3.0f);
-        m_text->set_text("Bester Text");
-        m_text->set_render_collider(true);
-        m_text->on_movement_start += [this](UIElement const& text) { this->start_callback(text); };
-        m_text->on_movement_stop += [this](UIElement const& text) { this->stop_callback(text); };
-        m_text->on_arrived += [this](UIElement const& text) { this->arrived_callback(text); };
-    }
 
-    bool TestScene::check(Context const& context) const {
-        auto const result = Scene::check(context);
+        auto const raw_text = std::string(
+                "Bavaria ipsum dolor sit amet Wurscht wann griagd ma nacha wos z’dringa oans, auf gehds beim Schichtl "
+                "Hendl wo hi o’ha hoam dahoam: Barfuaßat Namidog spernzaln measi Auffisteign Musi, Oachkatzlschwoaf "
+                "dahoam af schaugn oans. Auffisteign ebba wos hod schüds nei d’ hea nix hoid. Weibaleid schüds nei "
+                "trihöleridi dijidiholleri griasd eich midnand Gamsbart Sauakraud etza unbandig Stubn a so a Schmarn!\n"
+                "Ham allerweil Bussal Ewig und drei Dog naa jo mei is des schee, hallelujah sog i, luja sog i! "
+                "Gamsbart umananda wo hi Schuabladdla und sei Charivari hawadere midananda Fingahaggln aasgem, sowos "
+                "obandln. Sog i zua Sauwedda Reiwadatschi i hob di liab i moan oiwei wiavui Schorsch, a ganze Radi. "
+                "Wos obandln nix Gwiass woass ma ned oamoi und sei hawadere midananda Broadwurschtbudn trihöleridi "
+                "dijidiholleri. Und jedza moand, !");
 
-        static auto start = GetTime();
-        static auto index = 0;
-        auto const inc    = [&i = index]() {
-            ++i;
-            start = GetTime();
-            if (index > 7) {
-                index = 0;
-            }
+        auto constexpr points = std::array<Vector2, 9>{
+            Vector2{ 0.16f, 0.16f },
+            Vector2{ 0.5f,  0.16f },
+            Vector2{ 0.83f, 0.16f },
+            Vector2{ 0.16f, 0.5f  },
+            Vector2{ 0.5f,  0.5f  },
+            Vector2{ 0.83f, 0.5f  },
+            Vector2{ 0.16f, 0.83f },
+            Vector2{ 0.5f,  0.83f },
+            Vector2{ 0.83f, 0.83f },
         };
 
-        if (not m_text->is_moving()) {
-            auto const stop = GetTime();
-            std::cout << "time: " << stop - start << '\n';
-            switch (index) {
-                case 0: m_text->move_to_slow_to_fast(m_bottom_left, 0.5f); break;
-                case 1: m_text->move_to_fast_to_slow(m_bottom_right, 0.2f); break;
-                case 2: m_text->move_to_linear_speed(m_top_right, 0.5f); break;
-                case 3: m_text->move_to_linear_time(m_top_left, 1.0f); break;
-                case 4: m_text->move_to_slow_to_fast(m_bottom_right, 2.0f); break;
-                case 5: m_text->move_to_fast_to_slow(m_top_right, 5.0); break;
-                case 6: m_text->move_to_linear_speed(m_bottom_left, 10.0f); break;
-                case 7: m_text->move_to_linear_time(m_top_left, 15.0f); break;
-            }
-            inc();
-        }
-
-
-        return result;
-    }
-
-    bool TestScene::render(Context const& context) const {
-        auto const result = Scene::render(context);
-
         // clang-format off
-        DrawCircle(
-            static_cast<int>(m_top_left.x * 1920.0f),
-            static_cast<int>(m_top_left.y * 1080.0f),
-            2.0f,
-            WHITE
-            );
-        DrawCircle(
-            static_cast<int>(m_bottom_left.x * 1920.0f),
-            static_cast<int>(m_bottom_left.y * 1080.0f),
-            2.0f,
-                WHITE
-            );
-        DrawCircle(
-            static_cast<int>(m_bottom_right.x * 1920.0f),
-            static_cast<int>(m_bottom_right.y * 1080.0f),
-            2.0f,
-            WHITE
-            );
-        DrawCircle(
-            static_cast<int>(m_top_right.x * 1920.0f),
-            static_cast<int>(m_top_right.y * 1080.0f),
-            2.0f,
-            WHITE
-            );
+        auto constexpr alignment = std::array<Alignment,9>{
+            Alignment::TopLeft,
+            Alignment::TopMid,
+            Alignment::TopRight,
+            Alignment::MidLeft,
+            Alignment::MidMid,
+            Alignment::MidRight,
+            Alignment::BottomLeft,
+            Alignment::BottomMid,
+            Alignment::BottomRight,
+        };
         // clang-format on
 
-        return result;
+        for (auto i = 0; i < 9; ++i) {
+            [[maybe_unused]] auto const text = &emplace_element<Text>(
+                    Rectangle{ points[i].x, points[i].y, 0.3f, 0.3f }, Alignment::MidMid, resolution);
+            text->set_text(raw_text);
+            // text->set_render_collider(true);
+            text->set_text_alignment(alignment[i]);
+            text->set_breaking(true);
+            text->update_text();
+            // text->set_render_line_collider(true);
+        }
     }
+
 } // namespace uil

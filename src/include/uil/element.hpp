@@ -54,6 +54,9 @@ namespace uil {
         void constant();
 
 
+    protected:
+        [[nodiscard]] cpt::Vec2_i resolution() const;
+
     public:
         Callback<UIElement&> on_movement_start{};
         Callback<UIElement&> on_movement_stop{};
