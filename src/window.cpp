@@ -35,6 +35,7 @@ namespace uil {
         auto const context = create_context();
 
         // updating
+        SetMouseCursor(MOUSE_CURSOR_DEFAULT);
         update_resolution();
         [[maybe_unused]] auto const t1 = m_scene_manager.check(context);
         [[maybe_unused]] auto const t2 = m_scene_manager.update(context);
