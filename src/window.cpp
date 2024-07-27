@@ -23,7 +23,7 @@ namespace uil {
 
     Window::Window(cpt::Vec2_i const resolution, char const* const title) : m_resolution{ resolution } {
         InitWindow(resolution.x, resolution.y, title);
-        m_font = LoadFont("assets/font.ttf"); // @TODO Move this into a extra data data member
+        m_font = LoadFont("assets/font.ttf");
         m_scene_manager.add_scene(std::make_unique<TestScene>(resolution));
     }
 
