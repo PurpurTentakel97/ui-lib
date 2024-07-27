@@ -12,8 +12,7 @@ namespace uil {
 
     class Window final {
     private:
-        bool m_owner    = true;
-        bool m_draw_fps = false;
+        bool m_draw_fps = true;
         cpt::Vec2_i m_resolution;
         SceneManager m_scene_manager{};
         Font m_font{};
@@ -31,8 +30,8 @@ namespace uil {
 
         void update();
 
-        void set_draw_fps(bool draw_fps);
-        [[nodiscard]] bool draw_fps() const;
+        void set_draw_fps_debug(bool draw_fps);
+        [[nodiscard]] bool draw_fps_debug() const;
 
         void set_config_flag(ConfigFlags flag, bool enable);
         [[nodiscard]] bool is_config_flag(ConfigFlags flag) const;
