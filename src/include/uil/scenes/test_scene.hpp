@@ -9,12 +9,10 @@
 #include <uil/scene.hpp>
 
 namespace uil {
-    class Text;
-
     class TestScene final : public Scene {
     private:
 
     public:
-        explicit TestScene(cpt::Vec2_i resolution);
+        TestScene(cpt::Vec2_i resolution, int t);
     };
 } // namespace uil

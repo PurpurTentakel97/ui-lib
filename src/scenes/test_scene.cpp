@@ -4,13 +4,16 @@
 //
 
 #include <array>
+#include <iostream>
 #include <string>
 #include <uil/elements/link.hpp>
 #include <uil/scenes/test_scene.hpp>
 
 namespace uil {
 
-    TestScene::TestScene(cpt::Vec2_i const resolution) {
+    TestScene::TestScene(cpt::Vec2_i const resolution, int const t) : Scene{ resolution } {
+
+        std::cout << "Test T: " << t << '\n';
 
         auto const raw_text = std::string(
                 "Bavaria ipsum dolor sit amet Wurscht wann griagd ma nacha wos z’dringa oans, auf gehds beim Schichtl "
