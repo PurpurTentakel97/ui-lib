@@ -3,8 +3,8 @@
 //
 
 #include <raylib.h>
-#include <uil/window.hpp>
 #include <uil/scenes/test_scene.hpp>
+#include <uil/window.hpp>
 
 int main() {
 #ifndef NDEBUG
@@ -13,11 +13,13 @@ int main() {
     auto constexpr title = "ui-lib // release";
 #endif
 
-    auto window = uil::Window({ 1920, 1080 }, title);
-    window.set_config_flag(FLAG_VSYNC_HINT, true);
-    window.set_config_flag(FLAG_MSAA_4X_HINT, true);
-    window.set_config_flag(FLAG_WINDOW_RESIZABLE, true);
-    window.set_config_flag(FLAG_WINDOW_HIGHDPI, true);
+    auto config      = uil::WindowConfig();
+    config.msaa      = true;
+    config.resizable = true;
+    config.v_sync    = true;
+    config.high_dpi  = true;
+
+    auto window = uil::Window({ 1920, 1080 }, title, config);
     window.emplace_scene<uil::TestScene>(10);
 
     while (not WindowShouldClose()) {
