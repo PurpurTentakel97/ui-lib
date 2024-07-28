@@ -102,6 +102,10 @@ namespace uil {
         set_flag(ConfigFlags::FLAG_BORDERLESS_WINDOWED_MODE, boderless);
     }
 
+    bool Window::is_config_flag(ConfigFlags const flag) {
+        return IsWindowState(flag);
+    }
+
     void Window::update() {
         auto const context = create_context();
 
@@ -130,9 +134,4 @@ namespace uil {
     bool Window::draw_fps_debug() const {
         return m_draw_fps;
     }
-
-    bool Window::is_config_flag(ConfigFlags const flag) {
-        return IsWindowState(flag);
-    }
-
 } // namespace uil
