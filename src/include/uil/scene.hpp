@@ -71,7 +71,7 @@ namespace uil {
          * make shure to call Scene::check() and use the return bool.
          *
          * @param context all changes of the last frameall changes of the last frame
-         * @return whether the next scene should keep checking or not
+         * @return whether the next scene should keep checking
          */
         [[nodiscard]] virtual bool check(Context const& context) const;
         /**
@@ -81,7 +81,7 @@ namespace uil {
          * make shure to call Scene::update() and use the return bool.
          *
          * @param context all changes of the last frameall changes of the last frame
-         * @return whether the next scene should keep updating or not
+         * @return whether the next scene should keep updating
          */
         [[nodiscard]] virtual bool update(Context const& context) const;
         /**
@@ -91,7 +91,7 @@ namespace uil {
          * make shure to call Scene::render() and use the return bool.
          *
          * @param context all changes of the last frameall changes of the last frame
-         * @return whether the next scene should keep rendering or not
+         * @return whether the next scene should keep rendering
          */
         [[nodiscard]] virtual bool render(Context const& context) const;
         /**
