@@ -7,7 +7,7 @@
 #include <uil/scenes/test_scene.hpp>
 
 int main() {
-#ifdef _DEBUG
+#ifndef NDEBUG
     auto constexpr title = "ui-lib // debug";
 #else
     auto constexpr title = "ui-lib // release";

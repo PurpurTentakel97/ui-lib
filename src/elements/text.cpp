@@ -146,7 +146,7 @@ namespace uil {
                     );
             // clang-format on
 
-#ifdef _DEBUG
+#ifndef NDEBUG
             if (m_render_line_collider) {
                 auto const text_size = [size = m_font_size, font = context.font, spacing = m_letter_spacing](
                                                std::string const& text) -> Vector2 {

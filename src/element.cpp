@@ -270,7 +270,7 @@ namespace uil {
         return true;
     }
     bool UIElement::render(Context const&) const {
-#ifdef _DEBUG
+#ifndef NDEBUG
         if (m_render_collider) {
             DrawRectangleLinesEx(m_collider, 2.0f, WHITE);
         }

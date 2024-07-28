@@ -42,7 +42,7 @@ namespace uil {
         BeginDrawing();
         ClearBackground(BLACK);
         [[maybe_unused]] auto const t3 = m_scene_manager.render(context);
-#ifdef _DEBUG
+#ifndef NDEBUG
         if (m_draw_fps) {
             DrawText(std::to_string(GetFPS()).c_str(), 10, 10, 50, WHITE);
         }
@@ -59,11 +59,7 @@ namespace uil {
     }
 
     void Window::set_config_flag(ConfigFlags const flag, bool const enable) {
-        if (enable) {
-            SetWindowState(flag);
-        } else {
-            ClearWindowState(flag);
-        }
+        enable ? SetWindowState(flag) : ClearWindowState(flag);
     }
 
     bool Window::is_config_flag(ConfigFlags const flag) const {
