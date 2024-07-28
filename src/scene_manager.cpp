@@ -8,10 +8,6 @@
 #include <ranges>
 
 namespace uil {
-    void SceneManager::add_scene(std::unique_ptr<Scene> scene) {
-        m_scenes.push_back(std::move(scene));
-    }
-
     bool SceneManager::check(Context const& context) const {
         for (auto const& s : std::ranges::views::reverse(m_scenes)) {
             if (not s->check(context)) {

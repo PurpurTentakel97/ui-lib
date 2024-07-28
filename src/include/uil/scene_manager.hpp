@@ -16,7 +16,15 @@ namespace uil {
         std::vector<std::unique_ptr<Scene>> m_scenes{};
 
     public:
-        void add_scene(std::unique_ptr<Scene> scene);
+        template<std::derived_from<Scene> T, typename... Args>
+        T& emplace_scene(Args&&... args)
+            requires(std::constructible_from<T, Args...>)
+        {
+            auto elem = std::make_unique<T>(std::forward<Args>(args)...);
+            auto const temp = elem.get();
+            m_scenes.push_back(std::move(elem));
+            return *temp;
+        }
 
         [[nodiscard]] bool check(Context const& context) const;
         [[nodiscard]] bool update(Context const& context) const;
