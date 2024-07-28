@@ -8,7 +8,7 @@
 #include <gtest/gtest.h>
 #include <tuple>
 #include <uil/exception.hpp>
-#include <uil/h_rect.hpp>
+#include <uil/helper/rect.hpp>
 
 
 TEST(Collider, Exception) {
