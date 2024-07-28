@@ -14,6 +14,11 @@
 #include <vector>
 
 namespace uil {
+    /**
+     * provides a callback. subscribe with operator+= and invoke with member function.
+     * 
+     * @tparam C types that gets provided py the callback when it gets invoked
+     */
     template<typename... C>
     class Callback final {
     private:
@@ -21,6 +26,11 @@ namespace uil {
         std::vector<function> m_callbacks;
 
     public:
+        /**
+         * calls all callbacks that are subsctibt via operator+=.
+         *
+         * @param arguments arguments that gets provided py the callback
+         */
         void invoke(C... arguments) const {
             for (auto const& c : m_callbacks) {
                 assert(c);
@@ -28,18 +38,35 @@ namespace uil {
             }
         }
 
+        /**
+         * deletes all current callbacks.
+         */
         void clear() {
             m_callbacks.clear();
         }
 
+        /**
+         *
+         * @return current number of callbacks.
+         */
         [[nodiscard]] cpt::usize size() const {
             return m_callbacks.size();
         }
 
+        /**
+         *
+         * @return whether the callback is empty
+         */
         [[nodiscard]] bool is_empty() const {
             return m_callbacks.empty();
         }
 
+        /**
+         * stores the provided callback and calles it when invoke is called.
+         *
+         * @param func function for callback
+         * @return callback instance
+         */
         Callback& operator+=(std::convertible_to<function> auto&& func) {
             auto f = function{ std::forward<decltype(func)>(func) };
             if (not f) {
