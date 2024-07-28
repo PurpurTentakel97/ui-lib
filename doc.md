@@ -2,13 +2,11 @@
 |-----------------|-------------------------------------------------------------|
 | ///<            | Public or protected fields                                  |
 | @tparam         | Parameter of a template.                                    |
-| @param[in]      | Parameter of a function. It as in parameter                 |
+| @param          | Parameter of a function. It as in parameter                 |
 | @param[out]     | Parameter of a function. It is used a out parameter         |
 | @param[in, out] | Parameter of a function. It is used as in and out parameter |
-| @returns        | Return value                                                |
-| @throws         | With exception an when its thrown                           |
-| @relatesalso    | used by free-functions to show a related class              |
-| @see            | gives additional infos in any kind; eg. a Link              |
+| @return         | Return value                                                |
+| @throw          | With exception an when its thrown                           |
 
 
 Example:
