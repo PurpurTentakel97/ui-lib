@@ -4,7 +4,7 @@
 //
 
 #include "uil/context.hpp"
-#include <uil/link.hpp>
+#include <uil/elements/link.hpp>
 
 namespace uil {
     void Link::set_color_clicked(Color const color) {

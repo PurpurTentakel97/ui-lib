@@ -5,7 +5,7 @@
 
 #include <cmath>
 #include <uil/exception.hpp>
-#include <uil/h_vec.hpp>
+#include <uil/helper/vec.hpp>
 
 namespace uil {
     float magnitude(Vector2 const& vec) {

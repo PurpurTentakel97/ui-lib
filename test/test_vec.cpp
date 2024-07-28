@@ -6,7 +6,7 @@
 #include "uil/exception.hpp"
 #include <gtest/gtest.h>
 #include <tuple>
-#include <uil/h_vec.hpp>
+#include <uil/helper/vec.hpp>
 
 class Vector2MagnetudeFixtures : public testing::TestWithParam<std::tuple<Vector2, float>> { };
 

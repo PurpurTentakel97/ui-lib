@@ -4,7 +4,7 @@
 //
 
 #include <uil/context.hpp>
-#include <uil/text.hpp>
+#include <uil/elements/text.hpp>
 
 namespace uil {
     void Text::align() {
