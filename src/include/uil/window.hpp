@@ -28,6 +28,13 @@ namespace uil {
         Window& operator=(Window&& window) = delete;
         ~Window();
 
+        template<std::derived_from<Scene> T, typename... Args>
+        T& emplace_scene(Args... args)
+            requires(std::constructible_from<T, cpt::Vec2_i, Args...>)
+        {
+            return m_scene_manager.emplace_scene<T>(m_resolution, args...);
+        }
+
         void update();
 
         void set_draw_fps_debug(bool draw_fps);

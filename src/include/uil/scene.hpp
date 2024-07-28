@@ -33,7 +33,7 @@ namespace uil {
         Callback<Scene const&> on_render{};
         Callback<Scene const&> on_resize{};
 
-        Scene()                        = default;
+        Scene(cpt::Vec2_i resolution);
         Scene(Scene const&)            = delete;
         Scene(Scene&&)                 = delete;
         Scene& operator=(Scene const&) = delete;

@@ -4,6 +4,7 @@
 
 #include <raylib.h>
 #include <uil/window.hpp>
+#include <uil/scenes/test_scene.hpp>
 
 int main() {
 #ifdef _DEBUG
@@ -17,6 +18,7 @@ int main() {
     window.set_config_flag(FLAG_MSAA_4X_HINT, true);
     window.set_config_flag(FLAG_WINDOW_RESIZABLE, true);
     window.set_config_flag(FLAG_WINDOW_HIGHDPI, true);
+    window.emplace_scene<uil::TestScene>(10);
 
     while (not WindowShouldClose()) {
         window.update();
