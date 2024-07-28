@@ -66,6 +66,7 @@ namespace uil {
          *
          * @param func function for callback
          * @return callback instance
+         * @throw uil::CallbackException when its not possible to convert the input into the function type
          */
         Callback& operator+=(std::convertible_to<function> auto&& func) {
             auto f = function{ std::forward<decltype(func)>(func) };
