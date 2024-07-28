@@ -22,9 +22,10 @@ namespace uil {
 
     Window::Window(cpt::Vec2_i const resolution, char const* const title, WindowConfig config)
         : m_resolution{ resolution } {
-        using FlagVec = std::vector<std::pair<ConfigFlags, bool>>;
-        auto constexpr set_flag
-                = [](ConfigFlags flag, bool active) { active ? SetWindowState(flag) : ClearWindowState(flag); };
+        using FlagVec           = std::vector<std::pair<ConfigFlags, bool>>;
+        auto constexpr set_flag = [](ConfigFlags const flag, bool const active) {
+            active ? SetWindowState(flag) : ClearWindowState(flag);
+        };
         auto constexpr set_flags = [](FlagVec const& flags) {
             for (auto const& f : flags) {
                 set_flag(f.first, f.second);
