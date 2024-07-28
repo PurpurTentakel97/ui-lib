@@ -30,7 +30,7 @@ namespace uil {
         auto constexpr set_flag = [](ConfigFlags const flag, bool const active) {
             active ? SetWindowState(flag) : ClearWindowState(flag);
         };
-        auto constexpr set_flags = [](FlagVec const& flags) {
+        auto constexpr set_flags = [set_flag](FlagVec const& flags) {
             for (auto const& f : flags) {
                 set_flag(f.first, f.second);
             }
