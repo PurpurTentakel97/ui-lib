@@ -20,6 +20,10 @@ namespace uil {
         return Context{ GetMousePosition(), &m_font, m_resolution };
     }
 
+    void Window::set_flag(ConfigFlags const flag, bool const active) {
+        active ? SetWindowState(flag) : ClearWindowState(flag);
+    }
+
     Window::Window(cpt::Vec2_i const resolution, char const* const title, WindowConfig config)
         : m_resolution{ resolution } {
         using FlagVec           = std::vector<std::pair<ConfigFlags, bool>>;
@@ -59,6 +63,43 @@ namespace uil {
 
     Window::~Window() {
         CloseWindow();
+    }
+
+    void Window::set_vsync(bool const vsync) {
+        set_flag(ConfigFlags::FLAG_VSYNC_HINT, vsync);
+    }
+    void Window::set_fullscreen(bool const fullscreen) {
+        set_flag(ConfigFlags::FLAG_FULLSCREEN_MODE, fullscreen);
+    }
+    void Window::set_resizeable(bool const resizeable) {
+        set_flag(ConfigFlags::FLAG_WINDOW_RESIZABLE, resizeable);
+    }
+    void Window::set_undecorated(bool const undecorated) {
+        set_flag(ConfigFlags::FLAG_WINDOW_UNDECORATED, undecorated);
+    }
+    void Window::set_hidden(bool const hidden) {
+        set_flag(ConfigFlags::FLAG_WINDOW_HIDDEN, hidden);
+    }
+    void Window::set_minimized(bool const minimized) {
+        set_flag(ConfigFlags::FLAG_WINDOW_MINIMIZED, minimized);
+    }
+    void Window::set_maximized(bool const maximized) {
+        set_flag(ConfigFlags::FLAG_WINDOW_MAXIMIZED, maximized);
+    }
+    void Window::set_unfocused(bool const unfocused) {
+        set_flag(ConfigFlags::FLAG_WINDOW_UNFOCUSED, unfocused);
+    }
+    void Window::set_top_most(bool const top_most) {
+        set_flag(ConfigFlags::FLAG_WINDOW_TOPMOST, top_most);
+    }
+    void Window::set_always_run(bool const always_run) {
+        set_flag(ConfigFlags::FLAG_WINDOW_ALWAYS_RUN, always_run);
+    }
+    void Window::set_mouse_pathrough(bool const mouse_pathrough) {
+        set_flag(ConfigFlags::FLAG_WINDOW_MOUSE_PASSTHROUGH, mouse_pathrough);
+    }
+    void Window::set_boderless(bool const boderless) {
+        set_flag(ConfigFlags::FLAG_BORDERLESS_WINDOWED_MODE, boderless);
     }
 
     void Window::update() {

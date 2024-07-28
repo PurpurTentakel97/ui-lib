@@ -39,6 +39,8 @@ namespace uil {
         void update_resolution();
         [[nodiscard]] Context create_context() const;
 
+        static void set_flag(ConfigFlags flag, bool active);
+
     public:
         Window(cpt::Vec2_i resolution, char const* title, WindowConfig config);
         Window(Window const&)              = delete;
@@ -53,6 +55,19 @@ namespace uil {
         {
             return m_scene_manager.emplace_scene<T>(m_resolution, args...);
         }
+
+        static void set_vsync(bool vsync);
+        static void set_fullscreen(bool fullscreen);
+        static void set_resizeable(bool resizeable);
+        static void set_undecorated(bool undecorated);
+        static void set_hidden(bool hidden);
+        static void set_minimized(bool minimized);
+        static void set_maximized(bool maximized);
+        static void set_unfocused(bool unfocused);
+        static void set_top_most(bool top_most);
+        static void set_always_run(bool always_run);
+        static void set_mouse_pathrough(bool mouse_pathrough);
+        static void set_boderless(bool boderless);
 
         void update();
 
