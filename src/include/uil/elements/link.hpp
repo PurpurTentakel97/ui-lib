@@ -4,7 +4,7 @@
 //
 
 #pragma once
-#include <uil/text.hpp>
+#include <uil/elements/text.hpp>
 
 namespace uil {
     class Link : public Text {

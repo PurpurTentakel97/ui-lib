@@ -2,34 +2,34 @@ add_library(ui_lib STATIC)
 
 target_sources(ui_lib
                PRIVATE
+               elements/link.cpp
+               elements/text.cpp
+               helper/rect.cpp
+               helper/vec.cpp
+               scenes/test_scene.cpp
                alignment.cpp
                element.cpp
-               h_rect.cpp
-               h_vec.cpp
-               link.cpp
                resolution.cpp
                scene.cpp
                scene_manager.cpp
-               text.cpp
                window.cpp
-               test_scene.cpp
 
                PUBLIC FILE_SET HEADERS
                BASE_DIRS include FILES
+               include/uil/elements/link.hpp
+               include/uil/elements/text.hpp
+               include/uil/helper/rect.hpp
+               include/uil/helper/vec.hpp
+               include/uil/scenes/test_scene.hpp
                include/uil/alignment.hpp
                include/uil/callback.hpp
                include/uil/context.hpp
                include/uil/element.hpp
                include/uil/exception.hpp
-               include/uil/h_rect.hpp
-               include/uil/h_vec.hpp
-               include/uil/link.hpp
                include/uil/resolution.hpp
                include/uil/scene.hpp
                include/uil/scene_manager.hpp
-               include/uil/text.hpp
                include/uil/window.hpp
-               include/uil/test_scene.hpp
 )
 
 target_include_directories(ui_lib

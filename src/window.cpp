@@ -6,7 +6,7 @@
 #include <raylib.h>
 #include <string>
 #include <uil/context.hpp>
-#include <uil/test_scene.hpp>
+#include <uil/scenes/test_scene.hpp>
 #include <uil/window.hpp>
 
 namespace uil {

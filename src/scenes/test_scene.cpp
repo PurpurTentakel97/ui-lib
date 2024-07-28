@@ -5,8 +5,8 @@
 
 #include <array>
 #include <string>
-#include <uil/link.hpp>
-#include <uil/test_scene.hpp>
+#include <uil/elements/link.hpp>
+#include <uil/scenes/test_scene.hpp>
 
 namespace uil {
 

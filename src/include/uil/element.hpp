@@ -7,7 +7,7 @@
 #include <raylib.h>
 #include <uil/alignment.hpp>
 #include <uil/callback.hpp>
-#include <uil/h_rect.hpp>
+#include <uil/helper/rect.hpp>
 
 namespace uil {
     struct Context;
