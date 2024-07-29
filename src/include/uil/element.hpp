@@ -12,6 +12,11 @@
 namespace uil {
     struct Context;
 
+    /**
+    * the basic element for all things that gets displayed into a scene.
+    * override this for own elements.
+    * make sure to call check, update, render, and resize of UIElement when you override it.
+    */
     class UIElement {
     private:
         enum class MoveType {
@@ -56,63 +61,235 @@ namespace uil {
 
 
     protected:
+        /**
+         *
+         * @return last resolution that was captured by last resize
+         */
         [[nodiscard]] cpt::Vec2_i resolution() const;
 
     public:
-        Callback<UIElement&> on_movement_start{};
-        Callback<UIElement&> on_movement_stop{};
-        Callback<UIElement&> on_arrived{};
-        Callback<UIElement&> on_check{};
-        Callback<UIElement&> on_update{};
-        Callback<UIElement const&> on_draw{};
-        Callback<UIElement&> on_resize{};
+        Callback<UIElement&> on_movement_start{}; ///< contains UIElement
+        Callback<UIElement&> on_movement_stop{};  ///< contains UIElement
+        Callback<UIElement&> on_arrived{};        ///< contains UIElement
+        Callback<UIElement&> on_check{};          ///< contains UIElement
+        Callback<UIElement&> on_update{};         ///< contains UIElement
+        Callback<UIElement const&> on_draw{};     ///< contains UIElement
+        Callback<UIElement&> on_resize{};         ///< contains UIElement
 
-
+        /**
+         * aligns the relative position acording to the provided alignment.
+         * calculates the absolute collider out of the relative position and size and the resolution.
+         *
+         * @param relative relative position and size of the collider
+         * @param alignment moves the relative position
+         * @param resolution current resolution for absolute position and size
+         */
         UIElement(Rectangle relative, Alignment alignment, cpt::Vec2_i resolution);
 
-        UIElement(UIElement const&)            = delete;
-        UIElement(UIElement&&)                 = default;
-        UIElement& operator=(UIElement const&) = delete;
-        UIElement& operator=(UIElement&&)      = default;
+        UIElement(UIElement const&)            = delete; ///< no need because handle with unique_ptr
+        UIElement(UIElement&&)                 = delete; ///< no need because handle with unique_ptr
+        UIElement& operator=(UIElement const&) = delete; ///< no need because handle with unique_ptr
+        UIElement& operator=(UIElement&&)      = delete; ///< no need because handle with unique_ptr
+        /**
+         * just for polimorphism.
+         */
         virtual ~UIElement()                   = default;
 
         // basic
+        /**
+         * alignes the provided position and updates the absolute collider.
+         *
+         * @param position unaligned relative positon
+         */
         void set_relative_position(Vector2 position);
+        /**
+         * reverses the aligment with old size and aligns with new size.
+         * updates absolute collider.
+         *
+         * @param size relative size
+         */
         void set_relative_size(Vector2 size);
+        /**
+         * updates absolute collider.
+         *
+         * @param relative relative position and size
+         */
         void set_relative(Rectangle relative);
+        /**
+         * returns the relative unaligned (provided) position and size.
+         *
+         * @return relative position and size
+         */
         [[nodiscard]] Rectangle relative() const;
+        /**
+         * returns the relative aligned position and size.
+         * this will always be the top left corner if the element.
+         *
+         * @return aligned relative position and size
+         */
         [[nodiscard]] Rectangle relative_aligned() const;
 
+        /**
+         * aligns the absolute position.
+         * update relative values.
+         *
+         * @param position absolute position
+         */
         void set_absolute_position(Vector2 position);
+        /**
+         * reverses alignment with old size and aligns with new size.
+         * updates relative values.
+         *
+         * @param size absolute size
+         */
         void set_absolute_size(Vector2 size);
+        /**
+         * updates relative values.
+         *
+         * @param collider absolute position and size.
+         */
         void set_collider(Rectangle collider);
+        /**
+         * returns the absolute unaligned (provided) position and size.
+         *
+         * @return unaligned absolute position and size
+         */
         [[nodiscard]] Rectangle collider() const;
+        /**
+         * returns the aligned absolute position and size.
+         * this will always be the top left coner of the element.
+         *
+         * @return aligned absolute position and size
+         */
         [[nodiscard]] Rectangle collider_aligned() const;
 
+        /**
+         * revesed the alignment with the old alignment and aligns with new alignment.
+         *
+         * @param alignment alignment for element
+         */
         void set_alignment(Alignment alignment);
+        /**
+         *
+         * @return current alignment
+         */
         [[nodiscard]] Alignment alignment() const;
 
+        /**
+         * this will only render in debug mode.
+         *
+         * @param render defines if the collider gets renderd
+         */
         void set_render_collider_debug(bool render);
+        /**
+         *
+         * @return if collider gets currently rendered
+         */
         [[nodiscard]] bool render_collider_debug() const;
 
+        /**
+         *
+         * @return if element is currently hovered
+         */
         [[nodiscard]] bool hovered() const;
 
         // movement
+        /**
+         *
+         * @return if element is currently moving
+         */
         [[nodiscard]] bool is_moving() const;
+        /**
+         * will move the element to a certain relative position within a provided time.
+         * this movement is linear.
+         * this movement will stop when arrived.
+         *
+         * @param destination relative point the element will move to
+         * @param time time in s
+         */
         void move_to_linear_time(Vector2 destination, float time);
+        /**
+         * will move the element to a certain relative position with a provided speed.
+         * this movement is linear.
+         * this movement will stop when arrived.
+         *
+         * @param destination relative point the element will move to
+         * @param speed speed the element will move with
+         */
         void move_to_linear_speed(Vector2 destination, float speed);
+        /**
+         * will move the element to a certain relative position with a provided speed.
+         * this movement starts fast and slows down.
+         * this movement will stop when arrived.
+         *
+         * @param destination relative point the element will move to
+         * @param speed speed the element will move with
+         */
         void move_to_fast_to_slow(Vector2 destination, float speed);
+        /**
+         * will move the element to a certain relative position with a provided speed.
+         * this movement starts slow and speeds up.
+         * this movement will stop when arrived.
+         *
+         * @param destination relative point the element will move to
+         * @param speed speed the element will move with
+         */
         void move_to_slow_to_fast(Vector2 destination, float speed);
+        /**
+         * will move the element with a provided speed.
+         * this movement is linear.
+         * this movement will not stop. it has to be stopped with move_stop().
+         *
+         * @param direction direction the element is moving
+         * @param speed speed the element will move with
+         */
         void move_constant(Vector2 direction, float speed);
+        /**
+         * stops all movement of the element immediately.
+         */
         void move_stop();
 
+        /**
+         *
+         * @return if the element started moving in this frame
+         */
         [[nodiscard]] bool has_started_moving() const;
+        /**
+         *
+         * @return if the element stopped moving in this frame
+         */
         [[nodiscard]] bool has_stopped_moving() const;
 
         // polymorphic
+        /**
+         * stores the current movetype.
+         * checks if element is hovered.
+         *
+         * @param context all changes of the last frame
+         * @return whether the next scene should keep checking
+         */
         [[nodiscard]] virtual bool check(Context const& context);
+        /**
+         * updates current movement if element is moving.
+         *
+         * @param context all changes of the last frame
+         * @return whether the next scene should keep updating
+         */
         [[nodiscard]] virtual bool update(Context const& context);
+        /**
+         * renders collider if cofigured.
+         * this only works in debug build.
+         *
+         * @param context all changes of the last frame
+         * @return whether the next scene should keep rendering
+         * @throw uil::BadMovementType unexpected movement enum. mostly happens when the enum has an non predefinded value.
+         */
         [[nodiscard]] virtual bool render(Context const& context) const;
+        /**
+         * updates resolution and collider.
+         *
+         * @param context all changes of the last frame
+         */
         virtual void resize(Context const& context);
     };
 } // namespace uil
