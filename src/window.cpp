@@ -17,7 +17,14 @@ namespace uil {
     }
 
     Context Window::create_context() const {
-        return Context{ GetMousePosition(), &m_font, m_resolution };
+        // clang-format off
+        return Context{
+            GetMousePosition(),
+            &m_font,
+            m_resolution,
+            GetFrameTime()
+        };
+        // clang-format on
     }
 
     void Window::set_flag(ConfigFlags const flag, bool const active) {

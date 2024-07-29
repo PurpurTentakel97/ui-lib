@@ -49,15 +49,15 @@ namespace uil {
         update_collider();
     }
 
-    void UIElement::linear_time() {
+    void UIElement::linear_time(float const delta_time) {
         auto direction = m_relative_destination - m_relative_origin;
-        direction *= GetFrameTime() / m_move_time;
+        direction *= delta_time / m_move_time;
         linear(direction);
     }
 
-    void UIElement::linear_speed() {
+    void UIElement::linear_speed(float const delta_time) {
         auto direction = normalize(m_relative_destination - m_relative_origin);
-        direction *= GetFrameTime() * m_move_speed;
+        direction *= delta_time * m_move_speed;
         linear(direction);
     }
 
@@ -69,11 +69,11 @@ namespace uil {
         }
     }
 
-    void UIElement::fast_to_slow() {
+    void UIElement::fast_to_slow(float const delta_time) {
         auto const distance  = m_relative_destination - m_relative_origin;
         auto const remaining = m_relative_destination - point_from_rect(m_relative);
         auto direction       = normalize(m_relative_destination - point_from_rect(m_relative));
-        direction *= GetFrameTime() * m_move_speed * (magnitude(remaining) / magnitude(distance));
+        direction *= delta_time * m_move_speed * (magnitude(remaining) / magnitude(distance));
         if (magnitude(direction) < 0.000001f) {
             arriving();
         } else {
@@ -81,12 +81,12 @@ namespace uil {
         }
     }
 
-    void UIElement::slow_to_fast() {
+    void UIElement::slow_to_fast(float const delta_time) {
         auto const distance = m_relative_destination - m_relative_origin;
         auto already_moved  = magnitude(point_from_rect(m_relative) - m_relative_origin);
         already_moved       = already_moved > 0.001f ? already_moved : 0.001f;
         auto direction      = normalize(m_relative_destination - point_from_rect(m_relative));
-        direction *= GetFrameTime() * m_move_speed * (already_moved / magnitude(distance));
+        direction *= delta_time * m_move_speed * (already_moved / magnitude(distance));
         if (is_arriving(direction)) {
             arriving();
         } else {
@@ -94,8 +94,8 @@ namespace uil {
         }
     }
 
-    void UIElement::constant() {
-        auto const time     = GetFrameTime();
+    void UIElement::constant(float const delta_time) {
+        auto const time     = delta_time;
         auto const distance = m_move_direction * time * m_move_speed;
         move(distance);
     }
@@ -253,15 +253,15 @@ namespace uil {
         return true;
     }
 
-    bool UIElement::update(Context const&) {
+    bool UIElement::update(Context const& context) {
         switch (m_move_type) {
                 // clang-format off
-            case MoveType::None:                         break;
-            case MoveType::Linear_Time:  linear_time();  break;
-            case MoveType::Linear_Speed: linear_speed(); break;
-            case MoveType::Slow_To_Fast: slow_to_fast(); break;
-            case MoveType::Fast_To_Slow: fast_to_slow(); break;
-            case MoveType::Constant:     constant();     break;
+            case MoveType::None:                                           break;
+            case MoveType::Linear_Time:  linear_time(context.delta_time);  break;
+            case MoveType::Linear_Speed: linear_speed(context.delta_time); break;
+            case MoveType::Slow_To_Fast: slow_to_fast(context.delta_time); break;
+            case MoveType::Fast_To_Slow: fast_to_slow(context.delta_time); break;
+            case MoveType::Constant:     constant(context.delta_time);     break;
             default:
                 throw BadMovementType("unexpected movement type while updating UIElement");
                 // clang-format on
