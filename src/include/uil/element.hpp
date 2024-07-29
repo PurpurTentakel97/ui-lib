@@ -52,12 +52,12 @@ namespace uil {
         void arriving();
 
         void move(Vector2 const& relative_distance);
-        void linear_time();
-        void linear_speed();
+        void linear_time(float delta_time);
+        void linear_speed(float delta_time);
         void linear(Vector2 const& direction);
-        void fast_to_slow();
-        void slow_to_fast();
-        void constant();
+        void fast_to_slow(float delta_time);
+        void slow_to_fast(float delta_time);
+        void constant(float delta_time);
 
 
     protected:
