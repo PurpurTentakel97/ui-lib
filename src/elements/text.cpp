@@ -299,12 +299,10 @@ namespace uil {
         return keep_checking;
     }
 
-    bool Text::render(Context const& context) const {
-        auto const keep_updating = UIElement::render(context);
+    void Text::render(Context const& context) const {
+        UIElement::render(context);
 
         render_text(context, m_color);
-
-        return keep_updating;
     }
 
     void Text::resize(Context const& context) {

@@ -61,12 +61,10 @@ namespace uil {
         [[nodiscard]] bool update(Context const& context) const;
         /**
          * calls all emplaced scene from bottom to top to render.
-         * stops rendering when a scene has returned false.
          *
          * @param context all changes of the last frame
-         * @return whether the next system should keep updting
          */
-        [[nodiscard]] bool render(Context const& context) const;
+        void render(Context const& context) const;
         /**
          * calls all emplaced scene to resize.
          *
