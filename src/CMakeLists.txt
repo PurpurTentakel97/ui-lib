@@ -8,6 +8,7 @@ target_sources(ui_lib
                helper/vec.cpp
                scenes/test_scene.cpp
                alignment.cpp
+               context.cpp
                element.cpp
                resolution.cpp
                scene.cpp
