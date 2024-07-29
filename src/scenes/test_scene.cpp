@@ -44,9 +44,9 @@ namespace uil {
         text->set_text_alignment(Alignment::MidMid);
         text->set_breaking(true);
         text->update_text();
-        text->on_click += [this](Text& t) { this->on_click(t); };
-        text->on_first_click += [this](Text& t) { this->on_first_click(t); };
-        text->on_hover += [this](Text& t) { this->on_hover(t); };
+        text->on_click += [this](Text& te) { this->on_click(te); };
+        text->on_first_click += [this](Text& te) { this->on_first_click(te); };
+        text->on_hover += [this](Text& te) { this->on_hover(te); };
     }
 
 } // namespace uil
