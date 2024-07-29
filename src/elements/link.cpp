@@ -68,9 +68,9 @@ namespace uil {
         return false;
     }
 
-    bool Link::render(Context const& context) const {
+    void Link::render(Context const& context) const {
         // NOLINTNEXTLINE
-        auto const keep_rendering = UIElement::render(context);
+        UIElement::render(context);
 
         render_text(context, m_clicked ? m_color_clicked : color());
 
@@ -92,7 +92,5 @@ namespace uil {
                 // clang-format on
             }
         }
-
-        return keep_rendering;
     }
 } // namespace uil

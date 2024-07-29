@@ -88,12 +88,11 @@ namespace uil {
          * rendering all elements in the scene. provides the context.
          *
          * override this when the derived scene has to render additional stuff.
-         * make shure to call Scene::render() and use the return bool.
+         * make shure to call Scene::render().
          *
          * @param context all changes of the last frame
-         * @return whether the next scene should keep rendering
          */
-        [[nodiscard]] virtual bool render(Context const& context) const;
+        virtual void render(Context const& context) const;
         /**
          * resizing all elements in the scene. provides the context.
          *

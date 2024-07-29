@@ -28,14 +28,11 @@ namespace uil {
         return keep_updating;
     }
 
-    bool Scene::render(Context const& context) const {
+    void Scene::render(Context const& context) const {
         for (auto const& e : m_elements) {
-            if (not e->render(context)) {
-                return false;
-            }
+            e->render(context);
         }
         on_render.invoke(*this);
-        return true;
     }
 
     void Scene::resize(Context const& context) const {

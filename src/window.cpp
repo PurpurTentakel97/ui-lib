@@ -118,7 +118,7 @@ namespace uil {
         // rendering
         BeginDrawing();
         ClearBackground(BLACK);
-        [[maybe_unused]] auto const t3 = m_scene_manager.render(context);
+        m_scene_manager.render(context);
 #ifndef NDEBUG
         if (m_draw_fps) {
             DrawText(std::to_string(GetFPS()).c_str(), 10, 10, 50, WHITE);

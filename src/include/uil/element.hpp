@@ -265,12 +265,18 @@ namespace uil {
          * stores the current movetype.
          * checks if element is hovered.
          *
+         * override this when the derived element has to check additional stuff.
+         * make shure to call UIElement::check().
+         *
          * @param context all changes of the last frame
          * @return whether the next scene should keep checking
          */
         [[nodiscard]] virtual bool check(Context const& context);
         /**
          * updates current movement if element is moving.
+         *
+         * override this when the derived element has to update additional stuff.
+         * make shure to call UIElement::update().
          *
          * @param context all changes of the last frame
          * @return whether the next scene should keep updating
@@ -280,13 +286,18 @@ namespace uil {
          * renders collider if cofigured.
          * this only works in debug build.
          *
+         * override this when the derived element has to render additional stuff.
+         * make shure to call UIElement::render().
+         *
          * @param context all changes of the last frame
-         * @return whether the next scene should keep rendering
          * @throw uil::BadMovementType unexpected movement enum. mostly happens when the enum has an non predefinded value.
          */
-        [[nodiscard]] virtual bool render(Context const& context) const;
+        virtual void render(Context const& context) const;
         /**
          * updates resolution and collider.
+         *
+         * override this when the derived element has to resize additional stuff.
+         * make shure to call UIElement::resize().
          *
          * @param context all changes of the last frame
          */

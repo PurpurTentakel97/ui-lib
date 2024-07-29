@@ -91,8 +91,7 @@ namespace uil {
          * renders hover when activated.
          * 
          * @param context all changes of the last frame
-         * @return whether the next scene should keep rendering or not
          */
-        [[nodiscard]] bool render(Context const& context) const override;
+        void render(Context const& context) const override;
     };
 } // namespace uil

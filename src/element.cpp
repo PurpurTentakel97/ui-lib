@@ -269,14 +269,14 @@ namespace uil {
         on_update.invoke(*this);
         return true;
     }
-    bool UIElement::render(Context const&) const {
+
+    void UIElement::render(Context const&) const {
 #ifndef NDEBUG
         if (m_render_collider) {
             DrawRectangleLinesEx(m_collider, 2.0f, WHITE);
         }
 #endif
         on_draw.invoke(*this);
-        return true;
     }
 
     void UIElement::resize(Context const& context) {

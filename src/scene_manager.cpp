@@ -3,9 +3,9 @@
 // 06.07.24
 //
 
-#include <uil/scene_manager.hpp>
-#include <uil/context.hpp>
 #include <ranges>
+#include <uil/context.hpp>
+#include <uil/scene_manager.hpp>
 
 namespace uil {
     bool SceneManager::check(Context const& context) const {
@@ -26,13 +26,10 @@ namespace uil {
         return true;
     }
 
-    bool SceneManager::render(Context const& context) const {
+    void SceneManager::render(Context const& context) const {
         for (auto const& s : m_scenes) {
-            if (not s->render(context)) {
-                return false;
-            }
+            s->render(context);
         }
-        return true;
     }
 
     void SceneManager::resize(Context const& context) const {
