@@ -42,13 +42,11 @@ namespace uil {
     bool Link::check(Context const& context) {
         auto const keep_checking = Text::check(context);
 
-        if (m_link.empty()) {
-            return keep_checking;
-        }
-
         if (not hovered()) {
             return keep_checking;
         }
+
+        on_hover.invoke(*this);
 
         SetMouseCursor(MOUSE_CURSOR_POINTING_HAND);
 
@@ -56,8 +54,17 @@ namespace uil {
             return false;
         }
 
-        m_clicked = true;
-        OpenURL(m_link.c_str());
+        if (not m_link.empty()) {
+            OpenURL(m_link.c_str());
+        }
+
+        on_click.invoke(*this);
+
+        if (not m_clicked) {
+            m_clicked = true;
+            on_first_click.invoke(*this);
+        }
+
         return false;
     }
 
