@@ -3,13 +3,24 @@
 // 06.07.24
 //
 
-#include <array>
 #include <iostream>
 #include <string>
 #include <uil/elements/link.hpp>
 #include <uil/scenes/test_scene.hpp>
 
 namespace uil {
+
+    void TestScene::on_click(Text&) {
+        std::cout << "click\n";
+    }
+
+    void TestScene::on_first_click(Text&) {
+        std::cout << "first click\n";
+    }
+
+    void TestScene::on_hover(Text&) {
+        std::cout << "hover\n";
+    }
 
     TestScene::TestScene(cpt::Vec2_i const resolution, int const t) : Scene{ resolution } {
 
@@ -26,42 +37,16 @@ namespace uil {
                 "Wos obandln nix Gwiass woass ma ned oamoi und sei hawadere midananda Broadwurschtbudn trihöleridi "
                 "dijidiholleri. Und jedza moand, !");
 
-        auto constexpr points = std::array<Vector2, 2>{
-            Vector2{ 0.5f, 0.5f },
-            Vector2{ 0.6f, 0.5f },
-        };
 
-        // clang-format off
-        auto constexpr alignment = std::array<Alignment,9>{
-            Alignment::TopLeft,
-            Alignment::TopMid,
-            Alignment::TopRight,
-            Alignment::MidLeft,
-            Alignment::MidMid,
-            Alignment::MidRight,
-            Alignment::BottomLeft,
-            Alignment::BottomMid,
-            Alignment::BottomRight,
-        };
-        // clang-format on
-
-        auto constexpr colors = std::array<Color, 2>{
-            WHITE,
-            RED,
-        };
-
-        for (cpt::usize i = 0; i < 2; ++i) {
-            [[maybe_unused]] auto const text = &emplace_element<Link>(
-                    Rectangle{ points[i].x, points[i].y, 0.3f, 0.3f }, Alignment::MidMid, resolution);
-            text->set_text(raw_text);
-            text->set_link("https://test-conf.de");
-            // text->set_render_collider_debug(true);
-            text->set_color(colors[i]);
-            text->set_text_alignment(alignment[i]);
-            text->set_breaking(true);
-            text->update_text();
-            // text->set_render_line_collider_debug(true);
-        }
+        [[maybe_unused]] auto const text
+                = &emplace_element<Link>(Rectangle{ 0.5f, 0.5f, 0.3f, 0.3f }, Alignment::MidMid, resolution);
+        text->set_text(raw_text);
+        text->set_text_alignment(Alignment::MidMid);
+        text->set_breaking(true);
+        text->update_text();
+        text->on_click += [this](Text& t) { this->on_click(t); };
+        text->on_first_click += [this](Text& t) { this->on_first_click(t); };
+        text->on_hover += [this](Text& t) { this->on_hover(t); };
     }
 
 } // namespace uil
