@@ -20,7 +20,11 @@ namespace uil {
 
     public:
         using Text::Text;
-        
+
+        Callback<Text&> on_click{};       ///< contains Text
+        Callback<Text&> on_first_click{}; ///< contains Text
+        Callback<Text&> on_hover{};       ///< contains Text
+
         /**
          *
          * @param color color the link turns to when it was clicked
