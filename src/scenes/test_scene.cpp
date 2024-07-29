@@ -39,7 +39,7 @@ namespace uil {
 
 
         [[maybe_unused]] auto const text
-                = &emplace_element<Link>(Rectangle{ 0.5f, 0.5f, 0.3f, 0.3f }, Alignment::MidMid, resolution);
+                = &emplace_element<Link>(Rectangle{ 0.25f, 0.25f, 0.3f, 0.3f }, Alignment::MidMid, resolution);
         text->set_text(raw_text);
         text->set_text_alignment(Alignment::MidMid);
         text->set_breaking(true);
@@ -47,6 +47,7 @@ namespace uil {
         text->on_click += [this](Text& te) { this->on_click(te); };
         text->on_first_click += [this](Text& te) { this->on_first_click(te); };
         text->on_hover += [this](Text& te) { this->on_hover(te); };
+        text->move_to_linear_time({ 0.75f, 0.75f }, 10.0f);
     }
 
 } // namespace uil
