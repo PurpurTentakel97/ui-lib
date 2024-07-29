@@ -16,6 +16,7 @@ namespace uil {
         Vector2 mouse_position;
         Font const* font;
         cpt::Vec2_i resolution;
+        float delta_time;
 
         /**
          * all values should be from the beginning of the frame
@@ -24,7 +25,7 @@ namespace uil {
          * @param _font current font pointer
          * @param _resolution current resolution
          */
-        Context(Vector2 _mouse_position, Font const* _font, cpt::Vec2_i _resolution);
+        Context(Vector2 _mouse_position, Font const* _font, cpt::Vec2_i _resolution, float _delta_time);
         Context() = delete;
     };
 }
