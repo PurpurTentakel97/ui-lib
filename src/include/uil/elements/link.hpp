@@ -74,7 +74,7 @@ namespace uil {
          * checks whether the text ist hovered or clicked.
          * calls callbacks and link if it so.
          *
-         * @param context all changes of the last frameall changes of the last frame
+         * @param context all changes of the last frame
          * @return whether the next scene should keep checking or not
          */
         [[nodiscard]] bool check(Context const& context) override;
@@ -86,7 +86,7 @@ namespace uil {
          * calls Text to render text.
          * renders hover when activated.
          * 
-         * @param context all changes of the last frameall changes of the last frame
+         * @param context all changes of the last frame
          * @return whether the next scene should keep rendering or not
          */
         [[nodiscard]] bool render(Context const& context) const override;

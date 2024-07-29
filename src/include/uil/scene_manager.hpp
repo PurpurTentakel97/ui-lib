@@ -47,7 +47,7 @@ namespace uil {
          * calls all emplaced scene from top to bottom to check.
          * stops checking when a scene has returned false.
          *
-         * @param context all changes of the last frameall changes of the last frame
+         * @param context all changes of the last frame
          * @return whether the next system should keep checking
          */
         [[nodiscard]] bool check(Context const& context) const;
@@ -55,7 +55,7 @@ namespace uil {
          * calls all emplaced scene from top to bottom to update.
          * stops updating when a scene has returned false.
          *
-         * @param context all changes of the last frameall changes of the last frame
+         * @param context all changes of the last frame
          * @return whether the next system should keep updting
          */
         [[nodiscard]] bool update(Context const& context) const;
@@ -63,14 +63,14 @@ namespace uil {
          * calls all emplaced scene from bottom to top to render.
          * stops rendering when a scene has returned false.
          *
-         * @param context all changes of the last frameall changes of the last frame
+         * @param context all changes of the last frame
          * @return whether the next system should keep updting
          */
         [[nodiscard]] bool render(Context const& context) const;
         /**
          * calls all emplaced scene to resize.
          *
-         * @param context all changes of the last frameall changes of the last frame
+         * @param context all changes of the last frame
          */
         void resize(Context const& context) const;
     };

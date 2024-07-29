@@ -70,7 +70,7 @@ namespace uil {
          * override this when the derived scene has to check additional stuff.
          * make shure to call Scene::check() and use the return bool.
          *
-         * @param context all changes of the last frameall changes of the last frame
+         * @param context all changes of the last frame
          * @return whether the next scene should keep checking
          */
         [[nodiscard]] virtual bool check(Context const& context) const;
@@ -80,7 +80,7 @@ namespace uil {
          * override this when the derived scene has to update additional stuff.
          * make shure to call Scene::update() and use the return bool.
          *
-         * @param context all changes of the last frameall changes of the last frame
+         * @param context all changes of the last frame
          * @return whether the next scene should keep updating
          */
         [[nodiscard]] virtual bool update(Context const& context) const;
@@ -90,7 +90,7 @@ namespace uil {
          * override this when the derived scene has to render additional stuff.
          * make shure to call Scene::render() and use the return bool.
          *
-         * @param context all changes of the last frameall changes of the last frame
+         * @param context all changes of the last frame
          * @return whether the next scene should keep rendering
          */
         [[nodiscard]] virtual bool render(Context const& context) const;
@@ -100,7 +100,7 @@ namespace uil {
          * override this when the derived scene has to resize additional stuff.
          * make shure to call Scene::resize().
          *
-         * @param context all changes of the last frameall changes of the last frame
+         * @param context all changes of the last frame
          */
         virtual void resize(Context const& context) const;
     };
