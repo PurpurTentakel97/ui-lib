@@ -262,8 +262,7 @@ namespace uil {
             case MoveType::Slow_To_Fast: slow_to_fast(context.delta_time); break;
             case MoveType::Fast_To_Slow: fast_to_slow(context.delta_time); break;
             case MoveType::Constant:     constant(context.delta_time);     break;
-            default:
-                throw BadMovementType("unexpected movement type while updating UIElement");
+            // extra no default case because update should not throw anything itself.
                 // clang-format on
         }
         on_update.invoke(*this);

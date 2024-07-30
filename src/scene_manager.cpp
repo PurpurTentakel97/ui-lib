@@ -9,21 +9,29 @@
 
 namespace uil {
     bool SceneManager::check(Context const& context) const {
+        return std::ranges::all_of(std::ranges::views::reverse(m_scenes),
+                                   [context](auto const& s) { return s->check(context); });
+        /*
         for (auto const& s : std::ranges::views::reverse(m_scenes)) {
             if (not s->check(context)) {
                 return false;
             }
         }
         return true;
+        */
     }
 
     bool SceneManager::update(Context const& context) const {
+        return std::ranges::all_of(std::ranges::views::reverse(m_scenes),
+                                   [context](auto const& s) { return s->update(context); });
+        /*
         for (auto const& s : std::ranges::views::reverse(m_scenes)) {
             if (not s->update(context)) {
                 return false;
             }
         }
         return true;
+        */
     }
 
     void SceneManager::render(Context const& context) const {
