@@ -10,7 +10,7 @@
 namespace uil {
     bool SceneManager::check(Context const& context) const {
         return std::ranges::all_of(std::ranges::views::reverse(m_scenes),
-                                   [context](auto const& s) { return s->check(context); });
+                                   [&c = context](auto const& s) { return s->check(c); });
         /*
         for (auto const& s : std::ranges::views::reverse(m_scenes)) {
             if (not s->check(context)) {
@@ -23,7 +23,7 @@ namespace uil {
 
     bool SceneManager::update(Context const& context) const {
         return std::ranges::all_of(std::ranges::views::reverse(m_scenes),
-                                   [context](auto const& s) { return s->update(context); });
+                                   [&c = context](auto const& s) { return s->update(c); });
         /*
         for (auto const& s : std::ranges::views::reverse(m_scenes)) {
             if (not s->update(context)) {
