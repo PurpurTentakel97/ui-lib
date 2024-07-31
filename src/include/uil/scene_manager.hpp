@@ -50,7 +50,7 @@ namespace uil {
          * @param context all changes of the last frame
          * @return whether the next system should keep checking
          */
-        [[nodiscard]] bool check(Context const& context) const;
+        [[nodiscard]] bool handle_input(Context const& context) const;
         /**
          * calls all emplaced scene from top to bottom to update.
          * stops updating when a scene has returned false.

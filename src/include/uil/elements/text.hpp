@@ -205,7 +205,7 @@ namespace uil {
          * @param context all changes of the last frame
          * @return whether the next scene should keep checking or not
          */
-        [[nodiscard]] bool check(Context const& context) override;
+        [[nodiscard]] bool handle_input(Context const& context) override;
         /**
          * in debug build: renders line collider
          * 

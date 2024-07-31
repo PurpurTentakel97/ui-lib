@@ -39,8 +39,8 @@ namespace uil {
         return m_render_hover;
     }
 
-    bool Link::check(Context const& context) {
-        auto const keep_checking = Text::check(context);
+    bool Link::handle_input(Context const& context) {
+        auto const keep_checking = Text::handle_input(context);
 
         if (not hovered()) {
             return keep_checking;

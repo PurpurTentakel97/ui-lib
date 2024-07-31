@@ -271,7 +271,7 @@ namespace uil {
          * @param context all changes of the last frame
          * @return whether the next scene should keep checking
          */
-        [[nodiscard]] virtual bool check(Context const& context);
+        [[nodiscard]] virtual bool handle_input(Context const& context);
         /**
          * updates current movement if element is moving.
          *

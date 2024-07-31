@@ -246,7 +246,7 @@ namespace uil {
         return m_last_move_type != MoveType::None and m_move_type == MoveType::None;
     }
 
-    bool UIElement::check(Context const& context) {
+    bool UIElement::handle_input(Context const& context) {
         m_last_move_type = m_move_type;
         m_hovered        = CheckCollisionPointRec(context.mouse_position, m_collider);
         on_check.invoke(*this);
@@ -262,8 +262,7 @@ namespace uil {
             case MoveType::Slow_To_Fast: slow_to_fast(context.delta_time); break;
             case MoveType::Fast_To_Slow: fast_to_slow(context.delta_time); break;
             case MoveType::Constant:     constant(context.delta_time);     break;
-            default:
-                throw BadMovementType("unexpected movement type while updating UIElement");
+            // extra no default case because update should not throw anything itself.
                 // clang-format on
         }
         on_update.invoke(*this);
