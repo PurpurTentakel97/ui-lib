@@ -8,9 +8,9 @@
 #include <uil/scene_manager.hpp>
 
 namespace uil {
-    bool SceneManager::check(Context const& context) const {
+    bool SceneManager::handle_input(Context const& context) const {
         return std::ranges::all_of(std::ranges::views::reverse(m_scenes),
-                                   [&c = context](auto const& s) { return s->check(c); });
+                                   [&c = context](auto const& s) { return s->handle_input(c); });
         /*
         for (auto const& s : std::ranges::views::reverse(m_scenes)) {
             if (not s->check(context)) {

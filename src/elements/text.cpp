@@ -288,8 +288,8 @@ namespace uil {
         on_draw_text_updated.invoke(*this);
     }
 
-    bool Text::check(Context const& context) {
-        auto const keep_checking = UIElement::check(context);
+    bool Text::handle_input(Context const& context) {
+        auto const keep_checking = UIElement::handle_input(context);
 
         if (m_font != context.font) {
             m_font = context.font;

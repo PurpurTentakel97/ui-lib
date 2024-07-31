@@ -73,7 +73,7 @@ namespace uil {
          * @param context all changes of the last frame
          * @return whether the next scene should keep checking
          */
-        [[nodiscard]] virtual bool check(Context const& context) const;
+        [[nodiscard]] virtual bool handle_input(Context const& context) const;
         /**
          * updating all elements in the scene. provides the context.
          *

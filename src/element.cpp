@@ -246,7 +246,7 @@ namespace uil {
         return m_last_move_type != MoveType::None and m_move_type == MoveType::None;
     }
 
-    bool UIElement::check(Context const& context) {
+    bool UIElement::handle_input(Context const& context) {
         m_last_move_type = m_move_type;
         m_hovered        = CheckCollisionPointRec(context.mouse_position, m_collider);
         on_check.invoke(*this);

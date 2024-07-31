@@ -10,10 +10,10 @@
 namespace uil {
     Scene::Scene(cpt::Vec2_i) { }
 
-    bool Scene::check(Context const& context) const {
+    bool Scene::handle_input(Context const& context) const {
         auto keep_checking = true;
         for (auto const& e : m_elements) {
-            keep_checking &= e->check(context);
+            keep_checking &= e->handle_input(context);
         }
         on_check.invoke(*this);
         return keep_checking;
