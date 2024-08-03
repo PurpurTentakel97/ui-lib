@@ -81,10 +81,10 @@ namespace uil {
          * @return reference of the constructed scene
          */
         template<std::derived_from<Scene> T, typename... Args>
-        T& emplace_scene(Args... args)
+        T* emplace_scene(Args... args)
             requires(std::constructible_from<T, cpt::Vec2_i, Args...>)
         {
-            return m_scene_manager.emplace_scene<T>(m_resolution, args...);
+            return m_scene_manager.emplace_back<T>(m_resolution, args...);
         }
 
         /**

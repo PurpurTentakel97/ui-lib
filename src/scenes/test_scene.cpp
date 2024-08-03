@@ -3,6 +3,7 @@
 // 06.07.24
 //
 
+#include <array>
 #include <iostream>
 #include <string>
 #include <uil/elements/link.hpp>
@@ -24,7 +25,6 @@ namespace uil {
 
     TestScene::TestScene(cpt::Vec2_i const resolution, int const t) : Scene{ resolution } {
 
-        std::cout << "Test T: " << t << '\n';
 
         auto const raw_text = std::string(
                 "Bavaria ipsum dolor sit amet Wurscht wann griagd ma nacha wos z’dringa oans, auf gehds beim Schichtl "
@@ -37,13 +37,20 @@ namespace uil {
                 "Wos obandln nix Gwiass woass ma ned oamoi und sei hawadere midananda Broadwurschtbudn trihöleridi "
                 "dijidiholleri. Und jedza moand, !");
 
+        auto constexpr colors = std::array<Color, 4>{
+            RED,
+            BLUE,
+            PINK,
+            GREEN,
+        };
 
-        [[maybe_unused]] auto const text
-                = &emplace_element<Link>(Rectangle{ 0.25f, 0.25f, 0.3f, 0.3f }, Alignment::MidMid, resolution);
+        [[maybe_unused]] auto const text = &emplace_element<Link>(
+                Rectangle{ 0.2f * static_cast<float>(t), 0.25f, 0.3f, 0.3f }, Alignment::MidMid, resolution);
         text->set_text(raw_text);
         text->set_text_alignment(Alignment::MidMid);
         text->set_breaking(true);
         text->update_text();
+        text->set_color(colors[t - 1]);
         text->on_click += [this](Text& te) { this->on_click(te); };
         text->on_first_click += [this](Text& te) { this->on_first_click(te); };
         text->on_hover += [this](Text& te) { this->on_hover(te); };
