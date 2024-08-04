@@ -2,11 +2,12 @@ add_library(ui_lib STATIC)
 
 target_sources(ui_lib
                PRIVATE
+               elements/test_element.cpp
+               scenes/test_scene.cpp
                elements/link.cpp
                elements/text.cpp
                helper/rect.cpp
                helper/vec.cpp
-               scenes/test_scene.cpp
                alignment.cpp
                context.cpp
                element.cpp
@@ -17,11 +18,12 @@ target_sources(ui_lib
 
                PUBLIC FILE_SET HEADERS
                BASE_DIRS include FILES
+               include/uil/scenes/test_scene.hpp
+               include/uil/elements/test_element.hpp
                include/uil/elements/link.hpp
                include/uil/elements/text.hpp
                include/uil/helper/rect.hpp
                include/uil/helper/vec.hpp
-               include/uil/scenes/test_scene.hpp
                include/uil/alignment.hpp
                include/uil/callback.hpp
                include/uil/context.hpp
