@@ -19,14 +19,17 @@ namespace uil {
      */
     class SceneManager final {
     private:
-        std::vector<std::unique_ptr<Scene>> m_scenes{};
+        using ScenePtr      = std::shared_ptr<Scene>;
+        using ScenePtr_Weak = std::weak_ptr<Scene>;
+        using SceneVector   = std::vector<ScenePtr>;
+        SceneVector m_scenes{};
 
         template<std::derived_from<Scene> T, typename... Args>
-        T* emplace_emelent(cpt::usize const offset, Args&&... args)
+        std::weak_ptr<T> emplace_emelent(cpt::usize const offset, Args&&... args)
             requires(std::constructible_from<T, Args...>)
         {
-            auto elem      = std::make_unique<T>(std::forward<Args>(args)...);
-            auto const ptr = elem.get();
+            auto elem            = std::make_shared<T>(std::forward<Args>(args)...);
+            std::weak_ptr<T> ptr = elem;
             m_scenes.insert(m_scenes.begin() + static_cast<cpt::i64>(offset), std::move(elem));
             return ptr;
         }
@@ -42,10 +45,10 @@ namespace uil {
          * @tparam T scene that will be emplaced into the scene_manager
          * @tparam Args all Types the scene needs to be constructed
          * @param args all Parameters the scene needs to be constructed
-         * @return pointer of the constructed scene
+         * @return pointer of the constructed scene as a weak_ptr
          */
         template<std::derived_from<Scene> T, typename... Args>
-        T* emplace_back(Args&&... args)
+        std::weak_ptr<T> emplace_back(Args&&... args)
             requires(std::constructible_from<T, Args...>)
         {
             return emplace_emelent<T>(0, args...);
@@ -61,10 +64,10 @@ namespace uil {
          * @tparam T scene that will be emplaced into the scene_manager
          * @tparam Args all Types the scene needs to be constructed
          * @param args all Parameters the scene needs to be constructed
-         * @return pointer of the constructed scene
+         * @return pointer of the constructed scene as a weak_ptr
          */
         template<std::derived_from<Scene> T, typename... Args>
-        T* emplace_front(Args&&... args)
+        std::weak_ptr<T> emplace_front(Args&&... args)
             requires(std::constructible_from<T, Args...>)
         {
             return emplace_emelent<T>(m_scenes.end() - m_scenes.begin(), args...);
@@ -81,11 +84,11 @@ namespace uil {
          * @tparam Args all Types the scene needs to be constructed
          * @param index  provides the index the new scene is empaced to
          * @param args all Parameters the scene needs to be constructed
-         * @return pointer of the constructed scene
+         * @return pointer of the constructed scene as a weak_ptr
          * @throw BadSceneIndex will throw when index is out of range
          */
         template<std::derived_from<Scene> T, typename... Args>
-        T* emplace_at(cpt::usize const index, Args&&... args)
+        std::weak_ptr<T> emplace_at(cpt::usize const index, Args&&... args)
             requires(std::constructible_from<T, Args...>)
         {
             if (index > m_scenes.size()) {
@@ -109,20 +112,27 @@ namespace uil {
          * @tparam Args all Types the scene needs to be constructed
          * @param before proviedes the scene pointer the new scene gets emplaced before
          * @param args all Parameters the scene needs to be constructed
-         * @return pointer of the constructed scene
+         * @return pointer of the constructed scene as a weak_ptr
          * @throw BadScenePointer throws when provided before scene can not be fount in the scenes vector
+         * @throw BadScenePointer throws when provided before scene is expired
          */
         template<std::derived_from<Scene> T, typename... Args>
-        T* emplace_after(Scene const* before, Args... args)
+        std::weak_ptr<T> emplace_after(std::weak_ptr<T> const before, Args... args)
             requires(std::constructible_from<T, Args...>)
         {
-            auto const iterator = std::find_if(
-                    m_scenes.begin(), m_scenes.end(), [&b = before](auto const& elem) { return elem.get() == b; });
-            if (iterator == m_scenes.end()) {
-                throw BadScenePointer("not able to find before element in scenes vector");
+            if (auto const shared_before = before.lock(); shared_before) {
+                auto const iterator
+                        = std::find_if(m_scenes.begin(), m_scenes.end(), [&b = shared_before](auto const& elem) {
+                              return elem.get() == b.get();
+                          });
+                if (iterator == m_scenes.end()) {
+                    throw BadScenePointer("not able to find before element in scenes vector");
+                }
+
+                return emplace_emelent<T>(iterator - m_scenes.begin(), args...);
             }
 
-            return emplace_emelent<T>(iterator - m_scenes.begin(), args...);
+            throw BadScenePointer("weak_ptr was expired");
         }
 
         /**
@@ -136,20 +146,25 @@ namespace uil {
          * @tparam Args all Types the scene needs to be constructed
          * @param after proviedes the scene pointer the new scene gets emplaced after
          * @param args all Parameters the scene needs to be constructed
-         * @return pointer of the constructed scene
+         * @return pointer of the constructed scene as a weak_ptr
          * @throw BadScenePointer throws when provided after scene can not be found in the scenes vector
+         * @throw BadScenePointer throws when provided after scene is expired
          */
         template<std::derived_from<Scene> T, typename... Args>
-        T* emplace_before(Scene const* after, Args... args)
+        std::weak_ptr<T> emplace_before(std::weak_ptr<T> after, Args... args)
             requires(std::constructible_from<T, Args...>)
         {
-            auto const iterator = std::find_if(
-                    m_scenes.begin(), m_scenes.end(), [&a = after](auto const& elem) { return elem.get() == a; });
-            if (iterator == m_scenes.end()) {
-                throw BadScenePointer("not able to find after element in scenes vector");
+            if (auto const shared_after = after.lock(); shared_after) {
+                auto const iterator = std::find_if(
+                        m_scenes.begin(), m_scenes.end(), [&a = shared_after](auto const& elem) { return elem.get() == a.get(); });
+                if (iterator == m_scenes.end()) {
+                    throw BadScenePointer("not able to find after element in scenes vector");
+                }
+
+                return emplace_emelent<T>(iterator - m_scenes.begin() + 1, args...);
             }
 
-            return emplace_emelent<T>(iterator - m_scenes.begin() + 1, args...);
+            throw BadScenePointer("weak_ptr was expired");
         }
 
         /**

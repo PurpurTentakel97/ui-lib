@@ -69,19 +69,19 @@ namespace uil {
         ~Window();
 
         /**
-         * construct the scene T with parameters Args... and emplaced it into the scene vector.
+         * construct the scene T with parameters Args... and emplaced it at the front of the scene vector.
          * all empaced scenes will be checked, updated, rendered and resized.
          *
          * T needs to be derived from Scene.
          * T needs to be constructable with parameters Args...
          *
-         * @tparam T acene that will be emplaced into the scene_manager
+         * @tparam T scene that will be emplaced into the scene_manager
          * @tparam Args all Types the scene needs to be constructed
          * @param args all Parameters the scene needs to be constructed
-         * @return reference of the constructed scene
+         * @return pointer of the constructed scene as a weak_ptr
          */
         template<std::derived_from<Scene> T, typename... Args>
-        T* emplace_back(Args... args)
+        std::weak_ptr<T> emplace_back(Args... args)
             requires(std::constructible_from<T, cpt::Vec2_i, Args...>)
         {
             return m_scene_manager.emplace_back<T>(m_resolution, args...);
@@ -97,10 +97,10 @@ namespace uil {
          * @tparam T scene that will be emplaced into the scene_manager
          * @tparam Args all Types the scene needs to be constructed
          * @param args all Parameters the scene needs to be constructed
-         * @return pointer of the constructed scene
+         * @return pointer of the constructed scene as a weak_ptr
          */
         template<std::derived_from<Scene> T, typename... Args>
-        T* emplace_front(Args... args)
+        std::weak_ptr<T> emplace_front(Args... args)
             requires(std::constructible_from<T, cpt::Vec2_i, Args...>)
         {
             return m_scene_manager.emplace_front<T>(m_resolution, args...);
@@ -117,11 +117,11 @@ namespace uil {
          * @tparam Args all Types the scene needs to be constructed
          * @param index  provides the index the new scene is empaced to
          * @param args all Parameters the scene needs to be constructed
-         * @return pointer of the constructed scene
+         * @return pointer of the constructed scene as a weak_ptr
          * @throw BadSceneIndex will throw when index is out of range
          */
         template<std::derived_from<Scene> T, typename... Args>
-        T* emplace_at(cpt::usize const index, Args... args)
+        std::weak_ptr<T> emplace_at(cpt::usize const index, Args... args)
             requires(std::constructible_from<T, cpt::Vec2_i, Args...>)
         {
             return m_scene_manager.emplace_at<T>(index, m_resolution, args...);
@@ -138,11 +138,12 @@ namespace uil {
          * @tparam Args all Types the scene needs to be constructed
          * @param before proviedes the scene pointer the new scene gets emplaced before
          * @param args all Parameters the scene needs to be constructed
-         * @return pointer of the constructed scene
+         * @return pointer of the constructed scene as a weak_ptr
          * @throw BadScenePointer throws when provided before scene can not be fount in the scenes vector
+         * @throw BadScenePointer throws when provided before scene is expired
          */
         template<std::derived_from<Scene> T, typename... Args>
-        T* emplace_after(Scene const* before, Args... args)
+        std::weak_ptr<T> emplace_after(std::weak_ptr<T> before, Args... args)
             requires(std::constructible_from<T, cpt::Vec2_i, Args...>)
         {
             return m_scene_manager.emplace_after<T>(before, m_resolution, args...);
@@ -159,11 +160,12 @@ namespace uil {
          * @tparam Args all Types the scene needs to be constructed
          * @param after proviedes the scene pointer the new scene gets emplaced after
          * @param args all Parameters the scene needs to be constructed
-         * @return pointer of the constructed scene
+         * @return pointer of the constructed scene as a weak_ptr
          * @throw BadScenePointer throws when provided after scene can not be found in the scenes vector
+         * @throw BadScenePointer throws when provided after scene is expired
          */
         template<std::derived_from<Scene> T, typename... Args>
-        T* emplace_before(Scene const* after, Args... args)
+        std::weak_ptr<T> emplace_before(std::weak_ptr<T> after, Args... args)
             requires(std::constructible_from<T, cpt::Vec2_i, Args...>)
         {
             return m_scene_manager.emplace_before<T>(after, m_resolution, args...);
