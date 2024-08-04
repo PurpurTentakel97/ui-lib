@@ -22,7 +22,7 @@ namespace uil {
         std::vector<std::unique_ptr<Scene>> m_scenes{};
 
         template<std::derived_from<Scene> T, typename... Args>
-        T* insert_emelent(cpt::usize const offset, Args&&... args)
+        T* emplace_emelent(cpt::usize const offset, Args&&... args)
             requires(std::constructible_from<T, Args...>)
         {
             auto elem      = std::make_unique<T>(std::forward<Args>(args)...);
@@ -48,7 +48,7 @@ namespace uil {
         T* emplace_back(Args&&... args)
             requires(std::constructible_from<T, Args...>)
         {
-            return insert_emelent<T>(0, args...);
+            return emplace_emelent<T>(0, args...);
         }
 
         /**
@@ -67,7 +67,7 @@ namespace uil {
         T* emplace_front(Args&&... args)
             requires(std::constructible_from<T, Args...>)
         {
-            return insert_emelent<T>(m_scenes.end() - m_scenes.begin(), args...);
+            return emplace_emelent<T>(m_scenes.end() - m_scenes.begin(), args...);
         }
 
         /**
@@ -95,7 +95,7 @@ namespace uil {
                 return emplace_back<T>(args...);
             }
 
-            return insert_emelent<T>(index, args...);
+            return emplace_emelent<T>(index, args...);
         }
 
         /**
@@ -122,7 +122,7 @@ namespace uil {
                 throw BadScenePointer("not able to find before element in scenes vector");
             }
 
-            return insert_emelent<T>(iterator - m_scenes.begin(), args...);
+            return emplace_emelent<T>(iterator - m_scenes.begin(), args...);
         }
 
         /**
@@ -149,7 +149,7 @@ namespace uil {
                 throw BadScenePointer("not able to find after element in scenes vector");
             }
 
-            return insert_emelent<T>(iterator - m_scenes.begin() + 1, args...);
+            return emplace_emelent<T>(iterator - m_scenes.begin() + 1, args...);
         }
 
         /**

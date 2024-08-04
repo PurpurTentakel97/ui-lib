@@ -21,9 +21,10 @@ int main() {
 
     auto window                    = uil::Window({ 1920, 1080 }, title, config);
     [[maybe_unused]] auto const t1 = window.emplace_front<uil::TestScene>(1);
-    [[maybe_unused]] auto const t2 = window.emplace_front<uil::TestScene>(2);
+    [[maybe_unused]] auto const t2 = window.emplace_back<uil::TestScene>(2);
     [[maybe_unused]] auto const t3 = window.emplace_after<uil::TestScene>(t1, 3);
     [[maybe_unused]] auto const t4 = window.emplace_before<uil::TestScene>(t2,4);
+    [[maybe_unused]] auto const t5 = window.emplace_at<uil::TestScene>(3,4);
 
     while (not WindowShouldClose()) {
         window.update();
