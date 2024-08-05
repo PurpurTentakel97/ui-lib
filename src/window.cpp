@@ -16,13 +16,14 @@ namespace uil {
         }
     }
 
-    Context Window::create_context() const {
+    Context Window::create_context() {
         // clang-format off
         return Context{
             GetMousePosition(),
             &m_font,
             m_resolution,
-            GetFrameTime()
+            GetFrameTime(),
+            m_scene_manager
         };
         // clang-format on
     }

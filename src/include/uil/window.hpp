@@ -46,7 +46,7 @@ namespace uil {
         Font m_font{};
 
         void update_resolution();
-        [[nodiscard]] Context create_context() const;
+        [[nodiscard]] Context create_context();
 
         static void set_flag(ConfigFlags flag, bool active);
 
