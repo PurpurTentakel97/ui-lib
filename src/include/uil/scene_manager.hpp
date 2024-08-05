@@ -18,10 +18,12 @@ namespace uil {
      * stops checking and updating when a scene returns false.
      */
     class SceneManager final {
-    private:
+    public:
         using ScenePtr      = std::shared_ptr<Scene>;
         using ScenePtr_Weak = std::weak_ptr<Scene>;
         using SceneVector   = std::vector<ScenePtr>;
+
+    private:
         SceneVector m_scenes{};
 
         template<std::derived_from<Scene> T, typename... Args>
@@ -33,6 +35,8 @@ namespace uil {
             m_scenes.insert(m_scenes.begin() + static_cast<cpt::i64>(offset), std::move(elem));
             return ptr;
         }
+
+        ScenePtr_Weak insert_element(cpt::usize offset, ScenePtr scene);
 
     public:
         /**
@@ -95,7 +99,7 @@ namespace uil {
                 throw BadSceneIndex("index is out of bounce");
             }
             if (index == m_scenes.size()) {
-                return emplace_back<T>(args...);
+                return emplace_front<T>(args...);
             }
 
             return emplace_emelent<T>(index, args...);
@@ -117,7 +121,7 @@ namespace uil {
          * @throw BadScenePointer throws when provided before scene is expired
          */
         template<std::derived_from<Scene> T, typename... Args>
-        std::weak_ptr<T> emplace_after(std::weak_ptr<T> const before, Args... args)
+        std::weak_ptr<T> emplace_after(std::weak_ptr<T> const& before, Args... args)
             requires(std::constructible_from<T, Args...>)
         {
             if (auto const shared_before = before.lock(); shared_before) {
@@ -151,12 +155,14 @@ namespace uil {
          * @throw BadScenePointer throws when provided after scene is expired
          */
         template<std::derived_from<Scene> T, typename... Args>
-        std::weak_ptr<T> emplace_before(std::weak_ptr<T> after, Args... args)
+        std::weak_ptr<T> emplace_before(std::weak_ptr<T> const& after, Args... args)
             requires(std::constructible_from<T, Args...>)
         {
             if (auto const shared_after = after.lock(); shared_after) {
-                auto const iterator = std::find_if(
-                        m_scenes.begin(), m_scenes.end(), [&a = shared_after](auto const& elem) { return elem.get() == a.get(); });
+                auto const iterator
+                        = std::find_if(m_scenes.begin(), m_scenes.end(), [&a = shared_after](auto const& elem) {
+                              return elem.get() == a.get();
+                          });
                 if (iterator == m_scenes.end()) {
                     throw BadScenePointer("not able to find after element in scenes vector");
                 }
@@ -166,6 +172,59 @@ namespace uil {
 
             throw BadScenePointer("weak_ptr was expired");
         }
+
+        /**
+         * pushed the scene at the front of the scene vector.
+         * all pushed scenes will be checked, updated, rendered and resized.
+         *
+         * @param scene the scene that gets pushed into the vector
+         * @return pointer of the pushed scene as a weak_ptr
+         */
+        ScenePtr_Weak push_back(ScenePtr scene);
+
+        /**
+         * pushed the scene at the end of the scene vector.
+         * all pushed scenes will be checked, updated, rendered and resized.
+         *
+         * @param scene the scene that gets pushed into the vector
+         * @return pointer of the pushed scene as a weak_ptr
+         */
+        ScenePtr_Weak push_front(ScenePtr scene);
+
+        /**
+         * pushes the scene at a certain index of the scene vector.
+         * all empaced scenes will be checked, updated, rendered and resized.
+         *
+         * @param index provides the index the new scene is empaced to
+         * @param scene the scene that gets pushed into the vector
+         * @return pointer of the pushed scene as a weak_ptr
+         * @throw BadSceneIndex will throw when index is out of range
+         */
+        ScenePtr_Weak push_at(cpt::usize index, ScenePtr scene);
+
+        /**
+         * pushes the scene before a provided scene of the scene vector.
+         * all pushed scenes will be checked, updated, rendered and resized.
+         *
+         * @param before proviedes a scene pointer that holds the scene befor the pushed scene
+         * @param scene the scene that gets pushed
+         * @return pointer of the pushed scene as a weak_ptr
+         * @throw BadScenePointer throws when provided before scene can not be fount in the scenes vector
+         * @throw BadScenePointer throws when provided before scene is expired
+         */
+        ScenePtr_Weak push_after(ScenePtr_Weak const& before, ScenePtr scene);
+
+        /**
+         * pushes the scene after a provided scene of the scene vector.
+         * all pushed scenes will be checked, updated, rendered and resized.
+         *
+         * @param after proviedes a scene pointer that holds the scene after the pushed scene
+         * @param scene the scene that gets pushed
+         * @return pointer of the pushed scene as a weak_ptr
+         * @throw BadScenePointer throws when provided before scene can not be fount in the scenes vector
+         * @throw BadScenePointer throws when provided before scene is expired
+         */
+        ScenePtr_Weak push_before(ScenePtr_Weak const& after, ScenePtr scene);
 
         /**
          * calls all emplaced scene from top to bottom to check.

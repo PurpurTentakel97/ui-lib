@@ -72,6 +72,26 @@ namespace uil {
         CloseWindow();
     }
 
+    Window::ScenePtr_Weak Window::push_back(ScenePtr scene) {
+        return m_scene_manager.push_back(std::move(scene));
+    }
+
+    Window::ScenePtr_Weak Window::push_front(ScenePtr scene) {
+        return m_scene_manager.push_front(std::move(scene));
+    }
+
+    Window::ScenePtr_Weak Window::push_at(cpt::usize const index, ScenePtr scene) {
+        return m_scene_manager.push_at(index, std::move(scene));
+    }
+
+    Window::ScenePtr_Weak Window::push_after(ScenePtr_Weak const& before, ScenePtr scene) {
+        return m_scene_manager.push_after(before, std::move(scene));
+    }
+
+    Window::ScenePtr_Weak Window::push_before(ScenePtr_Weak const& after, ScenePtr scene) {
+        return m_scene_manager.push_before(after, std::move(scene));
+    }
+
     void Window::set_vsync(bool const vsync) {
         set_flag(ConfigFlags::FLAG_VSYNC_HINT, vsync);
     }

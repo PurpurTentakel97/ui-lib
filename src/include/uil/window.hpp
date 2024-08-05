@@ -39,6 +39,10 @@ namespace uil {
      * add scenes here with emplace.
      */
     class Window final {
+    public:
+        using ScenePtr      = SceneManager::ScenePtr;
+        using ScenePtr_Weak = SceneManager::ScenePtr_Weak;
+
     private:
         bool m_draw_fps = true;
         cpt::Vec2_i m_resolution;
@@ -171,6 +175,58 @@ namespace uil {
             return m_scene_manager.emplace_before<T>(after, m_resolution, args...);
         }
 
+        /**
+         * pushed the scene at the front of the scene vector.
+         * all pushed scenes will be checked, updated, rendered and resized.
+         *
+         * @param scene the scene that gets pushed into the vector
+         * @return pointer of the pushed scene as a weak_ptr
+         */
+        ScenePtr_Weak push_back(ScenePtr scene);
+
+        /**
+         * pushed the scene at the end of the scene vector.
+         * all pushed scenes will be checked, updated, rendered and resized.
+         *
+         * @param scene the scene that gets pushed into the vector
+         * @return pointer of the pushed scene as a weak_ptr
+         */
+        ScenePtr_Weak push_front(ScenePtr scene);
+
+        /**
+         * pushes the scene at a certain index of the scene vector.
+         * all empaced scenes will be checked, updated, rendered and resized.
+         *
+         * @param index provides the index the new scene is empaced to
+         * @param scene the scene that gets pushed into the vector
+         * @return pointer of the pushed scene as a weak_ptr
+         * @throw BadSceneIndex will throw when index is out of range
+         */
+        ScenePtr_Weak push_at(cpt::usize index, ScenePtr scene);
+
+        /**
+         * pushes the scene before a provided scene of the scene vector.
+         * all pushed scenes will be checked, updated, rendered and resized.
+         *
+         * @param before proviedes a scene pointer that holds the scene befor the pushed scene
+         * @param scene the scene that gets pushed
+         * @return pointer of the pushed scene as a weak_ptr
+         * @throw BadScenePointer throws when provided before scene can not be fount in the scenes vector
+         * @throw BadScenePointer throws when provided before scene is expired
+         */
+        ScenePtr_Weak push_after(ScenePtr_Weak const& before, ScenePtr scene);
+
+        /**
+         * pushes the scene after a provided scene of the scene vector.
+         * all pushed scenes will be checked, updated, rendered and resized.
+         *
+         * @param after proviedes a scene pointer that holds the scene after the pushed scene
+         * @param scene the scene that gets pushed
+         * @return pointer of the pushed scene as a weak_ptr
+         * @throw BadScenePointer throws when provided before scene can not be fount in the scenes vector
+         * @throw BadScenePointer throws when provided before scene is expired
+         */
+        ScenePtr_Weak push_before(ScenePtr_Weak const& after, ScenePtr scene);
 
         /**
          * Set to try enabling V-Sync on GPU. (raylib)

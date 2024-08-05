@@ -8,30 +8,70 @@
 #include <uil/scene_manager.hpp>
 
 namespace uil {
+    SceneManager::ScenePtr_Weak SceneManager::insert_element(cpt::usize const offset, ScenePtr scene) {
+        ScenePtr_Weak ptr = scene;
+        m_scenes.insert(m_scenes.begin() + static_cast<cpt::i64>(offset), std::move(scene));
+        return ptr;
+    }
+
+    SceneManager::ScenePtr_Weak SceneManager::push_back(ScenePtr scene) {
+        return insert_element(0, std::move(scene));
+    }
+
+    SceneManager::ScenePtr_Weak SceneManager::push_front(ScenePtr scene) {
+        return insert_element(m_scenes.end() - m_scenes.begin(), std::move(scene));
+    }
+
+    SceneManager::ScenePtr_Weak SceneManager::push_at(cpt::usize const index, ScenePtr scene) {
+        if (index > m_scenes.size()) {
+            throw BadSceneIndex("index is out of bounce");
+        }
+
+        if (index == m_scenes.size()) {
+            return push_front(std::move(scene));
+        }
+
+        return insert_element(index, std::move(scene));
+    }
+
+    SceneManager::ScenePtr_Weak SceneManager::push_after(ScenePtr_Weak const& before, ScenePtr scene) {
+        if (auto const shared_before = before.lock(); shared_before) {
+            auto const iterrator
+                    = std::find_if(m_scenes.begin(), m_scenes.end(), [&b = shared_before](auto const& elem) {
+                          return b.get() == elem.get();
+                      });
+            if (iterrator == m_scenes.end()) {
+                throw BadScenePointer("not able to find before element in scenes vector");
+            }
+            return insert_element(iterrator - m_scenes.begin(), std::move(scene));
+        }
+
+        throw BadScenePointer("weak_ptr was ecpired");
+    }
+
+    SceneManager::ScenePtr_Weak SceneManager::push_before(ScenePtr_Weak const& after, ScenePtr scene) {
+        if (auto const shared_after = after.lock(); shared_after) {
+            auto const iteraor = std::find_if(m_scenes.begin(), m_scenes.end(), [&a = shared_after](auto const& elem) {
+                return a.get() == elem.get();
+            });
+            if (iteraor == m_scenes.end()) {
+                throw BadScenePointer("not able to find after element in scenes vector");
+            }
+
+            return insert_element(iteraor - m_scenes.begin() + 1, std::move(scene));
+        }
+
+        throw BadScenePointer("weak_ptr was expired");
+    }
+
     bool SceneManager::handle_input(Context const& context) const {
         return std::ranges::all_of(std::ranges::views::reverse(m_scenes),
                                    [&c = context](auto const& s) { return s->handle_input(c); });
-        /*
-        for (auto const& s : std::ranges::views::reverse(m_scenes)) {
-            if (not s->check(context)) {
-                return false;
-            }
-        }
-        return true;
-        */
     }
 
     bool SceneManager::update(Context const& context) const {
         return std::ranges::all_of(std::ranges::views::reverse(m_scenes),
                                    [&c = context](auto const& s) { return s->update(c); });
-        /*
-        for (auto const& s : std::ranges::views::reverse(m_scenes)) {
-            if (not s->update(context)) {
-                return false;
-            }
-        }
-        return true;
-        */
     }
 
     void SceneManager::render(Context const& context) const {
