@@ -123,19 +123,19 @@ namespace uil {
          *
          * @tparam T scene that will be emplaced into the scene_manager
          * @tparam Args all Types the scene needs to be constructed
-         * @param before proviedes the scene pointer the new scene gets emplaced before
+         * @param scene proviedes the scene pointer the new scene gets emplaced before
          * @param args all Parameters the scene needs to be constructed
          * @return pointer of the constructed scene as a weak_ptr
          * @throw BadScenePointer throws when provided before scene can not be fount in the scenes vector
          * @throw BadScenePointer throws when provided before scene is expired
          */
         template<std::derived_from<Scene> T, typename... Args>
-        std::weak_ptr<T> emplace_after(std::weak_ptr<T> const& before, Args... args)
+        std::weak_ptr<T> emplace_after(std::weak_ptr<T> const& scene, Args... args)
             requires(std::constructible_from<T, cpt::Vec2_i, Args...>)
         {
-            if (auto const shared_before = before.lock(); shared_before) {
+            if (auto const shared_scene = scene.lock(); shared_scene) {
                 auto const iterator
-                        = std::find_if(m_scenes.begin(), m_scenes.end(), [&b = shared_before](auto const& elem) {
+                        = std::find_if(m_scenes.begin(), m_scenes.end(), [&b = shared_scene](auto const& elem) {
                               return elem.get() == b.get();
                           });
                 if (iterator == m_scenes.end()) {
@@ -157,19 +157,19 @@ namespace uil {
          *
          * @tparam T scene that will be emplaced into the scene_manager
          * @tparam Args all Types the scene needs to be constructed
-         * @param after proviedes the scene pointer the new scene gets emplaced after
+         * @param scene proviedes the scene pointer the new scene gets emplaced after
          * @param args all Parameters the scene needs to be constructed
          * @return pointer of the constructed scene as a weak_ptr
          * @throw BadScenePointer throws when provided after scene can not be found in the scenes vector
          * @throw BadScenePointer throws when provided after scene is expired
          */
         template<std::derived_from<Scene> T, typename... Args>
-        std::weak_ptr<T> emplace_before(std::weak_ptr<T> const& after, Args... args)
+        std::weak_ptr<T> emplace_before(std::weak_ptr<T> const& scene, Args... args)
             requires(std::constructible_from<T, cpt::Vec2_i, Args...>)
         {
-            if (auto const shared_after = after.lock(); shared_after) {
+            if (auto const shared_scene = scene.lock(); shared_scene) {
                 auto const iterator
-                        = std::find_if(m_scenes.begin(), m_scenes.end(), [&a = shared_after](auto const& elem) {
+                        = std::find_if(m_scenes.begin(), m_scenes.end(), [&a = shared_scene](auto const& elem) {
                               return elem.get() == a.get();
                           });
                 if (iterator == m_scenes.end()) {
@@ -186,54 +186,54 @@ namespace uil {
          * pushed the scene at the front of the scene vector.
          * all pushed scenes will be checked, updated, rendered and resized.
          *
-         * @param scene the scene that gets pushed into the vector
+         * @param to_push the scene that gets pushed into the vector
          * @return pointer of the pushed scene as a weak_ptr
          */
-        ScenePtr_Weak push_back(ScenePtr scene);
+        ScenePtr_Weak push_back(ScenePtr to_push);
 
         /**
          * pushed the scene at the end of the scene vector.
          * all pushed scenes will be checked, updated, rendered and resized.
          *
-         * @param scene the scene that gets pushed into the vector
+         * @param to_push the scene that gets pushed into the vector
          * @return pointer of the pushed scene as a weak_ptr
          */
-        ScenePtr_Weak push_front(ScenePtr scene);
+        ScenePtr_Weak push_front(ScenePtr to_push);
 
         /**
          * pushes the scene at a certain index of the scene vector.
          * all empaced scenes will be checked, updated, rendered and resized.
          *
          * @param index provides the index the new scene is pushed to
-         * @param scene the scene that gets pushed into the vector
+         * @param to_push the scene that gets pushed into the vector
          * @return pointer of the pushed scene as a weak_ptr
          * @throw BadSceneIndex will throw when index is out of range
          */
-        ScenePtr_Weak push_at(cpt::usize index, ScenePtr scene);
+        ScenePtr_Weak push_at(cpt::usize index, ScenePtr to_push);
 
         /**
          * pushes the scene before a provided scene of the scene vector.
          * all pushed scenes will be checked, updated, rendered and resized.
          *
-         * @param before proviedes a scene pointer that holds the scene befor the pushed scene
-         * @param scene the scene that gets pushed
+         * @param scene proviedes a scene pointer that holds the scene befor the pushed scene
+         * @param to_push the scene that gets pushed
          * @return pointer of the pushed scene as a weak_ptr
          * @throw BadScenePointer throws when provided before scene can not be fount in the scenes vector
          * @throw BadScenePointer throws when provided before scene is expired
          */
-        ScenePtr_Weak push_after(ScenePtr_Weak const& before, ScenePtr scene);
+        ScenePtr_Weak push_after(ScenePtr_Weak const& scene, ScenePtr to_push);
 
         /**
          * pushes the scene after a provided scene of the scene vector.
          * all pushed scenes will be checked, updated, rendered and resized.
          *
-         * @param after proviedes a scene pointer that holds the scene after the pushed scene
-         * @param scene the scene that gets pushed
+         * @param scene proviedes a scene pointer that holds the scene after the pushed scene
+         * @param to_push the scene that gets pushed
          * @return pointer of the pushed scene as a weak_ptr
          * @throw BadScenePointer throws when provided before scene can not be fount in the scenes vector
          * @throw BadScenePointer throws when provided before scene is expired
          */
-        ScenePtr_Weak push_before(ScenePtr_Weak const& after, ScenePtr scene);
+        ScenePtr_Weak push_before(ScenePtr_Weak const& scene, ScenePtr to_push);
 
         /**
          * pops the first element of the vector.
@@ -267,25 +267,25 @@ namespace uil {
          * pops a scene that is located one before the provided scene in the scenes vector.
          * that is the element that gets rendered behind the provided one.
          *
-         * @param before the element before the element that will be poped
+         * @param scene the element before the element that will be poped
          * @return shared_ptr of the poped scene
          * @throw BadScenePointer throws when provided before scene can not be found in the scenes vector
          * @throw BadScenePointer throws when provided before scene is expired
          * @throw BadSceneErase throws when provided before scene is the first element in the scenes vector
          */
-        ScenePtr pop_after(ScenePtr_Weak const& before);
+        ScenePtr pop_after(ScenePtr_Weak const& scene);
 
         /**
          * pops a scene that is located one after the provided scene in the scenes vector.
          * that is the element that gets rendered behind the provided one.
          *
-         * @param after the element after the element that wiill be deleted
+         * @param scene the element after the element that wiill be deleted
          * @return shared_ptr of the poped scene
          * @throw BadScenePointer throws when provided after scene can not be found in the scenes vector
          * @throw BadScenePointer throws when provided after scene is expired
          * @throw BadSceneErase throws when provided after scene is the last element in the scenes vector
          */
-        ScenePtr pop_before(ScenePtr_Weak const& after);
+        ScenePtr pop_before(ScenePtr_Weak const& scene);
 
         /**
          * pops the provided scene.
@@ -324,23 +324,23 @@ namespace uil {
          * erases a scene that is located one before the provided scene in the scenes vector.
          * that is the element that gets rendered behind the provided one.
          *
-         * @param before the element before the element that will be deleted
+         * @param scene the element before the element that will be deleted
          * @throw BadScenePointer throws when provided before scene can not be found in the scenes vector
          * @throw BadScenePointer throws when provided before scene is expired
          * @throw BadSceneErase throws when provided before scene is the first element in the scenes vector
          */
-        void erase_after(ScenePtr_Weak const& before);
+        void erase_after(ScenePtr_Weak const& scene);
 
         /**
          * erases a scene that is located one after the provided scene in the scenes vector.
          * that is the element that gets rendered behind the provided one.
          *
-         * @param after the element after the element that wiill be deleted
+         * @param scene the element after the element that wiill be deleted
          * @throw BadScenePointer throws when provided after scene can not be found in the scenes vector
          * @throw BadScenePointer throws when provided after scene is expired
          * @throw BadSceneErase throws when provided after scene is the last element in the scenes vector
          */
-        void erase_before(ScenePtr_Weak const& after);
+        void erase_before(ScenePtr_Weak const& scene);
 
         /**
          * erases the provided scene.
