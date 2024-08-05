@@ -40,7 +40,7 @@ namespace uil {
         return insert_element(index, std::move(to_push));
     }
 
-    SceneManager::ScenePtr_Weak SceneManager::push_after(ScenePtr_Weak const& scene, ScenePtr to_push) {
+    SceneManager::ScenePtr_Weak SceneManager::push_after(ScenePtr_Weak scene, ScenePtr to_push) {
         if (auto const shared_before = scene.lock(); shared_before) {
             auto const iterrator
                     = std::find_if(m_scenes.begin(), m_scenes.end(), [&b = shared_before](auto const& elem) {
@@ -55,7 +55,7 @@ namespace uil {
         throw BadScenePointer("weak_ptr was ecpired");
     }
 
-    SceneManager::ScenePtr_Weak SceneManager::push_before(ScenePtr_Weak const& scene, ScenePtr to_push) {
+    SceneManager::ScenePtr_Weak SceneManager::push_before(ScenePtr_Weak scene, ScenePtr to_push) {
         if (auto const shared_after = scene.lock(); shared_after) {
             auto const iteraor = std::find_if(m_scenes.begin(), m_scenes.end(), [&a = shared_after](auto const& elem) {
                 return a.get() == elem.get();
@@ -100,7 +100,7 @@ namespace uil {
         return std::move(temp);
     }
 
-    SceneManager::ScenePtr SceneManager::pop_after(ScenePtr_Weak const& scene) {
+    SceneManager::ScenePtr SceneManager::pop_after(ScenePtr_Weak scene) {
         if (auto const shared_before = scene.lock(); shared_before) {
             auto const iterator
                     = std::find_if(m_scenes.begin(), m_scenes.end(), [&b = shared_before](auto const& elem) {
@@ -120,7 +120,7 @@ namespace uil {
         throw BadScenePointer("weak_ptr was expired");
     }
 
-    SceneManager::ScenePtr SceneManager::pop_before(ScenePtr_Weak const& scene) {
+    SceneManager::ScenePtr SceneManager::pop_before(ScenePtr_Weak scene) {
         if (auto const shared_after = scene.lock(); shared_after) {
             auto const iterator = std::find_if(m_scenes.begin(), m_scenes.end(), [&a = shared_after](auto const& elem) {
                 return a.get() == elem.get();
@@ -139,7 +139,7 @@ namespace uil {
         throw BadScenePointer("weak_ptr was expired");
     }
 
-    SceneManager::ScenePtr SceneManager::pop_this(ScenePtr_Weak const& to_pop) {
+    SceneManager::ScenePtr SceneManager::pop_this(ScenePtr_Weak to_pop) {
         if (auto const shared_to_pop = to_pop.lock(); shared_to_pop) {
             auto const iterator
                     = std::find_if(m_scenes.begin(), m_scenes.end(), [&d = shared_to_pop](auto const elem) {
@@ -178,7 +178,7 @@ namespace uil {
         erase(index);
     }
 
-    void SceneManager::erase_after(ScenePtr_Weak const& scene) {
+    void SceneManager::erase_after(ScenePtr_Weak scene) {
         if (auto const shared_before = scene.lock(); shared_before) {
             auto const iterator
                     = std::find_if(m_scenes.begin(), m_scenes.end(), [&b = shared_before](auto const& elem) {
@@ -197,7 +197,7 @@ namespace uil {
         throw BadScenePointer("weak_ptr was expired");
     }
 
-    void SceneManager::erase_before(ScenePtr_Weak const& scene) {
+    void SceneManager::erase_before(ScenePtr_Weak scene) {
         if (auto const shared_after = scene.lock(); shared_after) {
             auto const iterator = std::find_if(m_scenes.begin(), m_scenes.end(), [&a = shared_after](auto const& elem) {
                 return a.get() == elem.get();
@@ -215,7 +215,7 @@ namespace uil {
         throw BadScenePointer("weak_ptr was expired");
     }
 
-    void SceneManager::erase_this(ScenePtr_Weak const& to_delete) {
+    void SceneManager::erase_this(ScenePtr_Weak to_delete) {
         if (auto const shared_to_delete = to_delete.lock(); shared_to_delete) {
             auto const iterator
                     = std::find_if(m_scenes.begin(), m_scenes.end(), [&d = shared_to_delete](auto const elem) {
