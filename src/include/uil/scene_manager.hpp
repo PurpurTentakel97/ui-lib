@@ -236,13 +236,79 @@ namespace uil {
         ScenePtr_Weak push_before(ScenePtr_Weak const& after, ScenePtr scene);
 
         /**
+         * pops the first element of the vector.
+         * that is the most bottom rendered element.
+         *
+         * @return shared_ptr of the poped scene
+         * @throw BadSceneErase throws when scenes vector is empty
+         */
+        ScenePtr pop_back();
+
+        /**
+         * pops the last element of the vector.
+         * that is the most front rendered element.
+         *
+         * @return shared_ptr of the poped scene
+         * @throw BadSceneErase throws when scenes vector is empty
+         */
+        ScenePtr pop_front();
+
+        /**
+         * pops a specific index in the scene vector.
+         * notice that index 0 is the most bottom rendered element.
+         *
+         * @param index rovides the index that will be poped
+         * @return shared_ptr of the poped scene
+         * @throw BadSceneIndex will throw when index is out of range
+         */
+        ScenePtr pop_at(cpt::usize index);
+
+        /**
+         * pops a scene that is located one before the provided scene in the scenes vector.
+         * that is the element that gets rendered behind the provided one.
+         *
+         * @param before the element before the element that will be poped
+         * @return shared_ptr of the poped scene
+         * @throw BadScenePointer throws when provided before scene can not be found in the scenes vector
+         * @throw BadScenePointer throws when provided before scene is expired
+         * @throw BadSceneErase throws when provided before scene is the first element in the scenes vector
+         */
+        ScenePtr pop_after(ScenePtr_Weak const& before);
+
+        /**
+         * pops a scene that is located one after the provided scene in the scenes vector.
+         * that is the element that gets rendered behind the provided one.
+         *
+         * @param after the element after the element that wiill be deleted
+         * @return shared_ptr of the poped scene
+         * @throw BadScenePointer throws when provided after scene can not be found in the scenes vector
+         * @throw BadScenePointer throws when provided after scene is expired
+         * @throw BadSceneErase throws when provided after scene is the last element in the scenes vector
+         */
+        ScenePtr pop_before(ScenePtr_Weak const& after);
+
+        /**
+         * pops the provided scene.
+         * if there are no more shared_ptr the scene will get deleted.
+         *
+         * @param to_pop scene that gets poped
+         * @return shared_ptr of the poped scene
+         * @throw BadScenePointer throws when provided scene can not be found in the scenes vector
+         */
+        ScenePtr pop_this(ScenePtr_Weak const& to_pop);
+
+        /**
          * erases the first element of the vector.
          * that is the most bottom rendered element.
+         *
+         * @throw BadSceneErase thows when scenes vector is empty
          */
         void erase_back();
         /**
          * erases the last element of the vector.
          * that is the most front rendered element.
+         *
+         * @throw BadSceneErase thows when scenes vector is empty
          */
         void erase_front();
 
@@ -261,7 +327,7 @@ namespace uil {
          * @param before the element before the element that will be deleted
          * @throw BadScenePointer throws when provided before scene can not be found in the scenes vector
          * @throw BadScenePointer throws when provided before scene is expired
-         * @throw BadSceneErase throws when provided before scene is the last element in the scenes vector
+         * @throw BadSceneErase throws when provided before scene is the first element in the scenes vector
          */
         void erase_after(ScenePtr_Weak const& before);
 
@@ -272,7 +338,7 @@ namespace uil {
          * @param after the element after the element that wiill be deleted
          * @throw BadScenePointer throws when provided after scene can not be found in the scenes vector
          * @throw BadScenePointer throws when provided after scene is expired
-         * @throw BadSceneErase throws when provided after scene is the first element in the scenes vector
+         * @throw BadSceneErase throws when provided after scene is the last element in the scenes vector
          */
         void erase_before(ScenePtr_Weak const& after);
 
@@ -282,18 +348,8 @@ namespace uil {
          *
          * @param to_delete scene that gets deleted
          * @throw BadScenePointer throws when provided scene can not be found in the scenes vector
-         * @throw BadScenePointer throws when provided scene is expired
          */
         void erase_this(ScenePtr_Weak const& to_delete);
-
-        /**
-         * erases the provided scene.
-         * if there are no more shared_ptr the scene will get deleted.
-         *
-         * @param to_delete scene that gets deleted
-         * @throw BadScenePointer throws when provided scene can not be found in the scenes vector
-         */
-        void erase_this(Scene const* to_delete);
 
         /**
          * calls all emplaced scene from top to bottom to check.
