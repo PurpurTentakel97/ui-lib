@@ -25,12 +25,13 @@ namespace uil {
 
     private:
         SceneVector m_scenes{};
+        cpt::Vec2_i m_resolution;
 
         template<std::derived_from<Scene> T, typename... Args>
         std::weak_ptr<T> emplace_emelent(cpt::usize const offset, Args&&... args)
-            requires(std::constructible_from<T, Args...>)
+            requires(std::constructible_from<T, cpt::Vec2_i, Args...>)
         {
-            auto elem            = std::make_shared<T>(std::forward<Args>(args)...);
+            auto elem            = std::make_shared<T>(m_resolution, std::forward<Args>(args)...);
             std::weak_ptr<T> ptr = elem;
             m_scenes.insert(m_scenes.begin() + static_cast<cpt::i64>(offset), std::move(elem));
             return ptr;
@@ -38,7 +39,15 @@ namespace uil {
 
         ScenePtr_Weak insert_element(cpt::usize offset, ScenePtr scene);
 
+        void erase(cpt::usize offset);
+
     public:
+        /**
+         *
+         * @param resolution current resolution
+         */
+        explicit SceneManager(cpt::Vec2_i resolution);
+
         /**
          * construct the scene T with parameters Args... and emplaced it at the front of the scene vector.
          * all empaced scenes will be checked, updated, rendered and resized.
@@ -53,7 +62,7 @@ namespace uil {
          */
         template<std::derived_from<Scene> T, typename... Args>
         std::weak_ptr<T> emplace_back(Args&&... args)
-            requires(std::constructible_from<T, Args...>)
+            requires(std::constructible_from<T, cpt::Vec2_i, Args...>)
         {
             return emplace_emelent<T>(0, args...);
         }
@@ -72,7 +81,7 @@ namespace uil {
          */
         template<std::derived_from<Scene> T, typename... Args>
         std::weak_ptr<T> emplace_front(Args&&... args)
-            requires(std::constructible_from<T, Args...>)
+            requires(std::constructible_from<T, cpt::Vec2_i, Args...>)
         {
             return emplace_emelent<T>(m_scenes.end() - m_scenes.begin(), args...);
         }
@@ -93,7 +102,7 @@ namespace uil {
          */
         template<std::derived_from<Scene> T, typename... Args>
         std::weak_ptr<T> emplace_at(cpt::usize const index, Args&&... args)
-            requires(std::constructible_from<T, Args...>)
+            requires(std::constructible_from<T, cpt::Vec2_i, Args...>)
         {
             if (index > m_scenes.size()) {
                 throw BadSceneIndex("index is out of bounce");
@@ -122,7 +131,7 @@ namespace uil {
          */
         template<std::derived_from<Scene> T, typename... Args>
         std::weak_ptr<T> emplace_after(std::weak_ptr<T> const& before, Args... args)
-            requires(std::constructible_from<T, Args...>)
+            requires(std::constructible_from<T, cpt::Vec2_i, Args...>)
         {
             if (auto const shared_before = before.lock(); shared_before) {
                 auto const iterator
@@ -156,7 +165,7 @@ namespace uil {
          */
         template<std::derived_from<Scene> T, typename... Args>
         std::weak_ptr<T> emplace_before(std::weak_ptr<T> const& after, Args... args)
-            requires(std::constructible_from<T, Args...>)
+            requires(std::constructible_from<T, cpt::Vec2_i, Args...>)
         {
             if (auto const shared_after = after.lock(); shared_after) {
                 auto const iterator
@@ -195,7 +204,7 @@ namespace uil {
          * pushes the scene at a certain index of the scene vector.
          * all empaced scenes will be checked, updated, rendered and resized.
          *
-         * @param index provides the index the new scene is empaced to
+         * @param index provides the index the new scene is pushed to
          * @param scene the scene that gets pushed into the vector
          * @return pointer of the pushed scene as a weak_ptr
          * @throw BadSceneIndex will throw when index is out of range
@@ -227,6 +236,66 @@ namespace uil {
         ScenePtr_Weak push_before(ScenePtr_Weak const& after, ScenePtr scene);
 
         /**
+         * erases the first element of the vector.
+         * that is the most bottom rendered element.
+         */
+        void erase_back();
+        /**
+         * erases the last element of the vector.
+         * that is the most front rendered element.
+         */
+        void erase_front();
+
+        /**
+         * erases a specific index in the scene vector.
+         * notice that index 0 is the most bottom rendered element.
+         *
+         * @param index provides the index that will be erased
+         * @throw BadSceneIndex will throw when index is out of range
+         */
+        void erase_at(cpt::usize index);
+        /**
+         * erases a scene that is located one before the provided scene in the scenes vector.
+         * that is the element that gets rendered behind the provided one.
+         *
+         * @param before the element before the element that will be deleted
+         * @throw BadScenePointer throws when provided before scene can not be found in the scenes vector
+         * @throw BadScenePointer throws when provided before scene is expired
+         * @throw BadSceneErase throws when provided before scene is the last element in the scenes vector
+         */
+        void erase_after(ScenePtr_Weak const& before);
+
+        /**
+         * erases a scene that is located one after the provided scene in the scenes vector.
+         * that is the element that gets rendered behind the provided one.
+         *
+         * @param after the element after the element that wiill be deleted
+         * @throw BadScenePointer throws when provided after scene can not be found in the scenes vector
+         * @throw BadScenePointer throws when provided after scene is expired
+         * @throw BadSceneErase throws when provided after scene is the first element in the scenes vector
+         */
+        void erase_before(ScenePtr_Weak const& after);
+
+        /**
+         * erases the provided scene.
+         * if there are no more shared_ptr the scene will get deleted.
+         *
+         * @param to_delete scene that gets deleted
+         * @throw BadScenePointer throws when provided scene can not be found in the scenes vector
+         * @throw BadScenePointer throws when provided scene is expired
+         */
+        void erase_this(ScenePtr_Weak const& to_delete);
+
+        /**
+         * erases the provided scene.
+         * if there are no more shared_ptr the scene will get deleted.
+         *
+         * @param to_delete scene that gets deleted
+         * @throw BadScenePointer throws when provided scene can not be found in the scenes vector
+         */
+        void erase_this(Scene const* to_delete);
+
+        /**
          * calls all emplaced scene from top to bottom to check.
          * stops checking when a scene has returned false.
          *
@@ -253,6 +322,6 @@ namespace uil {
          *
          * @param context all changes of the last frame
          */
-        void resize(Context const& context) const;
+        void resize(Context const& context);
     };
 } // namespace uil

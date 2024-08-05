@@ -59,4 +59,8 @@ namespace uil {
     class BadScenePointer final : public std::logic_error {
         using std::logic_error::logic_error;
     };
+
+    class BadSceneErase final : public std::logic_error {
+        using std::logic_error::logic_error;
+    };
 } // namespace uil

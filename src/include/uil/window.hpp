@@ -39,14 +39,10 @@ namespace uil {
      * add scenes here with emplace.
      */
     class Window final {
-    public:
-        using ScenePtr      = SceneManager::ScenePtr;
-        using ScenePtr_Weak = SceneManager::ScenePtr_Weak;
-
     private:
         bool m_draw_fps = true;
         cpt::Vec2_i m_resolution;
-        SceneManager m_scene_manager{};
+        SceneManager m_scene_manager;
         Font m_font{};
 
         void update_resolution();
@@ -73,160 +69,11 @@ namespace uil {
         ~Window();
 
         /**
-         * construct the scene T with parameters Args... and emplaced it at the front of the scene vector.
-         * all empaced scenes will be checked, updated, rendered and resized.
+         * use the scene manager to add / ermove scenes from this window.
          *
-         * T needs to be derived from Scene.
-         * T needs to be constructable with parameters Args...
-         *
-         * @tparam T scene that will be emplaced into the scene_manager
-         * @tparam Args all Types the scene needs to be constructed
-         * @param args all Parameters the scene needs to be constructed
-         * @return pointer of the constructed scene as a weak_ptr
+         * @return scene manager holding by the window
          */
-        template<std::derived_from<Scene> T, typename... Args>
-        std::weak_ptr<T> emplace_back(Args... args)
-            requires(std::constructible_from<T, cpt::Vec2_i, Args...>)
-        {
-            return m_scene_manager.emplace_back<T>(m_resolution, args...);
-        }
-
-        /**
-         * construct the scene T with parameters Args... and emplaced it at the end of the scene vector.
-         * all empaced scenes will be checked, updated, rendered and resized.
-         *
-         * T needs to be derived from Scene.
-         * T needs to be constructable with parameters Args...
-         *
-         * @tparam T scene that will be emplaced into the scene_manager
-         * @tparam Args all Types the scene needs to be constructed
-         * @param args all Parameters the scene needs to be constructed
-         * @return pointer of the constructed scene as a weak_ptr
-         */
-        template<std::derived_from<Scene> T, typename... Args>
-        std::weak_ptr<T> emplace_front(Args... args)
-            requires(std::constructible_from<T, cpt::Vec2_i, Args...>)
-        {
-            return m_scene_manager.emplace_front<T>(m_resolution, args...);
-        }
-
-        /**
-         * construct the scene T with parameters Args... and emplaced it at a certain index of the scene vector.
-         * all empaced scenes will be checked, updated, rendered and resized.
-         *
-         * T needs to be derived from Scene.
-         * T needs to be constructable with parameters Args...
-         *
-         * @tparam T scene that will be emplaced into the scene_manager
-         * @tparam Args all Types the scene needs to be constructed
-         * @param index  provides the index the new scene is empaced to
-         * @param args all Parameters the scene needs to be constructed
-         * @return pointer of the constructed scene as a weak_ptr
-         * @throw BadSceneIndex will throw when index is out of range
-         */
-        template<std::derived_from<Scene> T, typename... Args>
-        std::weak_ptr<T> emplace_at(cpt::usize const index, Args... args)
-            requires(std::constructible_from<T, cpt::Vec2_i, Args...>)
-        {
-            return m_scene_manager.emplace_at<T>(index, m_resolution, args...);
-        }
-
-        /**
-         * construct the scene T with parameters Args... and emplaced it before a provided scene of the scene vector.
-         * all empaced scenes will be checked, updated, rendered and resized.
-         *
-         * T needs to be derived from Scene.
-         * T needs to be constructable with parameters Args...
-         *
-         * @tparam T scene that will be emplaced into the scene_manager
-         * @tparam Args all Types the scene needs to be constructed
-         * @param before proviedes the scene pointer the new scene gets emplaced before
-         * @param args all Parameters the scene needs to be constructed
-         * @return pointer of the constructed scene as a weak_ptr
-         * @throw BadScenePointer throws when provided before scene can not be fount in the scenes vector
-         * @throw BadScenePointer throws when provided before scene is expired
-         */
-        template<std::derived_from<Scene> T, typename... Args>
-        std::weak_ptr<T> emplace_after(std::weak_ptr<T> before, Args... args)
-            requires(std::constructible_from<T, cpt::Vec2_i, Args...>)
-        {
-            return m_scene_manager.emplace_after<T>(before, m_resolution, args...);
-        }
-
-        /**
-         * construct the scene T with parameters Args... and emplaced it after a provided scene of the scene vector.
-         * all empaced scenes will be checked, updated, rendered and resized.
-         *
-         * T needs to be derived from Scene.
-         * T needs to be constructable with parameters Args...
-         *
-         * @tparam T scene that will be emplaced into the scene_manager
-         * @tparam Args all Types the scene needs to be constructed
-         * @param after proviedes the scene pointer the new scene gets emplaced after
-         * @param args all Parameters the scene needs to be constructed
-         * @return pointer of the constructed scene as a weak_ptr
-         * @throw BadScenePointer throws when provided after scene can not be found in the scenes vector
-         * @throw BadScenePointer throws when provided after scene is expired
-         */
-        template<std::derived_from<Scene> T, typename... Args>
-        std::weak_ptr<T> emplace_before(std::weak_ptr<T> after, Args... args)
-            requires(std::constructible_from<T, cpt::Vec2_i, Args...>)
-        {
-            return m_scene_manager.emplace_before<T>(after, m_resolution, args...);
-        }
-
-        /**
-         * pushed the scene at the front of the scene vector.
-         * all pushed scenes will be checked, updated, rendered and resized.
-         *
-         * @param scene the scene that gets pushed into the vector
-         * @return pointer of the pushed scene as a weak_ptr
-         */
-        ScenePtr_Weak push_back(ScenePtr scene);
-
-        /**
-         * pushed the scene at the end of the scene vector.
-         * all pushed scenes will be checked, updated, rendered and resized.
-         *
-         * @param scene the scene that gets pushed into the vector
-         * @return pointer of the pushed scene as a weak_ptr
-         */
-        ScenePtr_Weak push_front(ScenePtr scene);
-
-        /**
-         * pushes the scene at a certain index of the scene vector.
-         * all empaced scenes will be checked, updated, rendered and resized.
-         *
-         * @param index provides the index the new scene is empaced to
-         * @param scene the scene that gets pushed into the vector
-         * @return pointer of the pushed scene as a weak_ptr
-         * @throw BadSceneIndex will throw when index is out of range
-         */
-        ScenePtr_Weak push_at(cpt::usize index, ScenePtr scene);
-
-        /**
-         * pushes the scene before a provided scene of the scene vector.
-         * all pushed scenes will be checked, updated, rendered and resized.
-         *
-         * @param before proviedes a scene pointer that holds the scene befor the pushed scene
-         * @param scene the scene that gets pushed
-         * @return pointer of the pushed scene as a weak_ptr
-         * @throw BadScenePointer throws when provided before scene can not be fount in the scenes vector
-         * @throw BadScenePointer throws when provided before scene is expired
-         */
-        ScenePtr_Weak push_after(ScenePtr_Weak const& before, ScenePtr scene);
-
-        /**
-         * pushes the scene after a provided scene of the scene vector.
-         * all pushed scenes will be checked, updated, rendered and resized.
-         *
-         * @param after proviedes a scene pointer that holds the scene after the pushed scene
-         * @param scene the scene that gets pushed
-         * @return pointer of the pushed scene as a weak_ptr
-         * @throw BadScenePointer throws when provided before scene can not be fount in the scenes vector
-         * @throw BadScenePointer throws when provided before scene is expired
-         */
-        ScenePtr_Weak push_before(ScenePtr_Weak const& after, ScenePtr scene);
+        SceneManager& scene_manager();
 
         /**
          * Set to try enabling V-Sync on GPU. (raylib)
