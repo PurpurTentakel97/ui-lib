@@ -3,8 +3,8 @@
 // 06.07.24
 //
 
-#include <uil/elements/test_element.hpp>
 #include <array>
+#include <uil/elements/test_element.hpp>
 #include <uil/scenes/test_scene.hpp>
 
 namespace uil {
@@ -16,8 +16,11 @@ namespace uil {
             GREEN,
         };
 
-        [[maybe_unused]] auto const text = &emplace_element<TestElement>(
-                Rectangle{ 0.2f * static_cast<float>(t), 0.25f, 0.3f, 0.3f }, Alignment::MidMid, resolution, colors[t-1]);
+        [[maybe_unused]] auto const text
+                = &emplace_element<TestElement>(Rectangle{ 0.2f * static_cast<float>(t), 0.25f, 0.3f, 0.3f },
+                                                Alignment::MidMid,
+                                                resolution,
+                                                colors[static_cast<cpt::usize>(t - 1)]);
         text->move_to_linear_time({ 0.75f, 0.75f }, 10.0f);
     }
 

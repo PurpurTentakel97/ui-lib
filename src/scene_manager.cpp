@@ -8,24 +8,33 @@
 #include <uil/scene_manager.hpp>
 
 namespace uil {
-    SceneManager::ScenePtr_Weak SceneManager::insert_element(cpt::usize const offset, ScenePtr scene) {
+    SceneManager::ScenePtr_Weak SceneManager::insert_element_with_offset(cpt::usize const offset, ScenePtr scene) {
+        return insert_element_with_iterator(m_scenes.begin() + static_cast<cpt::i64>(offset), std::move(scene));
+    }
+
+    SceneManager::ScenePtr_Weak SceneManager::insert_element_with_iterator(SceneVector::iterator const& iterator,
+                                                                           ScenePtr scene) {
         ScenePtr_Weak ptr = scene;
-        m_scenes.insert(m_scenes.begin() + static_cast<cpt::i64>(offset), std::move(scene));
+        m_scenes.insert(iterator, std::move(scene));
         return ptr;
     }
 
-    void SceneManager::erase(cpt::usize const offset) {
-        m_scenes.erase(m_scenes.begin() + static_cast<cpt::i64>(offset));
+    void SceneManager::erase_with_offset(cpt::usize const offset) {
+        erase_with_iterator(m_scenes.begin() + static_cast<cpt::i64>(offset));
+    }
+
+    void SceneManager::erase_with_iterator(SceneVector::iterator const& iterator) {
+        m_scenes.erase(iterator);
     }
 
     SceneManager::SceneManager(cpt::Vec2_i const resolution) : m_resolution{ resolution } { }
 
     SceneManager::ScenePtr_Weak SceneManager::push_back(ScenePtr to_push) {
-        return insert_element(0, std::move(to_push));
+        return insert_element_with_offset(0, std::move(to_push));
     }
 
     SceneManager::ScenePtr_Weak SceneManager::push_front(ScenePtr to_push) {
-        return insert_element(m_scenes.end() - m_scenes.begin(), std::move(to_push));
+        return insert_element_with_iterator(m_scenes.end(), std::move(to_push));
     }
 
     SceneManager::ScenePtr_Weak SceneManager::push_at(cpt::usize const index, ScenePtr to_push) {
@@ -37,7 +46,7 @@ namespace uil {
             return push_front(std::move(to_push));
         }
 
-        return insert_element(index, std::move(to_push));
+        return insert_element_with_offset(index, std::move(to_push));
     }
 
     SceneManager::ScenePtr_Weak SceneManager::push_after(ScenePtr_Weak scene, ScenePtr to_push) {
@@ -49,7 +58,7 @@ namespace uil {
             if (iterrator == m_scenes.end()) {
                 throw BadScenePointer("not able to find before element in scenes vector");
             }
-            return insert_element(iterrator - m_scenes.begin(), std::move(to_push));
+            return insert_element_with_iterator(iterrator, std::move(to_push));
         }
 
         throw BadScenePointer("weak_ptr was ecpired");
@@ -64,7 +73,7 @@ namespace uil {
                 throw BadScenePointer("not able to find after element in scenes vector");
             }
 
-            return insert_element(iteraor - m_scenes.begin() + 1, std::move(to_push));
+            return insert_element_with_iterator(iteraor + 1, std::move(to_push));
         }
 
         throw BadScenePointer("weak_ptr was expired");
@@ -76,8 +85,8 @@ namespace uil {
         }
 
         auto temp = m_scenes.front();
-        m_scenes.erase(m_scenes.begin());
-        return std::move(temp);
+        erase_with_iterator(m_scenes.begin());
+        return temp;
     }
 
     SceneManager::ScenePtr SceneManager::pop_front() {
@@ -87,7 +96,7 @@ namespace uil {
 
         auto temp = m_scenes.back();
         m_scenes.pop_back();
-        return std::move(temp);
+        return temp;
     }
 
     SceneManager::ScenePtr SceneManager::pop_at(cpt::usize const index) {
@@ -96,8 +105,8 @@ namespace uil {
         }
 
         auto temp = m_scenes.at(index);
-        erase(index);
-        return std::move(temp);
+        erase_with_offset(index);
+        return temp;
     }
 
     SceneManager::ScenePtr SceneManager::pop_after(ScenePtr_Weak scene) {
@@ -113,8 +122,8 @@ namespace uil {
                 throw BadSceneErase("No element before the provided element");
             }
             auto temp = std::move(*(iterator - 1));
-            erase(iterator - m_scenes.begin() - 1);
-            return std::move(temp);
+            erase_with_iterator(iterator - 1);
+            return temp;
         }
 
         throw BadScenePointer("weak_ptr was expired");
@@ -132,8 +141,8 @@ namespace uil {
                 throw BadSceneErase("No element after the provided element");
             }
             auto temp = std::move(*(iterator + 1));
-            erase(iterator - m_scenes.begin() + 1);
-            return std::move(temp);
+            erase_with_iterator(iterator + 1);
+            return temp;
         }
 
         throw BadScenePointer("weak_ptr was expired");
@@ -141,16 +150,15 @@ namespace uil {
 
     SceneManager::ScenePtr SceneManager::pop_this(ScenePtr_Weak to_pop) {
         if (auto const shared_to_pop = to_pop.lock(); shared_to_pop) {
-            auto const iterator
-                    = std::find_if(m_scenes.begin(), m_scenes.end(), [&d = shared_to_pop](auto const elem) {
-                          return d.get() == elem.get();
-                      });
+            auto const iterator = std::find_if(m_scenes.begin(), m_scenes.end(), [&d = shared_to_pop](auto const elem) {
+                return d.get() == elem.get();
+            });
             if (iterator == m_scenes.end()) {
                 throw BadScenePointer("not able to find element in the scenes vector");
             }
             auto temp = std::move(*iterator);
-            erase(iterator - m_scenes.begin());
-            return std::move(temp);
+            erase_with_iterator(iterator);
+            return temp;
         }
 
         throw BadScenePointer("weak_ptr was expired");
@@ -160,7 +168,7 @@ namespace uil {
         if (m_scenes.empty()) {
             throw BadSceneErase("empty scenes vector");
         }
-        m_scenes.erase(m_scenes.begin());
+        erase_with_iterator(m_scenes.begin());
     }
 
     void SceneManager::erase_front() {
@@ -175,7 +183,7 @@ namespace uil {
             throw BadSceneIndex("index out of range while erasing a scene");
         }
 
-        erase(index);
+        erase_with_offset(index);
     }
 
     void SceneManager::erase_after(ScenePtr_Weak scene) {
@@ -190,7 +198,7 @@ namespace uil {
             if (iterator == m_scenes.begin()) {
                 throw BadSceneErase("No element before the provided element");
             }
-            erase(iterator - m_scenes.begin() - 1);
+            erase_with_iterator(iterator - 1);
             return;
         }
 
@@ -208,7 +216,7 @@ namespace uil {
             if (iterator == m_scenes.end() - 1) {
                 throw BadSceneErase("No element after the provided element");
             }
-            erase(iterator - m_scenes.begin() + 1);
+            erase_with_iterator(iterator + 1);
             return;
         }
 
@@ -224,7 +232,7 @@ namespace uil {
             if (iterator == m_scenes.end()) {
                 throw BadScenePointer("not able to find element in the scenes vector");
             }
-            erase(iterator - m_scenes.begin());
+            erase_with_iterator(iterator);
             return;
         }
 
