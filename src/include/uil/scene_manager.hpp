@@ -73,7 +73,7 @@ namespace uil {
         std::weak_ptr<T> emplace_back(Args&&... args)
             requires(std::constructible_from<T, cpt::Vec2_i, Args...>)
         {
-            return emplace_emelent_with_offset<T>(0, args...);
+            return emplace_emelent_with_offset<T>(0, std::forward<Args>(args)...);
         }
 
         /**
@@ -92,7 +92,7 @@ namespace uil {
         std::weak_ptr<T> emplace_front(Args&&... args)
             requires(std::constructible_from<T, cpt::Vec2_i, Args...>)
         {
-            return emplace_element_with_iterator<T>(m_scenes.end(), args...);
+            return emplace_element_with_iterator<T>(m_scenes.end(), std::forward<Args>(args)...);
         }
 
         /**
@@ -120,7 +120,7 @@ namespace uil {
                 return emplace_front<T>(args...);
             }
 
-            return emplace_emelent_with_offset<T>(index, args...);
+            return emplace_emelent_with_offset<T>(index, std::forward<Args>(args)...);
         }
 
         /**
@@ -151,7 +151,7 @@ namespace uil {
                     throw BadScenePointer("not able to find before element in scenes vector");
                 }
 
-                return emplace_element_with_iterator<T>(iterator, args...);
+                return emplace_element_with_iterator<T>(iterator, std::forward<Args>(args)...);
             }
 
             throw BadScenePointer("weak_ptr was expired");
@@ -185,7 +185,7 @@ namespace uil {
                     throw BadScenePointer("not able to find after element in scenes vector");
                 }
 
-                return emplace_element_with_iterator<T>(iterator + 1, args...);
+                return emplace_element_with_iterator<T>(iterator + 1, std::forward<Args>(args)...);
             }
 
             throw BadScenePointer("weak_ptr was expired");
