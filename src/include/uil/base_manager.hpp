@@ -10,6 +10,7 @@
 #include <uil/context.hpp>
 #include <uil/exception.hpp>
 #include <vector>
+#include <algorithm>
 
 namespace uil {
     template<class T>

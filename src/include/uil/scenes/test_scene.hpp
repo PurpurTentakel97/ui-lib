@@ -17,11 +17,7 @@ namespace uil {
     class Text;
 
     class TestScene final : public Scene {
-    private:
     public:
         TestScene(cpt::Vec2_i resolution, Color c, Vector2 pos);
-
-        [[nodiscard]] bool handle_input(Context const& context) const override;
-        [[nodiscard]] bool update(Context const& context) const override;
     };
 } // namespace uil

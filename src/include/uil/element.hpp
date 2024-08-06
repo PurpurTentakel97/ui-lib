@@ -80,11 +80,11 @@ namespace uil {
          * aligns the relative position acording to the provided alignment.
          * calculates the absolute collider out of the relative position and size and the resolution.
          *
+         * @param resolution current resolution for absolute position and size
          * @param relative relative position and size of the collider
          * @param alignment moves the relative position
-         * @param resolution current resolution for absolute position and size
          */
-        UIElement(Rectangle relative, Alignment alignment, cpt::Vec2_i resolution);
+        UIElement( cpt::Vec2_i resolution, Rectangle relative, Alignment alignment);
 
         UIElement(UIElement const&)            = delete; ///< no need because handle with unique_ptr
         UIElement(UIElement&&)                 = delete; ///< no need because handle with unique_ptr

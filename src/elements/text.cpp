@@ -183,8 +183,8 @@ namespace uil {
         return m_paragraph_spacing;
     }
 
-    Text::Text(Rectangle const relative, Alignment const alignment, cpt::Vec2_i const resolution)
-        : UIElement{ relative, alignment, resolution },
+    Text::Text(cpt::Vec2_i const resolution, Rectangle const relative, Alignment const alignment)
+        : UIElement{ resolution, relative, alignment },
           m_font_size{ m_relative_font_size * static_cast<float>(resolution.y) },
           m_letter_spacing{ static_cast<float>(resolution.x) * m_relative_letter_spacing },
           m_line_spacing{ static_cast<float>(resolution.y) * m_relative_line_spacing },

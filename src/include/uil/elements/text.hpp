@@ -88,11 +88,11 @@ namespace uil {
 
         /**
          *
+         * @param resolution current resolution
          * @param relative relative position and size of the Element
          * @param alignment alignment for the relative position
-         * @param resolution current resolution
          */
-        Text(Rectangle relative, Alignment alignment, cpt::Vec2_i resolution);
+        Text(cpt::Vec2_i resolution, Rectangle relative, Alignment alignment);
 
         /**
          *

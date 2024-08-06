@@ -13,8 +13,8 @@ namespace uil {
         Color m_color;
 
     public:
-        TestElement(Rectangle relative, Alignment alignment, cpt::Vec2_i resolution, Color color);
+        TestElement(cpt::Vec2_i resolution, Rectangle relative, Alignment alignment, Color color);
 
         void render(Context const& context) const override;
     };
-}
+} // namespace uil

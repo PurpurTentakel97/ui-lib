@@ -7,11 +7,11 @@
 
 namespace uil {
 
-    TestElement::TestElement(Rectangle const relative,
+    TestElement::TestElement(cpt::Vec2_i const resolution,
+                             Rectangle const relative,
                              Alignment const alignment,
-                             cpt::Vec2_i const resolution,
                              Color const color)
-        : UIElement{ relative, alignment, resolution },
+        : UIElement{ resolution, relative, alignment },
           m_color{ color } { }
 
     void TestElement::render(Context const& context) const {
