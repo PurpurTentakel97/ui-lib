@@ -25,6 +25,7 @@ target_sources(ui_lib
                include/uil/helper/rect.hpp
                include/uil/helper/vec.hpp
                include/uil/alignment.hpp
+               include/uil/base_manager.hpp
                include/uil/callback.hpp
                include/uil/context.hpp
                include/uil/element.hpp
