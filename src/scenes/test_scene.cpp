@@ -3,6 +3,7 @@
 // 06.07.24
 //
 
+#include <uil/elements/test_element.hpp>
 #include <uil/elements/text.hpp>
 #include <uil/scenes/test_scene.hpp>
 
@@ -29,6 +30,17 @@ namespace uil {
         text->set_render_collider_debug(true);
         text->set_render_line_collider_debug(true);
         text->set_color(c);
-        // text->move_to_linear_time({ pos.x + 0.5f, pos.y + 0.5f }, 10.0f);
+        text->move_to_linear_time({ 0.9f, 0.9f }, 10.0f);
+
+        m_test = emplace_top<TestElement>(Rectangle{ 0.9f, 0.9f, 0.3f, 0.3f }, Alignment::BottomRight, RED).lock();
+        m_test->move_to_linear_time({ 0.2f, 0.2f }, 10.0f);
+    }
+
+    bool TestScene::handle_input(Context const& context) const {
+        auto const keep_handle_input = Scene::handle_input(context);
+
+        m_test->set_active(IsMouseButtonDown(MOUSE_BUTTON_LEFT));
+
+        return keep_handle_input;
     }
 } // namespace uil

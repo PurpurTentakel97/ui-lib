@@ -14,10 +14,14 @@
  * it will change all the time.
  */
 namespace uil {
-    class Text;
+    class TestElement;
 
     class TestScene final : public Scene {
+    private:
+        std::shared_ptr<TestElement> m_test;
     public:
         TestScene(cpt::Vec2_i resolution, Color c, Vector2 pos);
+
+        [[nodiscard]] bool handle_input(Context const& context) const override;
     };
 } // namespace uil
