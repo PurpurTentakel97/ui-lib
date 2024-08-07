@@ -6,6 +6,7 @@
 #pragma once
 #include <raylib.h>
 #include <uil/alignment.hpp>
+#include <uil/base_element.hpp>
 #include <uil/callback.hpp>
 #include <uil/helper/rect.hpp>
 
@@ -17,7 +18,7 @@ namespace uil {
     * override this for own elements.
     * make sure to call check, update, render, and resize of UIElement when you override it.
     */
-    class UIElement {
+    class UIElement : public BaseElement {
     private:
         enum class MoveType {
             None,
@@ -84,7 +85,7 @@ namespace uil {
          * @param relative relative position and size of the collider
          * @param alignment moves the relative position
          */
-        UIElement( cpt::Vec2_i resolution, Rectangle relative, Alignment alignment);
+        UIElement(cpt::Vec2_i resolution, Rectangle relative, Alignment alignment);
 
         UIElement(UIElement const&)            = delete; ///< no need because handle with unique_ptr
         UIElement(UIElement&&)                 = delete; ///< no need because handle with unique_ptr

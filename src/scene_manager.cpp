@@ -12,16 +12,28 @@ namespace uil {
     SceneManager::SceneManager(cpt::Vec2_i const resolution) : BaseManager{ resolution } { }
 
     bool SceneManager::handle_input(Context const& context) const {
-        return std::ranges::all_of(elements(), [&c = context](auto const& s) { return s->handle_input(c); });
+        return std::ranges::all_of(elements(), [&c = context](auto const& s) {
+            if (s->active()) {
+                return s->handle_input(c);
+            }
+            return true;
+        });
     }
 
     bool SceneManager::update(Context const& context) const {
-        return std::ranges::all_of(elements(), [&c = context](auto const& s) { return s->update(c); });
+        return std::ranges::all_of(elements(), [&c = context](auto const& s) {
+            if (s->active()) {
+                return s->update(c);
+            }
+            return true;
+        });
     }
 
     void SceneManager::render(Context const& context) const {
         for (auto const& s : std::ranges::views::reverse(elements())) {
-            s->render(context);
+            if (s->active()) {
+                s->render(context);
+            }
         }
     }
 

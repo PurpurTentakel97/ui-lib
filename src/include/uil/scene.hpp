@@ -7,6 +7,7 @@
 
 #include <uil/base_manager.hpp>
 #include <uil/element.hpp>
+#include <uil/base_element.hpp>
 
 namespace uil {
     struct Context;
@@ -16,7 +17,7 @@ namespace uil {
      * it contains all elements within a scene.
      * the scene checks, updates, renders and resizes all elements.
      */
-    class Scene : public BaseManager<UIElement> {
+    class Scene : public BaseManager<UIElement>, public BaseElement {
     public:
         Callback<Scene const&> on_check{};  ///< contains Scene
         Callback<Scene const&> on_update{}; ///< contains Scene

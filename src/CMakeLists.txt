@@ -9,6 +9,7 @@ target_sources(ui_lib
                helper/rect.cpp
                helper/vec.cpp
                alignment.cpp
+               base_element.cpp
                context.cpp
                element.cpp
                resolution.cpp
@@ -25,6 +26,7 @@ target_sources(ui_lib
                include/uil/helper/rect.hpp
                include/uil/helper/vec.hpp
                include/uil/alignment.hpp
+               include/uil/base_element.hpp
                include/uil/base_manager.hpp
                include/uil/callback.hpp
                include/uil/context.hpp

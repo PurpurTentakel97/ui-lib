@@ -13,7 +13,9 @@ namespace uil {
     bool Scene::handle_input(Context const& context) const {
         auto keep_checking = true;
         for (auto const& e : elements()) {
-            keep_checking &= e->handle_input(context);
+            if (e->active()) {
+                keep_checking &= e->handle_input(context);
+            }
         }
         on_check.invoke(*this);
         return keep_checking;
@@ -22,7 +24,9 @@ namespace uil {
     bool Scene::update(Context const& context) const {
         auto keep_updating = true;
         for (auto const& e : elements()) {
-            keep_updating &= e->update(context);
+            if (e->active()) {
+                keep_updating &= e->update(context);
+            }
         }
         on_update.invoke(*this);
         return keep_updating;
@@ -30,7 +34,9 @@ namespace uil {
 
     void Scene::render(Context const& context) const {
         for (auto const& e : elements()) {
-            e->render(context);
+            if (e->active()) {
+                e->render(context);
+            }
         }
         on_render.invoke(*this);
     }
