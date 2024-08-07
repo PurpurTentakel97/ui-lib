@@ -45,4 +45,22 @@ namespace uil {
     class BadMovementType final : public std::logic_error {
         using std::logic_error::logic_error;
     };
+
+    /**
+     * use if an execpected index ocures in any scene operation.
+     */
+    class BadElementIndex final : public std::out_of_range {
+        using std::out_of_range::out_of_range;
+    };
+
+    /**
+     * us if the provided scene could not be found.
+     */
+    class BadElementPointer final : public std::logic_error {
+        using std::logic_error::logic_error;
+    };
+
+    class BadElementErase final : public std::logic_error {
+        using std::logic_error::logic_error;
+    };
 } // namespace uil

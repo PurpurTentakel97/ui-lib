@@ -5,9 +5,8 @@
 
 #pragma once
 
-#include <memory>
+#include <uil/base_manager.hpp>
 #include <uil/element.hpp>
-#include <vector>
 
 namespace uil {
     struct Context;
@@ -17,32 +16,7 @@ namespace uil {
      * it contains all elements within a scene.
      * the scene checks, updates, renders and resizes all elements.
      */
-    class Scene {
-    private:
-        std::vector<std::unique_ptr<UIElement>> m_elements{};
-
-    protected:
-        /**
-         * construct the element T with parameters Args... and emplaced it into the elements vector.
-         * all empaced elements will be checked, updated, rendered and resized.
-         * T needs to be derived from UIElekent.
-         * T needs to be constructable with parameters Args...
-         *
-         * @tparam T Element that will be emplaced into the scene
-         * @tparam Args All Types the Element needs to be constructed
-         * @param args All Parameters the Elements needs to be constructed
-         * @return reference of the constructed element
-         */
-        template<std::derived_from<UIElement> T, typename... Args>
-        T& emplace_element(Args&&... args)
-            requires(std::constructible_from<T, Args...>)
-        {
-            auto elem       = std::make_unique<T>(std::forward<Args>(args)...);
-            auto const temp = elem.get();
-            m_elements.push_back(std::move(elem));
-            return *temp;
-        }
-
+    class Scene : public BaseManager<UIElement> {
     public:
         Callback<Scene const&> on_check{};  ///< contains Scene
         Callback<Scene const&> on_update{}; ///< contains Scene
@@ -60,10 +34,6 @@ namespace uil {
         Scene(Scene&&)                 = delete; ///< deleted because it will be used in unique_ptr
         Scene& operator=(Scene const&) = delete; ///< deleted because it will be used in unique_ptr
         Scene& operator=(Scene&&)      = delete; ///< deleted because it will be used in unique_ptr
-        /**
-         * default virtual constructor because of polimorphism.
-         */
-        virtual ~Scene()               = default;
 
         /**
          * checking all elements in the scene. provides the context.
@@ -101,6 +71,6 @@ namespace uil {
          *
          * @param context all changes of the last frame
          */
-        virtual void resize(Context const& context) const;
+        void resize(Context const& context) override;
     };
 }; // namespace uil

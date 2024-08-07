@@ -42,11 +42,11 @@ namespace uil {
     private:
         bool m_draw_fps = true;
         cpt::Vec2_i m_resolution;
-        SceneManager m_scene_manager{};
+        SceneManager m_scene_manager;
         Font m_font{};
 
         void update_resolution();
-        [[nodiscard]] Context create_context() const;
+        [[nodiscard]] Context create_context();
 
         static void set_flag(ConfigFlags flag, bool active);
 
@@ -69,23 +69,11 @@ namespace uil {
         ~Window();
 
         /**
-         * construct the scene T with parameters Args... and emplaced it into the scene vector.
-         * all empaced scenes will be checked, updated, rendered and resized.
+         * use the scene manager to add / ermove scenes from this window.
          *
-         * T needs to be derived from Scene.
-         * T needs to be constructable with parameters Args...
-         *
-         * @tparam T acene that will be emplaced into the scene_manager
-         * @tparam Args all Types the scene needs to be constructed
-         * @param args all Parameters the scene needs to be constructed
-         * @return reference of the constructed scene
+         * @return scene manager holding by the window
          */
-        template<std::derived_from<Scene> T, typename... Args>
-        T& emplace_scene(Args... args)
-            requires(std::constructible_from<T, cpt::Vec2_i, Args...>)
-        {
-            return m_scene_manager.emplace_scene<T>(m_resolution, args...);
-        }
+        SceneManager& scene_manager();
 
         /**
          * Set to try enabling V-Sync on GPU. (raylib)

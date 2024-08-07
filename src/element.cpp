@@ -104,7 +104,7 @@ namespace uil {
         return m_resolution;
     }
 
-    UIElement::UIElement(Rectangle const relative, Alignment const alignment, cpt::Vec2_i const resolution)
+    UIElement::UIElement(cpt::Vec2_i const resolution, Rectangle const relative, Alignment const alignment)
         : m_resolution{ resolution },
           m_alignment{ alignment },
           m_relative{ aligned_position(relative, alignment) },

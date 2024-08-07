@@ -19,8 +19,9 @@ int main() {
     config.v_sync    = true;
     config.high_dpi  = true;
 
-    auto window = uil::Window({ 1920, 1080 }, title, config);
-    window.emplace_scene<uil::TestScene>(10);
+    auto window                    = uil::Window({ 1920, 1080 }, title, config);
+
+    [[maybe_unused]] auto const t1 = window.scene_manager().emplace_top<uil::TestScene>(RED, Vector2{ 0.05f, 0.05f });
 
     while (not WindowShouldClose()) {
         window.update();

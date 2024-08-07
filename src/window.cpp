@@ -16,13 +16,14 @@ namespace uil {
         }
     }
 
-    Context Window::create_context() const {
+    Context Window::create_context() {
         // clang-format off
         return Context{
             GetMousePosition(),
             &m_font,
             m_resolution,
-            GetFrameTime()
+            GetFrameTime(),
+            m_scene_manager
         };
         // clang-format on
     }
@@ -32,7 +33,8 @@ namespace uil {
     }
 
     Window::Window(cpt::Vec2_i const resolution, char const* const title, WindowConfig config)
-        : m_resolution{ resolution } {
+        : m_resolution{ resolution },
+          m_scene_manager{ resolution } {
         using FlagVec           = std::vector<std::pair<ConfigFlags, bool>>;
         auto constexpr set_flag = [](ConfigFlags const flag, bool const active) {
             active ? SetWindowState(flag) : ClearWindowState(flag);
@@ -70,6 +72,10 @@ namespace uil {
 
     Window::~Window() {
         CloseWindow();
+    }
+
+    SceneManager& Window::scene_manager() {
+        return m_scene_manager;
     }
 
     void Window::set_vsync(bool const vsync) {

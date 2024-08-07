@@ -17,13 +17,7 @@ namespace uil {
     class Text;
 
     class TestScene final : public Scene {
-    private:
-
-        void on_click(Text& text);
-        void on_first_click(Text& text);
-        void on_hover(Text& text);
-
     public:
-        TestScene(cpt::Vec2_i resolution, int t);
+        TestScene(cpt::Vec2_i resolution, Color c, Vector2 pos);
     };
 } // namespace uil

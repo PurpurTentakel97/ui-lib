@@ -8,40 +8,26 @@
 #include <uil/scene_manager.hpp>
 
 namespace uil {
+
+    SceneManager::SceneManager(cpt::Vec2_i const resolution) : BaseManager{ resolution } { }
+
     bool SceneManager::handle_input(Context const& context) const {
-        return std::ranges::all_of(std::ranges::views::reverse(m_scenes),
-                                   [&c = context](auto const& s) { return s->handle_input(c); });
-        /*
-        for (auto const& s : std::ranges::views::reverse(m_scenes)) {
-            if (not s->check(context)) {
-                return false;
-            }
-        }
-        return true;
-        */
+        return std::ranges::all_of(elements(), [&c = context](auto const& s) { return s->handle_input(c); });
     }
 
     bool SceneManager::update(Context const& context) const {
-        return std::ranges::all_of(std::ranges::views::reverse(m_scenes),
-                                   [&c = context](auto const& s) { return s->update(c); });
-        /*
-        for (auto const& s : std::ranges::views::reverse(m_scenes)) {
-            if (not s->update(context)) {
-                return false;
-            }
-        }
-        return true;
-        */
+        return std::ranges::all_of(elements(), [&c = context](auto const& s) { return s->update(c); });
     }
 
     void SceneManager::render(Context const& context) const {
-        for (auto const& s : m_scenes) {
+        for (auto const& s : std::ranges::views::reverse(elements())) {
             s->render(context);
         }
     }
 
-    void SceneManager::resize(Context const& context) const {
-        for (auto const& s : m_scenes) {
+    void SceneManager::resize(Context const& context) {
+        BaseManager::resize(context);
+        for (auto const& s : elements()) {
             s->resize(context);
         }
     }
