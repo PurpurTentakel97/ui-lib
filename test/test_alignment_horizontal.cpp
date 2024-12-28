@@ -8,11 +8,11 @@
 #include <uil/alignment.hpp>
 #include <uil/exception.hpp>
 
-class AlignmentHorizontalFictures
+class AlignmentHorizontalFixtures
     : public testing::TestWithParam<std::tuple<Rectangle, uil::HorizontalAlignment, Rectangle>> { };
 
 
-TEST_P(AlignmentHorizontalFictures, Success) {
+TEST_P(AlignmentHorizontalFixtures, Success) {
     auto const unaligned = std::get<0>(GetParam());
     auto const alignment = std::get<1>(GetParam());
     auto const aligned   = std::get<2>(GetParam());
@@ -33,7 +33,7 @@ TEST_P(AlignmentHorizontalFictures, Success) {
 
 
 INSTANTIATE_TEST_SUITE_P(ALIGNMENT,
-                         AlignmentHorizontalFictures,
+                         AlignmentHorizontalFixtures,
                          ::testing::Values(std::make_tuple(Rectangle{ 0.25f, 0.25f, 0.5f, 0.5f },
                                                            uil::HorizontalAlignment::Left,
                                                            Rectangle{ 0.25f, 0.25f, 0.5f, 0.5f }),
@@ -51,16 +51,16 @@ TEST(Alignment, HorizontalException) {
     try {
         [[maybe_unused]] auto const result
                 = uil::horizontal_aligned_position(Rectangle{ 0.0f, 0.0f, 0.0f, 0.0f }, value);
-        GTEST_FAIL() << "expection uil::BadAlignment not thrown";
+        GTEST_FAIL() << "exception uil::BadAlignment not thrown";
     } catch (uil::BadAlignment const& e) {
-        EXPECT_STREQ(e.what(), "invalid horizontal alignmend enum while aligning rectanlge horizonalty");
+        EXPECT_STREQ(e.what(), "invalid horizontal alignment enum while aligning rectangle horizontal");
     }
 }
 
-class AlignmentHorizontalReversedFictures
+class AlignmentHorizontalReversedFixtures
     : public testing::TestWithParam<std::tuple<Rectangle, uil::HorizontalAlignment, Rectangle>> { };
 
-TEST_P(AlignmentHorizontalReversedFictures, Success) {
+TEST_P(AlignmentHorizontalReversedFixtures, Success) {
     auto const unaligned = std::get<0>(GetParam());
     auto const alignment = std::get<1>(GetParam());
     auto const aligned   = std::get<2>(GetParam());
@@ -80,7 +80,7 @@ TEST_P(AlignmentHorizontalReversedFictures, Success) {
 }
 
 INSTANTIATE_TEST_SUITE_P(ALIGNMENT,
-                         AlignmentHorizontalReversedFictures,
+                         AlignmentHorizontalReversedFixtures,
                          ::testing::Values(std::make_tuple(Rectangle{ 0.25f, 0.25f, 0.5f, 0.5f },
                                                            uil::HorizontalAlignment::Left,
                                                            Rectangle{ 0.25f, 0.25f, 0.5f, 0.5f }),
@@ -97,9 +97,9 @@ TEST(Alignment, HorizontalExceptionReversed) {
     try {
         [[maybe_unused]] auto const result
                 = uil::horizontal_aligned_position_reversed(Rectangle{ 0.0f, 0.0f, 0.0f, 0.0f }, value);
-        GTEST_FAIL() << "expection uil::BadAlignment not thrown";
+        GTEST_FAIL() << "exception uil::BadAlignment not thrown";
     } catch (uil::BadAlignment const& e) {
-        EXPECT_STREQ(e.what(), "invalid horizontal alignmend enum while reversed aligning rectanlge horizonalty");
+        EXPECT_STREQ(e.what(), "invalid horizontal alignment enum while reversed aligning rectangle horizontal");
     }
 }
 

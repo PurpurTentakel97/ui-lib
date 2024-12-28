@@ -30,7 +30,7 @@ namespace uil {
         bool mouse_passthrough = false;
         bool borderless_window = false;
         bool msaa              = false;
-        bool interlased        = false;
+        bool interlaced        = false;
     };
 
     /**
@@ -60,16 +60,16 @@ namespace uil {
          */
         Window(cpt::Vec2_i resolution, char const* title, WindowConfig config);
         Window(Window const&)              = delete; ///< deleted because only one instance is allowed
-        Window(Window&& window)            = delete; ///< deleted because not neccecary
+        Window(Window&& window)            = delete; ///< deleted because not necessary
         Window& operator=(Window const&)   = delete; ///< deleted because only one instance is allowed
-        Window& operator=(Window&& window) = delete; ///< deleted because not neccecary
+        Window& operator=(Window&& window) = delete; ///< deleted because not necessary
         /**
          * closes window.
          */
         ~Window();
 
         /**
-         * use the scene manager to add / ermove scenes from this window.
+         * use the scene manager to add / remove scenes from this window.
          *
          * @return scene manager holding by the window
          */
@@ -132,7 +132,7 @@ namespace uil {
         /**
          *  Set to allow windows running while minimized. (raylib)
          *
-         * @param always_run defines if alwayes_run is active
+         * @param always_run defines if always_run is active
          */
         static void set_always_run(bool always_run);
         /**
@@ -144,9 +144,9 @@ namespace uil {
         /**
          * Set to run program in borderless windowed mode. (raylib)
          *
-         * @param boderless defines if borderless is active
+         * @param borderless defines if borderless is active
          */
-        static void set_boderless(bool boderless);
+        static void set_borderless(bool borderless);
 
         /**
          * checks if the provided flag is set or not.
@@ -165,7 +165,7 @@ namespace uil {
         void update();
 
         /**
-         * draws current fps at the top left corner if the screen.
+         * draws current fps in the top left corner if the screen.
          * this only works in debug mode.
          *
          * @param draw_fps defines if draw_fps is active

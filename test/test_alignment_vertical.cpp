@@ -49,9 +49,9 @@ TEST(Alignment, VerticalException) {
 
     try {
         [[maybe_unused]] auto const result = uil::vertical_aligned_position(Rectangle{ 0.0f, 0.0f, 0.0f, 0.0f }, value);
-        GTEST_FAIL() << "expection uil::BadAlignment not thrown";
+        GTEST_FAIL() << "exception uil::BadAlignment not thrown";
     } catch (uil::BadAlignment const& e) {
-        EXPECT_STREQ(e.what(), "invalid vertical alignmend enum while aligning rectanlge verticaly");
+        EXPECT_STREQ(e.what(), "invalid vertical alignment enum while aligning rectangle vertically");
     }
 }
 
@@ -95,9 +95,9 @@ TEST(Alignment, VerticalExceptionReversed) {
     try {
         [[maybe_unused]] auto const result
                 = uil::vertical_aligned_position_reversed(Rectangle{ 0.0f, 0.0f, 0.0f, 0.0f }, value);
-        GTEST_FAIL() << "expection uil::BadAlignment not thrown";
+        GTEST_FAIL() << "exception uil::BadAlignment not thrown";
     } catch (uil::BadAlignment const& e) {
-        EXPECT_STREQ(e.what(), "invalid vertical alignmend enum while reversed aligning rectanlge verticaly");
+        EXPECT_STREQ(e.what(), "invalid vertical alignment enum while reversed aligning rectangle vertically");
     }
 }
 

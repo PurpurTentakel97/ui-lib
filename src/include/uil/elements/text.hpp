@@ -48,7 +48,7 @@ namespace uil {
         void render_text(Context const& context, Color color) const;
         /**
          *
-         * @return a vector of strings and ansolute offsets in pixels
+         * @return a vector of strings and absolute offsets in pixels
          */
         [[nodiscard]] DrawText draw_text() const;
         /**
@@ -57,17 +57,17 @@ namespace uil {
          */
         [[nodiscard]] float absolute_font_size() const;
         /**
-         * 
+         *
          * @return absolute letter spacing in pixels
          */
         [[nodiscard]] float absolute_letter_spacing() const;
         /**
-         * 
+         *
          * @return absolute line spacing in pixels
          */
         [[nodiscard]] float absolute_line_spacing() const;
         /**
-         * 
+         *
          * @return absolute paragraph spacing in pixels
          */
         [[nodiscard]] float absolute_paragraph_spacing() const;
@@ -84,7 +84,7 @@ namespace uil {
         Callback<Text&, Alignment, Alignment>                   on_text_alignment_chanced{};    ///< contains Text, new value, old value
         Callback<Text&, bool, bool>                             on_breaking_chanced{};          ///< contains Text, new value, old value
         Callback<Text&>                                         on_draw_text_updated{};         ///< contains Text
-        // clang-fomrat on
+        // clang-format on
 
         /**
          *
@@ -128,92 +128,92 @@ namespace uil {
         [[nodiscard]] float letter_spacing() const;
 
         /**
-         * 
+         *
          * @param spacing relative line spacing
          */
         void set_line_spacing(float spacing);
         /**
-         * 
+         *
          * @return relative line spacing
          */
         [[nodiscard]] float line_spacing() const;
-        
+
         /**
-         * 
+         *
          * @param spacing relative paragraph spacing
          */
         void set_paragraph_spacing(float spacing);
         /**
-         * 
+         *
          * @return relative paragraph spacing
          */
         [[nodiscard]] float paragraph_spacing() const;
 
         /**
-         * 
+         *
          * @param color text color
          */
         void set_color(Color color);
         /**
-         * 
+         *
          * @return text color
          */
         [[nodiscard]] Color color() const;
 
         /**
-         * 
-         * @param alignment alignment of the displayed text inside of the collider
+         *
+         * @param alignment alignment of the displayed text inside the collider
          */
         void set_text_alignment(Alignment alignment);
         /**
-         * 
-         * @return alignment of the displayed text inside of the collider
+         *
+         * @return alignment of the displayed text inside the collider
          */
         [[nodiscard]] Alignment text_alignment() const;
 
         /**
-         * 
+         *
          * @param breaking defines whether the text gets transformed into a multiline text
          */
         void set_breaking(bool breaking);
         /**
-         * 
+         *
          * @return whether the text gets transformed into a multiline text
          */
         [[nodiscard]] bool breaking() const;
 
         /**
          * This will only work in debug build
-         * 
+         *
          * @param draw renders the "collider" of each line of text
          */
         void set_render_line_collider_debug(bool draw);
         /**
-         * 
+         *
          * @return renders the "collider" of each line of text
          */
         [[nodiscard]] bool render_line_collider_debug() const;
 
         /**
-         * breaks and aligns the text when it was configurated that way
+         * breaks and aligns the text when it was configuration that way
          */
         void update_text();
 
         /**
-         * gets the current font and calles to update
-         * 
+         * gets the current font and calls to update
+         *
          * @param context all changes of the last frame
          * @return whether the next scene should keep checking or not
          */
         [[nodiscard]] bool handle_input(Context const& context) override;
         /**
          * in debug build: renders line collider
-         * 
+         *
          * @param context all changes of the last frame
          */
-         void render(Context const& context) const override;
+        void render(Context const& context) const override;
         /**
-         * updated all absolue values and the UIElement
+         * updated all absolute values and the UIElement
          *
          * @param context all changes of the last frame
          */

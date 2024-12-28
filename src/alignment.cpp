@@ -101,7 +101,7 @@ namespace uil {
                 relative.x -= relative.width;
                 break;
             default:
-                throw BadAlignment("invalid horizontal alignmend enum while aligning rectanlge horizonalty");
+                throw BadAlignment("invalid horizontal alignment enum while aligning rectangle horizontal");
                 // clang-format on
         }
 
@@ -120,7 +120,7 @@ namespace uil {
                 relative.x += relative.width;
                 break;
             default:
-                throw BadAlignment("invalid horizontal alignmend enum while reversed aligning rectanlge horizonalty");
+                throw BadAlignment("invalid horizontal alignment enum while reversed aligning rectangle horizontal");
                 // clang-format on
         }
 
@@ -139,7 +139,7 @@ namespace uil {
                 relative.y -= relative.height;
                 break;
             default:
-                throw BadAlignment("invalid vertical alignmend enum while aligning rectanlge verticaly");
+                throw BadAlignment("invalid vertical alignment enum while aligning rectangle vertically");
                 // clang-format on
         }
 
@@ -158,7 +158,7 @@ namespace uil {
                 relative.y += relative.height;
                 break;
             default:
-                throw BadAlignment("invalid vertical alignmend enum while reversed aligning rectanlge verticaly");
+                throw BadAlignment("invalid vertical alignment enum while reversed aligning rectangle vertically");
                 // clang-format on
         }
 
@@ -217,7 +217,7 @@ namespace uil {
 
             default:
                 throw BadAlignment(
-                        "invalid alignment enum while converting a aligment enum to a horizontal alignment enum");
+                        "invalid alignment enum while converting an alignment enum to a horizontal alignment enum");
         }
     }
 
@@ -237,7 +237,7 @@ namespace uil {
 
             default:
                 throw BadAlignment(
-                        "invalid alignment enum while converting a aligment enum to a vertical alignment enum");
+                        "invalid alignment enum while converting an alignment enum to a vertical alignment enum");
         }
     }
 
@@ -250,7 +250,7 @@ namespace uil {
                     case HorizontalAlignment::Right: return Alignment::TopRight;
                     default:
                         throw BadAlignment(
-                                "invalis horizontal alignment enum while converting to a alignment enum with vertical "
+                                "invalid horizontal alignment enum while converting to an alignment enum with vertical "
                                 "top enum");
                 }
             case VerticalAlignment::Mid:
@@ -260,7 +260,7 @@ namespace uil {
                     case HorizontalAlignment::Right: return Alignment::MidRight;
                     default:
                         throw BadAlignment(
-                                "invalis horizontal alignment enum while converting to a alignment enum with vertical "
+                                "invalid horizontal alignment enum while converting to an alignment enum with vertical "
                                 "mid enum");
                 }
             case VerticalAlignment::Bottom:
@@ -270,10 +270,10 @@ namespace uil {
                     case HorizontalAlignment::Right: return Alignment::BottomRight;
                     default:
                         throw BadAlignment(
-                                "invalis horizontal alignment enum while converting to a alignment enum with vertical "
+                                "invalid horizontal alignment enum while converting to an alignment enum with vertical "
                                 "bottom enum");
                 }
-            default: throw BadAlignment("invalid vertical alignment enum while converting to a alignment enum");
+            default: throw BadAlignment("invalid vertical alignment enum while converting to an alignment enum");
         }
     }
 } // namespace uil

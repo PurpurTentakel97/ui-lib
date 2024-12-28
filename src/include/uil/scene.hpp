@@ -5,9 +5,9 @@
 
 #pragma once
 
+#include <uil/base_element.hpp>
 #include <uil/base_manager.hpp>
 #include <uil/element.hpp>
-#include <uil/base_element.hpp>
 
 namespace uil {
     struct Context;
@@ -25,7 +25,7 @@ namespace uil {
         Callback<Scene const&> on_resize{}; ///< contains Scene
 
         /**
-         * this constructor can do exectly nothing.
+         * this constructor can do exactly nothing.
          * I need it to be able to add the resolution in the scene_manager.
          *
          * @param resolution current resolution
@@ -39,7 +39,7 @@ namespace uil {
         /**
          * checking all elements in the scene. provides the context.
          * override this when the derived scene has to check additional stuff.
-         * make shure to call Scene::check() and use the return bool.
+         * make sure to call Scene::check() and use the return bool.
          *
          * @param context all changes of the last frame
          * @return whether the next scene should keep checking
@@ -49,7 +49,7 @@ namespace uil {
          * updating all elements in the scene. provides the context.
          *
          * override this when the derived scene has to update additional stuff.
-         * make shure to call Scene::update() and use the return bool.
+         * make sure to call Scene::update() and use the return bool.
          *
          * @param context all changes of the last frame
          * @return whether the next scene should keep updating
@@ -59,7 +59,7 @@ namespace uil {
          * rendering all elements in the scene. provides the context.
          *
          * override this when the derived scene has to render additional stuff.
-         * make shure to call Scene::render().
+         * make sure to call Scene::render().
          *
          * @param context all changes of the last frame
          */
@@ -68,7 +68,7 @@ namespace uil {
          * resizing all elements in the scene. provides the context.
          *
          * override this when the derived scene has to resize additional stuff.
-         * make shure to call Scene::resize().
+         * make sure to call Scene::resize().
          *
          * @param context all changes of the last frame
          */

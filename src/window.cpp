@@ -47,7 +47,7 @@ namespace uil {
         auto const pre = FlagVec{
             { ConfigFlags::FLAG_MSAA_4X_HINT,       config.msaa        },
             { ConfigFlags::FLAG_WINDOW_HIGHDPI,     config.high_dpi    },
-            { ConfigFlags::FLAG_INTERLACED_HINT,    config.interlased  },
+            { ConfigFlags::FLAG_INTERLACED_HINT,    config.interlaced  },
             { ConfigFlags::FLAG_WINDOW_TRANSPARENT, config.transparent },
         };
         auto const post = FlagVec{
@@ -111,8 +111,8 @@ namespace uil {
     void Window::set_mouse_pathrough(bool const mouse_pathrough) {
         set_flag(ConfigFlags::FLAG_WINDOW_MOUSE_PASSTHROUGH, mouse_pathrough);
     }
-    void Window::set_boderless(bool const boderless) {
-        set_flag(ConfigFlags::FLAG_BORDERLESS_WINDOWED_MODE, boderless);
+    void Window::set_borderless(bool const borderless) {
+        set_flag(ConfigFlags::FLAG_BORDERLESS_WINDOWED_MODE, borderless);
     }
 
     bool Window::is_config_flag(ConfigFlags const flag) {

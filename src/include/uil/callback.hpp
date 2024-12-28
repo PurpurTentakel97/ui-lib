@@ -7,7 +7,6 @@
 
 #include <algorithm>
 #include <cassert>
-#include <concepts>
 #include <cpt/types.hpp>
 #include <functional>
 #include <uil/exception.hpp>
@@ -16,7 +15,7 @@
 namespace uil {
     /**
      * provides a callback. subscribe with operator+= and invoke with member function.
-     * 
+     *
      * @tparam C types that gets provided py the callback when it gets invoked
      */
     template<typename... C>
@@ -27,7 +26,7 @@ namespace uil {
 
     public:
         /**
-         * calls all callbacks that are subsctibt via operator+=.
+         * calls all callbacks that are subscript via operator+=.
          *
          * @param arguments arguments that gets provided py the callback
          */
@@ -62,11 +61,11 @@ namespace uil {
         }
 
         /**
-         * stores the provided callback and calles it when invoke is called.
+         * stores the provided callback and calls it when invoke is called.
          *
          * @param func function for callback
          * @return callback instance
-         * @throw uil::CallbackException when its not possible to convert the input into the function type
+         * @throw uil::CallbackException when it's not possible to convert the input into the function type
          */
         Callback& operator+=(std::convertible_to<function> auto&& func) {
             auto f = function{ std::forward<decltype(func)>(func) };

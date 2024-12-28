@@ -11,7 +11,7 @@
  * use the set-member-functions to configurate
  */
 namespace uil {
-    class Link : public Text {
+    class Link final : public Text {
     private:
         bool m_clicked        = false;
         bool m_render_hover   = true;
@@ -31,7 +31,7 @@ namespace uil {
          */
         void set_color_clicked(Color color);
         /**
-         * 
+         *
          * @return color the link turns to when it was clicked
          */
         [[nodiscard]] Color color_clicked() const;
@@ -55,7 +55,7 @@ namespace uil {
          */
         void set_clicked(bool clicked);
         /**
-         * 
+         *
          * @return if the link was clicked
          */
         [[nodiscard]] bool clicked() const;
@@ -66,7 +66,7 @@ namespace uil {
          */
         void set_render_hover(bool render_hover);
         /**
-         * 
+         *
          * @return if the link gets underlined when hovering
          */
         [[nodiscard]] bool render_hover() const;
@@ -86,10 +86,10 @@ namespace uil {
         /**
          * renders the current state
          *
-         * calls UIEleent to render.
+         * calls UIElement to render.
          * calls Text to render text.
          * renders hover when activated.
-         * 
+         *
          * @param context all changes of the last frame
          */
         void render(Context const& context) const override;

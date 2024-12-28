@@ -26,7 +26,7 @@ namespace uil {
             Linear_Speed, // moves linear to a certain point in a certain speed
             Slow_To_Fast, // getting faster while moving to a certain point
             Fast_To_Slow, // getting slower while moving to a certain point
-            Constant,     // moves at a constant speed until it gets stoppt manualy
+            Constant,     // moves at a constant speed until it gets stoppt manually
         };
 
         // basic
@@ -78,7 +78,7 @@ namespace uil {
         Callback<UIElement&> on_resize{};         ///< contains UIElement
 
         /**
-         * aligns the relative position acording to the provided alignment.
+         * aligns the relative position according to the provided alignment.
          * calculates the absolute collider out of the relative position and size and the resolution.
          *
          * @param resolution current resolution for absolute position and size
@@ -92,19 +92,19 @@ namespace uil {
         UIElement& operator=(UIElement const&) = delete; ///< no need because handle with unique_ptr
         UIElement& operator=(UIElement&&)      = delete; ///< no need because handle with unique_ptr
         /**
-         * just for polimorphism.
+         * just for polymorphism.
          */
         virtual ~UIElement()                   = default;
 
         // basic
         /**
-         * alignes the provided position and updates the absolute collider.
+         * aligns the provided position and updates the absolute collider.
          *
-         * @param position unaligned relative positon
+         * @param position unaligned relative position
          */
         void set_relative_position(Vector2 position);
         /**
-         * reverses the aligment with old size and aligns with new size.
+         * reverses the alignment with old size and aligns with new size.
          * updates absolute collider.
          *
          * @param size relative size
@@ -122,6 +122,7 @@ namespace uil {
          * @return relative position and size
          */
         [[nodiscard]] Rectangle relative() const;
+
         /**
          * returns the relative aligned position and size.
          * this will always be the top left corner if the element.
@@ -158,14 +159,14 @@ namespace uil {
         [[nodiscard]] Rectangle collider() const;
         /**
          * returns the aligned absolute position and size.
-         * this will always be the top left coner of the element.
+         * this will always be the top left corner of the element.
          *
          * @return aligned absolute position and size
          */
         [[nodiscard]] Rectangle collider_aligned() const;
 
         /**
-         * revesed the alignment with the old alignment and aligns with new alignment.
+         * reversed the alignment with the old alignment and aligns with new alignment.
          *
          * @param alignment alignment for element
          */
@@ -179,7 +180,7 @@ namespace uil {
         /**
          * this will only render in debug mode.
          *
-         * @param render defines if the collider gets renderd
+         * @param render defines if the collider gets rendered
          */
         void set_render_collider_debug(bool render);
         /**
@@ -262,12 +263,13 @@ namespace uil {
         [[nodiscard]] bool has_stopped_moving() const;
 
         // polymorphic
+
         /**
-         * stores the current movetype.
+         * stores the current move type.
          * checks if element is hovered.
          *
          * override this when the derived element has to check additional stuff.
-         * make shure to call UIElement::check().
+         * make sure to call UIElement::check().
          *
          * @param context all changes of the last frame
          * @return whether the next scene should keep checking
@@ -277,18 +279,18 @@ namespace uil {
          * updates current movement if element is moving.
          *
          * override this when the derived element has to update additional stuff.
-         * make shure to call UIElement::update().
+         * make sure to call UIElement::update().
          *
          * @param context all changes of the last frame
          * @return whether the next scene should keep updating
          */
         [[nodiscard]] virtual bool update(Context const& context);
         /**
-         * renders collider if cofigured.
+         * renders collider if configured.
          * this only works in debug build.
          *
          * override this when the derived element has to render additional stuff.
-         * make shure to call UIElement::render().
+         * make sure to call UIElement::render().
          *
          * @param context all changes of the last frame
          * @throw uil::BadMovementType unexpected movement enum. mostly happens when the enum has an non predefinded value.
@@ -298,7 +300,7 @@ namespace uil {
          * updates resolution and collider.
          *
          * override this when the derived element has to resize additional stuff.
-         * make shure to call UIElement::resize().
+         * make sure to call UIElement::resize().
          *
          * @param context all changes of the last frame
          */
