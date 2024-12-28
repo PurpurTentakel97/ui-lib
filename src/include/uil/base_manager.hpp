@@ -5,12 +5,12 @@
 
 #pragma once
 
+#include <algorithm>
 #include <cpt/vec2.hpp>
 #include <memory>
 #include <uil/context.hpp>
 #include <uil/exception.hpp>
 #include <vector>
-#include <algorithm>
 
 namespace uil {
     template<class T>
@@ -25,7 +25,7 @@ namespace uil {
         cpt::Vec2_i m_resolution;
 
         template<std::derived_from<T> S, typename... Args>
-        std::weak_ptr<S> emplace_emelent_with_offset(cpt::usize const offset, Args&&... args)
+        std::weak_ptr<S> emplace_element_with_offset(cpt::usize const offset, Args&&... args)
             requires(std::constructible_from<S, cpt::Vec2_i, Args...>)
         {
             return emplace_element_with_iterator<S>(m_elements.begin() + static_cast<cpt::i64>(offset),
@@ -33,7 +33,7 @@ namespace uil {
         }
 
         template<std::derived_from<T> S, typename... Args>
-        std::weak_ptr<S> emplace_element_with_iterator(ElementVector::iterator const& iterator, Args&&... args)
+        std::weak_ptr<S> emplace_element_with_iterator(typename ElementVector::iterator const& iterator, Args&&... args)
             requires(std::constructible_from<S, cpt::Vec2_i, Args...>)
         {
             auto elem            = std::make_shared<S>(m_resolution, std::forward<Args>(args)...);
@@ -46,7 +46,8 @@ namespace uil {
             return insert_element_with_iterator(m_elements.begin() + static_cast<cpt::i64>(offset), std::move(element));
         }
 
-        ElementPtr_Weak insert_element_with_iterator(ElementVector::iterator const& iterator, ElementPtr element) {
+        ElementPtr_Weak insert_element_with_iterator(typename ElementVector::iterator const& iterator,
+                                                     ElementPtr element) {
             ElementPtr_Weak ptr = element;
             m_elements.insert(iterator, std::move(element));
             return ptr;
@@ -56,7 +57,7 @@ namespace uil {
             erase_with_iterator(m_elements.begin() + static_cast<cpt::i64>(offset));
         }
 
-        void erase_with_iterator(ElementVector::iterator const& iterator) {
+        void erase_with_iterator(typename ElementVector::iterator const& iterator) {
             m_elements.erase(iterator);
         }
 
@@ -73,18 +74,18 @@ namespace uil {
         explicit BaseManager(cpt::Vec2_i const resolution) : m_resolution{ resolution } { }
 
         /**
-         * only for polimorphism
+         * only for polymorphism
          */
         virtual ~BaseManager() = default;
 
         /**
-         * constructs the element S with parameters Args... and emplaced it at the front of the element vector.
-         * all empaced elements will be handled_input, updated, rendered and resized.
+         * constructs the element S with parameters Args... and emplace it at the front of the element vector.
+         * all emplace elements will be handled_input, updated, rendered and resized.
          *
          * S needs to be derived from T.
          * S needs to be constructable with parameters Args...
          *
-         * @tparam S element that will be emplaced into the manager
+         * @tparam S element that will be emplace into the manager
          * @tparam Args all Types the element needs to be constructed
          * @param args all Parameters the element needs to be constructed
          * @return pointer of the constructed element as a weak_ptr
@@ -93,17 +94,17 @@ namespace uil {
         std::weak_ptr<S> emplace_top(Args&&... args)
             requires(std::constructible_from<S, cpt::Vec2_i, Args...>)
         {
-            return emplace_emelent_with_offset<S>(0, std::forward<Args>(args)...);
+            return emplace_element_with_offset<S>(0, std::forward<Args>(args)...);
         }
 
         /**
-         * construct the element S with parameters Args... and emplaced it at the end of the element vector.
-         * all empaced elements will be handle_input, updated, rendered and resized.
+         * construct the element S with parameters Args... and emplace it at the end of the element vector.
+         * all emplace elements will be handle_input, updated, rendered and resized.
          *
          * S needs to be derived from T.
          * S needs to be constructable with parameters Args...
          *
-         * @tparam S element that will be emplaced into the manager
+         * @tparam S element that will be emplace into the manager
          * @tparam Args all Types the element needs to be constructed
          * @param args all Parameters the element needs to be constructed
          * @return pointer of the constructed element as a weak_ptr
@@ -116,15 +117,15 @@ namespace uil {
         }
 
         /**
-         * construct the element S with parameters Args... and emplaced it at a certain index of the element vector.
-         * all empaced elements will be handle_input, updated, rendered and resized.
+         * construct the element S with parameters Args... and emplace it at a certain index of the element vector.
+         * all emplace elements will be handle_input, updated, rendered and resized.
          *
          * S needs to be derived from T.
          * S needs to be constructable with parameters Args...
          *
-         * @tparam S element that will be emplaced into the manager
+         * @tparam S element that will be emplace into the manager
          * @tparam Args all Types the element needs to be constructed
-         * @param index  provides the index the new element is empaced to
+         * @param index  provides the index the new element is emplace to
          * @param args all Parameters the element needs to be constructed
          * @return pointer of the constructed element as a weak_ptr
          * @throw BadElementIndex will throw when index is out of range
@@ -144,18 +145,18 @@ namespace uil {
         }
 
         /**
-         * construct the element S with parameters Args... and emplaced it before a provided element of the element vector.
-         * all empaced elements will be handle_input, updated, rendered and resized.
+         * construct the element S with parameters Args... and emplace it before a provided element of the element vector.
+         * all emplace elements will be handle_input, updated, rendered and resized.
          *
          * S needs to be derived from T.
          * S needs to be constructable with parameters Args...
          *
-         * @tparam S element that will be emplaced into the manager
+         * @tparam S element that will be emplace into the manager
          * @tparam Args all Types the element needs to be constructed
-         * @param scene proviedes the element pointer the new element gets emplaced before
+         * @param scene provides the element pointer the new element gets emplace before
          * @param args all Parameters the element needs to be constructed
          * @return pointer of the constructed element as a weak_ptr
-         * @throw BadElementPointer throws when provided scene element can not be fount in the elements vector
+         * @throw BadElementPointer throws when provided scene element can not be found in the elements vector
          * @throw BadElementPointer throws when provided scene element is expired
          */
         template<std::derived_from<T> S, typename... Args>
@@ -178,15 +179,15 @@ namespace uil {
         }
 
         /**
-         * construct the element S with parameters Args... and emplaced it after a provided element of the element vector.
-         * all empaced elements will be handle_input, updated, rendered and resized.
+         * construct the element S with parameters Args... and emplace it after a provided element of the element vector.
+         * all emplace elements will be handle_input, updated, rendered and resized.
          *
          * S needs to be derived from T.
          * S needs to be constructable with parameters Args...
          *
-         * @tparam S element that will be emplaced into the manager
+         * @tparam S element that will be emplace into the manager
          * @tparam Args all Types the element needs to be constructed
-         * @param scene proviedes the element pointer the new element gets emplaced after
+         * @param scene provides the element pointer the new element gets emplace after
          * @param args all Parameters the element needs to be constructed
          * @return pointer of the constructed element as a weak_ptr
          * @throw BadElementPointer throws when provided scene element can not be found in the elements vector
@@ -235,7 +236,7 @@ namespace uil {
 
         /**
          * pushes the element at a certain index of the element vector.
-         * all empaced elements will be handle_input, updated, rendered and resized.
+         * all emplace elements will be handle_input, updated, rendered and resized.
          *
          * @param index provides the index the new element is pushed to
          * @param to_push the element that gets pushed into the vector
@@ -258,48 +259,48 @@ namespace uil {
          * pushes the element before a provided element of the element vector.
          * all pushed elements will be handle_input, updated, rendered and resized.
          *
-         * @param element proviedes a element pointer that holds the element befor the pushed element
+         * @param element provides an element pointer that holds the element before the pushed element
          * @param to_push the element that gets pushed
          * @return pointer of the pushed element as a weak_ptr
-         * @throw BadElementPointer throws when provided element can not be fount in the elements vector
+         * @throw BadElementPointer throws when provided element can not be found in the elements vector
          * @throw BadElementPointer throws when provided element is expired
          */
         ElementPtr_Weak push_before(ElementPtr_Weak element, ElementPtr to_push) {
             if (auto const shared_element = element.lock(); shared_element) {
-                auto const iterrator
+                auto const iterator
                         = std::find_if(m_elements.begin(), m_elements.end(), [&b = shared_element](auto const& elem) {
                               return b.get() == elem.get();
                           });
-                if (iterrator == m_elements.end()) {
+                if (iterator == m_elements.end()) {
                     throw BadElementPointer("not able to find before element in elements vector");
                 }
-                return insert_element_with_iterator(iterrator, std::move(to_push));
+                return insert_element_with_iterator(iterator, std::move(to_push));
             }
 
-            throw BadElementPointer("weak_ptr was ecpired");
+            throw BadElementPointer("weak_ptr was expired");
         }
 
         /**
          * pushes the element after a provided element of the element vector.
          * all pushed elements will be handle_input, updated, rendered and resized.
          *
-         * @param element proviedes a element pointer that holds the element after the pushed element
+         * @param element provides an element pointer that holds the element after the pushed element
          * @param to_push the element that gets pushed
          * @return pointer of the pushed element as a weak_ptr
-         * @throw BadElementPointer throws when provided element can not be fount in the elements vector
+         * @throw BadElementPointer throws when provided element can not be found in the elements vector
          * @throw BadElementPointer throws when provided element is expired
          */
         ElementPtr_Weak push_after(ElementPtr_Weak element, ElementPtr to_push) {
             if (auto const shared_element = element.lock(); shared_element) {
-                auto const iteraor
+                auto const iterator
                         = std::find_if(m_elements.begin(), m_elements.end(), [&a = shared_element](auto const& elem) {
                               return a.get() == elem.get();
                           });
-                if (iteraor == m_elements.end()) {
+                if (iterator == m_elements.end()) {
                     throw BadElementPointer("not able to find after element in elements vector");
                 }
 
-                return insert_element_with_iterator(iteraor + 1, std::move(to_push));
+                return insert_element_with_iterator(iterator + 1, std::move(to_push));
             }
 
             throw BadElementPointer("weak_ptr was expired");
@@ -309,7 +310,7 @@ namespace uil {
          * pops the first element of the vector.
          * that is the most bottom rendered element.
          *
-         * @return shared_ptr of the poped element
+         * @return shared_ptr of the popped element
          * @throw BadElementErase throws when elements vector is empty
          */
         ElementPtr pop_top() {
@@ -326,7 +327,7 @@ namespace uil {
          * pops the last element of the vector.
          * that is the most front rendered element.
          *
-         * @return shared_ptr of the poped element
+         * @return shared_ptr of the popped element
          * @throw BadElementErase throws when elements vector is empty
          */
         ElementPtr pop_bottom() {
@@ -343,8 +344,8 @@ namespace uil {
          * pops a specific index in the element vector.
          * notice that index 0 is the most bottom rendered element.
          *
-         * @param index rovides the index that will be poped
-         * @return shared_ptr of the poped element
+         * @param index provides the index that will be popped
+         * @return shared_ptr of the popped element
          * @throw BadElementIndex will throw when index is out of range
          */
         ElementPtr pop_at(cpt::usize const index) {
@@ -361,8 +362,8 @@ namespace uil {
          * pops a element that is located one before the provided element in the elements vector.
          * that is the element that gets rendered behind the provided one.
          *
-         * @param element the element before the element that will be poped
-         * @return shared_ptr of the poped element
+         * @param element the element before the element that will be popped
+         * @return shared_ptr of the popped element
          * @throw BadElementPointer throws when provided before element can not be found in the elements vector
          * @throw BadElementPointer throws when provided before element is expired
          * @throw BadElementErase throws when provided before element is the first element in the elements vector
@@ -388,14 +389,14 @@ namespace uil {
         }
 
         /**
-         * pops a element that is located one after the provided element in the elements vector.
+         * pops an element that is located one after the provided element in the elements vector.
          * that is the element that gets rendered behind the provided one.
          *
          * @param element the element after the element that will be deleted
-         * @return shared_ptr of the poped element
+         * @return shared_ptr of the popped element
          * @throw BadElementPointer throws when provided after element can not be found in the elements vector
          * @throw BadElementPointer throws when provided after element is expired
-         * @throw BadelementErase throws when provided after element is the last element in the elements vector
+         * @throw BadElementErase throws when provided after element is the last element in the elements vector
          */
         ElementPtr pop_after(ElementPtr_Weak element) {
             if (auto const shared_element = element.lock(); shared_element) {
@@ -421,8 +422,8 @@ namespace uil {
          * pops the provided element.
          * if there are no more shared_ptr the element will get deleted.
          *
-         * @param to_pop element that gets poped
-         * @return shared_ptr of the poped element
+         * @param to_pop element that gets popped
+         * @return shared_ptr of the popped element
          * @throw BadElementPointer throws when provided element can not be found in the elements vector
          */
         ElementPtr pop_this(ElementPtr_Weak to_pop) {
@@ -446,7 +447,7 @@ namespace uil {
          * erases the first element of the vector.
          * that is the most bottom rendered element.
          *
-         * @throw BadElementErase thows when elements vector is empty
+         * @throw BadElementErase throws when elements vector is empty
          */
         void erase_top() {
             if (m_elements.empty()) {
@@ -459,7 +460,7 @@ namespace uil {
          * erases the last element of the vector.
          * that is the most front rendered element.
          *
-         * @throw BadElementErase thows when elements vector is empty
+         * @throw BadElementErase throws when elements vector is empty
          */
         void erase_bottom() {
             if (m_elements.empty()) {
@@ -477,14 +478,15 @@ namespace uil {
          */
         void erase_at(cpt::usize const index) {
             if (index >= m_elements.size()) {
-                throw BadElementIndex("index out of range while erasing a element");
+                throw BadElementIndex("index out of range while erasing an element");
             }
 
             erase_with_offset(index);
         }
 
+
         /**
-         * erases a element that is located one before the provided element in the elements vector.
+         * erases an element that is located one before the provided element in the elements vector.
          * that is the element that gets rendered behind the provided one.
          *
          * @param element the element before the element that will be deleted
@@ -493,7 +495,7 @@ namespace uil {
          * @throw BadElementErase throws when provided before element is the first element in the elements vector
          */
         void erase_before(ElementPtr_Weak element) {
-            if (auto const shared_element= element.lock(); shared_element) {
+            if (auto const shared_element = element.lock(); shared_element) {
                 auto const iterator
                         = std::find_if(m_elements.begin(), m_elements.end(), [&b = shared_element](auto const& elem) {
                               return b.get() == elem.get();
@@ -512,10 +514,10 @@ namespace uil {
         }
 
         /**
-         * erases a element that is located one after the provided element in the elements vector.
+         * erases an element that is located one after the provided element in the elements vector.
          * that is the element that gets rendered behind the provided one.
          *
-         * @param element the element after the element that wiill be deleted
+         * @param element the element after the element that will be deleted
          * @throw BadElementPointer throws when provided after element can not be found in the elements vector
          * @throw BadElementPointer throws when provided after element is expired
          * @throw BadElementErase throws when provided after element is the last element in the elements vector
@@ -564,7 +566,7 @@ namespace uil {
 
 
         /**
-         * calls all emplaced element to resize.
+         * calls all emplace element to resize.
          *
          * @param context all changes of the last frame
          */

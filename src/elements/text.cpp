@@ -9,7 +9,7 @@
 namespace uil {
     void Text::align() {
 
-        if (not m_font) { // also checked in update_(). just to be shure because it could be called directly
+        if (not m_font) { // also checked in update_(). just to be sure because it could be called directly
             return;
         }
 

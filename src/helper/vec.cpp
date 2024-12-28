@@ -15,7 +15,7 @@ namespace uil {
     Vector2 normalize(Vector2 const& vec) {
         auto const mag = magnitude(vec);
         if (mag == 0.0f) {
-            throw DivideByZero("Devide by 0.0f while normalize a Vector2");
+            throw DivideByZero("Divided by 0.0f while normalizing a Vector2");
         }
         return { vec.x / mag, vec.y / mag };
     }

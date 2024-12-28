@@ -10,7 +10,7 @@
 
 namespace uil {
     /**
-     * calculates the legth of a vector2
+     * calculates the length of a vector2
      *
      * @param vec provided vector
      * @return length of the vector
@@ -45,7 +45,7 @@ namespace uil {
 } // namespace uil
 
 /**
- * provides a operator += for raylib type Vector2 that overrides lhs.
+ * provides an operator += for raylib type Vector2 that overrides lhs.
  *
  * @param lhs left vector
  * @param rhs right vector
@@ -58,7 +58,7 @@ inline Vector2& operator+=(Vector2& lhs, Vector2 const& rhs) {
 }
 
 /**
- * provides a operator+ for raylib type Vecpor2 that returns a new vector.
+ * provides an operator+ for raylib type Vector2 that returns a new vector.
  *
  * @param lhs left vector
  * @param rhs right vector
@@ -70,7 +70,7 @@ inline Vector2& operator+=(Vector2& lhs, Vector2 const& rhs) {
 }
 
 /**
- * provides a operator -= for raylib type Vector2 that overrides lhs.
+ * provides an operator -= for raylib type Vector2 that overrides lhs.
  *
  * @param lhs left vector
  * @param rhs right vector
@@ -81,8 +81,9 @@ inline Vector2& operator-=(Vector2& lhs, Vector2 const& rhs) {
     lhs.y -= rhs.y;
     return lhs;
 }
+
 /**
- * provides a operator- for raylib type Vecpor2 that returns a new vector.
+ * provides an operator- for raylib type Vector2 that returns a new vector.
  *
  * @param lhs left vector
  * @param rhs right vector
@@ -94,7 +95,7 @@ inline Vector2& operator-=(Vector2& lhs, Vector2 const& rhs) {
 }
 
 /**
- * provides a operator *= for raylib type Vector2 that overrides lhs.
+ * provides an operator *= for raylib type Vector2 that overrides lhs.
  *
  * @param lhs left vector
  * @param rhs float
@@ -105,8 +106,9 @@ inline Vector2 operator*=(Vector2& lhs, float const rhs) {
     lhs.y *= rhs;
     return lhs;
 }
+
 /**
- * provides a operator* for raylib type Vecpor2 that returns a new vector.
+ * provides an operator* for raylib type Vector2 that returns a new vector.
  *
  * @param lhs left vector
  * @param rhs float
@@ -118,7 +120,7 @@ inline Vector2 operator*=(Vector2& lhs, float const rhs) {
 }
 
 /**
- * provides a operator /= for raylib type Vector2 that overrides lhs.
+ * provides an operator /= for raylib type Vector2 that overrides lhs.
  *
  * @param lhs left vector
  * @param rhs float
@@ -127,14 +129,15 @@ inline Vector2 operator*=(Vector2& lhs, float const rhs) {
  */
 inline Vector2 operator/=(Vector2& lhs, float const rhs) {
     if (rhs == 0.0f) {
-        throw uil::DivideByZero("Devide by zero while deviding a vector by a float");
+        throw uil::DivideByZero("Divide by zero while dividing a vector by a float");
     }
     lhs.x /= rhs;
     lhs.y /= rhs;
     return lhs;
 }
+
 /**
- * provides a operator* for raylib type Vecpor2 that returns a new vector.
+ * provides an operator/ for raylib type Vector2 that returns a new vector.
  *
  * @param lhs left vector
  * @param rhs float

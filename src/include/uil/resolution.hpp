@@ -57,7 +57,7 @@ namespace uil {
      *
      * @param resolution resolution enum
      * @return height and width in pixels
-     * @throw uil::BadResolution unexpected resolution enum. mostly happens when the enum has an non predefinded value.
+     * @throw uil::BadResolution unexpected resolution enum. mostly happens when the enum has a non predefined value.
      */
     [[nodiscard]] cpt::Vec2_i vec_from_resolution(Resolution resolution);
     /**
@@ -65,14 +65,14 @@ namespace uil {
      *
      * @param resolution resolution enum
      * @return string representation
-     * @throw uil::BadResolution unexpected resolution enum. mostly happens when the enum has an non predefinded value.
+     * @throw uil::BadResolution unexpected resolution enum. mostly happens when the enum has a non predefined value.
      */
     [[nodiscard]] std::string str_from_resolution(Resolution resolution);
     /**
      * lookup for all string representations from all resolution enums.
      *
      * @return vector of all string representations
-     * @throw uil::BadResolution because ist calles str_from_resolution().
+     * @throw uil::BadResolution because ist calls str_from_resolution().
      */
     [[nodiscard]] std::vector<std::string> all_string_from_resolution();
 

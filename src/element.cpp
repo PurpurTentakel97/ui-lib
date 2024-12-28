@@ -5,7 +5,6 @@
 
 #include <uil/context.hpp>
 #include <uil/element.hpp>
-#include <uil/exception.hpp>
 #include <uil/helper/vec.hpp>
 
 namespace uil {

@@ -5,8 +5,8 @@
 
 #pragma once
 
-#include <raylib.h>
 #include <cpt/vec2.hpp>
+#include <raylib.h>
 
 namespace uil {
     /**
@@ -19,7 +19,7 @@ namespace uil {
     [[nodiscard]] Rectangle collider_from_relative(Rectangle relative, cpt::Vec2_i resolution);
 
     /**
-     * calculates reative values from absolute values and resolution
+     * calculates relative values from absolute values and resolution
      *
      * @param collider absolute position and size
      * @param resolution current resolution
@@ -28,7 +28,7 @@ namespace uil {
     [[nodiscard]] Rectangle relative_from_collider(Rectangle collider, cpt::Vec2_i resolution);
 
     /**
-     * extraxts the positon of a rectangle.
+     * extracts the position of a rectangle.
      * should work with relative and absolute values.
      *
      * @param rect position and size
@@ -37,7 +37,7 @@ namespace uil {
     [[nodiscard]] Vector2 point_from_rect(Rectangle const& rect);
 
     /**
-     * extraxts the size of a rectangle.
+     * extract the size of a rectangle.
      * should work with relative and absolute values.
      *
      * @param rect position and size

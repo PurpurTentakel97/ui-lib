@@ -9,7 +9,7 @@
 
 namespace uil {
     /**
-     * provides a sinple alignement that can display 9 position
+     * provides a simple alignment that can display 9 position
      */
     enum class Alignment {
         TopLeft,
@@ -43,7 +43,7 @@ namespace uil {
 
 
     /**
-     * moves the rectangle accoding to the provided alignement.
+     * moves the rectangle according to the provided alignment.
      *
      * @param relative unaligned position and size
      * @param alignment alignment
@@ -51,7 +51,7 @@ namespace uil {
      */
     [[nodiscard]] Rectangle aligned_position(Rectangle relative, Alignment alignment);
     /**
-     * moves the ractangle back according to the provided alignement.
+     * moves the rectangle back according to the provided alignment.
      *
      * @param relative aligned position and size
      * @param alignment alignment
@@ -60,7 +60,7 @@ namespace uil {
     [[nodiscard]] Rectangle aligned_position_reversed(Rectangle relative, Alignment alignment);
 
     /**
-     * moves the rectangle accoding to the provided alignment horizontal.
+     * moves the rectangle according to the provided alignment horizontal.
      *
      * @param relative unaligned position and size
      * @param alignment horizontal alignment
@@ -68,7 +68,7 @@ namespace uil {
      */
     [[nodiscard]] Rectangle horizontal_aligned_position(Rectangle relative, HorizontalAlignment alignment);
     /**
-     * moves the ractangle back according to the provided alignement horizontal.
+     * moves the rectangle back according to the provided alignment horizontal.
      *
      * @param relative aligned position and size
      * @param alignment horizontal alignment
@@ -77,7 +77,7 @@ namespace uil {
     [[nodiscard]] Rectangle horizontal_aligned_position_reversed(Rectangle relative, HorizontalAlignment alignment);
 
     /**
-     * moves the rectangle accoding to the provided alignment vertical.
+     * moves the rectangle according to the provided alignment vertical.
      *
      * @param relative unaligned position and size
      * @param alignment vertical alignment
@@ -85,7 +85,7 @@ namespace uil {
      */
     [[nodiscard]] Rectangle vertical_aligned_position(Rectangle relative, VerticalAlignment alignment);
     /**
-     * moves the ractangle back according to the provided alignement vertical.
+     * moves the rectangle back according to the provided alignment vertical.
      *
      * @param relative aligned position and size
      * @param alignment horizontal alignment
@@ -161,21 +161,21 @@ namespace uil {
                                                              VerticalAlignment const& alignment);
 
     /**
-     * provides the horizontal alignment out of a alignment.
+     * provides the horizontal alignment out of an alignment.
      *
      * @param alignment alignment
      * @return horizontal alignment
      */
     [[nodiscard]] HorizontalAlignment to_horizontal_alignment(Alignment alignment);
     /**
-     * provides the vertical alignment out of a alignment.
+     * provides the vertical alignment out of an alignment.
      *
      * @param alignment alignment
      * @return vertical alignment
      */
     [[nodiscard]] VerticalAlignment to_vertical_alignment(Alignment alignment);
     /**
-     * provides a alignment out auf a vertical and horizontal alignment.
+     * provides an alignment out auf a vertical and horizontal alignment.
      *
      * @param vertical_alignment vertical alignment
      * @param horizontal_alignment horizontal alignment

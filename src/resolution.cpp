@@ -4,10 +4,10 @@
 //
 
 #include <format>
+#include <functional>
 #include <raylib.h>
 #include <uil/exception.hpp>
 #include <uil/resolution.hpp>
-#include <functional>
 
 namespace uil {
     cpt::Vec2_i vec_from_resolution(Resolution const resolution) {
