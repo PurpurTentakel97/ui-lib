@@ -53,13 +53,13 @@ TEST(Vector2, DevideByZeroExpectionNormalize) {
 
     try {
         [[maybe_unused]] auto const result = uil::normalize(vec);
-        GTEST_FAIL() << "DevideByZero not thrown";
-    } catch (uil::DivideByZero const& e) { EXPECT_STREQ(e.what(), "Devide by 0.0f while normalize a Vector2"); }
+        GTEST_FAIL() << "DivideByZero not thrown";
+    } catch (uil::DivideByZero const& e) { EXPECT_STREQ(e.what(), "Divided by 0.0f while normalizing a Vector2"); }
 }
 
-class Vector2OperatorPlusFixures : public testing::TestWithParam<std::tuple<Vector2, Vector2, Vector2>> { };
+class Vector2OperatorPlusFixtures : public testing::TestWithParam<std::tuple<Vector2, Vector2, Vector2>> { };
 
-TEST_P(Vector2OperatorPlusFixures, Succsess) {
+TEST_P(Vector2OperatorPlusFixtures, Succsess) {
     auto const vec_c    = std::get<0>(GetParam());
     auto vec_m          = std::get<0>(GetParam());
     auto const to_add   = std::get<1>(GetParam());
@@ -76,7 +76,7 @@ TEST_P(Vector2OperatorPlusFixures, Succsess) {
 
 INSTANTIATE_TEST_SUITE_P(
         VECTOR2,
-        Vector2OperatorPlusFixures,
+        Vector2OperatorPlusFixtures,
         ::testing::Values(std::make_tuple(Vector2{ 1.0f, 1.0f }, Vector2{ 1.0f, 1.0f }, Vector2{ 2.0f, 2.0f }),
                           std::make_tuple(Vector2{ 1.0f, 1.0f }, Vector2{ -1.0f, -1.0f }, Vector2{ 0.0f, 0.0f }),
                           std::make_tuple(Vector2{ -1.0f, -1.0f }, Vector2{ 1.0f, 1.0f }, Vector2{ 0.0f, 0.0f }),
@@ -168,16 +168,16 @@ TEST(Vector2, DevideByZeroExpectionDivide) {
 
     try {
         [[maybe_unused]] auto const result = vec_c / f;
-        GTEST_FAIL() << "DevideByZero not thrown while operator/";
+        GTEST_FAIL() << "DivideByZero not thrown while operator/";
     } catch (uil::DivideByZero const& e) {
-        EXPECT_STREQ(e.what(), "Devide by zero while deviding a vector by a float");
+        EXPECT_STREQ(e.what(), "Divide by zero while dividing a vector by a float");
     }
 
     try {
         vec_m /= f;
-        GTEST_FAIL() << "DevideByZero not thrown while operator/=";
+        GTEST_FAIL() << "DivideByZero not thrown while operator/=";
     } catch (uil::DivideByZero const& e) {
-        EXPECT_STREQ(e.what(), "Devide by zero while deviding a vector by a float");
+        EXPECT_STREQ(e.what(), "Divide by zero while dividing a vector by a float");
     }
 }
 
@@ -202,9 +202,9 @@ INSTANTIATE_TEST_SUITE_P(
                 std::make_tuple(Vector2{ 0.1f, 0.2f }, cpt::Vec2_i{ 1000, 500 }, Vector2{ 100.0f, 100.0f })));
 
 
-class Vector2ToRealtiveFixtures : public testing::TestWithParam<std::tuple<Vector2, cpt::Vec2_i, Vector2>> { };
+class Vector2ToRelativeFixtures : public testing::TestWithParam<std::tuple<Vector2, cpt::Vec2_i, Vector2>> { };
 
-TEST_P(Vector2ToRealtiveFixtures, Succsess) {
+TEST_P(Vector2ToRelativeFixtures, Succsess) {
     auto const absolute   = std::get<0>(GetParam());
     auto const resolution = std::get<1>(GetParam());
     auto const expected   = std::get<2>(GetParam());
@@ -217,7 +217,7 @@ TEST_P(Vector2ToRealtiveFixtures, Succsess) {
 
 INSTANTIATE_TEST_SUITE_P(
         VECTOR2,
-        Vector2ToRealtiveFixtures,
+        Vector2ToRelativeFixtures,
         ::testing::Values(
                 std::make_tuple(Vector2{ 250.0f, 250.0f }, cpt::Vec2_i{ 1000, 1000 }, Vector2{ 0.25f, 0.25f }),
                 std::make_tuple(Vector2{ 100.0f, 100.0f }, cpt::Vec2_i{ 1000, 500 }, Vector2{ 0.1f, 0.2f })));

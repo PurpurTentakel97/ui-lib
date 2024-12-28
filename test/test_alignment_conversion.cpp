@@ -41,7 +41,7 @@ TEST(Alignment, ToHorizontalException) {
         GTEST_FAIL() << "exception uil::BadAlignment not thrown";
     } catch (uil::BadAlignment const& e) {
         EXPECT_STREQ(e.what(),
-                     "invalid alignment enum while converting a aligment enum to a horizontal alignment enum");
+                     "invalid alignment enum while converting an alignment enum to a horizontal alignment enum");
     }
 }
 
@@ -78,7 +78,7 @@ TEST(Alignment, ToVerticalExpection) {
         [[maybe_unused]] auto const result = uil::to_vertical_alignment(alignment);
         GTEST_FAIL() << "exception uil::BadAlignment not thrown";
     } catch (uil::BadAlignment const& e) {
-        EXPECT_STREQ(e.what(), "invalid alignment enum while converting a aligment enum to a vertical alignment enum");
+        EXPECT_STREQ(e.what(), "invalid alignment enum while converting an alignment enum to a vertical alignment enum");
     }
 }
 
@@ -121,7 +121,7 @@ TEST(Alignment, ToAlignmentExceptionVertical) {
         [[maybe_unused]] auto const result = uil::to_alignment(vertical_alignment, horizontal_alignment);
         GTEST_FAIL() << "exception uil::BadAlignment not thrown";
     } catch (uil::BadAlignment const& e) {
-        EXPECT_STREQ(e.what(), "invalid vertical alignment enum while converting to a alignment enum");
+        EXPECT_STREQ(e.what(), "invalid vertical alignment enum while converting to an alignment enum");
     }
 }
 
@@ -134,7 +134,7 @@ TEST(Alignment, ToAlignmentExceptionHorizontalTop) {
         GTEST_FAIL() << "exception uil::BadAlignment not thrown";
     } catch (uil::BadAlignment const& e) {
         EXPECT_STREQ(e.what(),
-                     "invalis horizontal alignment enum while converting to a alignment enum with vertical top enum");
+                     "invalid horizontal alignment enum while converting to an alignment enum with vertical top enum");
     }
 }
 
@@ -147,7 +147,7 @@ TEST(Alignment, ToAlignmentExceptionHorizontalMid) {
         GTEST_FAIL() << "exception uil::BadAlignment not thrown";
     } catch (uil::BadAlignment const& e) {
         EXPECT_STREQ(e.what(),
-                     "invalis horizontal alignment enum while converting to a alignment enum with vertical mid enum");
+                     "invalid horizontal alignment enum while converting to an alignment enum with vertical mid enum");
     }
 }
 
@@ -161,6 +161,6 @@ TEST(Alignment, ToAlignmentExceptionHorizontalBottom) {
     } catch (uil::BadAlignment const& e) {
         EXPECT_STREQ(
                 e.what(),
-                "invalis horizontal alignment enum while converting to a alignment enum with vertical bottom enum");
+                "invalid horizontal alignment enum while converting to an alignment enum with vertical bottom enum");
     }
 }
