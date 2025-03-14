@@ -61,7 +61,7 @@ namespace uil {
     }
 
     void Text::break_() {
-        auto const extra_breaking = m_breaking or m_font != nullptr;
+        auto const extra_breaking = m_breaking and m_font != nullptr;
         if (not extra_breaking) {
             m_draw_text = {
                 { Vector2(0.0f, 0.0f), m_raw_text }
@@ -71,13 +71,13 @@ namespace uil {
 
         cpt::usize lhs      = 0;
         cpt::usize rhs      = 0;
-        m_draw_text         = DrawText();
+        m_draw_text         = DrawText{};
         bool next_paragraph = false;
 
         auto const text_size
                 = [size = m_font_size, font = m_font, spacing = m_letter_spacing](std::string const& text) {
-                      return MeasureTextEx(*font, text.c_str(), size, spacing);
-                  };
+                    return MeasureTextEx(*font, text.c_str(), size, spacing);
+        };
 
         auto const add = [&]() {
             if (m_draw_text.empty()) {
