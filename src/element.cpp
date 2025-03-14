@@ -177,12 +177,18 @@ namespace uil {
         return m_alignment;
     }
 
-    void UIElement::set_render_collider_debug(bool const render) {
-        m_render_collider = render;
+    void UIElement::set_render_collider_debug([[maybe_unused]] bool const render) {
+#ifndef NDEBUG
+        m_render_collider_debug = render;
+#endif
     }
 
     bool UIElement::render_collider_debug() const {
-        return m_render_collider;
+#ifndef NDEBUG
+        return m_render_collider_debug;
+#else
+        return false;
+#endif
     }
 
     bool UIElement::hovered() const {
@@ -270,7 +276,7 @@ namespace uil {
 
     void UIElement::render(Context const&) const {
 #ifndef NDEBUG
-        if (m_render_collider) {
+        if (m_render_collider_debug) {
             DrawRectangleLinesEx(m_collider, 2.0f, WHITE);
         }
 #endif

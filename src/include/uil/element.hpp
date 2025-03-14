@@ -29,13 +29,17 @@ namespace uil {
             Constant,     // moves at a constant speed until it gets stoppt manually
         };
 
+        // debug
+#ifndef NDEBUG
+        bool m_render_collider_debug = false;
+#endif
+
         // basic
         cpt::Vec2_i m_resolution;
         Alignment m_alignment;
         Rectangle m_relative{}; // m_relative needs to be initialized bevor m_collider
         Rectangle m_collider{}; // m_relative needs to be initialized bevor m_collider
-        bool m_render_collider = false;
-        bool m_hovered         = false;
+        bool m_hovered = false;
 
         // movement
         MoveType m_move_type      = MoveType::None;

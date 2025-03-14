@@ -16,12 +16,15 @@ namespace uil {
      */
     class Text : public UIElement {
     private:
+#ifndef NDEBUG
+        bool m_render_line_collider_debug = false;
+#endif
+
         using DrawText = std::vector<std::pair<Vector2, std::string>>;
         std::string m_raw_text{};
         DrawText m_draw_text{};
-        Alignment m_text_alignment         = Alignment::TopLeft;
-        bool m_breaking                    = false;
-        bool m_render_line_collider        = false;
+        Alignment m_text_alignment = Alignment::TopLeft;
+        bool m_breaking            = false;
         float m_relative_font_size         = 0.015f;
         float m_relative_letter_spacing    = 0.001f;
         float m_relative_line_spacing      = 0.001f;

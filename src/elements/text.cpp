@@ -147,7 +147,7 @@ namespace uil {
             // clang-format on
 
 #ifndef NDEBUG
-            if (m_render_line_collider) {
+            if (m_render_line_collider_debug) {
                 auto const text_size = [size = m_font_size, font = context.font, spacing = m_letter_spacing](
                                                std::string const& text) -> Vector2 {
                     return MeasureTextEx(*font, text.c_str(), size, spacing);
@@ -266,12 +266,18 @@ namespace uil {
         return m_breaking;
     }
 
-    void Text::set_render_line_collider_debug(bool const draw) {
-        m_render_line_collider = draw;
+    void Text::set_render_line_collider_debug([[maybe_unused]] bool const draw) {
+#ifndef NDEBUG
+        m_render_line_collider_debug = draw;
+#endif
     }
 
     bool Text::render_line_collider_debug() const {
-        return m_render_line_collider;
+#ifndef NDEBUG
+        return m_render_line_collider_debug;
+#else
+        return false;
+#endif
     }
 
     void Text::update_text() {

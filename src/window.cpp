@@ -140,11 +140,17 @@ namespace uil {
         EndDrawing();
     }
 
-    void Window::set_draw_fps_debug(bool const draw_fps) {
+    void Window::set_draw_fps_debug([[maybe_unused]] bool const draw_fps) {
+#ifndef NDEBUG
         m_draw_fps = draw_fps;
+#endif
     }
 
     bool Window::draw_fps_debug() const {
+#ifndef NDEBUG
         return m_draw_fps;
+#else
+        return false;
+#endif
     }
 } // namespace uil
