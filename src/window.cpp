@@ -133,7 +133,7 @@ namespace uil {
         ClearBackground(BLACK);
         m_scene_manager.render(context);
 #ifndef NDEBUG
-        if (m_draw_fps) {
+        if (m_draw_fps_debug) {
             DrawText(std::to_string(GetFPS()).c_str(), 10, 10, 50, WHITE);
         }
 #endif
@@ -142,13 +142,13 @@ namespace uil {
 
     void Window::set_draw_fps_debug([[maybe_unused]] bool const draw_fps) {
 #ifndef NDEBUG
-        m_draw_fps = draw_fps;
+        m_draw_fps_debug = draw_fps;
 #endif
     }
 
     bool Window::draw_fps_debug() const {
 #ifndef NDEBUG
-        return m_draw_fps;
+        return m_draw_fps_debug;
 #else
         return false;
 #endif
