@@ -2,7 +2,6 @@ add_library(ui_lib STATIC)
 
 target_sources(ui_lib
                PRIVATE
-               elements/test_element.cpp
                scenes/test_scene.cpp
                elements/link.cpp
                elements/text.cpp
@@ -20,7 +19,6 @@ target_sources(ui_lib
                PUBLIC FILE_SET HEADERS
                BASE_DIRS include FILES
                include/uil/scenes/test_scene.hpp
-               include/uil/elements/test_element.hpp
                include/uil/elements/link.hpp
                include/uil/elements/text.hpp
                include/uil/helper/rect.hpp
