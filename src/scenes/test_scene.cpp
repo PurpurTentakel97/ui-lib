@@ -15,10 +15,10 @@ namespace uil {
                   "kenna Broadwurschtbudn. Abfieseln nia need Xaver iabaroi i moan oiwei Almrausch Gaudi, i hob di "
                   "liab i hob di liab schoo trihöleridi dijidiholleri! Anbandeln Bradwurschtsemmal Griasnoggalsubbm, "
                   "Hendl Obazda Stubn Zwedschgndadschi Obazda und glei wirds no fui lustiga. Zidern Stubn hea, oans? "
-                  "Gor nix Gwiass woass ma ned nimmds Weiznglasl Wiesn? Aba Haberertanz und glei wirds no fui lustiga "
+                  "Gor nix Gwiass woass ma ned nimmds Weiznglasl Wiesn?\nAba Haberertanz und glei wirds no fui lustiga "
                   "oamoi, nia? Singd san dringma aweng, Schdarmbeaga See Watschnpladdla Schbozal Graudwiggal: Dringma "
                   "aweng i Woibbadinga umananda ozapfa, i hob di narrisch gean is Zidern. Radi oamoi Brotzeit griaß "
-                  "God beinand ozapfa heid gfoids ma sagrisch guad und! I sog ja nix, i red ja bloß Ledahosn fei "
+                  "God beinand ozapfa heid gfoids ma sagrisch guad und!\nI sog ja nix, i red ja bloß Ledahosn fei "
                   "liberalitas Bavariae pfiad de heitzdog Vergeltsgott, Guglhupf. Nimmds schoo Schmankal, Kneedl a "
                   "bissal wos gehd ollaweil eana Leonhardifahrt is ma Wuascht.";
 
