@@ -20,7 +20,7 @@ namespace uil::debug {
 // ----------------------------------------
 
 namespace uil::debug {
-    void ColliderDrawDebug::exec(Rectangle const* const collider) const {
+    void ColliderDrawDebug::exec([[maybe_unused]] Rectangle const* const collider) const {
 #ifndef NDEBUG
         if (m_value) {
             DrawRectangleLinesEx(*collider, 2.0f, WHITE);
@@ -32,7 +32,7 @@ namespace uil::debug {
 // ----------------------------------------
 
 namespace uil::debug {
-    void ColliderWithOffsetDrawDebug::exec(ColliderWithOffsetDrawDebugData const* const collider_with_offset) const {
+    void ColliderWithOffsetDrawDebug::exec([[maybe_unused]] ColliderWithOffsetDrawDebugData const* const collider_with_offset) const {
 #ifndef NDEBUG
         if (m_value) {
             auto const collider = Rectangle{
@@ -50,7 +50,7 @@ namespace uil::debug {
 // ----------------------------------------
 
 namespace uil::debug {
-    void MovementDrawDebug::exec(MovementDrawDebugData const* const data) const {
+    void MovementDrawDebug::exec([[maybe_unused]] MovementDrawDebugData const* const data) const {
 #ifndef NDEBUG
         if (m_value) {
             auto const start = Vector2{ data->start.x * static_cast<float>(data->resolution.x),
