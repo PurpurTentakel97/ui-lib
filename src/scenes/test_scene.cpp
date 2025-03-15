@@ -26,8 +26,8 @@ namespace uil {
                 = emplace_top<Text>(Rectangle{ pos.x, pos.y, 0.5f, 0.5f }, Alignment::TopLeft).lock();
         text->set_font_size(0.02f);
         text->set_text(t);
-        text->debug_element.set_draw_collider(true);
-        text->debug_text.set_draw_line_collider(true);
+        text->debug_element.collider.set(true);
+        text->debug_text.line_collider.set(true);
         text->set_color(c);
         text->set_breaking(true);
         // text->move_to_linear_time({ 0.9f, 0.9f }, 10.0f);

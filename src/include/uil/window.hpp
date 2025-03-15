@@ -5,7 +5,7 @@
 
 #pragma once
 #include <cpt/vec2.hpp>
-#include <uil/debug/debug_classes.hpp>
+#include <uil/debug/debug_wrapper.hpp>
 #include <uil/scene_manager.hpp>
 
 namespace uil {
@@ -51,7 +51,7 @@ namespace uil {
         static void set_flag(ConfigFlags flag, bool active);
 
     public:
-        debug::WindowDebug debug{};
+        debug::WindowDebug debug_window{};
 
         /**
          * initializes the window and sets all window flags.

@@ -9,38 +9,10 @@
 #include <uil/base_element.hpp>
 #include <uil/callback.hpp>
 #include <uil/helper/rect.hpp>
+#include <uil/debug/debug_wrapper.hpp>
 
 namespace uil {
     struct Context;
-
-    /**
-     * Debug functionality for UIElement
-     */
-    class UIElementDebug final {
-    private:
-        friend class UIElement;
-#ifndef NDEBUG
-        bool m_draw_collider = false;
-#endif
-
-        /**
-         * this renders all debug functions of this class if enabled.
-         */
-        void render(Rectangle collider) const;
-
-    public:
-        /**
-         * this will only render in debug mode.
-         *
-         * @param draw_collider defines if the collider gets rendered
-         */
-        void set_draw_collider(bool draw_collider);
-        /**
-         *
-         * @return if collider gets currently rendered
-         */
-        [[nodiscard]] bool draw_collider() const;
-    };
 
     /**
     * the basic element for all things that gets displayed into a scene.
@@ -97,7 +69,7 @@ namespace uil {
         [[nodiscard]] cpt::Vec2_i resolution() const;
 
     public:
-        UIElementDebug debug_element{};
+        debug::UIElementDebug debug_element{};
 
         Callback<UIElement&> on_movement_start{}; ///< contains UIElement
         Callback<UIElement&> on_movement_stop{};  ///< contains UIElement

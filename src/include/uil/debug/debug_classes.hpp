@@ -5,10 +5,37 @@
 
 #pragma once
 
-#include <uil/debug/fps_draw_debug.hpp>
+#include <raylib.h>
+#include <uil/debug/debug.hpp>
+#include <vector>
+
+namespace uil {
+    class Window;
+}
 
 namespace uil::debug {
-    struct WindowDebug final {
-        FpsDebug fps{};
+    class FpsDrawDebug final : public Debug<void> {
+    public:
+        void exec(void const *) const override;
     };
 } // namespace uil::debug
+
+// ----------------------------------------
+
+namespace uil::debug {
+    class ColliderDrawDebug final : public Debug<Rectangle> {
+    public:
+        void exec(Rectangle const*) const override;
+    };
+} // namespace uil::debug
+
+// ----------------------------------------
+
+namespace uil::debug {
+    class ColliderWithOffsetDrawDebug final : public Debug<std::pair<Vector2, Rectangle>> {
+    public:
+        void exec(std::pair<Vector2, Rectangle> const*) const override;
+    };
+} // namespace uil::debug
+
+// ----------------------------------------

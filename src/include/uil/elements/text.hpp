@@ -5,43 +5,12 @@
 
 #pragma once
 #include <string>
+#include <uil/debug/debug_wrapper.hpp>
 #include <uil/element.hpp>
 #include <utility>
 #include <vector>
 
 namespace uil {
-    class Text;
-    class TextDebug;
-
-    /**
-      * Debug functionality for Text
-      */
-    class TextDebug final {
-    private:
-        friend class Text;
-#ifndef NDEBUG
-        bool m_draw_line_collider = false;
-#endif
-
-        /**
-         * this renders all debug functions of this class if enabled.
-         */
-        void render(Text const& text, Context const& context) const;
-
-    public:
-        /**
-          * This will only work in debug build
-          *
-          * @param draw_line_collider renders the "collider" of each line of text
-          */
-        void set_draw_line_collider(bool draw_line_collider);
-
-        /**
-         *
-         * @return renders the "collider" of each line of text
-         */
-        [[nodiscard]] bool draw_line_collider() const;
-    };
 
     /**
      * Displays a string inside a collider.
@@ -49,8 +18,7 @@ namespace uil {
      */
     class Text : public UIElement {
     private:
-        friend class TextDebug;
-        using DrawText = std::vector<std::pair<Vector2, std::string>>;
+        using DrawText = std::vector<std::pair<Rectangle, std::string>>;
         std::string m_raw_text{};
         DrawText m_draw_text{};
         Alignment m_text_alignment         = Alignment::TopLeft;
@@ -107,7 +75,7 @@ namespace uil {
 
 
     public:
-        TextDebug debug_text{};
+        debug::TextDebug debug_text{};
 
         // clang-format off
         Callback<Text&, float, float>                           on_text_size_changed{};         ///< contains Text, new value, old value

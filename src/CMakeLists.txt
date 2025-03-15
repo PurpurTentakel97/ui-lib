@@ -16,7 +16,7 @@ target_sources(ui_lib
                scene_manager.cpp
                window.cpp
 
-               debug/fps_draw_debug.cpp
+               debug/debug_classes.cpp
 
                PUBLIC FILE_SET HEADERS
                BASE_DIRS include FILES
@@ -38,8 +38,8 @@ target_sources(ui_lib
                include/uil/window.hpp
 
                include/uil/debug/debug.hpp
-               include/uil/debug/fps_draw_debug.hpp
                include/uil/debug/debug_classes.hpp
+               include/uil/debug/debug_wrapper.hpp
 )
 
 target_include_directories(ui_lib

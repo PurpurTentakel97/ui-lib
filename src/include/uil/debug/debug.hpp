@@ -16,7 +16,7 @@ namespace uil::debug {
     public:
         virtual ~Debug() = default;
 
-        virtual void exec(T const&) const = 0;
+        virtual void exec(T const*) const = 0;
 
         void set([[maybe_unused]] bool const value) {
 #ifndef NDEBUG

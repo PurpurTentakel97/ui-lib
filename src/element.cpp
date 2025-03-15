@@ -8,29 +8,6 @@
 #include <uil/helper/vec.hpp>
 
 namespace uil {
-    void UIElementDebug::render([[maybe_unused]] Rectangle const collider) const {
-#ifndef NDEBUG
-        if (m_draw_collider) {
-            DrawRectangleLinesEx(collider, 2.0f, WHITE);
-        }
-#endif
-    }
-
-    void UIElementDebug::set_draw_collider([[maybe_unused]] bool const draw_collider) {
-#ifndef NDEBUG
-        m_draw_collider = draw_collider;
-#endif
-    }
-
-    bool UIElementDebug::draw_collider() const {
-#ifndef NDEBUG
-        return m_draw_collider;
-#else
-        return false;
-#endif
-    }
-
-
     void UIElement::update_relative() {
         m_relative = relative_from_collider(m_collider, m_resolution);
     }
@@ -284,7 +261,7 @@ namespace uil {
     }
 
     void UIElement::render(Context const&) const {
-        debug_element.render(m_collider);
+        debug_element.collider.exec(&m_collider);
         on_draw.invoke(*this);
     }
 
