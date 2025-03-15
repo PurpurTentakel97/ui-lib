@@ -4,6 +4,7 @@
 //
 
 #include <uil/context.hpp>
+#include <uil/debug/debug_types.hpp>
 #include <uil/element.hpp>
 #include <uil/helper/vec.hpp>
 
@@ -262,6 +263,11 @@ namespace uil {
 
     void UIElement::render(Context const&) const {
         debug_element.collider.exec(&m_collider);
+        debug::MovementDrawDebugData const data{
+            { m_relative.x, m_relative.y },
+            m_relative_destination, m_resolution
+        };
+        debug_element.movement.exec(&data);
         on_draw.invoke(*this);
     }
 

@@ -40,6 +40,7 @@ target_sources(ui_lib
                include/uil/debug/debug.hpp
                include/uil/debug/debug_classes.hpp
                include/uil/debug/debug_wrapper.hpp
+               include/uil/debug/debug_types.hpp
 )
 
 target_include_directories(ui_lib

@@ -18,6 +18,7 @@ namespace uil::debug {
 namespace uil::debug {
     struct UIElementDebug final {
         ColliderDrawDebug collider{};
+        MovementDrawDebug movement{};
     };
 } // namespace uil::debug
 

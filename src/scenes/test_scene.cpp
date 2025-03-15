@@ -28,9 +28,10 @@ namespace uil {
         text->set_text(t);
         text->debug_element.collider.set(true);
         text->debug_text.line_collider.set(true);
+        text->debug_element.movement.set(true);
         text->set_color(c);
         text->set_breaking(true);
-        // text->move_to_linear_time({ 0.9f, 0.9f }, 10.0f);
+        text->move_to_linear_time({ 0.9f, 0.9f }, 10.0f);
     }
 
     bool TestScene::handle_input(Context const& context) const {

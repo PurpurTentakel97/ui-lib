@@ -5,9 +5,9 @@
 
 #pragma once
 
+#include <cpt/vec2.hpp>
 #include <raylib.h>
 #include <uil/debug/debug.hpp>
-#include <vector>
 
 namespace uil {
     class Window;
@@ -16,7 +16,7 @@ namespace uil {
 namespace uil::debug {
     class FpsDrawDebug final : public Debug<void> {
     public:
-        void exec(void const *) const override;
+        void exec(void const*) const override;
     };
 } // namespace uil::debug
 
@@ -35,6 +35,16 @@ namespace uil::debug {
     class ColliderWithOffsetDrawDebug final : public Debug<std::pair<Vector2, Rectangle>> {
     public:
         void exec(std::pair<Vector2, Rectangle> const*) const override;
+    };
+} // namespace uil::debug
+
+// ----------------------------------------
+
+namespace uil::debug {
+    struct MovementDrawDebugData;
+    class MovementDrawDebug final : public Debug<MovementDrawDebugData> {
+    public:
+        void exec(MovementDrawDebugData const*) const override;
     };
 } // namespace uil::debug
 
