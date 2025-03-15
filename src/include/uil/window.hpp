@@ -34,15 +34,42 @@ namespace uil {
     };
 
     /**
+     * Debug functionality for Window
+     */
+    class WindowDebug final {
+    private:
+        friend class Window;
+#ifndef NDEBUG
+        bool m_draw_fps = true;
+#endif
+
+        /**
+         * this renders all debug functions of this class if enabled.
+         */
+        void render() const;
+
+    public:
+        /**
+         * draws current fps in the top left corner if the screen.
+         * this only works in debug mode.
+         *
+         * @param draw_fps defines if draw_fps is active
+         */
+        void set_draw_fps(bool draw_fps);
+        /**
+         *
+         * @return if fps are currently drawn
+         */
+        [[nodiscard]] bool draw_fps() const;
+    };
+
+    /**
      * main window of the game.
      * you can only have one instance.
      * add scenes here with emplace.
      */
     class Window final {
     private:
-#ifndef NDEBUG
-        bool m_draw_fps_debug = true;
-#endif
         cpt::Vec2_i m_resolution;
         SceneManager m_scene_manager;
         Font m_font{};
@@ -53,6 +80,8 @@ namespace uil {
         static void set_flag(ConfigFlags flag, bool active);
 
     public:
+        WindowDebug debug{};
+
         /**
          * initializes the window and sets all window flags.
          *
@@ -165,18 +194,5 @@ namespace uil {
          *
          */
         void update();
-
-        /**
-         * draws current fps in the top left corner if the screen.
-         * this only works in debug mode.
-         *
-         * @param draw_fps defines if draw_fps is active
-         */
-        void set_draw_fps_debug(bool draw_fps);
-        /**
-         *
-         * @return if are fps currently drawn
-         */
-        [[nodiscard]] bool draw_fps_debug() const;
     };
 } // namespace uil
