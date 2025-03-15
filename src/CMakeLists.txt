@@ -2,11 +2,14 @@ add_library(ui_lib STATIC)
 
 target_sources(ui_lib
                PRIVATE
-               scenes/test_scene.cpp
+               debug/debug_classes.cpp
+
                elements/link.cpp
                elements/text.cpp
+
                helper/rect.cpp
                helper/vec.cpp
+
                alignment.cpp
                base_element.cpp
                context.cpp
@@ -16,15 +19,20 @@ target_sources(ui_lib
                scene_manager.cpp
                window.cpp
 
-               debug/debug_classes.cpp
 
                PUBLIC FILE_SET HEADERS
                BASE_DIRS include FILES
-               include/uil/scenes/test_scene.hpp
+               include/uil/debug/debug.hpp
+               include/uil/debug/debug_classes.hpp
+               include/uil/debug/debug_wrapper.hpp
+               include/uil/debug/debug_types.hpp
+
                include/uil/elements/link.hpp
                include/uil/elements/text.hpp
+
                include/uil/helper/rect.hpp
                include/uil/helper/vec.hpp
+
                include/uil/alignment.hpp
                include/uil/base_element.hpp
                include/uil/base_manager.hpp
@@ -36,11 +44,6 @@ target_sources(ui_lib
                include/uil/scene.hpp
                include/uil/scene_manager.hpp
                include/uil/window.hpp
-
-               include/uil/debug/debug.hpp
-               include/uil/debug/debug_classes.hpp
-               include/uil/debug/debug_wrapper.hpp
-               include/uil/debug/debug_types.hpp
 )
 
 target_include_directories(ui_lib

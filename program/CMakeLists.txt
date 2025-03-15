@@ -1,5 +1,8 @@
 add_executable(program
                temp.cpp
+
+               test_scene.hpp
+               test_scene.cpp
 )
 
 target_include_directories(program

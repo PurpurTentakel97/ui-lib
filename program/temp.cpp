@@ -2,8 +2,8 @@
 // Created by marti on 17.05.2024.
 //
 
+#include "test_scene.hpp"
 #include <raylib.h>
-#include <uil/scenes/test_scene.hpp>
 #include <uil/window.hpp>
 
 int main() {
@@ -22,7 +22,7 @@ int main() {
     auto window = uil::Window({ 1920, 1080 }, title, config);
     window.debug_window.fps.set(true);
 
-    [[maybe_unused]] auto const t1 = window.scene_manager().emplace_top<uil::TestScene>(RED, Vector2{ 0.05f, 0.05f });
+    [[maybe_unused]] auto const t1 = window.scene_manager().emplace_top<TestScene>(RED, Vector2{ 0.05f, 0.05f });
 
     while (not WindowShouldClose()) {
         window.update();
