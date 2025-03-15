@@ -14,6 +14,35 @@ namespace uil {
     struct Context;
 
     /**
+     * Debug functionality for UIElement
+     */
+    class UIElementDebug final {
+    private:
+        friend class UIElement;
+#ifndef NDEBUG
+        bool m_draw_collider = false;
+#endif
+
+        /**
+         * this renders all debug functions of this class if enabled.
+         */
+        void render(Rectangle collider) const;
+
+    public:
+        /**
+         * this will only render in debug mode.
+         *
+         * @param draw_collider defines if the collider gets rendered
+         */
+        void set_draw_collider(bool draw_collider);
+        /**
+         *
+         * @return if collider gets currently rendered
+         */
+        [[nodiscard]] bool draw_collider() const;
+    };
+
+    /**
     * the basic element for all things that gets displayed into a scene.
     * override this for own elements.
     * make sure to call check, update, render, and resize of UIElement when you override it.
@@ -28,11 +57,6 @@ namespace uil {
             Fast_To_Slow, // getting slower while moving to a certain point
             Constant,     // moves at a constant speed until it gets stoppt manually
         };
-
-        // debug
-#ifndef NDEBUG
-        bool m_render_collider_debug = false;
-#endif
 
         // basic
         cpt::Vec2_i m_resolution;
@@ -73,6 +97,8 @@ namespace uil {
         [[nodiscard]] cpt::Vec2_i resolution() const;
 
     public:
+        UIElementDebug debug{};
+
         Callback<UIElement&> on_movement_start{}; ///< contains UIElement
         Callback<UIElement&> on_movement_stop{};  ///< contains UIElement
         Callback<UIElement&> on_arrived{};        ///< contains UIElement
@@ -180,18 +206,6 @@ namespace uil {
          * @return current alignment
          */
         [[nodiscard]] Alignment alignment() const;
-
-        /**
-         * this will only render in debug mode.
-         *
-         * @param render defines if the collider gets rendered
-         */
-        void set_render_collider_debug(bool render);
-        /**
-         *
-         * @return if collider gets currently rendered
-         */
-        [[nodiscard]] bool render_collider_debug() const;
 
         /**
          *
