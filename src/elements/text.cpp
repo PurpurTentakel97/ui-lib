@@ -84,8 +84,8 @@ namespace uil {
                                                font    = m_font,
                                                spacing = m_letter_spacing,
                                                &lhs,
-                                               text = m_raw_text](size_t const rhs) {
-            auto const& line = text.substr(lhs, rhs - lhs);
+                                               text = m_raw_text](size_t const _rhs) {
+            auto const& line = text.substr(lhs, _rhs - lhs);
             return calc_text_size(line);
         };
 
