@@ -10,16 +10,46 @@
 #include <vector>
 
 namespace uil {
+    class Text;
+    class TextDebug;
+
+    /**
+      * Debug functionality for Text
+      */
+    class TextDebug final {
+    private:
+        friend class Text;
+#ifndef NDEBUG
+        bool m_draw_line_collider = false;
+#endif
+
+        /**
+         * this renders all debug functions of this class if enabled.
+         */
+        void render(Text const& text, Context const& context) const;
+
+    public:
+        /**
+          * This will only work in debug build
+          *
+          * @param draw_line_collider renders the "collider" of each line of text
+          */
+        void set_draw_line_collider(bool draw_line_collider);
+
+        /**
+         *
+         * @return renders the "collider" of each line of text
+         */
+        [[nodiscard]] bool draw_line_collider() const;
+    };
+
     /**
      * Displays a string inside a collider.
      * use the set-member-functions to configure.
      */
     class Text : public UIElement {
     private:
-#ifndef NDEBUG
-        bool m_render_line_collider_debug = false;
-#endif
-
+        friend class TextDebug;
         using DrawText = std::vector<std::pair<Vector2, std::string>>;
         std::string m_raw_text{};
         DrawText m_draw_text{};
@@ -77,6 +107,8 @@ namespace uil {
 
 
     public:
+        TextDebug debug_text{};
+
         // clang-format off
         Callback<Text&, float, float>                           on_text_size_changed{};         ///< contains Text, new value, old value
         Callback<Text&, std::string const&, std::string const&> on_text_changed{};              ///< contains Text, new value, old value
@@ -184,18 +216,6 @@ namespace uil {
          * @return whether the text gets transformed into a multiline text
          */
         [[nodiscard]] bool breaking() const;
-
-        /**
-         * This will only work in debug build
-         *
-         * @param draw renders the "collider" of each line of text
-         */
-        void set_render_line_collider_debug(bool draw);
-        /**
-         *
-         * @return renders the "collider" of each line of text
-         */
-        [[nodiscard]] bool render_line_collider_debug() const;
 
         /**
          * breaks and aligns the text when it was configuration that way

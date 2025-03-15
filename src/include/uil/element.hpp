@@ -97,7 +97,7 @@ namespace uil {
         [[nodiscard]] cpt::Vec2_i resolution() const;
 
     public:
-        UIElementDebug debug{};
+        UIElementDebug debug_element{};
 
         Callback<UIElement&> on_movement_start{}; ///< contains UIElement
         Callback<UIElement&> on_movement_stop{};  ///< contains UIElement

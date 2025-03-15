@@ -7,6 +7,38 @@
 #include <uil/elements/text.hpp>
 
 namespace uil {
+    void TextDebug::render([[maybe_unused]] Text const& text, [[maybe_unused]] Context const& context) const {
+#ifndef NDEBUG
+        for (const auto& [position, str] : text.draw_text())
+            if (m_draw_line_collider) {
+                auto const text_size = [size = text.m_font_size, font = context.font, spacing = text.m_letter_spacing](
+                                               std::string const& line) -> Vector2 {
+                    return MeasureTextEx(*font, line.c_str(), size, spacing);
+                }(str);
+
+                DrawRectangleLines(static_cast<int>(text.collider_aligned().x + position.x),
+                                   static_cast<int>(text.collider_aligned().y + position.y),
+                                   static_cast<int>(text_size.x),
+                                   static_cast<int>(text_size.y),
+                                   WHITE);
+            }
+#endif
+    }
+
+    void TextDebug::set_draw_line_collider([[maybe_unused]] bool const draw_line_collider) {
+#ifndef NDEBUG
+        m_draw_line_collider = draw_line_collider;
+#endif
+    }
+
+    bool TextDebug::draw_line_collider() const {
+#ifndef NDEBUG
+        return m_draw_line_collider;
+#else
+        return false;
+#endif
+    }
+
     void Text::align() {
 
         if (not m_font) { // also checked in update_(). just to be sure because it could be called directly
@@ -151,33 +183,20 @@ namespace uil {
 
     void Text::render_text(Context const& context, Color const color) const {
 
-        for (auto const& e : m_draw_text) {
+        for (auto const& [position, text] : m_draw_text) {
             // clang-format off
             DrawTextEx(
                     *(context.font),
-                    e.second.c_str(),
-                    { collider_aligned().x + e.first.x, collider_aligned().y + e.first.y },
+                    text.c_str(),
+                    { collider_aligned().x + position.x, collider_aligned().y + position.y },
                     m_font_size,
                     m_letter_spacing,
                     color
                     );
             // clang-format on
-
-#ifndef NDEBUG
-            if (m_render_line_collider_debug) {
-                auto const text_size = [size = m_font_size, font = context.font, spacing = m_letter_spacing](
-                                               std::string const& text) -> Vector2 {
-                    return MeasureTextEx(*font, text.c_str(), size, spacing);
-                }(e.second);
-
-                DrawRectangleLines(static_cast<int>(collider_aligned().x + e.first.x),
-                                   static_cast<int>(collider_aligned().y + e.first.y),
-                                   static_cast<int>(text_size.x),
-                                   static_cast<int>(text_size.y),
-                                   WHITE);
-            }
-#endif
         }
+
+        debug_text.render(*this, context);
     }
 
     Text::DrawText Text::draw_text() const {
@@ -281,20 +300,6 @@ namespace uil {
 
     bool Text::breaking() const {
         return m_breaking;
-    }
-
-    void Text::set_render_line_collider_debug([[maybe_unused]] bool const draw) {
-#ifndef NDEBUG
-        m_render_line_collider_debug = draw;
-#endif
-    }
-
-    bool Text::render_line_collider_debug() const {
-#ifndef NDEBUG
-        return m_render_line_collider_debug;
-#else
-        return false;
-#endif
     }
 
     void Text::update_text() {

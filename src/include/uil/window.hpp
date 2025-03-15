@@ -80,7 +80,7 @@ namespace uil {
         static void set_flag(ConfigFlags flag, bool active);
 
     public:
-        WindowDebug debug{};
+        WindowDebug debug_window{};
 
         /**
          * initializes the window and sets all window flags.

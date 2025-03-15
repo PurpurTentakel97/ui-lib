@@ -156,7 +156,7 @@ namespace uil {
         ClearBackground(BLACK);
         m_scene_manager.render(context);
 
-        debug.render();
+        debug_window.render();
 
         EndDrawing();
     }
