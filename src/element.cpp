@@ -4,6 +4,7 @@
 //
 
 #include <uil/context.hpp>
+#include <uil/debug/debug_types.hpp>
 #include <uil/element.hpp>
 #include <uil/helper/vec.hpp>
 
@@ -177,20 +178,6 @@ namespace uil {
         return m_alignment;
     }
 
-    void UIElement::set_render_collider_debug([[maybe_unused]] bool const render) {
-#ifndef NDEBUG
-        m_render_collider_debug = render;
-#endif
-    }
-
-    bool UIElement::render_collider_debug() const {
-#ifndef NDEBUG
-        return m_render_collider_debug;
-#else
-        return false;
-#endif
-    }
-
     bool UIElement::hovered() const {
         return m_hovered;
     }
@@ -275,11 +262,12 @@ namespace uil {
     }
 
     void UIElement::render(Context const&) const {
-#ifndef NDEBUG
-        if (m_render_collider_debug) {
-            DrawRectangleLinesEx(m_collider, 2.0f, WHITE);
-        }
-#endif
+        debug_element.collider.exec(&m_collider);
+        debug::MovementDrawDebugData const data{
+            { m_relative.x, m_relative.y },
+            m_relative_destination, m_resolution
+        };
+        debug_element.movement.exec(&data);
         on_draw.invoke(*this);
     }
 

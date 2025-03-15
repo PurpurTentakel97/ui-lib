@@ -3,7 +3,9 @@
 // 07.07.24
 //
 
+#include <ranges>
 #include <uil/context.hpp>
+#include <uil/debug/debug_types.hpp>
 #include <uil/elements/text.hpp>
 
 namespace uil {
@@ -64,7 +66,7 @@ namespace uil {
         auto const extra_breaking = m_breaking and m_font != nullptr;
         if (not extra_breaking) {
             m_draw_text = {
-                { Vector2(0.0f, 0.0f), m_raw_text }
+                { Rectangle(0.0f, 0.0f, 0.0f, 0.0f), m_raw_text }
             };
             return;
         }
@@ -79,12 +81,7 @@ namespace uil {
                       return MeasureTextEx(*font, line.c_str(), size, spacing);
                   };
 
-        auto const calc_text_size_by_offset = [calc_text_size,
-                                               size    = m_font_size,
-                                               font    = m_font,
-                                               spacing = m_letter_spacing,
-                                               &lhs,
-                                               text = m_raw_text](size_t const _rhs) {
+        auto const calc_text_size_by_offset = [calc_text_size, &lhs, text = m_raw_text](size_t const _rhs) {
             auto const& line = text.substr(lhs, _rhs - lhs);
             return calc_text_size(line);
         };
@@ -100,14 +97,16 @@ namespace uil {
                 return text->substr(lhs, temp_rhs - lhs);
             }();
 
+            auto const size = calc_text_size(line);
             if (draw_array->empty()) {
-                draw_array->emplace_back(Vector2(0.0f, 0.0f), line);
+                draw_array->emplace_back(Rectangle(0.0f, 0.0f, size.x, size.y), line);
             } else {
-                auto const& previous   = draw_array->back();
-                auto const size        = calc_text_size(previous.second);
-                auto const offset      = next_paragraph_spacing ? m_paragraph_spacing : m_line_spacing;
-                next_paragraph_spacing = false;
-                draw_array->emplace_back(Vector2{ 0.0f, previous.first.y + size.y + offset }, line);
+                auto const& previous     = draw_array->back();
+                auto const previous_size = calc_text_size(previous.second);
+                auto const offset        = next_paragraph_spacing ? m_paragraph_spacing : m_line_spacing;
+                next_paragraph_spacing   = false;
+                draw_array->emplace_back(Rectangle{ 0.0f, previous.first.y + previous_size.y + offset, size.x, size.y },
+                                         line);
             }
             rhs = temp_rhs + 1; // promote to strip first character (whitespace or \n) in next line.
             lhs = rhs;
@@ -151,32 +150,25 @@ namespace uil {
 
     void Text::render_text(Context const& context, Color const color) const {
 
-        for (auto const& e : m_draw_text) {
+        for (auto const& [position, text] : m_draw_text) {
             // clang-format off
             DrawTextEx(
                     *(context.font),
-                    e.second.c_str(),
-                    { collider_aligned().x + e.first.x, collider_aligned().y + e.first.y },
+                    text.c_str(),
+                    { collider_aligned().x + position.x, collider_aligned().y + position.y },
                     m_font_size,
                     m_letter_spacing,
                     color
                     );
             // clang-format on
+        }
 
-#ifndef NDEBUG
-            if (m_render_line_collider_debug) {
-                auto const text_size = [size = m_font_size, font = context.font, spacing = m_letter_spacing](
-                                               std::string const& text) -> Vector2 {
-                    return MeasureTextEx(*font, text.c_str(), size, spacing);
-                }(e.second);
-
-                DrawRectangleLines(static_cast<int>(collider_aligned().x + e.first.x),
-                                   static_cast<int>(collider_aligned().y + e.first.y),
-                                   static_cast<int>(text_size.x),
-                                   static_cast<int>(text_size.y),
-                                   WHITE);
-            }
-#endif
+        for (auto const& dimension : m_draw_text | std::views::keys) {
+            debug::ColliderWithOffsetDrawDebugData const values{
+                { collider().x, collider().y },
+                dimension
+            };
+            debug_text.line_collider.exec(&values);
         }
     }
 
@@ -283,24 +275,10 @@ namespace uil {
         return m_breaking;
     }
 
-    void Text::set_render_line_collider_debug([[maybe_unused]] bool const draw) {
-#ifndef NDEBUG
-        m_render_line_collider_debug = draw;
-#endif
-    }
-
-    bool Text::render_line_collider_debug() const {
-#ifndef NDEBUG
-        return m_render_line_collider_debug;
-#else
-        return false;
-#endif
-    }
-
     void Text::update_text() {
         if (not m_font) {
             m_draw_text = {
-                { Vector2(0.0f, 0.0f), m_raw_text }
+                { Rectangle(0.0f, 0.0f, 0.0f, 0.0f), m_raw_text }
             };
             on_draw_text_updated.invoke(*this);
             return;

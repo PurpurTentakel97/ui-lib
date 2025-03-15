@@ -9,6 +9,7 @@
 #include <uil/base_element.hpp>
 #include <uil/callback.hpp>
 #include <uil/helper/rect.hpp>
+#include <uil/debug/debug_wrapper.hpp>
 
 namespace uil {
     struct Context;
@@ -28,11 +29,6 @@ namespace uil {
             Fast_To_Slow, // getting slower while moving to a certain point
             Constant,     // moves at a constant speed until it gets stoppt manually
         };
-
-        // debug
-#ifndef NDEBUG
-        bool m_render_collider_debug = false;
-#endif
 
         // basic
         cpt::Vec2_i m_resolution;
@@ -73,6 +69,8 @@ namespace uil {
         [[nodiscard]] cpt::Vec2_i resolution() const;
 
     public:
+        debug::UIElementDebug debug_element{};
+
         Callback<UIElement&> on_movement_start{}; ///< contains UIElement
         Callback<UIElement&> on_movement_stop{};  ///< contains UIElement
         Callback<UIElement&> on_arrived{};        ///< contains UIElement
@@ -180,18 +178,6 @@ namespace uil {
          * @return current alignment
          */
         [[nodiscard]] Alignment alignment() const;
-
-        /**
-         * this will only render in debug mode.
-         *
-         * @param render defines if the collider gets rendered
-         */
-        void set_render_collider_debug(bool render);
-        /**
-         *
-         * @return if collider gets currently rendered
-         */
-        [[nodiscard]] bool render_collider_debug() const;
 
         /**
          *

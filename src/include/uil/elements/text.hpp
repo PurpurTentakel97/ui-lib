@@ -5,22 +5,20 @@
 
 #pragma once
 #include <string>
+#include <uil/debug/debug_wrapper.hpp>
 #include <uil/element.hpp>
 #include <utility>
 #include <vector>
 
 namespace uil {
+
     /**
      * Displays a string inside a collider.
      * use the set-member-functions to configure.
      */
     class Text : public UIElement {
     private:
-#ifndef NDEBUG
-        bool m_render_line_collider_debug = false;
-#endif
-
-        using DrawText = std::vector<std::pair<Vector2, std::string>>;
+        using DrawText = std::vector<std::pair<Rectangle, std::string>>;
         std::string m_raw_text{};
         DrawText m_draw_text{};
         Alignment m_text_alignment         = Alignment::TopLeft;
@@ -77,6 +75,8 @@ namespace uil {
 
 
     public:
+        debug::TextDebug debug_text{};
+
         // clang-format off
         Callback<Text&, float, float>                           on_text_size_changed{};         ///< contains Text, new value, old value
         Callback<Text&, std::string const&, std::string const&> on_text_changed{};              ///< contains Text, new value, old value
@@ -184,18 +184,6 @@ namespace uil {
          * @return whether the text gets transformed into a multiline text
          */
         [[nodiscard]] bool breaking() const;
-
-        /**
-         * This will only work in debug build
-         *
-         * @param draw renders the "collider" of each line of text
-         */
-        void set_render_line_collider_debug(bool draw);
-        /**
-         *
-         * @return renders the "collider" of each line of text
-         */
-        [[nodiscard]] bool render_line_collider_debug() const;
 
         /**
          * breaks and aligns the text when it was configuration that way

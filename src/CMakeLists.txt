@@ -16,6 +16,8 @@ target_sources(ui_lib
                scene_manager.cpp
                window.cpp
 
+               debug/debug_classes.cpp
+
                PUBLIC FILE_SET HEADERS
                BASE_DIRS include FILES
                include/uil/scenes/test_scene.hpp
@@ -34,6 +36,11 @@ target_sources(ui_lib
                include/uil/scene.hpp
                include/uil/scene_manager.hpp
                include/uil/window.hpp
+
+               include/uil/debug/debug.hpp
+               include/uil/debug/debug_classes.hpp
+               include/uil/debug/debug_wrapper.hpp
+               include/uil/debug/debug_types.hpp
 )
 
 target_include_directories(ui_lib
