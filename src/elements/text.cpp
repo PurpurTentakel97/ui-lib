@@ -61,7 +61,7 @@ namespace uil {
     }
 
     void Text::break_() {
-        auto const extra_breaking = m_breaking or m_font != nullptr;
+        auto const extra_breaking = m_breaking and m_font != nullptr;
         if (not extra_breaking) {
             m_draw_text = {
                 { Vector2(0.0f, 0.0f), m_raw_text }
@@ -69,66 +69,83 @@ namespace uil {
             return;
         }
 
-        cpt::usize lhs      = 0;
-        cpt::usize rhs      = 0;
-        m_draw_text         = DrawText();
-        bool next_paragraph = false;
+        cpt::usize lhs              = 0;
+        cpt::usize rhs              = 0;
+        m_draw_text                 = DrawText{};
+        auto next_paragraph_spacing = false;
 
-        auto const text_size
-                = [size = m_font_size, font = m_font, spacing = m_letter_spacing](std::string const& text) {
-                      return MeasureTextEx(*font, text.c_str(), size, spacing);
+        auto const calc_text_size
+                = [size = m_font_size, font = m_font, spacing = m_letter_spacing](std::string const& line) {
+                      return MeasureTextEx(*font, line.c_str(), size, spacing);
                   };
 
-        auto const add = [&]() {
-            if (m_draw_text.empty()) {
-                m_draw_text.emplace_back(Vector2(0.0f, 0.0f), m_raw_text.substr(lhs, rhs - lhs));
-            } else {
-                auto const last      = m_draw_text.back();
-                auto const last_size = text_size(last.second);
-                auto const spacing   = next_paragraph ? m_paragraph_spacing : m_line_spacing;
-                next_paragraph       = false;
-                m_draw_text.emplace_back(Vector2(0.0f, last.first.y + last_size.y + spacing),
-                                         m_raw_text.substr(lhs, rhs - lhs));
-            }
-
-            if (rhs == std::string::npos) {
-                return;
-            }
-
-            ++rhs;
-            lhs = rhs;
+        auto const calc_text_size_by_offset = [calc_text_size,
+                                               size    = m_font_size,
+                                               font    = m_font,
+                                               spacing = m_letter_spacing,
+                                               &lhs,
+                                               text = m_raw_text](size_t const _rhs) {
+            auto const& line = text.substr(lhs, _rhs - lhs);
+            return calc_text_size(line);
         };
 
 
+        auto const next = [&rhs, text = m_raw_text](char const c) { return text.find_first_of(c, rhs + 1); };
+
+        auto const add = [&, draw_array = &m_draw_text, text = &m_raw_text](size_t const temp_rhs) {
+            auto const line = [&]() {
+                if (temp_rhs == 0) {
+                    return text->substr(lhs);
+                }
+                return text->substr(lhs, temp_rhs - lhs);
+            }();
+
+            if (draw_array->empty()) {
+                draw_array->emplace_back(Vector2(0.0f, 0.0f), line);
+            } else {
+                auto const& previous   = draw_array->back();
+                auto const size        = calc_text_size(previous.second);
+                auto const offset      = next_paragraph_spacing ? m_paragraph_spacing : m_line_spacing;
+                next_paragraph_spacing = false;
+                draw_array->emplace_back(Vector2{ 0.0f, previous.first.y + size.y + offset }, line);
+            }
+            rhs = temp_rhs + 1; // promote to strip first character (whitespace or \n) in next line.
+            lhs = rhs;
+        };
+
         while (true) {
-            auto rhs_temp = m_raw_text.find_first_of('\n', rhs);
-            if (rhs_temp != std::string::npos) {
-                auto const size = text_size(m_raw_text.substr(lhs, rhs_temp - lhs));
-                if (size.x < collider_aligned().width) {
-                    rhs = rhs_temp;
-                    add();
-                    next_paragraph = true;
+            auto temp_rhs = next('\n');
+            if (auto const found_n = temp_rhs != std::string::npos; found_n) {
+                auto const line_dimensions = calc_text_size_by_offset(temp_rhs);
+                if (line_dimensions.x < collider().width) {
+                    add(temp_rhs);
+                    next_paragraph_spacing = true;
                     continue;
                 }
             }
 
-            rhs_temp = m_raw_text.find_first_of(' ', rhs);
-
-            if (rhs_temp == std::string::npos) {
-                rhs = rhs_temp;
-                add();
-                break;
+            temp_rhs = next(' ');
+            if (auto const found_n_pos = temp_rhs == std::string::npos; found_n_pos) {
+                auto const line            = m_raw_text.substr(lhs);
+                auto const line_dimensions = calc_text_size(line);
+                if (line_dimensions.x < collider().width) {
+                    add(0);
+                    break;
+                }
             }
 
-            auto const size = text_size(m_raw_text.substr(lhs, rhs_temp - lhs));
-            if (size.x > collider_aligned().width) {
-                auto const lower_rhs = m_raw_text.find_last_of(' ', rhs - 1);
-                rhs                  = lower_rhs == std::string::npos ? rhs_temp : lower_rhs;
-                add();
+            auto const line_dimensions = calc_text_size_by_offset(temp_rhs);
+            if (line_dimensions.x < collider().width) {
+                rhs = temp_rhs;
+                continue;
             }
 
-            rhs = rhs_temp;
-            ++rhs;
+            if (lhs == rhs) {
+                add(temp_rhs);
+                continue;
+            }
+
+            add(rhs);
         }
     }
 
@@ -147,7 +164,7 @@ namespace uil {
             // clang-format on
 
 #ifndef NDEBUG
-            if (m_render_line_collider) {
+            if (m_render_line_collider_debug) {
                 auto const text_size = [size = m_font_size, font = context.font, spacing = m_letter_spacing](
                                                std::string const& text) -> Vector2 {
                     return MeasureTextEx(*font, text.c_str(), size, spacing);
@@ -266,12 +283,18 @@ namespace uil {
         return m_breaking;
     }
 
-    void Text::set_render_line_collider_debug(bool const draw) {
-        m_render_line_collider = draw;
+    void Text::set_render_line_collider_debug([[maybe_unused]] bool const draw) {
+#ifndef NDEBUG
+        m_render_line_collider_debug = draw;
+#endif
     }
 
     bool Text::render_line_collider_debug() const {
-        return m_render_line_collider;
+#ifndef NDEBUG
+        return m_render_line_collider_debug;
+#else
+        return false;
+#endif
     }
 
     void Text::update_text() {

@@ -7,10 +7,10 @@
 name: uil
 on:
   push:
-    branches: [ main ]
+    branches: [ main, dev ]
   workflow_dispatch: # started manually
   pull_request:
-    branches: [ main ] # PRs against the master branch
+    branches: [ main, dev ] # PRs against the master branch
 
 jobs:
   job:
@@ -36,7 +36,7 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
-      
+
       - name: "Create vcpkg cache directories '${{ env.VCPKG_DEFAULT_BINARY_CACHE }}' and '${{ env.X_VCPKG_REGISTRIES_CACHE }}'"
         shell: bash
         run: |
@@ -56,7 +56,7 @@ jobs:
           # in order the recreate the right content the key must be changed as well, and it must be brand new (i.e. not existing already).
           key: |
             ${{ hashFiles( 'vcpkg.json' ) }}-${{ matrix.triplet }}
-      
+
       - name: "Install raylib Linux dependencies"
         run: sudo apt install -yq libxinerama-dev libxcursor-dev xorg-dev libglu1-mesa-dev pkg-config libgl1-mesa-dev libx11-dev libxcursor-dev libxinerama-dev libxrandr-dev libfmt-dev
         if: ${{ matrix.os == 'ubuntu-24.04' }}

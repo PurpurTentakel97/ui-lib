@@ -40,7 +40,9 @@ namespace uil {
      */
     class Window final {
     private:
-        bool m_draw_fps = true;
+#ifndef NDEBUG
+        bool m_draw_fps_debug = true;
+#endif
         cpt::Vec2_i m_resolution;
         SceneManager m_scene_manager;
         Font m_font{};
