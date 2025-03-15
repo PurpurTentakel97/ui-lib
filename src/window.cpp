@@ -9,29 +9,6 @@
 #include <uil/window.hpp>
 
 namespace uil {
-    void WindowDebug::render() const {
-#ifndef NDEBUG
-        if (m_draw_fps) {
-            DrawText(std::to_string(GetFPS()).c_str(), 10, 10, 50, WHITE);
-        }
-#endif
-    }
-
-    void WindowDebug::set_draw_fps([[maybe_unused]] bool const draw_fps) {
-#ifndef NDEBUG
-        m_draw_fps = draw_fps;
-#endif
-    }
-
-    bool WindowDebug::draw_fps() const {
-#ifndef NDEBUG
-        return m_draw_fps;
-#else
-        return false;
-#endif
-    }
-
-
     void Window::update_resolution() {
         if (IsWindowResized()) {
             m_resolution = cpt::Vec2_i{ GetRenderWidth(), GetRenderHeight() };
@@ -156,7 +133,7 @@ namespace uil {
         ClearBackground(BLACK);
         m_scene_manager.render(context);
 
-        debug_window.render();
+        debug.fps.exec(*this);
 
         EndDrawing();
     }

@@ -5,11 +5,11 @@
 
 #pragma once
 #include <cpt/vec2.hpp>
+#include <uil/debug/debug_classes.hpp>
 #include <uil/scene_manager.hpp>
 
 namespace uil {
     struct Context;
-
     /**
      * provides the construct config for a window.
      * some config need to be set that way because it can only be set bevor the window is initialized.
@@ -33,35 +33,6 @@ namespace uil {
         bool interlaced        = false;
     };
 
-    /**
-     * Debug functionality for Window
-     */
-    class WindowDebug final {
-    private:
-        friend class Window;
-#ifndef NDEBUG
-        bool m_draw_fps = true;
-#endif
-
-        /**
-         * this renders all debug functions of this class if enabled.
-         */
-        void render() const;
-
-    public:
-        /**
-         * draws current fps in the top left corner if the screen.
-         * this only works in debug mode.
-         *
-         * @param draw_fps defines if draw_fps is active
-         */
-        void set_draw_fps(bool draw_fps);
-        /**
-         *
-         * @return if fps are currently drawn
-         */
-        [[nodiscard]] bool draw_fps() const;
-    };
 
     /**
      * main window of the game.
@@ -80,7 +51,7 @@ namespace uil {
         static void set_flag(ConfigFlags flag, bool active);
 
     public:
-        WindowDebug debug_window{};
+        debug::WindowDebug debug{};
 
         /**
          * initializes the window and sets all window flags.
