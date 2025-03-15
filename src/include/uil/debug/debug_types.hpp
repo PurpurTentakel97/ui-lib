@@ -9,9 +9,15 @@
 
 
 namespace uil::debug {
+    struct ColliderWithOffsetDrawDebugData final {
+        Vector2 offset{};
+        Rectangle collider{};
+    };
+
     struct MovementDrawDebugData final {
         Vector2 start{};
         Vector2 end{};
         cpt::Vec2_i resolution{};
     };
+
 } // namespace uil::debug

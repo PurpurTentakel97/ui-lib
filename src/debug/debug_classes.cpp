@@ -5,7 +5,6 @@
 
 #include <string>
 #include <uil/debug/debug_classes.hpp>
-#include <uil/window.hpp>
 #include <uil/debug/debug_types.hpp>
 
 namespace uil::debug {
@@ -33,14 +32,14 @@ namespace uil::debug {
 // ----------------------------------------
 
 namespace uil::debug {
-    void ColliderWithOffsetDrawDebug::exec(std::pair<Vector2, Rectangle> const* const collider_with_offset) const {
+    void ColliderWithOffsetDrawDebug::exec(ColliderWithOffsetDrawDebugData const* const collider_with_offset) const {
 #ifndef NDEBUG
         if (m_value) {
             auto const collider = Rectangle{
-                collider_with_offset->first.x + collider_with_offset->second.x,
-                collider_with_offset->first.y + collider_with_offset->second.y,
-                collider_with_offset->second.width,
-                collider_with_offset->second.height,
+                collider_with_offset->collider.x + collider_with_offset->offset.x,
+                collider_with_offset->collider.y + collider_with_offset->offset.y,
+                collider_with_offset->collider.width,
+                collider_with_offset->collider.height,
             };
             DrawRectangleLinesEx(collider, 2.0f, WHITE);
         }

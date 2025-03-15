@@ -5,6 +5,7 @@
 
 #include <ranges>
 #include <uil/context.hpp>
+#include <uil/debug/debug_types.hpp>
 #include <uil/elements/text.hpp>
 
 namespace uil {
@@ -163,7 +164,10 @@ namespace uil {
         }
 
         for (auto const& dimension : m_draw_text | std::views::keys) {
-            auto const values = std::make_pair(Vector2{ collider().x, collider().y }, dimension);
+            debug::ColliderWithOffsetDrawDebugData const values{
+                { collider().x, collider().y },
+                dimension
+            };
             debug_text.line_collider.exec(&values);
         }
     }

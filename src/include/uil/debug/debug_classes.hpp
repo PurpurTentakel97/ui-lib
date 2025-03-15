@@ -32,9 +32,10 @@ namespace uil::debug {
 // ----------------------------------------
 
 namespace uil::debug {
-    class ColliderWithOffsetDrawDebug final : public Debug<std::pair<Vector2, Rectangle>> {
+    struct ColliderWithOffsetDrawDebugData;
+    class ColliderWithOffsetDrawDebug final : public Debug<ColliderWithOffsetDrawDebugData> {
     public:
-        void exec(std::pair<Vector2, Rectangle> const*) const override;
+        void exec(ColliderWithOffsetDrawDebugData const*) const override;
     };
 } // namespace uil::debug
 
