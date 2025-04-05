@@ -6,6 +6,10 @@
 #include <uil/global/app_context.hpp>
 
 namespace uil::global {
+    void AppContext::reset() {
+        m_input.reset();
+    }
+
     AppContext& AppContext::instance() {
         static AppContext app_context{};
         return app_context;

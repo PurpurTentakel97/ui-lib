@@ -7,11 +7,19 @@
 
 #include <uil/global/input.hpp>
 
+namespace uil {
+    class Window;
+}
+
 namespace uil::global {
 
     class AppContext final {
     private:
+        friend class uil::Window;
+
         InputManager m_input{};
+
+        void reset();
 
     public:
         [[nodiscard]] static AppContext& instance();

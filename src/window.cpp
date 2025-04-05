@@ -3,6 +3,7 @@
 // 30.05.24
 //
 
+#include "uil/global/app_context.hpp"
 #include <raylib.h>
 #include <string>
 #include <uil/context.hpp>
@@ -120,6 +121,7 @@ namespace uil {
     }
 
     void Window::update() {
+        global::AppContext::instance().reset();
         auto const context = create_context();
 
         // updating

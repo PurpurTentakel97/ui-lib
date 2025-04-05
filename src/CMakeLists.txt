@@ -7,6 +7,9 @@ target_sources(ui_lib
                elements/link.cpp
                elements/text.cpp
 
+               global/app_context.cpp
+               global/input.cpp
+
                helper/rect.cpp
                helper/vec.cpp
 
@@ -29,6 +32,9 @@ target_sources(ui_lib
 
                include/uil/elements/link.hpp
                include/uil/elements/text.hpp
+
+               include/uil/global/app_context.hpp
+               include/uil/global/input.hpp
 
                include/uil/helper/rect.hpp
                include/uil/helper/vec.hpp
