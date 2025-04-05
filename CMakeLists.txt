@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.23.0)
 include(FetchContent)
 FetchContent_Declare(vcpkg
                      GIT_REPOSITORY https://github.com/microsoft/vcpkg/
-                     GIT_TAG 2024.03.25
+                     GIT_TAG 2025.03.19
 )
 FetchContent_MakeAvailable(vcpkg)
 

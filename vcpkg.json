@@ -17,6 +17,9 @@
   "dependencies": [
     "gtest",
     "cpt-lib",
-    "raylib"
+    {
+      "name": "raylib",
+      "version>=": "5.5"
+    }
   ]
 }
