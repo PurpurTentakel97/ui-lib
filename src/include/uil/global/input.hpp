@@ -4,224 +4,171 @@
 //
 
 #pragma once
+#include <algorithm>
 #include <array>
+#include <cpt/types.hpp>
+#include <ranges>
 #include <raylib.h>
-#include <span>
+#include <unordered_map>
+#include <variant>
 #include <vector>
 
 namespace uil::global {
-    /**
-     * This class handles all input Requests.
-     * Call this from the AppContext.
-     * It also provides standard modifier.
-     */
+    template<typename T>
+    concept IsKey
+            = std::is_same_v<T, MouseButton> or std::is_same_v<T, KeyboardKey> or std::is_same_v<T, GamepadButton>;
+
     class InputManager final {
-    public:
-        friend class AppContext;
-
-        static constexpr std::array<KeyboardKey, 2> s_shift_modifier{ KEY_LEFT_SHIFT, KEY_RIGHT_SHIFT };
-        static constexpr std::array<KeyboardKey, 2> s_ctrl_modifier{ KEY_LEFT_CONTROL, KEY_RIGHT_CONTROL };
-        static constexpr std::array<KeyboardKey, 2> s_alt_modifier{ KEY_LEFT_ALT, KEY_RIGHT_ALT };
-
     private:
-        std::vector<MouseButton> m_accept_keys_mouse{ MOUSE_BUTTON_LEFT };
-        std::vector<KeyboardKey> m_accept_keys_keyboard{ KEY_SPACE, KEY_ENTER, KEY_KP_ENTER };
-        std::vector<MouseButton> m_reject_keys_mouse{};
-        std::vector<KeyboardKey> m_reject_keys_keyboard{ KEY_ESCAPE, KEY_BACK };
+        using Key    = std::variant<MouseButton, KeyboardKey, GamepadButton>;
+        using KeyMap = std::unordered_map<cpt::usize, std::vector<Key>>;
+        KeyMap m_key_collections{};
+        cpt::usize m_id_counter{ 1 };
 
-        bool m_use_one_time_input{ false };
-        bool m_one_time_accept_input_pressed{ false };
-        bool m_one_time_accept_input_released{ false };
-        bool m_one_time_reject_input_pressed{ false };
-        bool m_one_time_reject_input_released{ false };
+        [[nodiscard]] cpt::usize next_id();
 
-        void reset();
+        // ---------------------------------------------------
+
+        template<IsKey T>
+        [[nodiscard]] static bool is_action(T key, auto mouse_function, auto keyboard_function, auto gamepad_function) {
+            if constexpr (std::is_same_v<T, MouseButton>) {
+                return mouse_function(key);
+            }
+            if constexpr (std::is_same_v<T, KeyboardKey>) {
+                return keyboard_function(key);
+            }
+            if constexpr (std::is_same_v<T, GamepadButton>) {
+                return gamepad_function(key);
+            }
+            // std::unreachable();
+        }
+        [[nodiscard]] static bool is_action(Key const& key,
+                                            auto mouse_function,
+                                            auto keyboard_function,
+                                            auto gamepad_function) {
+            if (std::holds_alternative<MouseButton>(key)) {
+                return mouse_function(std::get<MouseButton>(key));
+            }
+            if (std::holds_alternative<KeyboardKey>(key)) {
+                return keyboard_function(std::get<KeyboardKey>(key));
+            }
+            return gamepad_function(0, std::get<GamepadButton>(key));
+        }
+
+        // --------------------------------------------------------
+
+        template<IsKey T>
+        [[nodiscard]] static bool is_down(T key) {
+            return is_action(key, IsMouseButtonDown, IsKeyDown, IsGamepadButtonDown);
+        }
+        [[nodiscard]] static bool is_down(Key const& key) {
+            return is_action(key, IsMouseButtonDown, IsKeyDown, IsGamepadButtonDown);
+        }
+
+        template<IsKey T>
+        [[nodiscard]] static bool is_up(T key) {
+            return is_action(key, IsMouseButtonUp, IsKeyUp, IsGamepadButtonUp);
+        }
+        [[nodiscard]] static bool is_up(Key const& key) {
+            return is_action(key, IsMouseButtonUp, IsKeyUp, IsGamepadButtonUp);
+        }
+
+        template<IsKey T>
+        [[nodiscard]] static bool is_pressed(T key) {
+            return is_action(key, IsMouseButtonPressed, IsKeyPressed, IsGamepadButtonPressed);
+        }
+        [[nodiscard]] static bool is_pressed(Key const& key) {
+            return is_action(key, IsMouseButtonPressed, IsKeyPressed, IsGamepadButtonPressed);
+        }
+
+        template<IsKey T>
+        [[nodiscard]] static bool is_released(T key) {
+            return is_action(key, IsMouseButtonReleased, IsKeyReleased, IsGamepadButtonReleased);
+        }
+        [[nodiscard]] static bool is_released(Key const& key) {
+            return is_action(key, IsMouseButtonReleased, IsKeyReleased, IsGamepadButtonReleased);
+        }
 
     public:
-        /**
-         * the one-time-input prevents multiple input in one frame for one time actions like pressed or released.
-         *
-         * @param use_one_time_input sets weather the one time input on one frame actions is used or not.
-         */
-        void set_use_one_time_input(bool use_one_time_input);
-        /**
-         *
-         * @return weather the one time input on one frame actions is set.
-         */
-        [[nodiscard]] bool use_one_time_input() const;
+        [[nodiscard]] cpt::usize add_keys_to_collection(std::vector<Key> keys) {
+            if (keys.empty()) {
+                return 0;
+            }
+            auto const id = next_id();
+            m_key_collections.insert({ id, std::move(keys) });
+            return id;
+        }
+        [[nodiscard]] bool delete_key_from_collection(cpt::usize const key) {
+            return m_key_collections.erase(key);
+        }
+        [[nodiscard]] std::vector<Key> key_from_collection(cpt::usize const key) {
+            if (not m_key_collections.contains(key)) {
+                return {};
+            }
+            return m_key_collections.at(key);
+        }
 
-        /**
-         *
-         * @param accept_keys_mouse sets the accept-keys for mouse actions.
-         */
-        void set_accept_keys_mouse(std::vector<MouseButton> accept_keys_mouse);
-        /**
-         *
-         * @return returns the currently set accept-keys for mouse actions.
-         */
-        [[nodiscard]] std::vector<MouseButton> accept_keys_mouse() const;
-        /**
-         *
-         * @param accept_keys_keyboard sets the accept-keys for keyboard actions.
-         */
-        void set_accept_keys_keyboard(std::vector<KeyboardKey> accept_keys_keyboard);
-        /**
-         *
-         * @return returns the currently set accept-keys for keyboard actions.
-         */
-        [[nodiscard]] std::vector<KeyboardKey> accept_keys_keyboard() const;
+        // ----------------------------------------------------------
 
-        /**
-         * note: does not use the one-time-input.
-         *
-         * @return true if any accept input is down.
-         */
-        [[nodiscard]] bool is_accept_input_down() const;
-        /**
-         * note: does not use the one-time-input.
-         *
-         * @return true if all accept inputs are up.
-         */
-        [[nodiscard]] bool is_accept_input_up() const;
-        /**
-         * note: uses the one-time-input if configured.
-         *
-         * @return true if any accept input is pressed.
-         */
-        [[nodiscard]] bool is_accept_input_pressed();
-        /**
-         * note: does not use the one-time-input event if it is configured.
-         *
-         * @return true if any accept input is pressed.
-         */
-        [[nodiscard]] bool is_accept_input_pressed_unchecked() const;
-        /**
-         * note: uses the one-time-input if configured.
-         *
-         * @return true if any accept input is released.
-         */
-        [[nodiscard]] bool is_accept_input_released();
-        /**
-         * note: does not use the one-time-input event if it is configured.
-         *
-         * @return true if any accept input is released.
-         */
-        [[nodiscard]] bool is_accept_input_released_unchecked() const;
+        template<IsKey K, IsKey... M>
+        [[nodiscard]] bool is_key_down(K const key, M const... modifier) const {
+            if constexpr (sizeof...(modifier) == 0) {
+                return is_down(key);
+            } else {
+                auto const result = (is_down(modifier) || ...);
+                return result ? is_down(key) : false;
+            }
+        }
 
-        /**
-         *
-         * @param reject_keys_mouse sets the reject-keys for mouse actions.
-         */
-        void set_reject_keys_mouse(std::vector<MouseButton> reject_keys_mouse);
-        /**
-         *
-         * @return returns the currently set reject-keys for mouse actions.
-         */
-        [[nodiscard]] std::vector<MouseButton> reject_keys_mouse() const;
-        /**
-         *
-         * @param reject_keys_keyboard sets the reject-keys for keyboard actions.
-         */
-        void set_reject_keys_keyboard(std::vector<KeyboardKey> reject_keys_keyboard);
-        /**
-         *
-         * @return returns the currently set reject-keys for keyboard actions.
-         */
-        [[nodiscard]] std::vector<KeyboardKey> reject_keys_keyboard() const;
+        [[nodiscard]] bool is_key_down(cpt::usize const key) const {
+            if (not m_key_collections.contains(key)) {
+                return false;
+            }
+            auto const keys = m_key_collections.at(key);
+            return std::ranges::any_of(keys, [](auto const& k) { return is_down(k); });
+        }
+        template<IsKey... M>
+        [[nodiscard]] bool is_key_down(cpt::usize const key, M const... modifier) const {
+            if (not m_key_collections.contains(key)) {
+                return false;
+            }
+            auto const keys = m_key_collections.at(key);
 
-        /**
-         * note: does not use the one-time-input.
-         *
-         * @return true if any reject input is down.
-         */
-        [[nodiscard]] bool is_reject_input_down() const;
-        /**
-         * note: does not use the one-time-input.
-         *
-         * @return true if all reject input are up.
-         */
-        [[nodiscard]] bool is_reject_input_up() const;
-        /**
-         * note: uses the one-time-input if configured.
-         *
-         * @return true if any reject input is pressed.
-         */
-        [[nodiscard]] bool is_reject_input_pressed();
-        /**
-         * note: does not use the one-time-input even if configured.
-         *
-         * @return true if any reject input is pressed.
-         */
-        [[nodiscard]] bool is_reject_input_pressed_unchecked() const;
-        /**
-         * note: uses the one-time-input if configured.
-         *
-         * @return true if any reject input is released.
-         */
-        [[nodiscard]] bool is_reject_input_released();
-        /**
-         * note: does not use the one-time-input even if configured.
-         *
-         * @return true if any reject input is released.
-         */
-        [[nodiscard]] bool is_reject_input_released_unchecked() const;
+            if constexpr (sizeof...(modifier) == 0) {
+                return std::ranges::any_of(keys, [](auto const& k) { return is_down(k); });
+            } else {
+                auto const result = (is_down(modifier) || ...);
+                return result ? std::ranges::any_of(keys, [](auto const& k) { return is_down(k); }) : false;
+            }
+        }
+        template<IsKey K>
+        [[nodiscard]] bool is_key_down(K const key, cpt::usize const modifier) const {
+            if (not m_key_collections.contains(modifier)) {
+                return false;
+            }
+            auto const modifiers = m_key_collections.at(modifier);
 
-        /**
-         *
-         * @param key Keyboard key, that going to be checked.
-         * @param modifier list of keyboard modifiers that needs to be down.
-         * @return true if at least one modifier is down and the key is down.
-         */
-        [[nodiscard]] static bool is_key_down(KeyboardKey key, std::span<KeyboardKey const> modifier = {});
-        /**
-         *
-         * @param key Keyboard key, that going to be checked.
-         * @param modifier list of keyboard modifiers that needs to be down.
-         * @return true if at least one modifier is down and the key is up.
-         */
-        [[nodiscard]] static bool is_key_up(KeyboardKey key, std::span<KeyboardKey const> modifier = {});
-        /**
-         *
-         * @param key Keyboard key, that going to be checked.
-         * @param modifier list of keyboard modifiers that needs to be down.
-         * @return true if at least one modifier is down and the key was pressed.
-         */
-        [[nodiscard]] static bool is_key_pressed(KeyboardKey key, std::span<KeyboardKey const> modifier = {});
-        /**
-         *
-         * @param key Keyboard key, that going to be checked.
-         * @param modifier list of keyboard modifiers that needs to be down.
-         * @return true if at least one modifier is down and the key was released.
-         */
-        [[nodiscard]] static bool is_key_released(KeyboardKey key, std::span<KeyboardKey const> modifier = {});
+            auto const result = std::ranges::any_of(modifiers, [](auto const& m) { return is_down(m); });
+            return result ? is_down(key) : false;
+        }
+        template<std::same_as<cpt::usize>... M>
+        [[nodiscard]] bool is_key_down(cpt::usize const key, M const... modifier) const {
+            if (not m_key_collections.contains(key)) {
+                return false;
+            }
+            auto const keys = m_key_collections.at(key);
 
-        /**
-         *
-         * @param key Mouse key, that going to be checked.
-         * @param modifier list of keyboard modifiers that needs to be down.
-         * @return true if at least one modifier is down and the key was down.
-         */
-        [[nodiscard]] static bool is_mouse_down(MouseButton key, std::span<KeyboardKey const> modifier = {});
-        /**
-         *
-         * @param key Mouse key, that going to be checked.
-         * @param modifier list of keyboard modifiers that needs to be down.
-         * @return true if at least one modifier is down and the key was up.
-         */
-        [[nodiscard]] static bool is_mouse_up(MouseButton key, std::span<KeyboardKey const> modifier = {});
-        /**
-         *
-         * @param key Mouse key, that going to be checked.
-         * @param modifier list of keyboard modifiers that needs to be down.
-         * @return true if at least one modifier is down and the key was pressed.
-         */
-        [[nodiscard]] static bool is_mouse_pressed(MouseButton key, std::span<KeyboardKey const> modifier = {});
-        /**
-         *
-         * @param key Mouse key, that going to be checked.
-         * @param modifier list of keyboard modifiers that needs to be down.
-         * @return true if at least one modifier is down and the key was released.
-         */
-        [[nodiscard]] static bool is_mouse_released(MouseButton key, std::span<KeyboardKey const> modifier = {});
+            auto const modifiers = { modifier... };
+            auto const result    = std::ranges::any_of(modifiers, [this](auto const& m) {
+                if (not m_key_collections.contains(m)) {
+                    return false;
+                }
+                auto const mod_keys = m_key_collections.at(m);
+
+                return std::ranges::any_of(mod_keys, [](auto const& k) { return is_down(k); });
+            });
+
+            return result ? std::ranges::any_of(keys, [](auto const& k) { return is_down(k); }) : false;
+        }
     };
 } // namespace uil::global

@@ -121,7 +121,6 @@ namespace uil {
     }
 
     void Window::update() {
-        global::AppContext::instance().reset();
         auto const context = create_context();
 
         // updating
