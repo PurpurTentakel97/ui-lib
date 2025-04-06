@@ -22,10 +22,6 @@ namespace uil::global {
         static constexpr std::array<KeyboardKey, 2> s_shift_modifier{ KEY_LEFT_SHIFT, KEY_RIGHT_SHIFT };
         static constexpr std::array<KeyboardKey, 2> s_ctrl_modifier{ KEY_LEFT_CONTROL, KEY_RIGHT_CONTROL };
         static constexpr std::array<KeyboardKey, 2> s_alt_modifier{ KEY_LEFT_ALT, KEY_RIGHT_ALT };
-        static constexpr std::array<KeyboardKey, 2> s_up_direction_modifier{ KEY_W, KEY_UP };
-        static constexpr std::array<KeyboardKey, 2> s_right_direction_modifier{ KEY_D, KEY_RIGHT };
-        static constexpr std::array<KeyboardKey, 2> s_down_direction_modifier{ KEY_S, KEY_DOWN };
-        static constexpr std::array<KeyboardKey, 2> s_left_direction_modifier{ KEY_A, KEY_LEFT };
 
     private:
         std::vector<MouseButton> m_accept_keys_mouse{ MOUSE_BUTTON_LEFT };
