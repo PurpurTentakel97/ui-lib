@@ -9,9 +9,9 @@
 
 namespace uil::global {
     void InputManager::reset() {
-        m_one_time_accept_input_pressed = false;
+        m_one_time_accept_input_pressed  = false;
         m_one_time_accept_input_released = false;
-        m_one_time_reject_input_pressed = false;
+        m_one_time_reject_input_pressed  = false;
         m_one_time_reject_input_released = false;
     }
 
@@ -60,8 +60,7 @@ namespace uil::global {
             return false;
         }
 
-        auto const result = check_predefined_input(
-                m_accept_keys_mouse, IsMouseButtonPressed, m_accept_keys_keyboard, IsKeyPressed);
+        auto const result = is_accept_input_pressed_unchecked();
 
         if (m_use_one_time_input && result) {
             m_one_time_accept_input_pressed = true;
@@ -69,19 +68,25 @@ namespace uil::global {
 
         return result;
     }
+    bool InputManager::is_accept_input_pressed_unchecked() const {
+        return check_predefined_input(m_accept_keys_mouse, IsMouseButtonPressed, m_accept_keys_keyboard, IsKeyPressed);
+    }
     bool InputManager::is_accept_input_released() {
         if (m_use_one_time_input && m_one_time_accept_input_pressed) {
             return false;
         }
 
-        auto const result = check_predefined_input(
-                m_accept_keys_mouse, IsMouseButtonReleased, m_accept_keys_keyboard, IsKeyReleased);
+        auto const result = is_accept_input_released_unchecked();
 
         if (m_use_one_time_input && result) {
             m_one_time_accept_input_pressed = true;
         }
 
         return result;
+    }
+    bool InputManager::is_accept_input_released_unchecked() const {
+        return check_predefined_input(
+                m_accept_keys_mouse, IsMouseButtonReleased, m_accept_keys_keyboard, IsKeyReleased);
     }
 
     void InputManager::set_reject_keys_mouse(std::vector<MouseButton> reject_keys_mouse) {
@@ -108,8 +113,7 @@ namespace uil::global {
             return false;
         }
 
-        auto const result = check_predefined_input(
-                m_reject_keys_mouse, IsMouseButtonPressed, m_reject_keys_keyboard, IsKeyPressed);
+        auto const result = is_reject_input_pressed_unchecked();
 
         if (m_use_one_time_input && result) {
             m_one_time_reject_input_pressed = true;
@@ -117,19 +121,26 @@ namespace uil::global {
 
         return result;
     }
+    bool InputManager::is_reject_input_pressed_unchecked() const {
+        return check_predefined_input(m_reject_keys_mouse, IsMouseButtonPressed, m_reject_keys_keyboard, IsKeyPressed);
+        ;
+    }
     bool InputManager::is_reject_input_released() {
         if (m_use_one_time_input && m_one_time_reject_input_released) {
             return false;
         }
 
-        auto const result = check_predefined_input(
-                m_reject_keys_mouse, IsMouseButtonReleased, m_reject_keys_keyboard, IsKeyReleased);
+        auto const result = is_reject_input_released_unchecked();
 
         if (m_use_one_time_input && result) {
             m_one_time_reject_input_released = true;
         }
 
         return result;
+    }
+    bool InputManager::is_reject_input_released_unchecked() const {
+        return check_predefined_input(
+                m_reject_keys_mouse, IsMouseButtonReleased, m_reject_keys_keyboard, IsKeyReleased);
     }
 
     [[nodiscard]] bool check_key_modified(auto const key, std::span<KeyboardKey const> modifier, auto const func) {

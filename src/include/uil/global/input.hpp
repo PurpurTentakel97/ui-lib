@@ -48,7 +48,9 @@ namespace uil::global {
         [[nodiscard]] bool is_accept_input_down() const;
         [[nodiscard]] bool is_accept_input_up() const;
         [[nodiscard]] bool is_accept_input_pressed();
+        [[nodiscard]] bool is_accept_input_pressed_unchecked() const;
         [[nodiscard]] bool is_accept_input_released();
+        [[nodiscard]] bool is_accept_input_released_unchecked() const;
 
         void set_reject_keys_mouse(std::vector<MouseButton> reject_keys_mouse);
         [[nodiscard]] std::vector<MouseButton> reject_keys_mouse() const;
@@ -58,7 +60,9 @@ namespace uil::global {
         [[nodiscard]] bool is_reject_input_down() const;
         [[nodiscard]] bool is_reject_input_up() const;
         [[nodiscard]] bool is_reject_input_pressed();
+        [[nodiscard]] bool is_reject_input_pressed_unchecked() const;
         [[nodiscard]] bool is_reject_input_released();
+        [[nodiscard]] bool is_reject_input_released_unchecked() const;
 
         [[nodiscard]] static bool is_key_down(KeyboardKey key, std::span<KeyboardKey const> modifier = {});
         [[nodiscard]] static bool is_key_up(KeyboardKey key, std::span<KeyboardKey const> modifier = {});
