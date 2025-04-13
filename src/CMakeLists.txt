@@ -35,6 +35,7 @@ target_sources(ui_lib
 
                include/uil/global/app_context.hpp
                include/uil/global/input.hpp
+               include/uil/global/input_enum.hpp
 
                include/uil/helper/rect.hpp
                include/uil/helper/vec.hpp
