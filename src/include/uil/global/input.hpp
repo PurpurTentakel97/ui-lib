@@ -4,7 +4,6 @@
 //
 
 #pragma once
-#include <ostream>
 #include <raylib.h>
 #include <uil/global/input_enum.hpp>
 
@@ -125,6 +124,7 @@ namespace uil {
         }
 
     public:
+        // main input functions ----------------------------------------------------
         template<KeyOp KeyOp = KeyOp::Or, ModOp ModOp = ModOp::Or, IsInput... I>
         [[nodiscard]] bool is_down(I const... input) const {
             return check_input([this](auto const key) { return is_single_down(key); }, KeyOp, ModOp, input...);
@@ -141,5 +141,9 @@ namespace uil {
         [[nodiscard]] bool is_released(I const... input) const {
             return check_input([this](auto const key) { return is_single_released(key); }, KeyOp, ModOp, input...);
         }
+
+        // getter setter ---------------------------------------------------------
+        void set_current_gamepad_index(int index);
+        [[nodiscard]] int current_gamepad_index() const;
     };
 } // namespace uil

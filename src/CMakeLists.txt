@@ -8,6 +8,7 @@ target_sources(ui_lib
                elements/text.cpp
 
                global/app_context.cpp
+               global/input.cpp
 
                helper/rect.cpp
                helper/vec.cpp

@@ -2,9 +2,9 @@
 // Created by marti on 17.05.2024.
 //
 
-#include <uil/global/app_context.hpp>
 #include <gtest/internal/gtest-type-util.h>
 #include <raylib.h>
+#include <uil/global/app_context.hpp>
 #include <uil/global/input_enum.hpp>
 #include <uil/window.hpp>
 
@@ -48,7 +48,7 @@ int main() {
     };
     [[maybe_unused]] auto const font = GetFontDefault();
 
-    [[maybe_unused]] auto const input = uil::AppContext::instance().input();
+    [[maybe_unused]] auto& input = uil::AppContext::instance().input();
 
     while (not WindowShouldClose()) {
 
@@ -119,9 +119,9 @@ int main() {
         // is_pressed
 
         input.is_pressed(uil::Mouse::MOUSE_BUTTON_LEFT,
-                                         uil::Mouse::MOUSE_BUTTON_RIGHT,
-                                         uil::KeyboardMod::KEY_LEFT_SHIFT,
-                                         uil::KeyboardMod::KEY_RIGHT_SHIFT)
+                         uil::Mouse::MOUSE_BUTTON_RIGHT,
+                         uil::KeyboardMod::KEY_LEFT_SHIFT,
+                         uil::KeyboardMod::KEY_RIGHT_SHIFT)
                 ? DrawRectangle(x, y, size, size, GREEN)
                 : DrawRectangle(x, y, size, size, RED);
         inc_y();
@@ -145,16 +145,16 @@ int main() {
                     WHITE);
         // is_released
         input.is_released(uil::Mouse::MOUSE_BUTTON_LEFT,
-                                         uil::Mouse::MOUSE_BUTTON_RIGHT,
-                                         uil::KeyboardMod::KEY_LEFT_SHIFT,
-                                         uil::KeyboardMod::KEY_RIGHT_SHIFT)
+                          uil::Mouse::MOUSE_BUTTON_RIGHT,
+                          uil::KeyboardMod::KEY_LEFT_SHIFT,
+                          uil::KeyboardMod::KEY_RIGHT_SHIFT)
                 ? DrawRectangle(x, y, size, size, GREEN)
                 : DrawRectangle(x, y, size, size, RED);
         inc_y();
         input.is_released<uil::KeyOp::And>(uil::Mouse::MOUSE_BUTTON_LEFT,
-                                          uil::Mouse::MOUSE_BUTTON_RIGHT,
-                                          uil::KeyboardMod::KEY_LEFT_SHIFT,
-                                          uil::KeyboardMod::KEY_RIGHT_SHIFT)
+                                           uil::Mouse::MOUSE_BUTTON_RIGHT,
+                                           uil::KeyboardMod::KEY_LEFT_SHIFT,
+                                           uil::KeyboardMod::KEY_RIGHT_SHIFT)
                 ? DrawRectangle(x, y, size, size, GREEN)
                 : DrawRectangle(x, y, size, size, RED);
         reset_y();
