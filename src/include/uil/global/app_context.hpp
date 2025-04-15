@@ -11,7 +11,7 @@ namespace uil {
     class Window;
 }
 
-namespace uil::global {
+namespace uil {
 
     class AppContext final {
     private:
@@ -23,4 +23,4 @@ namespace uil::global {
         [[nodiscard]] InputManager& input();
         [[nodiscard]] InputManager const& input() const;
     };
-} // namespace uil::global
+} // namespace uil

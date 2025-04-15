@@ -4,171 +4,142 @@
 //
 
 #pragma once
-#include <algorithm>
-#include <array>
-#include <cpt/types.hpp>
-#include <ranges>
+#include <ostream>
 #include <raylib.h>
-#include <unordered_map>
-#include <variant>
-#include <vector>
+#include <uil/global/input_enum.hpp>
 
-namespace uil::global {
-    template<typename T>
-    concept IsKey
-            = std::is_same_v<T, MouseButton> or std::is_same_v<T, KeyboardKey> or std::is_same_v<T, GamepadButton>;
-
+namespace uil {
+    enum class ModOp {
+        Or,
+        And,
+    };
+    enum class KeyOp {
+        Or,
+        And,
+    };
     class InputManager final {
     private:
-        using Key    = std::variant<MouseButton, KeyboardKey, GamepadButton>;
-        using KeyMap = std::unordered_map<cpt::usize, std::vector<Key>>;
-        KeyMap m_key_collections{};
-        cpt::usize m_id_counter{ 1 };
+        int m_current_controller_index{ 0 };
 
-        [[nodiscard]] cpt::usize next_id();
-
-        // ---------------------------------------------------
-
-        template<IsKey T>
-        [[nodiscard]] static bool is_action(T key, auto mouse_function, auto keyboard_function, auto gamepad_function) {
-            if constexpr (std::is_same_v<T, MouseButton>) {
-                return mouse_function(key);
+        // ray --------------------------------------------
+        template<IsRayKey R>
+        [[nodiscard]] bool is_ray(auto const func_keyboard,
+                                  auto const func_mouse,
+                                  auto const func_gamepad,
+                                  R const key) const {
+            if constexpr (std::is_same_v<R, KeyboardKey>) {
+                return func_keyboard(key);
             }
-            if constexpr (std::is_same_v<T, KeyboardKey>) {
-                return keyboard_function(key);
+            if constexpr (std::is_same_v<R, MouseButton>) {
+                return func_mouse(key);
             }
-            if constexpr (std::is_same_v<T, GamepadButton>) {
-                return gamepad_function(key);
+            if constexpr (std::is_same_v<R, GamepadButton>) {
+                return func_gamepad(m_current_controller_index, key);
             }
-            // std::unreachable();
         }
-        [[nodiscard]] static bool is_action(Key const& key,
-                                            auto mouse_function,
-                                            auto keyboard_function,
-                                            auto gamepad_function) {
-            if (std::holds_alternative<MouseButton>(key)) {
-                return mouse_function(std::get<MouseButton>(key));
+        template<IsRayKey R>
+        [[nodiscard]] bool is_down_ray(R const key) const {
+            return is_ray(IsKeyDown, IsMouseButtonDown, IsGamepadButtonDown, key);
+        }
+        template<IsRayKey R>
+        [[nodiscard]] bool is_up_ray(R const key) const {
+            return is_ray(IsKeyUp, IsMouseButtonUp, IsGamepadButtonUp, key);
+        }
+        template<IsRayKey R>
+        [[nodiscard]] bool is_pressed_ray(R const key) const {
+            return is_ray(IsKeyPressed, IsMouseButtonPressed, IsGamepadButtonPressed, key);
+        }
+        template<IsRayKey R>
+        [[nodiscard]] bool is_released_ray(R const key) const {
+            return is_ray(IsKeyReleased, IsMouseButtonReleased, IsGamepadButtonReleased, key);
+        }
+
+        template<IsInput I>
+        [[nodiscard]] auto ray_key_from_input(I const input) const {
+            if constexpr (std::is_same_v<I, Keyboard> or std::is_same_v<I, KeyboardMod>) {
+                return static_cast<KeyboardKey>(input);
             }
-            if (std::holds_alternative<KeyboardKey>(key)) {
-                return keyboard_function(std::get<KeyboardKey>(key));
+            if constexpr (std::is_same_v<I, Mouse> or std::is_same_v<I, MouseMod>) {
+                return static_cast<MouseButton>(input);
             }
-            return gamepad_function(0, std::get<GamepadButton>(key));
+            if constexpr (std::is_same_v<I, Gamepad> or std::is_same_v<I, GamepadMod>) {
+                return static_cast<GamepadButton>(input);
+            }
         }
 
-        // --------------------------------------------------------
-
-        template<IsKey T>
-        [[nodiscard]] static bool is_down(T key) {
-            return is_action(key, IsMouseButtonDown, IsKeyDown, IsGamepadButtonDown);
+        // uil ----------------------------------------------
+        template<IsInput I>
+        [[nodiscard]] bool is_single_down(I const input) const {
+            return is_down_ray(ray_key_from_input(input));
         }
-        [[nodiscard]] static bool is_down(Key const& key) {
-            return is_action(key, IsMouseButtonDown, IsKeyDown, IsGamepadButtonDown);
+        template<IsInput I>
+        [[nodiscard]] bool is_single_up(I const input) const {
+            return is_up_ray(ray_key_from_input(input));
         }
-
-        template<IsKey T>
-        [[nodiscard]] static bool is_up(T key) {
-            return is_action(key, IsMouseButtonUp, IsKeyUp, IsGamepadButtonUp);
+        template<IsInput I>
+        [[nodiscard]] bool is_single_pressed(I const input) const {
+            return is_pressed_ray(ray_key_from_input(input));
         }
-        [[nodiscard]] static bool is_up(Key const& key) {
-            return is_action(key, IsMouseButtonUp, IsKeyUp, IsGamepadButtonUp);
-        }
-
-        template<IsKey T>
-        [[nodiscard]] static bool is_pressed(T key) {
-            return is_action(key, IsMouseButtonPressed, IsKeyPressed, IsGamepadButtonPressed);
-        }
-        [[nodiscard]] static bool is_pressed(Key const& key) {
-            return is_action(key, IsMouseButtonPressed, IsKeyPressed, IsGamepadButtonPressed);
+        template<IsInput I>
+        [[nodiscard]] bool is_single_released(I const input) const {
+            return is_released_ray(ray_key_from_input(input));
         }
 
-        template<IsKey T>
-        [[nodiscard]] static bool is_released(T key) {
-            return is_action(key, IsMouseButtonReleased, IsKeyReleased, IsGamepadButtonReleased);
-        }
-        [[nodiscard]] static bool is_released(Key const& key) {
-            return is_action(key, IsMouseButtonReleased, IsKeyReleased, IsGamepadButtonReleased);
+        template<IsInput... I>
+        [[nodiscard]] bool check_input(auto const& func_keys,
+                                       KeyOp const type_key,
+                                       ModOp const type_mod,
+                                       I const... input) const {
+            auto is_missing_keys      = true;
+            auto is_keys              = type_key == KeyOp::And;
+            auto is_missing_modifiers = true;
+            auto is_modifiers         = type_mod == ModOp::And;
+
+            auto const perform_single_check = [&]<IsInput T>(T const key) {
+                if constexpr (IsButton<T>) {
+                    is_missing_keys = false;
+                    switch (type_key) {
+                        case KeyOp::Or: is_keys = is_keys or func_keys(key); break;
+                        case KeyOp::And: is_keys = is_keys and func_keys(key); break;
+                    }
+                }
+                if constexpr (IsModifier<T>) {
+                    is_missing_modifiers = false;
+                    switch (type_mod) {
+                        case ModOp::Or: is_modifiers = is_modifiers or is_single_down(key); break;
+                        case ModOp::And: is_modifiers = is_modifiers and is_single_down(key); break;
+                    }
+                }
+            };
+
+            (perform_single_check(input), ...);
+
+            if (is_missing_keys) {
+                return false;
+            }
+            if (is_missing_modifiers) {
+                return is_keys;
+            }
+
+            return is_keys and is_modifiers;
         }
 
     public:
-        [[nodiscard]] cpt::usize add_keys_to_collection(std::vector<Key> keys) {
-            if (keys.empty()) {
-                return 0;
-            }
-            auto const id = next_id();
-            m_key_collections.insert({ id, std::move(keys) });
-            return id;
+        template<KeyOp KeyOp = KeyOp::Or, ModOp ModOp = ModOp::Or, IsInput... I>
+        [[nodiscard]] bool is_down(I const... input) const {
+            return check_input([this](auto const key) { return is_single_down(key); }, KeyOp, ModOp, input...);
         }
-        [[nodiscard]] bool delete_key_from_collection(cpt::usize const key) {
-            return m_key_collections.erase(key);
+        template<KeyOp KeyOp = KeyOp::Or, ModOp ModOp = ModOp::Or, IsInput... I>
+        [[nodiscard]] bool is_up(I const... input) const {
+            return check_input([this](auto const key) { return is_single_up(key); }, KeyOp, ModOp, input...);
         }
-        [[nodiscard]] std::vector<Key> key_from_collection(cpt::usize const key) {
-            if (not m_key_collections.contains(key)) {
-                return {};
-            }
-            return m_key_collections.at(key);
+        template<KeyOp KeyOp = KeyOp::Or, ModOp ModOp = ModOp::Or, IsInput... I>
+        [[nodiscard]] bool is_pressed(I const... input) const {
+            return check_input([this](auto const key) { return is_single_pressed(key); }, KeyOp, ModOp, input...);
         }
-
-        // ----------------------------------------------------------
-
-        template<IsKey K, IsKey... M>
-        [[nodiscard]] bool is_key_down(K const key, M const... modifier) const {
-            if constexpr (sizeof...(modifier) == 0) {
-                return is_down(key);
-            } else {
-                auto const result = (is_down(modifier) || ...);
-                return result ? is_down(key) : false;
-            }
-        }
-
-        [[nodiscard]] bool is_key_down(cpt::usize const key) const {
-            if (not m_key_collections.contains(key)) {
-                return false;
-            }
-            auto const keys = m_key_collections.at(key);
-            return std::ranges::any_of(keys, [](auto const& k) { return is_down(k); });
-        }
-        template<IsKey... M>
-        [[nodiscard]] bool is_key_down(cpt::usize const key, M const... modifier) const {
-            if (not m_key_collections.contains(key)) {
-                return false;
-            }
-            auto const keys = m_key_collections.at(key);
-
-            if constexpr (sizeof...(modifier) == 0) {
-                return std::ranges::any_of(keys, [](auto const& k) { return is_down(k); });
-            } else {
-                auto const result = (is_down(modifier) || ...);
-                return result ? std::ranges::any_of(keys, [](auto const& k) { return is_down(k); }) : false;
-            }
-        }
-        template<IsKey K>
-        [[nodiscard]] bool is_key_down(K const key, cpt::usize const modifier) const {
-            if (not m_key_collections.contains(modifier)) {
-                return false;
-            }
-            auto const modifiers = m_key_collections.at(modifier);
-
-            auto const result = std::ranges::any_of(modifiers, [](auto const& m) { return is_down(m); });
-            return result ? is_down(key) : false;
-        }
-        template<std::same_as<cpt::usize>... M>
-        [[nodiscard]] bool is_key_down(cpt::usize const key, M const... modifier) const {
-            if (not m_key_collections.contains(key)) {
-                return false;
-            }
-            auto const keys = m_key_collections.at(key);
-
-            auto const modifiers = { modifier... };
-            auto const result    = std::ranges::any_of(modifiers, [this](auto const& m) {
-                if (not m_key_collections.contains(m)) {
-                    return false;
-                }
-                auto const mod_keys = m_key_collections.at(m);
-
-                return std::ranges::any_of(mod_keys, [](auto const& k) { return is_down(k); });
-            });
-
-            return result ? std::ranges::any_of(keys, [](auto const& k) { return is_down(k); }) : false;
+        template<KeyOp KeyOp = KeyOp::Or, ModOp ModOp = ModOp::Or, IsInput... I>
+        [[nodiscard]] bool is_released(I const... input) const {
+            return check_input([this](auto const key) { return is_single_released(key); }, KeyOp, ModOp, input...);
         }
     };
-} // namespace uil::global
+} // namespace uil

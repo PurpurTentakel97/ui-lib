@@ -5,7 +5,7 @@
 
 #include <uil/global/app_context.hpp>
 
-namespace uil::global {
+namespace uil {
     AppContext& AppContext::instance() {
         static AppContext app_context{};
         return app_context;
@@ -17,4 +17,4 @@ namespace uil::global {
     InputManager const& AppContext::input() const {
         return m_input;
     }
-} // namespace uil::global
+} // namespace ui
