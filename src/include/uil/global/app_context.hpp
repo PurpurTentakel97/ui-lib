@@ -23,4 +23,7 @@ namespace uil {
         [[nodiscard]] Input_ref input();
         [[nodiscard]] Input_const_ref input() const;
     };
+
+    using AppContext_ref      = AppContext&;
+    using AppContext_cont_ref = AppContext const&;
 } // namespace uil
