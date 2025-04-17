@@ -66,15 +66,15 @@ int main() {
                       uil::Mouse::MOUSE_BUTTON_RIGHT,
                       uil::KeyboardMod::KEY_LEFT_SHIFT,
                       uil::KeyboardMod::KEY_RIGHT_SHIFT)
-                ? DrawRectangle(x, y, size, size, GREEN)
-                : DrawRectangle(x, y, size, size, RED);
+            ? DrawRectangle(x, y, size, size, GREEN)
+            : DrawRectangle(x, y, size, size, RED);
         inc_y();
         input.is_down<uil::KeyOp::And>(uil::Mouse::MOUSE_BUTTON_LEFT,
                                        uil::Mouse::MOUSE_BUTTON_RIGHT,
                                        uil::KeyboardMod::KEY_LEFT_SHIFT,
                                        uil::KeyboardMod::KEY_RIGHT_SHIFT)
-                ? DrawRectangle(x, y, size, size, GREEN)
-                : DrawRectangle(x, y, size, size, RED);
+            ? DrawRectangle(x, y, size, size, GREEN)
+            : DrawRectangle(x, y, size, size, RED);
         reset_y();
         inc_x();
 
@@ -93,8 +93,8 @@ int main() {
                     uil::Mouse::MOUSE_BUTTON_RIGHT,
                     uil::KeyboardMod::KEY_LEFT_SHIFT,
                     uil::KeyboardMod::KEY_RIGHT_SHIFT)
-                ? DrawRectangle(x, y, size, size, GREEN)
-                : DrawRectangle(x, y, size, size, RED);
+            ? DrawRectangle(x, y, size, size, GREEN)
+            : DrawRectangle(x, y, size, size, RED);
         inc_y();
 
 
@@ -102,8 +102,8 @@ int main() {
                                      uil::Mouse::MOUSE_BUTTON_RIGHT,
                                      uil::KeyboardMod::KEY_LEFT_SHIFT,
                                      uil::KeyboardMod::KEY_RIGHT_SHIFT)
-                ? DrawRectangle(x, y, size, size, GREEN)
-                : DrawRectangle(x, y, size, size, RED);
+            ? DrawRectangle(x, y, size, size, GREEN)
+            : DrawRectangle(x, y, size, size, RED);
         reset_y();
         inc_x();
 
@@ -122,15 +122,15 @@ int main() {
                          uil::Mouse::MOUSE_BUTTON_RIGHT,
                          uil::KeyboardMod::KEY_LEFT_SHIFT,
                          uil::KeyboardMod::KEY_RIGHT_SHIFT)
-                ? DrawRectangle(x, y, size, size, GREEN)
-                : DrawRectangle(x, y, size, size, RED);
+            ? DrawRectangle(x, y, size, size, GREEN)
+            : DrawRectangle(x, y, size, size, RED);
         inc_y();
         input.is_pressed<uil::KeyOp::And>(uil::Mouse::MOUSE_BUTTON_LEFT,
                                           uil::Mouse::MOUSE_BUTTON_RIGHT,
                                           uil::KeyboardMod::KEY_LEFT_SHIFT,
                                           uil::KeyboardMod::KEY_RIGHT_SHIFT)
-                ? DrawRectangle(x, y, size, size, GREEN)
-                : DrawRectangle(x, y, size, size, RED);
+            ? DrawRectangle(x, y, size, size, GREEN)
+            : DrawRectangle(x, y, size, size, RED);
         reset_y();
         inc_x();
 
@@ -148,15 +148,15 @@ int main() {
                           uil::Mouse::MOUSE_BUTTON_RIGHT,
                           uil::KeyboardMod::KEY_LEFT_SHIFT,
                           uil::KeyboardMod::KEY_RIGHT_SHIFT)
-                ? DrawRectangle(x, y, size, size, GREEN)
-                : DrawRectangle(x, y, size, size, RED);
+            ? DrawRectangle(x, y, size, size, GREEN)
+            : DrawRectangle(x, y, size, size, RED);
         inc_y();
         input.is_released<uil::KeyOp::And>(uil::Mouse::MOUSE_BUTTON_LEFT,
                                            uil::Mouse::MOUSE_BUTTON_RIGHT,
                                            uil::KeyboardMod::KEY_LEFT_SHIFT,
                                            uil::KeyboardMod::KEY_RIGHT_SHIFT)
-                ? DrawRectangle(x, y, size, size, GREEN)
-                : DrawRectangle(x, y, size, size, RED);
+            ? DrawRectangle(x, y, size, size, GREEN)
+            : DrawRectangle(x, y, size, size, RED);
         reset_y();
         inc_x();
 
