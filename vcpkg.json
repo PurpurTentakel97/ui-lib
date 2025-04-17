@@ -17,6 +17,10 @@
   "dependencies": [
     "gtest",
     "cpt-lib",
-    "raylib"
+    "glfw3",
+    {
+      "name": "raylib",
+      "version>=": "5.5"
+    }
   ]
 }

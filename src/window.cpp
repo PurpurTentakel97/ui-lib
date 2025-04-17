@@ -3,6 +3,7 @@
 // 30.05.24
 //
 
+#include "uil/global/app_context.hpp"
 #include <raylib.h>
 #include <string>
 #include <uil/context.hpp>
