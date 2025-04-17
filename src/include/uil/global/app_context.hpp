@@ -15,12 +15,12 @@ namespace uil {
 
     class AppContext final {
     private:
-        InputManager m_input{};
+        Input m_input{};
 
     public:
         [[nodiscard]] static AppContext& instance();
 
-        [[nodiscard]] InputManager& input();
-        [[nodiscard]] InputManager const& input() const;
+        [[nodiscard]] Input& input();
+        [[nodiscard]] Input const& input() const;
     };
 } // namespace uil

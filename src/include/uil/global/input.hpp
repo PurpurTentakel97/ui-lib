@@ -16,7 +16,8 @@ namespace uil {
         Or,
         And,
     };
-    class InputManager final {
+
+    class Input final {
     private:
         int m_current_controller_index{ 0 };
 
