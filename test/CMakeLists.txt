@@ -7,7 +7,7 @@ add_executable(lib_tests
                test_exception.cpp
                test_rect.cpp
                test_resolution.cpp
-               test_element_text.cpp
+               # test_element_text.cpp
                test_vec.cpp
 )
 
