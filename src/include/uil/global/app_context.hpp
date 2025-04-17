@@ -20,7 +20,7 @@ namespace uil {
     public:
         [[nodiscard]] static AppContext& instance();
 
-        [[nodiscard]] Input& input();
-        [[nodiscard]] Input const& input() const;
+        [[nodiscard]] Input_ref input();
+        [[nodiscard]] Input_const_ref input() const;
     };
 } // namespace uil

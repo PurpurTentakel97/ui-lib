@@ -147,4 +147,7 @@ namespace uil {
         void set_current_gamepad_index(int index);
         [[nodiscard]] int current_gamepad_index() const;
     };
+
+    using Input_ref       = Input&;
+    using Input_const_ref = Input const&;
 } // namespace uil

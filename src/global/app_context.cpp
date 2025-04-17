@@ -11,10 +11,11 @@ namespace uil {
         return app_context;
     }
 
-    Input& AppContext::input() {
+    Input_ref AppContext::input() {
         return m_input;
     }
-    Input const& AppContext::input() const {
+
+    Input_const_ref AppContext::input() const {
         return m_input;
     }
 } // namespace ui
