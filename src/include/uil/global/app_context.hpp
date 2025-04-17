@@ -15,15 +15,19 @@ namespace uil {
 
     class AppContext final {
     private:
-        Input m_input{};
+        InputManager m_input{};
 
     public:
+        AppContext()                             = default;
+        AppContext(AppContext const&)            = delete;
+        AppContext(AppContext&&)                 = delete;
+        AppContext& operator=(AppContext const&) = delete;
+        AppContext& operator=(AppContext&&)      = delete;
+        ~AppContext()                            = default;
+
         [[nodiscard]] static AppContext& instance();
 
-        [[nodiscard]] Input_ref input();
-        [[nodiscard]] Input_const_ref input() const;
+        [[nodiscard]] InputManager& input();
+        [[nodiscard]] InputManager const& input() const;
     };
-
-    using AppContext_ref      = AppContext&;
-    using AppContext_cont_ref = AppContext const&;
 } // namespace uil

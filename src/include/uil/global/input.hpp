@@ -18,7 +18,7 @@ namespace uil {
         And,
     };
 
-    class Input final {
+    class InputManager final {
     private:
         int m_current_controller_index{ 0 };
 
@@ -137,6 +137,13 @@ namespace uil {
         }
 
     public:
+        InputManager()                        = default;
+        InputManager(InputManager const&)            = delete;
+        InputManager(InputManager&&)                 = delete;
+        InputManager& operator=(InputManager const&) = delete;
+        InputManager& operator=(InputManager&&)      = delete;
+        ~InputManager()                       = default;
+
         // main input functions ----------------------------------------------------
         template<KeyOp KeyOp = KeyOp::Or, ModOp ModOp = ModOp::Or, IsInput... I>
         [[nodiscard]] bool is_down(I const... input) const {
@@ -162,7 +169,4 @@ namespace uil {
         void set_current_gamepad_index(int index);
         [[nodiscard]] int current_gamepad_index() const;
     };
-
-    using Input_ref       = Input&;
-    using Input_const_ref = Input const&;
 } // namespace uil

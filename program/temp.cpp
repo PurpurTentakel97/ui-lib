@@ -48,7 +48,8 @@ int main() {
     };
     [[maybe_unused]] auto const font = GetFontDefault();
 
-    [[maybe_unused]] uil::Input_const_ref input = uil::AppContext::instance().input();
+    [[maybe_unused]] auto& app_context = uil::AppContext::instance();
+    [[maybe_unused]] auto& input       = uil::AppContext::instance().input();
 
     while (not WindowShouldClose()) {
 
