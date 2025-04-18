@@ -87,6 +87,16 @@ namespace uil {
         return Success;
     }
 
+    bool SoundManager::is_sound_playing(cpt::usize const id) const {
+        if (not m_sounds.contains(id)) {
+            return false;
+        }
+        return std::ranges::any_of(m_sounds.at(id).sound,
+                                   [](auto const& sound) {
+                                       return IsSoundPlaying(sound);
+                                   });
+    }
+
     void SoundManager::set_level(cpt::usize const level_id, float const level) {
         if (level_id == 0) {
             m_main_level = level;

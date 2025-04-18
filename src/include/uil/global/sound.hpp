@@ -4,14 +4,13 @@
 //
 
 #pragma once
-#include <string>
 #include <unordered_map>
 #include <cpt/types.hpp>
 #include <vector>
 #include <filesystem>
 
 namespace uil {
-    template <typename T>
+    template<typename T>
     concept IsSoundFile = std::is_same_v<T, Sound> or std::is_same_v<T, Music>;
 
     class SoundManager final {
@@ -76,6 +75,12 @@ namespace uil {
         Result load_sound(cpt::usize& id, std::filesystem::path const& path, cpt::usize alias_pre_load_count = 0);
         Result link_sound_to_level(cpt::usize sound_id, cpt::usize level_id);
         Result play_sound(cpt::usize id);
+        /**
+         *
+         * @param id id of the sound (or alias) to check
+         * @return returns if the sound or at least one of its aliasses is currently playing.
+         */
+        [[nodiscard]] bool is_sound_playing(cpt::usize id) const;
 
         /*
         [[nodiscard]] cpt::usize try_load_music_collection(std::vector<std::string> const& paths);
