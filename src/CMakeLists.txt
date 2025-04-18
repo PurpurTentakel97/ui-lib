@@ -9,6 +9,7 @@ target_sources(ui_lib
 
         global/app_context.cpp
         global/input.cpp
+        global/sound.cpp
 
         helper/path.cpp
         helper/rect.cpp
@@ -37,6 +38,7 @@ target_sources(ui_lib
         include/uil/global/app_context.hpp
         include/uil/global/input.hpp
         include/uil/global/input_enum.hpp
+        include/uil/global/sound.hpp
 
         include/uil/helper/path.hpp
         include/uil/helper/rect.hpp

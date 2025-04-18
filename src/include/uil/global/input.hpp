@@ -4,8 +4,10 @@
 //
 
 #pragma once
+
 #include <raylib.h>
 #include <uil/global/input_enum.hpp>
+#include <utility>
 
 namespace uil {
     enum class ModOp {
@@ -37,6 +39,8 @@ namespace uil {
             if constexpr (std::is_same_v<R, GamepadButton>) {
                 return func_gamepad(m_current_controller_index, key);
             }
+
+            std::unreachable();
         }
 
         template<IsRayKey R>

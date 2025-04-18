@@ -49,9 +49,26 @@ int main() {
     [[maybe_unused]] auto const font = GetFontDefault();
 
     [[maybe_unused]] auto& app_context = uil::AppContext::instance();
-    [[maybe_unused]] auto& input       = uil::AppContext::instance().input();
+    [[maybe_unused]] auto& input       = app_context.input();
+    [[maybe_unused]] auto& sound       = app_context.sound();
+
+    cpt::usize id{0};
+    [[maybe_unused]] auto const test   = sound.load_sound(id, "/assets/sounds/clicked_accepted_std.mp3", 30);
+
+    sound.set_level(0, 0.5f);
+    auto level = 1.0f;
+    sound.set_level(1, 1.0f);
+
+    sound.link_sound_to_level(id, 1);
+
 
     while (not WindowShouldClose()) {
+        sound.play_sound(id);
+
+        level -= 0.01f;
+        sound.set_level(1, level);
+
+        /*
 
 
         DrawTextPro(font,
@@ -160,6 +177,8 @@ int main() {
             : DrawRectangle(x, y, size, size, RED);
         reset_y();
         inc_x();
+
+        */
 
         reset();
         window.update();

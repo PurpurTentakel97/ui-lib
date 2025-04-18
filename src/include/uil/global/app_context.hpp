@@ -6,6 +6,7 @@
 #pragma once
 
 #include <uil/global/input.hpp>
+#include <uil/global/sound.hpp>
 
 namespace uil {
     class Window;
@@ -16,6 +17,7 @@ namespace uil {
     class AppContext final {
     private:
         InputManager m_input{};
+        SoundManager m_sound{};
 
     public:
         AppContext()                             = default;
@@ -29,5 +31,8 @@ namespace uil {
 
         [[nodiscard]] InputManager& input();
         [[nodiscard]] InputManager const& input() const;
+
+        [[nodiscard]] SoundManager& sound();
+        [[nodiscard]] SoundManager const& sound() const;
     };
 } // namespace uil
