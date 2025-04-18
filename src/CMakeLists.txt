@@ -10,6 +10,7 @@ target_sources(ui_lib
         global/app_context.cpp
         global/input.cpp
 
+        helper/path.cpp
         helper/rect.cpp
         helper/vec.cpp
 
@@ -37,6 +38,7 @@ target_sources(ui_lib
         include/uil/global/input.hpp
         include/uil/global/input_enum.hpp
 
+        include/uil/helper/path.hpp
         include/uil/helper/rect.hpp
         include/uil/helper/vec.hpp
 
