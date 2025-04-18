@@ -72,8 +72,29 @@ namespace uil {
         SoundManager& operator=(SoundManager&&)      = delete;
         ~SoundManager();
 
+
+        /**
+         *
+         * @param id OUT provides / returns the new id of the loaded sound and its aliases
+         * @param path provides the path of the loaded sound. Can be a relative or an absolute path. A relative Path will be called with the working directory
+         * @param alias_pre_load_count loads an initial amound of aliases. Use this if sounds should overlap
+         * @return if the sound is successfully loaded
+         */
         Result load_sound(cpt::usize& id, std::filesystem::path const& path, cpt::usize alias_pre_load_count = 0);
+        /**
+         * you need to add the sound and set the soundlevel first to make sure both ids are present.
+         *
+         * @param sound_id id of the to link sound
+         * @param level_id id of the level the sound gets linked to
+         * @return returns if the linkage was successfully
+         */
         Result link_sound_to_level(cpt::usize sound_id, cpt::usize level_id);
+
+        /**
+         *
+         * @param id id of the sound (or alias) to play
+         * @return returns if the sound was successfully played
+         */
         Result play_sound(cpt::usize id);
         /**
          *
@@ -88,6 +109,13 @@ namespace uil {
         void play_music_collection(cpt::usize music);
         */
 
+        /**
+         * call this to add a new level id by just providing an unknown id here.
+         * call this with id 0 to set the global level
+         *
+         * @param level_id id of the level to set (0 is the global level)
+         * @param level amount that the level gets set to. 0.0f - 1.0f
+         */
         void set_level(cpt::usize level_id, float level);
     };
 }
