@@ -153,18 +153,26 @@ namespace uil {
          */
         [[nodiscard]] bool is_sound_playing(cpt::usize id) const;
 
-        /*
-        [[nodiscard]] cpt::usize try_load_music_collection(std::vector<std::string> const& paths);
-        [[nodiscard]] bool link_music_collection_to_level(cpt::usize sound_id, cpt::usize level_id);
-        void play_music_collection(cpt::usize music);
-        */
+        // music -------------------------------------------------
+        // load music collection
+        Result load_music_collection(cpt::usize& id, std::vector<std::filesystem::path> const& path);
+        // link music collection to sound level
+        Result link_music_collection_to_level(cpt::usize sound_id, cpt::usize level_id);
+        // play music collection
+        Result play_music_collection(cpt::usize id, Fade fade = Fade::Default);
+        // pause music collection
+        Result pause_music_collection(Fade fade = Fade::Default);
+        // resume music collection
+        Result resume_music_collection(Fade fade = Fade::Default);
+        // stop music collection
+        Result stop_music_collection(Fade fade = Fade::Default);
+        // switch music collection
+        Result switch_music_collection(cpt::usize id, Fade fade = Fade::Default);
+        // is specific music collection playing
+        [[nodiscard]] bool is_music_collection_playing(cpt::usize id) const;
+        // is music collection playing
+        [[nodiscard]] bool is_music_playing() const;
 
-        /**
-         * call this to add a new level id by just providing an unknown id here.
-         * call this with id 0 to set the global level
-         *
-         * @param level_id id of the level to set (0 is the global level)
-         * @param level amount that the level gets set to. 0.0f - 1.0f
-         */
+        // fade with enum
     };
 }
