@@ -15,7 +15,7 @@ namespace uil {
 
     class SoundManager final {
     public:
-        enum Result {
+        enum class Result {
             InvalidPath,
 
             UnknownLevelID,
@@ -49,18 +49,18 @@ namespace uil {
         template<IsSoundFile T>
         Result set_level_ray(T const& file, cpt::usize const level_id) {
             if (not m_levels.contains(level_id)) {
-                return UnknownLevelID;
+                return Result::UnknownLevelID;
             }
 
             auto const level = m_levels.at(level_id) * m_main_level;
 
             if constexpr (std::is_same_v<T, Sound>) {
                 SetSoundVolume(file, level);
-                return Success;
+                return Result::Success;
             }
             if constexpr (std::is_same_v<T, Music>) {
                 SetMusicVolume(file, level);
-                return Success;
+                return Result::Success;
             }
         }
 

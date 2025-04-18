@@ -11,7 +11,7 @@
 
 namespace uil {
     bool SoundManager::is_success(Result const result) {
-        return result == Success;
+        return result == Result::Success;
     }
 
     SoundManager::SoundManager() {
@@ -40,7 +40,7 @@ namespace uil {
                                                   cpt::usize const alias_pre_load_count) {
         auto const sound = LoadSound(make_absolute_path(path).string().c_str());
         if (not IsSoundValid(sound)) {
-            return InvalidPath;
+            return Result::InvalidPath;
         }
 
         id = cpt::usize{ m_sounds.size() + 1 };
@@ -48,25 +48,25 @@ namespace uil {
         for (cpt::usize i = 0; i < alias_pre_load_count; ++i) {
             m_sounds[id].sound.push_back(LoadSoundAlias(sound));
         }
-        return Success;
+        return Result::Success;
     }
 
     SoundManager::Result SoundManager::link_sound_to_level(cpt::usize const sound_id, cpt::usize const level_id) {
         if (not m_levels.contains(level_id)) {
-            return UnknownLevelID;
+            return Result::UnknownLevelID;
         }
 
         if (not m_sounds.contains(sound_id)) {
-            return UnknownSoundID;
+            return Result::UnknownSoundID;
         }
 
         m_sounds[sound_id].level_id = level_id;
-        return Success;
+        return Result::Success;
     }
 
     SoundManager::Result SoundManager::play_sound(cpt::usize const id) {
         if (not m_sounds.contains(id)) {
-            return UnknownSoundID;
+            return Result::UnknownSoundID;
         }
 
         auto& sounds = m_sounds[id];
@@ -77,14 +77,14 @@ namespace uil {
             }
             set_level_ray(sound, sounds.level_id);
             PlaySound(sound);
-            return Success;
+            return Result::Success;
         }
 
         auto const alias = LoadSoundAlias(sounds.sound[0]);
         sounds.sound.push_back(alias);
         set_level_ray(alias, sounds.level_id);
         PlaySound(alias);
-        return Success;
+        return Result::Success;
     }
 
     bool SoundManager::is_sound_playing(cpt::usize const id) const {
