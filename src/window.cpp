@@ -122,6 +122,7 @@ namespace uil {
 
     void Window::update() {
         auto const context = create_context();
+        AppContext::instance().sound().update();
 
         // updating
         SetMouseCursor(MOUSE_CURSOR_DEFAULT);

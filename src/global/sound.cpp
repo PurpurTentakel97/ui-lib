@@ -35,6 +35,48 @@ namespace uil {
         CloseAudioDevice();
     }
 
+    // global -------------------------------------------
+    void SoundManager::set_level(cpt::usize const level_id, float const level) {
+        if (level_id == 0) {
+            m_main_level = level;
+            return;
+        }
+
+        if (m_levels.contains(level_id)) {
+            m_levels[level_id] = level;
+            return;
+        }
+
+        m_levels.insert({ level_id, level });
+    }
+
+    float SoundManager::get_level(cpt::usize const level_id) const {
+        if (level_id == 0) {
+            return m_main_level;
+        }
+
+        if (not m_levels.contains(level_id)) {
+            return 0.0f;
+        }
+
+        return m_levels.at(level_id);
+    }
+
+    void SoundManager::set_fade_per_second(float const fade_per_second) {
+        m_fade_per_second = fade_per_second;
+    }
+
+    float SoundManager::get_fade_per_second() const {
+        return m_fade_per_second;
+    }
+
+    void SoundManager::update() {
+        if (is_music_playing()) {
+            UpdateMusicStream(m_current_music);
+        }
+    }
+
+    // sound --------------------------------------------------
     SoundManager::Result SoundManager::load_sound(cpt::usize& id,
                                                   std::filesystem::path const& path,
                                                   cpt::usize const alias_pre_load_count) {
@@ -97,17 +139,7 @@ namespace uil {
                                    });
     }
 
-    void SoundManager::set_level(cpt::usize const level_id, float const level) {
-        if (level_id == 0) {
-            m_main_level = level;
-            return;
-        }
+    // music ----------------------------------------
 
-        if (m_levels.contains(level_id)) {
-            m_levels[level_id] = level;
-            return;
-        }
 
-        m_levels.insert({ level_id, level });
-    }
 }

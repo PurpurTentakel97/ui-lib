@@ -25,6 +25,14 @@ namespace uil {
             Success,
         };
 
+        enum class Fade {
+            Default,
+
+            In,
+            Out,
+            InOut,
+        };
+
         [[nodiscard]] static bool is_success(Result result);
 
     private:
@@ -41,10 +49,15 @@ namespace uil {
         };
 
         std::unordered_map<cpt::usize, float> m_levels{};
+        float m_main_level{ 1.0f };
+        float m_fade_per_second{ 1.0f };
+
         std::unordered_map<cpt::usize, SoundEntry> m_sounds{};
+
         std::unordered_map<cpt::usize, MusicEntry> m_music_collections{};
         MusicEntry m_current_music_collection{ std::vector<Music>{} };
-        float m_main_level{ 1.0f };
+        MusicEntry m_next_music_collection{ std::vector<Music>{} };
+        Music m_current_music{};
 
         template<IsSoundFile T>
         Result set_level_ray(T const& file, cpt::usize const level_id) {
@@ -72,7 +85,44 @@ namespace uil {
         SoundManager& operator=(SoundManager&&)      = delete;
         ~SoundManager();
 
+        // global ---------------------------------------
+        /**
+         * call this to add a new level id by just providing an unknown id here.
+         * call this with id 0 to set the global level
+         *
+         * @param level_id id of the level to set (0 is the global level)
+         * @param level amount that the level gets set to. 0.0f - 1.0f
+         */
+        void set_level(cpt::usize level_id, float level);
 
+        /**
+         * call it with id 0 to get the main level.
+         * it returns 0 when the id is not existing.
+         *
+         * @param level_id id of the level to get
+         * @return returns the value of the provided level; 0 == main level
+         */
+        [[nodiscard]] float get_level(cpt::usize level_id) const;
+
+
+        /**
+         *
+         * @param fade_per_second amount that the volume is faded in one second until the maximum volume is reached
+         */
+        void set_fade_per_second(float fade_per_second);
+
+        /**
+         *
+         * @return the amount that the volume is faded in one second
+         */
+        [[nodiscard]] float get_fade_per_second() const;
+
+        /**
+         * updates the music streams and fades.
+         */
+        void update();
+
+        // sound ------------------------------------------
         /**
          *
          * @param id OUT provides / returns the new id of the loaded sound and its aliases
@@ -99,7 +149,7 @@ namespace uil {
         /**
          *
          * @param id id of the sound (or alias) to check
-         * @return returns if the sound or at least one of its aliasses is currently playing.
+         * @return returns if the sound or at least one of its aliases is currently playing.
          */
         [[nodiscard]] bool is_sound_playing(cpt::usize id) const;
 
@@ -116,6 +166,5 @@ namespace uil {
          * @param level_id id of the level to set (0 is the global level)
          * @param level amount that the level gets set to. 0.0f - 1.0f
          */
-        void set_level(cpt::usize level_id, float level);
     };
 }
