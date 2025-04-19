@@ -1,16 +1,16 @@
 add_executable(program
-               temp.cpp
+        temp.cpp
 
-               test_scene.hpp
-               test_scene.cpp
+        input_test_scene.hpp
+        input_test_scene.cpp
 )
 
 target_include_directories(program
-                           PUBLIC include
+        PUBLIC include
 )
 
 target_link_libraries(program
-                      PRIVATE
-                      ui_lib_project_options
-                      ui_lib
+        PRIVATE
+        ui_lib_project_options
+        ui_lib
 )

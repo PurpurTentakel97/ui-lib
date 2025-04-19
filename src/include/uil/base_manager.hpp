@@ -78,6 +78,10 @@ namespace uil {
          */
         virtual ~BaseManager() = default;
 
+        [[nodiscard]] cpt::Vec2_i resolution() const {
+            return m_resolution;
+        }
+
         /**
          * constructs the element S with parameters Args... and emplace it at the front of the element vector.
          * all emplace elements will be handled_input, updated, rendered and resized.
