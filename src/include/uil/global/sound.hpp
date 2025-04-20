@@ -8,6 +8,7 @@
 #include <cpt/types.hpp>
 #include <vector>
 #include <filesystem>
+#include <optional>
 
 namespace uil {
     template<typename T>
@@ -17,47 +18,55 @@ namespace uil {
     public:
         enum class Result {
             InvalidPath,
+            EmptyContainer,
 
             UnknownLevelID,
             UnknownSoundID,
             UnknownMusicCollectionID,
 
+            StillMusicPlaying,
+            NoMusicPlaying,
+            NoCurrentMusic,
+
             Success,
-        };
-
-        enum class Fade {
-            Default,
-
-            In,
-            Out,
-            InOut,
         };
 
         [[nodiscard]] static bool is_success(Result result);
 
     private:
+        struct LevelEntry final {
+            float value{};
+            bool muted{ false };
+        };
+
         struct SoundEntry final {
             std::vector<Sound> sound{};
             cpt::usize level_id{ 0 };
-            bool m_muted{ false };
         };
 
         struct MusicEntry final {
             std::vector<Music> music{};
             cpt::usize level_id{ 0 };
-            bool m_muted{ false };
         };
 
-        std::unordered_map<cpt::usize, float> m_levels{};
-        float m_main_level{ 1.0f };
-        float m_fade_per_second{ 1.0f };
+        std::unordered_map<cpt::usize, LevelEntry> m_levels{ { 0, { 1.0f } } };
 
         std::unordered_map<cpt::usize, SoundEntry> m_sounds{};
 
         std::unordered_map<cpt::usize, MusicEntry> m_music_collections{};
-        MusicEntry m_current_music_collection{ std::vector<Music>{} };
-        MusicEntry m_next_music_collection{ std::vector<Music>{} };
-        Music m_current_music{};
+        std::optional<MusicEntry*> m_current_music_collection{};
+        std::optional<MusicEntry*> m_next_music_collection{};
+        std::optional<Music*> m_current_music{};
+        cpt::usize m_next_music_index{ 0 };
+        bool m_is_music_paused{ false };
+
+        [[nodiscard]] LevelEntry& main_level();
+        [[nodiscard]] static bool is_main_level(cpt::usize level_id);
+
+
+        void update_current_music_level(cpt::usize level_id);
+
+        void update_current_music_collection();
 
         template<IsSoundFile T>
         Result set_level_ray(T const& file, cpt::usize const level_id) {
@@ -65,7 +74,15 @@ namespace uil {
                 return Result::UnknownLevelID;
             }
 
-            auto const level = m_levels.at(level_id) * m_main_level;
+            auto const level = [this, &level_id]() {
+                if (main_level().muted) { return 0.0f; }
+                if (m_levels.at(level_id).muted) { return 0.0f; }
+
+                if (is_main_level(level_id)) {
+                    return main_level().value;
+                }
+                return m_levels.at(level_id).value * main_level().value;
+            }();
 
             if constexpr (std::is_same_v<T, Sound>) {
                 SetSoundVolume(file, level);
@@ -90,32 +107,42 @@ namespace uil {
          * call this to add a new level id by just providing an unknown id here.
          * call this with id 0 to set the global level
          *
-         * @param level_id id of the level to set (0 is the global level)
+         * @param id of the level to set (0 is the global level)
          * @param level amount that the level gets set to. 0.0f - 1.0f
          */
-        void set_level(cpt::usize level_id, float level);
+        void set_level(cpt::usize id, float level);
 
         /**
          * call it with id 0 to get the main level.
          * it returns 0 when the id is not existing.
+         * note that the main level also affects every other level.
          *
-         * @param level_id id of the level to get
-         * @return returns the value of the provided level; 0 == main level
+         * @param id of the level to get (0 == main level)
+         * @return the current value of the provided level id
          */
-        [[nodiscard]] float get_level(cpt::usize level_id) const;
-
-
-        /**
-         *
-         * @param fade_per_second amount that the volume is faded in one second until the maximum volume is reached
-         */
-        void set_fade_per_second(float fade_per_second);
+        [[nodiscard]] float get_level(cpt::usize id) const;
 
         /**
          *
-         * @return the amount that the volume is faded in one second
+         * @param id of the sound level to toggle
+         * @return if the toggle was successful
          */
-        [[nodiscard]] float get_fade_per_second() const;
+        Result toggle_mute_sound_level(cpt::usize id);
+
+        /**
+         *
+         * @param id of the sound level to set
+         * @param is_mute the value the sound level gets sets to
+         * @return if the set was successful
+         */
+        Result set_mute_sound_level(cpt::usize id, bool is_mute);
+
+        /**
+         *
+         * @param id of the sound level to check
+         * @return if the provided sound level is muted. returns false if the provided id is not existing
+         */
+        [[nodiscard]] bool is_sound_level_muted(cpt::usize id) const;
 
         /**
          * updates the music streams and fades.
@@ -157,22 +184,27 @@ namespace uil {
         // load music collection
         Result load_music_collection(cpt::usize& id, std::vector<std::filesystem::path> const& path);
         // link music collection to sound level
-        Result link_music_collection_to_level(cpt::usize sound_id, cpt::usize level_id);
+        Result link_music_collection_to_level(cpt::usize music_collection_id, cpt::usize level_id);
         // play music collection
-        Result play_music_collection(cpt::usize id, Fade fade = Fade::Default);
+        Result start_music_collection(cpt::usize id);
         // pause music collection
-        Result pause_music_collection(Fade fade = Fade::Default);
+        Result pause_music_collection();
         // resume music collection
-        Result resume_music_collection(Fade fade = Fade::Default);
+        Result resume_music_collection();
         // stop music collection
-        Result stop_music_collection(Fade fade = Fade::Default);
+        Result stop_music_collection();
         // switch music collection
-        Result switch_music_collection(cpt::usize id, Fade fade = Fade::Default);
-        // is specific music collection playing
+        Result switch_music_collection(cpt::usize id);
+        /**
+         *
+         * @param id if of the music collection that gets checked
+         * @return returns if any song of the given music collection is playing. returns false if the provided id is not existing
+         */
         [[nodiscard]] bool is_music_collection_playing(cpt::usize id) const;
-        // is music collection playing
+        /**
+         *
+         * @return if the current music is playing. Also returns false if there is no current music set yet.
+         */
         [[nodiscard]] bool is_music_playing() const;
-
-        // fade with enum
     };
 }

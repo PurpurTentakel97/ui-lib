@@ -14,6 +14,41 @@ namespace uil {
         return result == Result::Success;
     }
 
+    SoundManager::LevelEntry& SoundManager::main_level() {
+        return m_levels.at(0);
+    }
+
+    bool SoundManager::is_main_level(cpt::usize const level_id) {
+        return level_id == 0;
+    }
+
+    void SoundManager::update_current_music_level(cpt::usize const level_id) {
+        if (not m_levels.contains(level_id)) { return; }
+        if (not m_current_music) { return; }
+        if (not m_current_music_collection) { return; }
+        if (m_current_music_collection.value()->level_id != level_id) { return; }
+
+        set_level_ray(*m_current_music.value(), m_current_music_collection.value()->level_id);
+    }
+
+    void SoundManager::update_current_music_collection() {
+        if (not m_current_music_collection) { return; }
+        if (not is_music_playing() && not m_is_music_paused) {
+            if (m_next_music_index >= m_current_music_collection.value()->music.size()) {
+                m_next_music_index = 0;
+            }
+            m_current_music = &m_current_music_collection.value()->music[m_next_music_index];
+            set_level_ray(*m_current_music.value(), m_current_music_collection.value()->level_id);
+            PlayMusicStream(*m_current_music.value());
+
+            ++m_next_music_index;
+        }
+
+        if (m_current_music.has_value() and is_music_playing()) {
+            UpdateMusicStream(*m_current_music.value());
+        }
+    }
+
     SoundManager::SoundManager() {
         InitAudioDevice();
     }
@@ -36,44 +71,45 @@ namespace uil {
     }
 
     // global -------------------------------------------
-    void SoundManager::set_level(cpt::usize const level_id, float const level) {
-        if (level_id == 0) {
-            m_main_level = level;
+    void SoundManager::set_level(cpt::usize const id, float const level) {
+        if (not m_levels.contains(id)) {
+            m_levels.insert({ id, { level } });
             return;
         }
 
-        if (m_levels.contains(level_id)) {
-            m_levels[level_id] = level;
-            return;
-        }
-
-        m_levels.insert({ level_id, level });
+        m_levels[id].value = level;
+        update_current_music_level(id);
     }
 
-    float SoundManager::get_level(cpt::usize const level_id) const {
-        if (level_id == 0) {
-            return m_main_level;
-        }
-
-        if (not m_levels.contains(level_id)) {
+    float SoundManager::get_level(cpt::usize const id) const {
+        if (not m_levels.contains(id)) {
             return 0.0f;
         }
 
-        return m_levels.at(level_id);
+        return m_levels.at(id).value;
     }
 
-    void SoundManager::set_fade_per_second(float const fade_per_second) {
-        m_fade_per_second = fade_per_second;
+    SoundManager::Result SoundManager::toggle_mute_sound_level(cpt::usize const id) {
+        if (not m_levels.contains(id)) { return Result::UnknownLevelID; }
+        m_levels[id].muted = not m_levels[id].muted;
+        update_current_music_level(id);
+        return Result::Success;
     }
 
-    float SoundManager::get_fade_per_second() const {
-        return m_fade_per_second;
+    SoundManager::Result SoundManager::set_mute_sound_level(cpt::usize const id, bool const is_mute) {
+        if (not m_levels.contains(id)) { return Result::UnknownLevelID; }
+        m_levels[id].muted = is_mute;
+        update_current_music_level(id);
+        return Result::Success;
+    }
+
+    bool SoundManager::is_sound_level_muted(cpt::usize const id) const {
+        if (not m_levels.contains(id)) { return false; }
+        return m_levels.at(id).muted;
     }
 
     void SoundManager::update() {
-        if (is_music_playing()) {
-            UpdateMusicStream(m_current_music);
-        }
+        update_current_music_collection();
     }
 
     // sound --------------------------------------------------
@@ -140,6 +176,105 @@ namespace uil {
     }
 
     // music ----------------------------------------
+    SoundManager::Result SoundManager::load_music_collection(cpt::usize& id,
+                                                             std::vector<std::filesystem::path> const& path) {
+        if (path.empty()) {
+            return Result::EmptyContainer;
+        }
+
+        auto result           = Result::Success;
+        auto music_collection = MusicEntry{};
+        for (auto const& p : path) {
+            auto music = LoadMusicStream(make_absolute_path(p).string().c_str());
+            if (not IsMusicValid(music)) {
+                result = Result::InvalidPath;
+                continue;
+            }
+
+            music.looping = false;
+            music_collection.music.push_back(std::move(music));
+        }
+
+        if (music_collection.music.empty()) {
+            return Result::InvalidPath;
+        }
+
+        id = m_music_collections.size() + 1;
+        m_music_collections.insert({ id, std::move(music_collection) });
+        return result;
+    }
+
+    SoundManager::Result SoundManager::link_music_collection_to_level(cpt::usize const music_collection_id,
+                                                                      cpt::usize const level_id) {
+        if (not m_music_collections.contains(music_collection_id)) { return Result::UnknownMusicCollectionID; }
+        if (not m_levels.contains(level_id)) { return Result::UnknownLevelID; }
+
+        m_music_collections[music_collection_id].level_id = level_id;
+        return Result::Success;
+    }
+
+    SoundManager::Result SoundManager::start_music_collection(cpt::usize const id) {
+        if (is_music_playing()) { return Result::StillMusicPlaying; }
+        if (not m_music_collections.contains(id)) { return Result::UnknownMusicCollectionID; }
+        m_current_music_collection = &m_music_collections.at(id);
+        m_is_music_paused          = false;
+        m_next_music_index         = 0;
+
+        update_current_music_collection();
+
+        return Result::Success;
+    }
+
+    SoundManager::Result SoundManager::pause_music_collection() {
+        if (not is_music_playing()) { return Result::NoMusicPlaying; }
+        m_is_music_paused = true;
+        PauseMusicStream(*m_current_music.value());
+        return Result::Success;
+    }
+
+    SoundManager::Result SoundManager::resume_music_collection() {
+        if (is_music_playing()) { return Result::StillMusicPlaying; }
+        if (not m_current_music) { return Result::NoCurrentMusic; }
+        m_is_music_paused = false;
+        ResumeMusicStream(*m_current_music.value());
+        return Result::Success;
+    }
+
+    SoundManager::Result SoundManager::stop_music_collection() {
+        if (not is_music_playing()) { return Result::NoMusicPlaying; }
+        if (not m_current_music) { return Result::NoCurrentMusic; }
+        StopMusicStream(*m_current_music.value());
+        m_current_music            = {};
+        m_current_music_collection = {};
+        m_is_music_paused          = false;
+        return Result::Success;
+    }
+
+    SoundManager::Result SoundManager::switch_music_collection(cpt::usize const id) {
+        if (not m_music_collections.contains(id)) { return Result::UnknownMusicCollectionID; }
+        if (m_current_music) {
+            StopMusicStream(*m_current_music.value());
+            m_current_music = {};
+        }
+
+        m_current_music_collection = &m_music_collections.at(id);
+        m_is_music_paused          = false;
+        update_current_music_collection();
+        return Result::Success;
+    }
+
+    bool SoundManager::is_music_collection_playing(cpt::usize const id) const {
+        if (not m_music_collections.contains(id)) { return false; }
+        return std::ranges::any_of(m_music_collections.at(id).music,
+                                   [](auto const& music) {
+                                       return IsMusicStreamPlaying(music);
+                                   });
+    }
+
+    bool SoundManager::is_music_playing() const {
+        if (not m_current_music.has_value()) { return false; }
+        return IsMusicStreamPlaying(*m_current_music.value());
+    }
 
 
 }

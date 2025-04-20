@@ -3,6 +3,9 @@ add_executable(program
 
         input_test_scene.hpp
         input_test_scene.cpp
+
+        music_test_scene.hpp
+        music_test_scene.cpp
 )
 
 target_include_directories(program
