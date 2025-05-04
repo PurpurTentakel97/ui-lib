@@ -1,4 +1,4 @@
-add_executable(program
+add_executable(cpt__ui_lib_program
         temp.cpp
 
         input_test_scene.hpp
@@ -8,12 +8,12 @@ add_executable(program
         music_test_scene.cpp
 )
 
-target_include_directories(program
+target_include_directories(cpt__ui_lib_program
         PUBLIC include
 )
 
-target_link_libraries(program
+target_link_libraries(cpt__ui_lib_program
         PRIVATE
-        ui_lib_project_options
-        ui_lib
+        cpt__ui_lib_project_options
+        cpt__ui_lib
 )
