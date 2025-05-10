@@ -19,7 +19,7 @@ public:
                     Rectangle const relative,
                     uil::Alignment const alignment,
                     std::function<bool()> const& check_function)
-        : UIElement{ resolution, relative, alignment }, check_function{ std::move(check_function) } {}
+        : UIElement{ resolution, relative, alignment }, check_function{ check_function } {}
 
     using UIElement::UIElement;
 
@@ -55,14 +55,14 @@ private:
 
     static constexpr float x(Rectangle const rectangle, Vector2 const spacer, int const columns) {
         return rectangle.x
-               + columns * spacer.x
-               + columns * rectangle.width;
+               + static_cast<float>(columns) * spacer.x
+               + static_cast<float>(columns) * rectangle.width;
     }
 
     static constexpr float y(Rectangle const rectangle, Vector2 const spacer, int const rows) {
         return rectangle.y
-               + rows * spacer.y
-               + rows * rectangle.height;
+               + static_cast<float>(rows) * spacer.y
+               + static_cast<float>(rows) * rectangle.height;
     }
 
     std::vector<Entry> const m_entries{
