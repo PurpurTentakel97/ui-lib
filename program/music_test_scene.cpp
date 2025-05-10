@@ -6,6 +6,7 @@
 #include "music_test_scene.hpp"
 #include <ranges>
 #include <uil/global/app_context.hpp>
+#include <iostream>
 
 
 void print_error(uil::SoundManager::Result const result) {
