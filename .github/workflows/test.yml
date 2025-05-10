@@ -45,15 +45,15 @@ jobs:
       - name: Install Compiler ${{ matrix.compiler }}
         run: ${{ matrix.install-script }}
 
-      - name: Conficure CMake
+      - name: "Install raylib Linux dependencies"
+        run: sudo apt install -yq libxinerama-dev libxcursor-dev xorg-dev libglu1-mesa-dev pkg-config libgl1-mesa-dev libx11-dev libxcursor-dev libxinerama-dev libxrandr-dev libfmt-dev
+
+      - name: Configure CMake
         run: |
           sudo update-alternatives --install /usr/bin/cc cc /usr/bin/${{ matrix.cc }} 100
           sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/${{ matrix.cxx }} 100
           cmake -B build -G "Unix Makefiles" \
             -DCMAKE_BUILD_TYPE=${{ matrix.build }} 
-
-      - name: "Install raylib Linux dependencies"
-        run: sudo apt install -yq libxinerama-dev libxcursor-dev xorg-dev libglu1-mesa-dev pkg-config libgl1-mesa-dev libx11-dev libxcursor-dev libxinerama-dev libxrandr-dev libfmt-dev
 
       # Run CMake to build the project.
       - name: Build
