@@ -18,8 +18,8 @@ public:
     InputTestObject(cpt::Vec2_i const resolution,
                     Rectangle const relative,
                     uil::Alignment const alignment,
-                    std::function<bool()> const& check_function)
-        : UIElement{ resolution, relative, alignment }, check_function{ check_function } {}
+                    std::function<bool()> const& check_function_)
+        : UIElement{ resolution, relative, alignment }, check_function{ check_function_ } {}
 
     using UIElement::UIElement;
 
