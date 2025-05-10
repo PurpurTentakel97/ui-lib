@@ -12,7 +12,7 @@ CPMAddPackage(
 CPMAddPackage(
         NAME cpt-lib
         GITHUB_REPOSITORY PurpurTentakel97/cpt-lib
-        GIT_TAG v1.2.0
+        GIT_TAG v1.2.1
 )
 
 if (cpt__ui_lib_enable_tests)
