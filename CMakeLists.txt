@@ -1,5 +1,18 @@
 cmake_minimum_required(VERSION 3.30.3)
 
+if (cpt__ui_lib_use_vcpkg)
+    include_guard(GLOBAL)
+    include(FetchContent)
+
+    # Fetch vcpkg
+    FetchContent_Declare(vcpkg
+            GIT_REPOSITORY https://github.com/microsoft/vcpkg/
+            GIT_TAG 2025.03.19
+    )
+    FetchContent_MakeAvailable(vcpkg)
+    set(CMAKE_TOOLCHAIN_FILE "${vcpkg_SOURCE_DIR}/scripts/buildsystems/vcpkg.cmake" CACHE FILEPATH "")
+endif ()
+
 project(cpt__ui_lib)
 include(GNUInstallDirs)
 
@@ -8,8 +21,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 include(${PROJECT_SOURCE_DIR}/cmake/project_options.cmake)
-include(${PROJECT_SOURCE_DIR}/cmake/SystemLink.cmake)
-add_subdirectory(external)
+include(${PROJECT_SOURCE_DIR}/cmake/external_dependencies.cmake)
 add_subdirectory(src bin)
 
 if (cpt__ui_lib_enable_test_programm)
@@ -23,8 +35,6 @@ endif ()
 
 install(TARGETS
         cpt__ui_lib
-        raylib
-        glfw
         EXPORT cpt__ui_lib_targets ARCHIVE
         FILE_SET HEADERS
 )

@@ -13,9 +13,6 @@ add_executable(cpt__ui_lib_tests
 target_link_libraries(cpt__ui_lib_tests
         PRIVATE
         GTest::gtest_main
-)
-target_link_libraries(cpt__ui_lib_tests
-        PRIVATE
         cpt__ui_lib_project_options
         cpt__ui_lib
 )

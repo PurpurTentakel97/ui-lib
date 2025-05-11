@@ -62,11 +62,12 @@ target_include_directories(cpt__ui_lib
         PUBLIC $<INSTALL_INTERFACE:include>
 )
 
-target_link_system_libraries(cpt__ui_lib
+target_link_libraries(cpt__ui_lib
         PUBLIC
         cpt__cpt_lib
-        raylib)
-target_link_libraries(cpt__ui_lib
+        raylib
         PRIVATE
         $<BUILD_INTERFACE:cpt__ui_lib_project_options>
 )
+
+target_link_libraries(raylib INTERFACE glfw) # somehow raylib is not providing glfw at version 5.5 with vcpkg
