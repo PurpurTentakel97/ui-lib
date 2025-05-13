@@ -149,22 +149,22 @@ namespace uil {
         // main input functions ----------------------------------------------------
         template<KeyOp KeyOp = KeyOp::Or, ModOp ModOp = ModOp::Or, IsInput... I>
         [[nodiscard]] bool is_down(I const... input) const {
-            return check_input([this](auto const key) { return is_single_down(key); }, KeyOp, ModOp, input...);
+            return check_input([&](auto const key) { return is_single_down(key); }, KeyOp, ModOp, input...);
         }
 
         template<KeyOp KeyOp = KeyOp::Or, ModOp ModOp = ModOp::Or, IsInput... I>
         [[nodiscard]] bool is_up(I const... input) const {
-            return check_input([this](auto const key) { return is_single_up(key); }, KeyOp, ModOp, input...);
+            return check_input([&](auto const key) { return is_single_up(key); }, KeyOp, ModOp, input...);
         }
 
         template<KeyOp KeyOp = KeyOp::Or, ModOp ModOp = ModOp::Or, IsInput... I>
         [[nodiscard]] bool is_pressed(I const... input) const {
-            return check_input([this](auto const key) { return is_single_pressed(key); }, KeyOp, ModOp, input...);
+            return check_input([&](auto const key) { return is_single_pressed(key); }, KeyOp, ModOp, input...);
         }
 
         template<KeyOp KeyOp = KeyOp::Or, ModOp ModOp = ModOp::Or, IsInput... I>
         [[nodiscard]] bool is_released(I const... input) const {
-            return check_input([this](auto const key) { return is_single_released(key); }, KeyOp, ModOp, input...);
+            return check_input([&](auto const key) { return is_single_released(key); }, KeyOp, ModOp, input...);
         }
 
         // getter setter ---------------------------------------------------------

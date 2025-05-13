@@ -4,6 +4,7 @@
 //
 
 #include <algorithm>
+#include <iostream>
 #include <ranges>
 #include <raylib.h>
 #include <uil/global/sound.hpp>
@@ -40,6 +41,7 @@ namespace uil {
             m_current_music = &m_current_music_collection.value()->music[m_next_music_index];
             set_level_ray(*m_current_music.value(), m_current_music_collection.value()->level_id);
             PlayMusicStream(*m_current_music.value());
+            std::cout << "next background music\n";
 
             ++m_next_music_index;
         }

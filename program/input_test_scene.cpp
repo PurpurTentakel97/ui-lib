@@ -23,11 +23,11 @@ void InputTestScene::render(const uil::Context& context) const {
                                          char const* text) {
         DrawTextPro(font,
                     text,
-                    { (x(rectangle, spacer, columns) + offset.x) * resolution().x,
-                      (y(rectangle, spacer, rows) + offset.y) * resolution().y },
+                    { (x(rectangle, spacer, columns) + offset.x) * static_cast<float>(resolution().x),
+                      (y(rectangle, spacer, rows) + offset.y) * static_cast<float>(resolution().y) },
                     { 0.0f, 0.0f },
                     rotation,
-                    0.02f * resolution().y,
+                    0.02f * static_cast<float>(resolution().y),
                     2.0f,
                     WHITE);
     };

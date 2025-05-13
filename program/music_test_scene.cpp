@@ -4,6 +4,7 @@
 
 
 #include "music_test_scene.hpp"
+#include <iostream>
 #include <ranges>
 #include <uil/global/app_context.hpp>
 
@@ -65,8 +66,10 @@ bool MusicTestScene::handle_input(uil::Context const& context) const {
     auto const keep_handle_input = Scene::handle_input(context);
 
     for (const auto& [rectangle,func] : m_buttons) {
-        auto const col = Rectangle{ rectangle.x * context.resolution.x, rectangle.y * context.resolution.y,
-                                    rectangle.width * context.resolution.x, rectangle.height * context.resolution.y };
+        auto const col = Rectangle{ rectangle.x * static_cast<float>(context.resolution.x),
+                                    rectangle.y * static_cast<float>(context.resolution.y),
+                                    rectangle.width * static_cast<float>(context.resolution.x),
+                                    rectangle.height * static_cast<float>(context.resolution.y) };
         if (CheckCollisionPointRec(context.mouse_position, col)) {
             if (uil::AppContext::instance().input().is_pressed(uil::Mouse::MOUSE_BUTTON_LEFT)) {
                 print_error(func());
@@ -97,8 +100,10 @@ void MusicTestScene::render(const uil::Context& context) const {
 
     for (auto const& [button, label] : std::views::zip(m_buttons, labels)) {
         auto const rect = button.first;
-        auto const col  = Rectangle{ rect.x * context.resolution.x, rect.y * context.resolution.y,
-                                    rect.width * context.resolution.x, rect.height * context.resolution.y };
+        auto const col  = Rectangle{ rect.x * static_cast<float>(context.resolution.x),
+                                     rect.y * static_cast<float>(context.resolution.y),
+                                     rect.width * static_cast<float>(context.resolution.x),
+                                     rect.height * static_cast<float>(context.resolution.y) };
 
         DrawRectangleLinesEx(col, 1.0f, WHITE);
         DrawText(label, static_cast<int>(col.x), static_cast<int>(col.y), 30,WHITE);

@@ -5,7 +5,6 @@
 
 #include "uil/global/app_context.hpp"
 #include <raylib.h>
-#include <string>
 #include <uil/context.hpp>
 #include <uil/window.hpp>
 

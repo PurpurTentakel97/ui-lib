@@ -18,8 +18,8 @@ public:
     InputTestObject(cpt::Vec2_i const resolution,
                     Rectangle const relative,
                     uil::Alignment const alignment,
-                    std::function<bool()> const& check_function)
-        : UIElement{ resolution, relative, alignment }, check_function{ std::move(check_function) } {}
+                    std::function<bool()> const& check_function_)
+        : UIElement{ resolution, relative, alignment }, check_function{ check_function_ } {}
 
     using UIElement::UIElement;
 
@@ -55,28 +55,28 @@ private:
 
     static constexpr float x(Rectangle const rectangle, Vector2 const spacer, int const columns) {
         return rectangle.x
-               + columns * spacer.x
-               + columns * rectangle.width;
+               + static_cast<float>(columns) * spacer.x
+               + static_cast<float>(columns) * rectangle.width;
     }
 
     static constexpr float y(Rectangle const rectangle, Vector2 const spacer, int const rows) {
         return rectangle.y
-               + rows * spacer.y
-               + rows * rectangle.height;
+               + static_cast<float>(rows) * spacer.y
+               + static_cast<float>(rows) * rectangle.height;
     }
 
     std::vector<Entry> const m_entries{
         // is_down
         { { x(rectangle_mouse_input, spacer_mouse_input, 0), y(rectangle_mouse_input, spacer_mouse_input, 0), rectangle_mouse_input.width, rectangle_mouse_input.height },
-          [this]() -> bool {
+          []() -> bool {
               return uil::AppContext::instance().input().is_down(s_key_1, s_key_2, s_mod_1, s_mod_2);
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 0), y(rectangle_mouse_input, spacer_mouse_input, 1), rectangle_mouse_input.width, rectangle_mouse_input.height },
-          [this]() -> bool {
+          []() -> bool {
               return uil::AppContext::instance().input().is_down<uil::KeyOp::And>(s_key_1, s_key_2, s_mod_1, s_mod_2);
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 0), y(rectangle_mouse_input, spacer_mouse_input, 2), rectangle_mouse_input.width, rectangle_mouse_input.height },
-          [this]() -> bool {
+          []() -> bool {
               return uil::AppContext::instance().input().is_down<uil::KeyOp::Or, uil::ModOp::And>(
                       s_key_1,
                       s_key_2,
@@ -84,7 +84,7 @@ private:
                       s_mod_2);
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 0), y(rectangle_mouse_input, spacer_mouse_input, 3), rectangle_mouse_input.width, rectangle_mouse_input.height },
-          [this]() -> bool {
+          []() -> bool {
               return uil::AppContext::instance().input().is_down<uil::KeyOp::And, uil::ModOp::And>(
                       s_key_1,
                       s_key_2,
@@ -92,25 +92,25 @@ private:
                       s_mod_2);
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 0), y(rectangle_mouse_input, spacer_mouse_input, 4), rectangle_mouse_input.width, rectangle_mouse_input.height },
-          [this]() -> bool {
+          []() -> bool {
               return uil::AppContext::instance().input().is_down(s_key_1, s_key_2);
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 0), y(rectangle_mouse_input, spacer_mouse_input, 5), rectangle_mouse_input.width, rectangle_mouse_input.height },
-          [this]() -> bool {
+          []() -> bool {
               return uil::AppContext::instance().input().is_down<uil::KeyOp::And>(s_key_1, s_key_2);
           } },
 
         // is_up
         { { x(rectangle_mouse_input, spacer_mouse_input, 1), y(rectangle_mouse_input, spacer_mouse_input, 0), rectangle_mouse_input.width, rectangle_mouse_input.height },
-          [this]() -> bool {
+          []() -> bool {
               return uil::AppContext::instance().input().is_up(s_key_1, s_key_2, s_mod_1, s_mod_2);
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 1), y(rectangle_mouse_input, spacer_mouse_input, 1), rectangle_mouse_input.width, rectangle_mouse_input.height },
-          [this]() -> bool {
+          []() -> bool {
               return uil::AppContext::instance().input().is_up<uil::KeyOp::And>(s_key_1, s_key_2, s_mod_1, s_mod_2);
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 1), y(rectangle_mouse_input, spacer_mouse_input, 2), rectangle_mouse_input.width, rectangle_mouse_input.height },
-          [this]() -> bool {
+          []() -> bool {
               return uil::AppContext::instance().input().is_up<uil::KeyOp::Or, uil::ModOp::And>(
                       s_key_1,
                       s_key_2,
@@ -118,7 +118,7 @@ private:
                       s_mod_2);
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 1), y(rectangle_mouse_input, spacer_mouse_input, 3), rectangle_mouse_input.width, rectangle_mouse_input.height },
-          [this]() -> bool {
+          []() -> bool {
               return uil::AppContext::instance().input().is_up<uil::KeyOp::And, uil::ModOp::And>(
                       s_key_1,
                       s_key_2,
@@ -126,21 +126,21 @@ private:
                       s_mod_2);
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 1), y(rectangle_mouse_input, spacer_mouse_input, 4), rectangle_mouse_input.width, rectangle_mouse_input.height },
-          [this]() -> bool {
+          []() -> bool {
               return uil::AppContext::instance().input().is_up(s_key_1, s_key_2);
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 1), y(rectangle_mouse_input, spacer_mouse_input, 5), rectangle_mouse_input.width, rectangle_mouse_input.height },
-          [this]() -> bool {
+          []() -> bool {
               return uil::AppContext::instance().input().is_up<uil::KeyOp::And>(s_key_1, s_key_2);
           } },
 
         // is_pressed
         { { x(rectangle_mouse_input, spacer_mouse_input, 2), y(rectangle_mouse_input, spacer_mouse_input, 0), rectangle_mouse_input.width, rectangle_mouse_input.height },
-          [this]() -> bool {
+          []() -> bool {
               return uil::AppContext::instance().input().is_pressed(s_key_1, s_key_2, s_mod_1, s_mod_2);
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 2), y(rectangle_mouse_input, spacer_mouse_input, 1), rectangle_mouse_input.width, rectangle_mouse_input.height },
-          [this]() -> bool {
+          []() -> bool {
               return uil::AppContext::instance().input().is_pressed<uil::KeyOp::And>(
                       s_key_1,
                       s_key_2,
@@ -148,7 +148,7 @@ private:
                       s_mod_2);
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 2), y(rectangle_mouse_input, spacer_mouse_input, 2), rectangle_mouse_input.width, rectangle_mouse_input.height },
-          [this]() -> bool {
+          []() -> bool {
               return uil::AppContext::instance().input().is_pressed<uil::KeyOp::Or, uil::ModOp::And>(
                       s_key_1,
                       s_key_2,
@@ -156,7 +156,7 @@ private:
                       s_mod_2);
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 2), y(rectangle_mouse_input, spacer_mouse_input, 3), rectangle_mouse_input.width, rectangle_mouse_input.height },
-          [this]() -> bool {
+          []() -> bool {
               return uil::AppContext::instance().input().is_pressed<uil::KeyOp::And, uil::ModOp::And>(
                       s_key_1,
                       s_key_2,
@@ -164,21 +164,21 @@ private:
                       s_mod_2);
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 2), y(rectangle_mouse_input, spacer_mouse_input, 4), rectangle_mouse_input.width, rectangle_mouse_input.height },
-          [this]() -> bool {
+          []() -> bool {
               return uil::AppContext::instance().input().is_pressed(s_key_1, s_key_2);
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 2), y(rectangle_mouse_input, spacer_mouse_input, 5), rectangle_mouse_input.width, rectangle_mouse_input.height },
-          [this]() -> bool {
+          []() -> bool {
               return uil::AppContext::instance().input().is_pressed<uil::KeyOp::And>(s_key_1, s_key_2);
           } },
 
         // is_released
         { { x(rectangle_mouse_input, spacer_mouse_input, 3), y(rectangle_mouse_input, spacer_mouse_input, 0), rectangle_mouse_input.width, rectangle_mouse_input.height },
-          [this]() -> bool {
+          []() -> bool {
               return uil::AppContext::instance().input().is_released(s_key_1, s_key_2, s_mod_1, s_mod_2);
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 3), y(rectangle_mouse_input, spacer_mouse_input, 1), rectangle_mouse_input.width, rectangle_mouse_input.height },
-          [this]() -> bool {
+          []() -> bool {
               return uil::AppContext::instance().input().is_released<uil::KeyOp::And>(
                       s_key_1,
                       s_key_2,
@@ -186,7 +186,7 @@ private:
                       s_mod_2);
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 3), y(rectangle_mouse_input, spacer_mouse_input, 2), rectangle_mouse_input.width, rectangle_mouse_input.height },
-          [this]() -> bool {
+          []() -> bool {
               return uil::AppContext::instance().input().is_released<uil::KeyOp::Or, uil::ModOp::And>(
                       s_key_1,
                       s_key_2,
@@ -194,7 +194,7 @@ private:
                       s_mod_2);
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 3), y(rectangle_mouse_input, spacer_mouse_input, 3), rectangle_mouse_input.width, rectangle_mouse_input.height },
-          [this]() -> bool {
+          []() -> bool {
               return uil::AppContext::instance().input().is_released<uil::KeyOp::And, uil::ModOp::And>(
                       s_key_1,
                       s_key_2,
@@ -202,11 +202,11 @@ private:
                       s_mod_2);
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 3), y(rectangle_mouse_input, spacer_mouse_input, 4), rectangle_mouse_input.width, rectangle_mouse_input.height },
-          [this]() -> bool {
+          []() -> bool {
               return uil::AppContext::instance().input().is_released(s_key_1, s_key_2);
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 3), y(rectangle_mouse_input, spacer_mouse_input, 5), rectangle_mouse_input.width, rectangle_mouse_input.height },
-          [this]() -> bool {
+          []() -> bool {
               return uil::AppContext::instance().input().is_released<uil::KeyOp::And>(s_key_1, s_key_2);
           } },
     };
