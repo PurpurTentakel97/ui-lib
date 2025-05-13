@@ -50,6 +50,9 @@ jobs:
       - name: Install Compiler ${{ matrix.compiler }}
         run: ${{ matrix.install-script }}
 
+      - name: "Install raylib Linux dependencies"
+        run: sudo apt install -yq libxinerama-dev libxcursor-dev xorg-dev libglu1-mesa-dev pkg-config libgl1-mesa-dev libx11-dev libxcursor-dev libxinerama-dev libxrandr-dev libfmt-dev
+
       - name: "Create vcpkg cache directories '${{ env.VCPKG_DEFAULT_BINARY_CACHE }}' and '${{ env.X_VCPKG_REGISTRIES_CACHE }}'"
         shell: bash
         run: |
@@ -77,9 +80,6 @@ jobs:
           cmake -B build -G "Unix Makefiles" \
             -DCMAKE_BUILD_TYPE=${{ matrix.build }} \
             -Dcpt__ui_lib_use_vcpkg:BOOL=ON
-
-      - name: "Install raylib Linux dependencies"
-        run: sudo apt install -yq libxinerama-dev libxcursor-dev xorg-dev libglu1-mesa-dev pkg-config libgl1-mesa-dev libx11-dev libxcursor-dev libxinerama-dev libxrandr-dev libfmt-dev
 
       # Run CMake to build the project.
       - name: Build
@@ -128,7 +128,7 @@ jobs:
           # In this case a cache miss must happen and a new entry with a new key with be pushed to GitHub the cache service.
           # The key includes: hash of the vcpkg.json file and the used vcpkg's triplet.
           # Note: given a key, the cache content is immutable. If a cache entry has been created improperly,
-          # in order the recreate the right content the key must be changed as well, and it must be brand new (i.e. not existing already).
+          # in order the recreation the right content the key must be changed as well, and it must be brand new (i.e. not existing already).
           key: |
             ${{ hashFiles( 'vcpkg.json' ) }}-x64-windows
 
