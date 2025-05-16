@@ -4,47 +4,47 @@
 
 
 #include "music_test_scene.hpp"
-#include <iostream>
 #include <ranges>
 #include <uil/global/app_context.hpp>
+#include <cpt/log.hpp>
 
 
 void print_error(uil::SoundManager::Result const result) {
     switch (result) {
         case uil::SoundManager::Result::InvalidPath: {
-            std::cout << "[[InvalidPath]] | " << '\n';
+            cpt::log::error("[[InvalidPath]]");
             break;
         }
         case uil::SoundManager::Result::EmptyContainer: {
-            std::cout << "[[EmptyContainer]]" << '\n';
+            cpt::log::error("[[EmptyContainer]]");
             break;
         }
         case uil::SoundManager::Result::UnknownLevelID: {
-            std::cout << "[[UnknownLevelID]]" << '\n';
+            cpt::log::error("[[UnknownLevelID]]");
             break;
         }
         case uil::SoundManager::Result::UnknownSoundID: {
-            std::cout << "[[UnknownSoundID]]" << '\n';
+            cpt::log::error("[[UnknownSoundID]]");
             break;
         }
         case uil::SoundManager::Result::UnknownMusicCollectionID: {
-            std::cout << "[[UnknownMusicCollectionID]]" << '\n';
+            cpt::log::error("[[UnknownMusicCollectionID]]");
             break;
         }
         case uil::SoundManager::Result::StillMusicPlaying: {
-            std::cout << "[[StillMusicPlaying]]" << '\n';
+            cpt::log::info("[[StillMusicPlaying]]");
             break;
         }
         case uil::SoundManager::Result::NoMusicPlaying: {
-            std::cout << "[[NoMusicPlaying]]" << '\n';
+            cpt::log::info("[[NoMusicPlaying]]");
             break;
         }
         case uil::SoundManager::Result::NoCurrentMusic: {
-            std::cout << "[[NoCurrentMusic]]" << '\n';
+            cpt::log::info("[[NoCurrentMusic]]");
             break;
         }
         case uil::SoundManager::Result::Success: {
-            std::cout << "[[Success]]" << '\n';
+            cpt::log::info("[[Success]]");
             break;
         }
     }
@@ -94,16 +94,16 @@ void MusicTestScene::render(const uil::Context& context) const {
     };
 
     if (m_buttons.size() != labels.size()) {
-        std::cerr << "Invalid number of buttons or labels!\n";
+        cpt::log::error("Invalid number of buttons or labels!");
         return;
     }
 
     for (auto const& [button, label] : std::views::zip(m_buttons, labels)) {
         auto const rect = button.first;
         auto const col  = Rectangle{ rect.x * static_cast<float>(context.resolution.x),
-                                     rect.y * static_cast<float>(context.resolution.y),
-                                     rect.width * static_cast<float>(context.resolution.x),
-                                     rect.height * static_cast<float>(context.resolution.y) };
+                                    rect.y * static_cast<float>(context.resolution.y),
+                                    rect.width * static_cast<float>(context.resolution.x),
+                                    rect.height * static_cast<float>(context.resolution.y) };
 
         DrawRectangleLinesEx(col, 1.0f, WHITE);
         DrawText(label, static_cast<int>(col.x), static_cast<int>(col.y), 30,WHITE);
