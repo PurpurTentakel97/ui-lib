@@ -4,7 +4,7 @@ include(${PROJECT_SOURCE_DIR}/cmake/CPM.cmake)
 CPMAddPackage(
         NAME cpt-lib
         GITHUB_REPOSITORY PurpurTentakel97/cpt-lib
-        GIT_TAG v1.2.0
+        GIT_TAG v1.2.1
 )
 
 find_package(raylib CONFIG REQUIRED)

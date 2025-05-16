@@ -8,7 +8,7 @@
 #include <ranges>
 #include <raylib.h>
 #include <uil/global/sound.hpp>
-#include <uil/helper/path.hpp>
+#include <cpt/files.hpp>
 
 namespace uil {
     bool SoundManager::is_success(Result const result) {
@@ -118,7 +118,7 @@ namespace uil {
     SoundManager::Result SoundManager::load_sound(cpt::usize& id,
                                                   std::filesystem::path const& path,
                                                   cpt::usize const alias_pre_load_count) {
-        auto const sound = LoadSound(make_absolute_path(path).string().c_str());
+        auto const sound = LoadSound(cpt::make_absolute_path(path).string().c_str());
         if (not IsSoundValid(sound)) {
             return Result::InvalidPath;
         }
@@ -187,7 +187,7 @@ namespace uil {
         auto result           = Result::Success;
         auto music_collection = MusicEntry{};
         for (auto const& p : path) {
-            auto music = LoadMusicStream(make_absolute_path(p).string().c_str());
+            auto music = LoadMusicStream(cpt::make_absolute_path(p).string().c_str());
             if (not IsMusicValid(music)) {
                 result = Result::InvalidPath;
                 continue;
