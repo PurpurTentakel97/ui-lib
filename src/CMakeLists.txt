@@ -11,7 +11,6 @@ target_sources(cpt__ui_lib
         global/input.cpp
         global/sound.cpp
 
-        helper/path.cpp
         helper/rect.cpp
         helper/vec.cpp
 
@@ -40,7 +39,6 @@ target_sources(cpt__ui_lib
         include/uil/global/input_enum.hpp
         include/uil/global/sound.hpp
 
-        include/uil/helper/path.hpp
         include/uil/helper/rect.hpp
         include/uil/helper/vec.hpp
 
