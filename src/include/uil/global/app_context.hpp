@@ -7,6 +7,7 @@
 
 #include <uil/global/input.hpp>
 #include <uil/global/sound.hpp>
+#include <uil/global/asset.hpp>
 
 namespace uil {
     class Window;
@@ -18,6 +19,7 @@ namespace uil {
     private:
         InputManager m_input{};
         SoundManager m_sound{};
+        AssetManager m_asset{};
 
     public:
         AppContext()                             = default;
@@ -34,5 +36,8 @@ namespace uil {
 
         [[nodiscard]] SoundManager& sound();
         [[nodiscard]] SoundManager const& sound() const;
+
+        [[nodiscard]] AssetManager& asset();
+        [[nodiscard]] AssetManager const& asset() const;
     };
 } // namespace uil
