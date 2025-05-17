@@ -4,6 +4,7 @@
 //
 
 #pragma once
+
 #include <unordered_map>
 #include <cpt/types.hpp>
 #include <vector>
@@ -16,6 +17,10 @@ namespace uil {
 
     class SoundManager final {
     public:
+
+        /**
+         * Describes the Result of a Sound Operation
+         */
         enum class Result {
             InvalidPath,
             EmptyContainer,
@@ -31,6 +36,11 @@ namespace uil {
             Success,
         };
 
+        /**
+         *
+         * @param result to check
+         * @return if the provided result indicates a success
+         */
         [[nodiscard]] static bool is_success(Result result);
 
     private:
@@ -181,19 +191,46 @@ namespace uil {
         [[nodiscard]] bool is_sound_playing(cpt::usize id) const;
 
         // music -------------------------------------------------
-        // load music collection
+        /**
+         *
+         * @param id [OUT] provides the id if the loaded collection if one could be loaded
+         * @param path a vector of path's that gets loaded into one collection
+         * @return result of the Sound operation
+         */
         Result load_music_collection(cpt::usize& id, std::vector<std::filesystem::path> const& path);
-        // link music collection to sound level
+        /**
+         *
+         * @param music_collection_id provides the collection ID the gets linked
+         * @param level_id provides the level ID where the collection gets linked to
+         * @return result of the Sound operation
+         */
         Result link_music_collection_to_level(cpt::usize music_collection_id, cpt::usize level_id);
-        // play music collection
+        /**
+         *
+         * @param id of the music collection that gets started
+         * @return result of the Sound operation
+         */
         Result start_music_collection(cpt::usize id);
-        // pause music collection
+        /**
+         * pauses the current music collection. it can be resumed after that.
+         * @return result of the Sound operation
+         */
         Result pause_music_collection();
-        // resume music collection
+        /**
+         * resumes the current music collection if there is one.
+         * @return result of the Sound operation
+         */
         Result resume_music_collection();
-        // stop music collection
+        /**
+         * stops the current music collection. it can not be resumed.
+         * @return result of the Sound operation
+         */
         Result stop_music_collection();
-        // switch music collection
+        /**
+         * stops the current music collection and starts a new one.
+         * @param id of the next music collection
+         * @return result of the Sound operation
+         */
         Result switch_music_collection(cpt::usize id);
         /**
          *
