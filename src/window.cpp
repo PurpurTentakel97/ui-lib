@@ -3,9 +3,8 @@
 // 30.05.24
 //
 
-#include "uil/global/app_context.hpp"
+#include <uil/global/app_context.hpp>
 #include <raylib.h>
-#include <string>
 #include <uil/context.hpp>
 #include <uil/window.hpp>
 
@@ -46,22 +45,22 @@ namespace uil {
             }
         };
         auto const pre = FlagVec{
-            { ConfigFlags::FLAG_MSAA_4X_HINT,       config.msaa        },
-            { ConfigFlags::FLAG_WINDOW_HIGHDPI,     config.high_dpi    },
-            { ConfigFlags::FLAG_INTERLACED_HINT,    config.interlaced  },
+            { ConfigFlags::FLAG_MSAA_4X_HINT, config.msaa },
+            { ConfigFlags::FLAG_WINDOW_HIGHDPI, config.high_dpi },
+            { ConfigFlags::FLAG_INTERLACED_HINT, config.interlaced },
             { ConfigFlags::FLAG_WINDOW_TRANSPARENT, config.transparent },
         };
         auto const post = FlagVec{
-            { ConfigFlags::FLAG_VSYNC_HINT,               config.v_sync            },
-            { ConfigFlags::FLAG_FULLSCREEN_MODE,          config.fullscreen        },
-            { ConfigFlags::FLAG_WINDOW_RESIZABLE,         config.resizable         },
-            { ConfigFlags::FLAG_WINDOW_UNDECORATED,       config.undecorated       },
-            { ConfigFlags::FLAG_WINDOW_HIDDEN,            config.hidden            },
-            { ConfigFlags::FLAG_WINDOW_MINIMIZED,         config.minimized         },
-            { ConfigFlags::FLAG_WINDOW_MAXIMIZED,         config.maximized         },
-            { ConfigFlags::FLAG_WINDOW_UNFOCUSED,         config.unfocused         },
-            { ConfigFlags::FLAG_WINDOW_TOPMOST,           config.top_most          },
-            { ConfigFlags::FLAG_WINDOW_ALWAYS_RUN,        config.always_run        },
+            { ConfigFlags::FLAG_VSYNC_HINT, config.v_sync },
+            { ConfigFlags::FLAG_FULLSCREEN_MODE, config.fullscreen },
+            { ConfigFlags::FLAG_WINDOW_RESIZABLE, config.resizable },
+            { ConfigFlags::FLAG_WINDOW_UNDECORATED, config.undecorated },
+            { ConfigFlags::FLAG_WINDOW_HIDDEN, config.hidden },
+            { ConfigFlags::FLAG_WINDOW_MINIMIZED, config.minimized },
+            { ConfigFlags::FLAG_WINDOW_MAXIMIZED, config.maximized },
+            { ConfigFlags::FLAG_WINDOW_UNFOCUSED, config.unfocused },
+            { ConfigFlags::FLAG_WINDOW_TOPMOST, config.top_most },
+            { ConfigFlags::FLAG_WINDOW_ALWAYS_RUN, config.always_run },
             { ConfigFlags::FLAG_WINDOW_MOUSE_PASSTHROUGH, config.mouse_passthrough },
             { ConfigFlags::FLAG_BORDERLESS_WINDOWED_MODE, config.borderless_window },
         };
@@ -82,36 +81,47 @@ namespace uil {
     void Window::set_vsync(bool const vsync) {
         set_flag(ConfigFlags::FLAG_VSYNC_HINT, vsync);
     }
+
     void Window::set_fullscreen(bool const fullscreen) {
         set_flag(ConfigFlags::FLAG_FULLSCREEN_MODE, fullscreen);
     }
+
     void Window::set_resizeable(bool const resizeable) {
         set_flag(ConfigFlags::FLAG_WINDOW_RESIZABLE, resizeable);
     }
+
     void Window::set_undecorated(bool const undecorated) {
         set_flag(ConfigFlags::FLAG_WINDOW_UNDECORATED, undecorated);
     }
+
     void Window::set_hidden(bool const hidden) {
         set_flag(ConfigFlags::FLAG_WINDOW_HIDDEN, hidden);
     }
+
     void Window::set_minimized(bool const minimized) {
         set_flag(ConfigFlags::FLAG_WINDOW_MINIMIZED, minimized);
     }
+
     void Window::set_maximized(bool const maximized) {
         set_flag(ConfigFlags::FLAG_WINDOW_MAXIMIZED, maximized);
     }
+
     void Window::set_unfocused(bool const unfocused) {
         set_flag(ConfigFlags::FLAG_WINDOW_UNFOCUSED, unfocused);
     }
+
     void Window::set_top_most(bool const top_most) {
         set_flag(ConfigFlags::FLAG_WINDOW_TOPMOST, top_most);
     }
+
     void Window::set_always_run(bool const always_run) {
         set_flag(ConfigFlags::FLAG_WINDOW_ALWAYS_RUN, always_run);
     }
+
     void Window::set_mouse_pathrough(bool const mouse_pathrough) {
         set_flag(ConfigFlags::FLAG_WINDOW_MOUSE_PASSTHROUGH, mouse_pathrough);
     }
+
     void Window::set_borderless(bool const borderless) {
         set_flag(ConfigFlags::FLAG_BORDERLESS_WINDOWED_MODE, borderless);
     }
@@ -122,6 +132,7 @@ namespace uil {
 
     void Window::update() {
         auto const context = create_context();
+        AppContext::instance().sound().update();
 
         // updating
         SetMouseCursor(MOUSE_CURSOR_DEFAULT);

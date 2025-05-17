@@ -14,7 +14,16 @@ namespace uil {
     InputManager& AppContext::input() {
         return m_input;
     }
+
     InputManager const& AppContext::input() const {
         return m_input;
+    }
+
+    SoundManager& AppContext::sound() {
+        return m_sound;
+    }
+
+    SoundManager const& AppContext::sound() const {
+        return m_sound;
     }
 } // namespace ui

@@ -4,18 +4,22 @@
 //
 
 #pragma once
+
 #include <raylib.h>
 #include <uil/global/input_enum.hpp>
+#include <utility>
 
 namespace uil {
     enum class ModOp {
         Or,
         And,
     };
+
     enum class KeyOp {
         Or,
         And,
     };
+
     class InputManager final {
     private:
         int m_current_controller_index{ 0 };
@@ -36,18 +40,22 @@ namespace uil {
                 return func_gamepad(m_current_controller_index, key);
             }
         }
+
         template<IsRayKey R>
         [[nodiscard]] bool is_down_ray(R const key) const {
             return is_ray(IsKeyDown, IsMouseButtonDown, IsGamepadButtonDown, key);
         }
+
         template<IsRayKey R>
         [[nodiscard]] bool is_up_ray(R const key) const {
             return is_ray(IsKeyUp, IsMouseButtonUp, IsGamepadButtonUp, key);
         }
+
         template<IsRayKey R>
         [[nodiscard]] bool is_pressed_ray(R const key) const {
             return is_ray(IsKeyPressed, IsMouseButtonPressed, IsGamepadButtonPressed, key);
         }
+
         template<IsRayKey R>
         [[nodiscard]] bool is_released_ray(R const key) const {
             return is_ray(IsKeyReleased, IsMouseButtonReleased, IsGamepadButtonReleased, key);
@@ -71,14 +79,17 @@ namespace uil {
         [[nodiscard]] bool is_single_down(I const input) const {
             return is_down_ray(ray_key_from_input(input));
         }
+
         template<IsInput I>
         [[nodiscard]] bool is_single_up(I const input) const {
             return is_up_ray(ray_key_from_input(input));
         }
+
         template<IsInput I>
         [[nodiscard]] bool is_single_pressed(I const input) const {
             return is_pressed_ray(ray_key_from_input(input));
         }
+
         template<IsInput I>
         [[nodiscard]] bool is_single_released(I const input) const {
             return is_released_ray(ray_key_from_input(input));
@@ -98,15 +109,19 @@ namespace uil {
                 if constexpr (IsButton<T>) {
                     is_missing_keys = false;
                     switch (type_key) {
-                        case KeyOp::Or: is_keys = is_keys or func_keys(key); break;
-                        case KeyOp::And: is_keys = is_keys and func_keys(key); break;
+                        case KeyOp::Or: is_keys = is_keys or func_keys(key);
+                            break;
+                        case KeyOp::And: is_keys = is_keys and func_keys(key);
+                            break;
                     }
                 }
                 if constexpr (IsModifier<T>) {
                     is_missing_modifiers = false;
                     switch (type_mod) {
-                        case ModOp::Or: is_modifiers = is_modifiers or is_single_down(key); break;
-                        case ModOp::And: is_modifiers = is_modifiers and is_single_down(key); break;
+                        case ModOp::Or: is_modifiers = is_modifiers or is_single_down(key);
+                            break;
+                        case ModOp::And: is_modifiers = is_modifiers and is_single_down(key);
+                            break;
                     }
                 }
             };
@@ -124,22 +139,32 @@ namespace uil {
         }
 
     public:
+        InputManager()                        = default;
+        InputManager(InputManager const&)            = delete;
+        InputManager(InputManager&&)                 = delete;
+        InputManager& operator=(InputManager const&) = delete;
+        InputManager& operator=(InputManager&&)      = delete;
+        ~InputManager()                       = default;
+
         // main input functions ----------------------------------------------------
         template<KeyOp KeyOp = KeyOp::Or, ModOp ModOp = ModOp::Or, IsInput... I>
         [[nodiscard]] bool is_down(I const... input) const {
-            return check_input([this](auto const key) { return is_single_down(key); }, KeyOp, ModOp, input...);
+            return check_input([&](auto const key) { return is_single_down(key); }, KeyOp, ModOp, input...);
         }
+
         template<KeyOp KeyOp = KeyOp::Or, ModOp ModOp = ModOp::Or, IsInput... I>
         [[nodiscard]] bool is_up(I const... input) const {
-            return check_input([this](auto const key) { return is_single_up(key); }, KeyOp, ModOp, input...);
+            return check_input([&](auto const key) { return is_single_up(key); }, KeyOp, ModOp, input...);
         }
+
         template<KeyOp KeyOp = KeyOp::Or, ModOp ModOp = ModOp::Or, IsInput... I>
         [[nodiscard]] bool is_pressed(I const... input) const {
-            return check_input([this](auto const key) { return is_single_pressed(key); }, KeyOp, ModOp, input...);
+            return check_input([&](auto const key) { return is_single_pressed(key); }, KeyOp, ModOp, input...);
         }
+
         template<KeyOp KeyOp = KeyOp::Or, ModOp ModOp = ModOp::Or, IsInput... I>
         [[nodiscard]] bool is_released(I const... input) const {
-            return check_input([this](auto const key) { return is_single_released(key); }, KeyOp, ModOp, input...);
+            return check_input([&](auto const key) { return is_single_released(key); }, KeyOp, ModOp, input...);
         }
 
         // getter setter ---------------------------------------------------------

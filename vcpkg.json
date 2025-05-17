@@ -2,21 +2,10 @@
   "name": "ui-lib",
   "version-string": "1.0.0",
   "builtin-baseline": "a34c873a9717a888f58dc05268dea15592c2f0ff",
-  "vcpkg-configuration": {
-    "registries": [
-      {
-        "kind": "git",
-        "repository": "https://github.com/PurpurTentakel97/vcpkg-registry",
-        "baseline": "c2c72c04f411b9e251532fd1d5b6333cc36fe16d",
-        "packages": [
-          "cpt-lib"
-        ]
-      }
-    ]
-  },
   "dependencies": [
     "gtest",
-    "cpt-lib",
+    "tl-expected",
+    "tl-optional",
     "glfw3",
     {
       "name": "raylib",
