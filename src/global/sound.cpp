@@ -189,23 +189,22 @@ namespace uil {
             auto music = LoadMusicStream(cpt::make_absolute_path(p).string().c_str());
             if (not IsMusicValid(music)) {
                 result = Result::InvalidPath;
-                continue;
+                break;
             }
 
             music.looping = false;
             music_collection.music.push_back(music);
         }
 
-        if (music_collection.music.empty()) {
-            return tl::unexpected{ Result::InvalidPath };
+        if (not is_success(result)) {
+            for (auto const& music : music_collection.music) {
+                UnloadMusicStream(music);
+            }
+            return tl::unexpected{ result };
         }
 
         auto const id = m_music_collections.size() + 1;
         m_music_collections.insert({ id, std::move(music_collection) });
-
-        if (not is_success(result)) {
-            return tl::unexpected{ result };
-        }
 
         return id;
     }
