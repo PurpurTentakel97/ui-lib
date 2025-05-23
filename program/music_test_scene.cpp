@@ -54,12 +54,11 @@ void print_error(uil::SoundManager::Result const result) {
 MusicTestScene::MusicTestScene(cpt::Vec2_i const resolution) : Scene{ resolution } {
     auto& sound = uil::AppContext::instance().sound();
 
-    sound.load_music_collection(m_id_1,
-                                { "/assets/music/music_1.mp3",
-                                  "/assets/music/music_2.mp3",
-                                  "/assets/music/music_3.mp3" });
+    m_id_1 = sound.load_music_collection({ "/assets/music/music_1.mp3",
+                                           "/assets/music/music_2.mp3",
+                                           "/assets/music/music_3.mp3" }).value_or(0);
 
-    sound.load_music_collection(m_id_2, { "/assets/music/music_4.mp3" });
+    m_id_2 = sound.load_music_collection({ "/assets/music/music_4.mp3" }).value_or(0);
 }
 
 bool MusicTestScene::handle_input(uil::Context const& context) const {
