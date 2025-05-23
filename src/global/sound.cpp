@@ -115,20 +115,19 @@ namespace uil {
     }
 
     // sound --------------------------------------------------
-    SoundManager::Result SoundManager::load_sound(cpt::usize& id,
-                                                  std::filesystem::path const& path,
-                                                  cpt::usize const alias_pre_load_count) {
+    tl::expected<cpt::usize, SoundManager::Result> SoundManager::load_sound(std::filesystem::path const& path,
+                                                                            cpt::usize const alias_pre_load_count) {
         auto const sound = LoadSound(cpt::make_absolute_path(path).string().c_str());
         if (not IsSoundValid(sound)) {
-            return Result::InvalidPath;
+            return tl::unexpected{ Result::InvalidPath };
         }
 
-        id = cpt::usize{ m_sounds.size() + 1 };
+        auto const id = cpt::usize{ m_sounds.size() + 1 };
         m_sounds.insert({ id, SoundEntry{ std::vector{ sound } } });
         for (cpt::usize i = 0; i < alias_pre_load_count; ++i) {
             m_sounds[id].sound.push_back(LoadSoundAlias(sound));
         }
-        return Result::Success;
+        return id;
     }
 
     SoundManager::Result SoundManager::link_sound_to_level(cpt::usize const sound_id, cpt::usize const level_id) {
@@ -178,10 +177,10 @@ namespace uil {
     }
 
     // music ----------------------------------------
-    SoundManager::Result SoundManager::load_music_collection(cpt::usize& id,
-                                                             std::vector<std::filesystem::path> const& path) {
+    tl::expected<cpt::usize, SoundManager::Result> SoundManager::load_music_collection(
+            std::vector<std::filesystem::path> const& path) {
         if (path.empty()) {
-            return Result::EmptyContainer;
+            return tl::unexpected{ Result::EmptyContainer };
         }
 
         auto result           = Result::Success;
@@ -194,16 +193,21 @@ namespace uil {
             }
 
             music.looping = false;
-            music_collection.music.push_back(std::move(music));
+            music_collection.music.push_back(music);
         }
 
         if (music_collection.music.empty()) {
-            return Result::InvalidPath;
+            return tl::unexpected{ Result::InvalidPath };
         }
 
-        id = m_music_collections.size() + 1;
+        auto const id = m_music_collections.size() + 1;
         m_music_collections.insert({ id, std::move(music_collection) });
-        return result;
+
+        if (not is_success(result)) {
+            return tl::unexpected{ result };
+        }
+
+        return id;
     }
 
     SoundManager::Result SoundManager::link_music_collection_to_level(cpt::usize const music_collection_id,
@@ -277,6 +281,4 @@ namespace uil {
         if (not m_current_music.has_value()) { return false; }
         return IsMusicStreamPlaying(*m_current_music.value());
     }
-
-
 }

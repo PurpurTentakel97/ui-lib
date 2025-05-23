@@ -10,6 +10,7 @@
 #include <vector>
 #include <filesystem>
 #include <optional>
+#include <tl/expected.hpp>
 
 namespace uil {
     template<typename T>
@@ -17,7 +18,6 @@ namespace uil {
 
     class SoundManager final {
     public:
-
         /**
          * Describes the Result of a Sound Operation
          */
@@ -162,12 +162,12 @@ namespace uil {
         // sound ------------------------------------------
         /**
          *
-         * @param id OUT provides / returns the new id of the loaded sound and its aliases
          * @param path provides the path of the loaded sound. Can be a relative or an absolute path. A relative Path will be called with the working directory
          * @param alias_pre_load_count loads an initial amound of aliases. Use this if sounds should overlap
-         * @return if the sound is successfully loaded
+         * @return returns either the id or an error
          */
-        Result load_sound(cpt::usize& id, std::filesystem::path const& path, cpt::usize alias_pre_load_count = 0);
+        tl::expected<cpt::usize, Result> load_sound(std::filesystem::path const& path,
+                                                    cpt::usize alias_pre_load_count = 0);
         /**
          * you need to add the sound and set the soundlevel first to make sure both ids are present.
          *
@@ -193,11 +193,10 @@ namespace uil {
         // music -------------------------------------------------
         /**
          *
-         * @param id [OUT] provides the id if the loaded collection if one could be loaded
          * @param path a vector of path's that gets loaded into one collection
-         * @return result of the Sound operation
+         * @return returns either the id or an error
          */
-        Result load_music_collection(cpt::usize& id, std::vector<std::filesystem::path> const& path);
+        tl::expected<cpt::usize, Result> load_music_collection(std::vector<std::filesystem::path> const& path);
         /**
          *
          * @param music_collection_id provides the collection ID the gets linked

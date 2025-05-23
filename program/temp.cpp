@@ -25,8 +25,8 @@ int main() {
     window.debug_window.fps.set(true);
 
     // [[maybe_unused]] auto const t1 = window.scene_manager().emplace_top<InputTestScene>();
-    // [[maybe_unused]] auto const t2 = window.scene_manager().emplace_top<MusicTestScene>();
-    [[maybe_unused]] auto const t3 = window.scene_manager().emplace_top<AssetTestScene>();
+    [[maybe_unused]] auto const t2 = window.scene_manager().emplace_top<MusicTestScene>();
+    // [[maybe_unused]] auto const t3 = window.scene_manager().emplace_top<AssetTestScene>();
     while (not WindowShouldClose()) {
         window.update();
     }
