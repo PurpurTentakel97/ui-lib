@@ -8,6 +8,7 @@
 #include <uil/global/input.hpp>
 #include <uil/global/sound.hpp>
 #include <uil/global/asset.hpp>
+#include <uil/global/resolution.hpp>
 
 namespace uil {
     class Window;
@@ -20,6 +21,7 @@ namespace uil {
         InputManager m_input{};
         SoundManager m_sound{};
         AssetManager m_asset{};
+        ResolutionManager m_resolution{};
 
     public:
         AppContext()                             = default;
@@ -39,5 +41,8 @@ namespace uil {
 
         [[nodiscard]] AssetManager& asset();
         [[nodiscard]] AssetManager const& asset() const;
+
+        [[nodiscard]] ResolutionManager& resolution();
+        [[nodiscard]] ResolutionManager const& resolution() const;
     };
 } // namespace uil

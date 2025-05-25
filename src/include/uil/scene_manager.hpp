@@ -17,11 +17,7 @@ namespace uil {
      */
     class SceneManager final : public BaseManager<Scene> {
     public:
-        /**
-         *
-         * @param resolution current resolution
-         */
-        explicit SceneManager(cpt::Vec2_i resolution);
+        explicit SceneManager();
 
         /**
          * calls all emplace scene from top to bottom to check.

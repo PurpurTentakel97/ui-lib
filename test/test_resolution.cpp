@@ -5,7 +5,7 @@
 
 #include <gtest/gtest.h>
 #include <uil/exception.hpp>
-#include <uil/resolution.hpp>
+#include <uil/global/resolution_enum.hpp>
 
 TEST(Resolution, VecThrow) {
     auto constexpr res = static_cast<uil::Resolution>(300);

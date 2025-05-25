@@ -21,7 +21,8 @@ int main() {
     config.v_sync    = true;
     config.high_dpi  = true;
 
-    auto window = uil::Window({ 1920, 1080 }, title, config);
+    auto window = uil::Window(title, config);
+    uil::AppContext::instance().resolution().set_resolution(uil::Resolution::FULL_HD);
     window.debug_window.fps.set(true);
 
     // [[maybe_unused]] auto const t1 = window.scene_manager().emplace_top<InputTestScene>();

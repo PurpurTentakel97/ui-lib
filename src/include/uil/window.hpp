@@ -4,15 +4,15 @@
 //
 
 #pragma once
-#include <cpt/vec2.hpp>
 #include <uil/debug/debug_wrapper.hpp>
 #include <uil/scene_manager.hpp>
+#include <uil/global/resolution_enum.hpp>
 
 namespace uil {
     struct Context;
     /**
      * provides the construct config for a window.
-     * some config need to be set that way because it can only be set bevor the window is initialized.
+     * some config needs to be set that way because it can only be set bevor the window is initialized.
      */
     struct WindowConfig final {
         bool v_sync            = false;
@@ -41,7 +41,7 @@ namespace uil {
      */
     class Window final {
     private:
-        cpt::Vec2_i m_resolution;
+        Resolution m_resolution{ Resolution::SVGA };
         SceneManager m_scene_manager;
         Font m_font{};
 
@@ -56,17 +56,16 @@ namespace uil {
         /**
          * initializes the window and sets all window flags.
          *
-         * @param resolution initial window dimensions
          * @param title window title
          * @param config window state config
          */
-        Window(cpt::Vec2_i resolution, char const* title, WindowConfig config);
+        Window(char const* title, WindowConfig config);
         Window(Window const&)              = delete; ///< deleted because only one instance is allowed
         Window(Window&& window)            = delete; ///< deleted because not necessary
         Window& operator=(Window const&)   = delete; ///< deleted because only one instance is allowed
         Window& operator=(Window&& window) = delete; ///< deleted because not necessary
         /**
-         * closes window.
+         * closes the window.
          */
         ~Window();
 

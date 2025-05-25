@@ -49,7 +49,9 @@ namespace uil {
         QSVGA,
         QVGA,
 
-        SCREEN, // screen needs to stay last
+        RESIZED,
+        CUSTOM,
+        SCREEN, // the screen needs to stay last
     };
 
     /**
