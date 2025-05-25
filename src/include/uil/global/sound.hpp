@@ -11,6 +11,7 @@
 #include <filesystem>
 #include <optional>
 #include <tl/expected.hpp>
+#include <cpt/log.hpp>
 
 namespace uil {
     template<typename T>
@@ -18,6 +19,7 @@ namespace uil {
 
     class SoundManager final {
     public:
+        // #region Result
         /**
          * Describes the Result of a Sound Operation
          */
@@ -42,8 +44,10 @@ namespace uil {
          * @return if the provided result indicates a success
          */
         [[nodiscard]] static bool is_success(Result result);
+        // #endregion
 
     private:
+        // #region Internal
         struct LevelEntry final {
             float value{};
             bool muted{ false };
@@ -77,10 +81,13 @@ namespace uil {
         void update_current_music_level(cpt::usize level_id);
 
         void update_current_music_collection();
+        // #endregion
 
+        // #region Ray
         template<IsSoundFile T>
         Result set_level_ray(T const& file, cpt::usize const level_id) {
             if (not m_levels.contains(level_id)) {
+                cpt::log::error("[[Sound Manager]] | Level with ID '{}' not found", level_id);
                 return Result::UnknownLevelID;
             }
 
@@ -104,15 +111,26 @@ namespace uil {
             }
         }
 
+        // #endregion
+
     public:
+        // #region Constructor
         SoundManager();
         SoundManager(SoundManager const&)            = delete;
         SoundManager(SoundManager&&)                 = delete;
         SoundManager& operator=(SoundManager const&) = delete;
         SoundManager& operator=(SoundManager&&)      = delete;
         ~SoundManager();
+        // #endregion
 
-        // global ---------------------------------------
+        // #region Global
+        /**
+         * updates the music streams and fades.
+         */
+        void update();
+        // #endregion
+
+        // #region Level
         /**
          * call this to add a new level id by just providing an unknown id here.
          * call this with id 0 to set the global level
@@ -153,13 +171,9 @@ namespace uil {
          * @return if the provided sound level is muted. returns false if the provided id is not existing
          */
         [[nodiscard]] bool is_sound_level_muted(cpt::usize id) const;
+        // #endregion
 
-        /**
-         * updates the music streams and fades.
-         */
-        void update();
-
-        // sound ------------------------------------------
+        // #region Sound
         /**
          *
          * @param path provides the path of the loaded sound. Can be a relative or an absolute path. A relative Path will be called with the working directory
@@ -189,8 +203,9 @@ namespace uil {
          * @return returns if the sound or at least one of its aliases is currently playing.
          */
         [[nodiscard]] bool is_sound_playing(cpt::usize id) const;
+        // #endregion
 
-        // music -------------------------------------------------
+        // #region Music
         /**
          *
          * @param path a vector of path's that gets loaded into one collection
@@ -242,5 +257,6 @@ namespace uil {
          * @return if the current music is playing. Also returns false if there is no current music set yet.
          */
         [[nodiscard]] bool is_music_playing() const;
+        // #endregion
     };
 }

@@ -9,48 +9,6 @@
 #include <cpt/log.hpp>
 
 
-void print_error(uil::SoundManager::Result const result) {
-    switch (result) {
-        case uil::SoundManager::Result::InvalidPath: {
-            cpt::log::error("[[InvalidPath]]");
-            break;
-        }
-        case uil::SoundManager::Result::EmptyContainer: {
-            cpt::log::error("[[EmptyContainer]]");
-            break;
-        }
-        case uil::SoundManager::Result::UnknownLevelID: {
-            cpt::log::error("[[UnknownLevelID]]");
-            break;
-        }
-        case uil::SoundManager::Result::UnknownSoundID: {
-            cpt::log::error("[[UnknownSoundID]]");
-            break;
-        }
-        case uil::SoundManager::Result::UnknownMusicCollectionID: {
-            cpt::log::error("[[UnknownMusicCollectionID]]");
-            break;
-        }
-        case uil::SoundManager::Result::StillMusicPlaying: {
-            cpt::log::info("[[StillMusicPlaying]]");
-            break;
-        }
-        case uil::SoundManager::Result::NoMusicPlaying: {
-            cpt::log::info("[[NoMusicPlaying]]");
-            break;
-        }
-        case uil::SoundManager::Result::NoCurrentMusic: {
-            cpt::log::info("[[NoCurrentMusic]]");
-            break;
-        }
-        case uil::SoundManager::Result::Success: {
-            cpt::log::info("[[Success]]");
-            break;
-        }
-    }
-}
-
-
 MusicTestScene::MusicTestScene(cpt::Vec2_i const resolution) : Scene{ resolution } {
     auto& sound = uil::AppContext::instance().sound();
 
@@ -71,7 +29,7 @@ bool MusicTestScene::handle_input(uil::Context const& context) const {
                                     rectangle.height * static_cast<float>(context.resolution.y) };
         if (CheckCollisionPointRec(context.mouse_position, col)) {
             if (uil::AppContext::instance().input().is_pressed(uil::Mouse::MOUSE_BUTTON_LEFT)) {
-                print_error(func());
+                func();
             }
         }
     }
