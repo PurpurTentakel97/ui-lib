@@ -24,7 +24,7 @@ namespace uil {
     private:
         int m_current_controller_index{ 0 };
 
-        // ray --------------------------------------------
+        // #region Ray
         template<IsRayKey R>
         [[nodiscard]] bool is_ray(auto const func_keyboard,
                                   auto const func_mouse,
@@ -74,7 +74,9 @@ namespace uil {
             }
         }
 
-        // uil ----------------------------------------------
+        // #endregion
+
+        // #region Internal
         template<IsInput I>
         [[nodiscard]] bool is_single_down(I const input) const {
             return is_down_ray(ray_key_from_input(input));
@@ -138,15 +140,19 @@ namespace uil {
             return is_keys and is_modifiers;
         }
 
+        // #endregion
+
     public:
-        InputManager()                        = default;
+        // #region Constructor
+        InputManager()                               = default;
         InputManager(InputManager const&)            = delete;
         InputManager(InputManager&&)                 = delete;
         InputManager& operator=(InputManager const&) = delete;
         InputManager& operator=(InputManager&&)      = delete;
-        ~InputManager()                       = default;
+        ~InputManager()                              = default;
+        // #endregion
 
-        // main input functions ----------------------------------------------------
+        // #region Input
         template<KeyOp KeyOp = KeyOp::Or, ModOp ModOp = ModOp::Or, IsInput... I>
         [[nodiscard]] bool is_down(I const... input) const {
             return check_input([&](auto const key) { return is_single_down(key); }, KeyOp, ModOp, input...);
@@ -167,8 +173,11 @@ namespace uil {
             return check_input([&](auto const key) { return is_single_released(key); }, KeyOp, ModOp, input...);
         }
 
-        // getter setter ---------------------------------------------------------
+        // #endregion
+
+        // #region GamePad
         void set_current_gamepad_index(int index);
         [[nodiscard]] int current_gamepad_index() const;
+        // #endregion
     };
 } // namespace uil
