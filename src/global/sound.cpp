@@ -102,7 +102,7 @@ namespace uil {
 
     float SoundManager::get_level(cpt::usize const id) const {
         if (not m_levels.contains(id)) {
-            cpt::log::error("[[Sound Manager]] | level with id '{}' not found", id);
+            cpt::log::r_error("[[Sound Manager]] | level with id '{}' not found", id);
             return 0.0f;
         }
 
@@ -111,7 +111,7 @@ namespace uil {
 
     SoundManager::Result SoundManager::toggle_mute_sound_level(cpt::usize const id) {
         if (not m_levels.contains(id)) {
-            cpt::log::error("[[Sound Manager]] | level with id '{}' not found", id);
+            cpt::log::r_error("[[Sound Manager]] | level with id '{}' not found", id);
             return Result::UnknownLevelID;
         }
         m_levels[id].muted = not m_levels[id].muted;
@@ -121,7 +121,7 @@ namespace uil {
 
     SoundManager::Result SoundManager::set_mute_sound_level(cpt::usize const id, bool const is_mute) {
         if (not m_levels.contains(id)) {
-            cpt::log::error("[[Sound Manager]] | level with id '{}' not found", id);
+            cpt::log::r_error("[[Sound Manager]] | level with id '{}' not found", id);
             return Result::UnknownLevelID;
         }
         m_levels[id].muted = is_mute;
@@ -141,7 +141,7 @@ namespace uil {
                                                                             cpt::usize const alias_pre_load_count) {
         auto const sound = LoadSound(cpt::make_absolute_path(path).string().c_str());
         if (not IsSoundValid(sound)) {
-            cpt::log::error("[[Sound Manager]] | failed to load sound from the path '{}'", path.string());
+            cpt::log::r_error("[[Sound Manager]] | failed to load sound from the path '{}'", path.string());
             return tl::unexpected{ Result::InvalidPath };
         }
 
@@ -159,12 +159,12 @@ namespace uil {
 
     SoundManager::Result SoundManager::link_sound_to_level(cpt::usize const sound_id, cpt::usize const level_id) {
         if (not m_levels.contains(level_id)) {
-            cpt::log::error("[[Sound Manager]] | level with id '{}' not found", level_id);
+            cpt::log::r_error("[[Sound Manager]] | level with id '{}' not found", level_id);
             return Result::UnknownLevelID;
         }
 
         if (not m_sounds.contains(sound_id)) {
-            cpt::log::error("[[Sound Manager]] | sound with id '{}' not found", sound_id);
+            cpt::log::r_error("[[Sound Manager]] | sound with id '{}' not found", sound_id);
             return Result::UnknownSoundID;
         }
 
@@ -177,7 +177,7 @@ namespace uil {
             static std::unordered_set<cpt::usize> already_warned{};
             if (already_warned.insert(id).second) {
                 // is set to true if the insertion took place | This prevents spamming the console.
-                cpt::log::error("[[Sound Manager]] | sound with id '{}' not found", id);
+                cpt::log::r_error("[[Sound Manager]] | sound with id '{}' not found", id);
             }
             return Result::UnknownSoundID;
         }
@@ -204,7 +204,7 @@ namespace uil {
 
     bool SoundManager::is_sound_playing(cpt::usize const id) const {
         if (not m_sounds.contains(id)) {
-            cpt::log::error("[[Sound Manager]] | sound with id '{}' not found", id);
+            cpt::log::r_error("[[Sound Manager]] | sound with id '{}' not found", id);
             return false;
         }
         return std::ranges::any_of(m_sounds.at(id).sound,
@@ -219,7 +219,7 @@ namespace uil {
     tl::expected<cpt::usize, SoundManager::Result> SoundManager::load_music_collection(
             std::vector<std::filesystem::path> const& path) {
         if (path.empty()) {
-            cpt::log::error("[[Sound Manager]] | a music collection cannot be empty");
+            cpt::log::r_error("[[Sound Manager]] | a music collection cannot be empty");
             return tl::unexpected{ Result::EmptyContainer };
         }
 
@@ -228,7 +228,7 @@ namespace uil {
         for (auto const& p : path) {
             auto music = LoadMusicStream(cpt::make_absolute_path(p).string().c_str());
             if (not IsMusicValid(music)) {
-                cpt::log::error("[[Sound Manager]] | failed to load music from the path '{}'", p.string());
+                cpt::log::r_error("[[Sound Manager]] | failed to load music from the path '{}'", p.string());
                 result = Result::InvalidPath;
                 break;
             }
@@ -254,11 +254,11 @@ namespace uil {
     SoundManager::Result SoundManager::link_music_collection_to_level(cpt::usize const music_collection_id,
                                                                       cpt::usize const level_id) {
         if (not m_music_collections.contains(music_collection_id)) {
-            cpt::log::error("[[Sound Manager]] | music collection with id '{}' not found", music_collection_id);
+            cpt::log::r_error("[[Sound Manager]] | music collection with id '{}' not found", music_collection_id);
             return Result::UnknownMusicCollectionID;
         }
         if (not m_levels.contains(level_id)) {
-            cpt::log::error("[[Sound Manager]] | level with id '{}' not found", level_id);
+            cpt::log::r_error("[[Sound Manager]] | level with id '{}' not found", level_id);
             return Result::UnknownLevelID;
         }
 
@@ -268,11 +268,11 @@ namespace uil {
 
     SoundManager::Result SoundManager::start_music_collection(cpt::usize const id) {
         if (is_music_playing()) {
-            cpt::log::error("[[Sound Manager]] | music is already playing | not starting new music");
+            cpt::log::r_error("[[Sound Manager]] | music is already playing | not starting new music");
             return Result::StillMusicPlaying;
         }
         if (not m_music_collections.contains(id)) {
-            cpt::log::error("[[Sound Manager]] | music collection with id '{}' not found", id);
+            cpt::log::r_error("[[Sound Manager]] | music collection with id '{}' not found", id);
             return Result::UnknownMusicCollectionID;
         }
         m_current_music_collection = &m_music_collections.at(id);
@@ -300,7 +300,7 @@ namespace uil {
             return Result::StillMusicPlaying;
         }
         if (not m_current_music) {
-            cpt::log::error("[[Sound Manager]] | no current music | not resuming music");
+            cpt::log::r_error("[[Sound Manager]] | no current music | not resuming music");
             return Result::NoCurrentMusic;
         }
         m_is_music_paused = false;
@@ -326,7 +326,7 @@ namespace uil {
 
     SoundManager::Result SoundManager::switch_music_collection(cpt::usize const id) {
         if (not m_music_collections.contains(id)) {
-            cpt::log::error("[[Sound Manager]] | music collection with id '{}' not found", id);
+            cpt::log::r_error("[[Sound Manager]] | music collection with id '{}' not found", id);
             return Result::UnknownMusicCollectionID;
         }
         if (m_current_music) {
@@ -342,7 +342,7 @@ namespace uil {
 
     bool SoundManager::is_music_collection_playing(cpt::usize const id) const {
         if (not m_music_collections.contains(id)) {
-            cpt::log::error("[[Sound Manager]] | music collection with id '{}' not found", id);
+            cpt::log::r_error("[[Sound Manager]] | music collection with id '{}' not found", id);
             return false;
         }
         return std::ranges::any_of(m_music_collections.at(id).music,

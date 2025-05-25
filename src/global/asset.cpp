@@ -32,9 +32,9 @@ namespace uil {
 
         static std::unordered_set<cpt::usize> already_warned{};
         if (already_warned.insert(id).second) { // is set to true if the insertion took place | This prevents spamming the console.
-            cpt::log::error("[[Asset Manager]] | id '{}' missing | returning fallback texture", id);
+            cpt::log::r_error("[[Asset Manager]] | id '{}' missing | returning fallback texture", id);
         }
-        
+
         return m_fallback_texture;
     }
 
@@ -45,7 +45,7 @@ namespace uil {
     tl::expected<cpt::usize, AssetManager::Error> AssetManager::load(std::filesystem::path const& path) {
         auto const texture = LoadTexture(cpt::make_absolute_path(path).string().c_str());
         if (not IsTextureValid(texture)) {
-            cpt::log::error("[[Asset Manager]] | failed to load texture from the path '{}'", path.string());
+            cpt::log::r_error("[[Asset Manager]] | failed to load texture from the path '{}'", path.string());
             return tl::unexpected(Error::InvalidPath);
         }
 
@@ -60,7 +60,7 @@ namespace uil {
 
     tl::expected<void, AssetManager::Error> AssetManager::unload(cpt::usize const id) {
         if (not m_assets.contains(id)) {
-            cpt::log::error("[[Asset Manager]] | failed to unload id '{}'", id);
+            cpt::log::r_error("[[Asset Manager]] | failed to unload id '{}'", id);
             return tl::unexpected(Error::InvalidId);
         }
 

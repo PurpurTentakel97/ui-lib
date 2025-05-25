@@ -87,7 +87,7 @@ namespace uil {
         template<IsSoundFile T>
         Result set_level_ray(T const& file, cpt::usize const level_id) {
             if (not m_levels.contains(level_id)) {
-                cpt::log::error("[[Sound Manager]] | Level with ID '{}' not found", level_id);
+                cpt::log::r_error("[[Sound Manager]] | Level with ID '{}' not found", level_id);
                 return Result::UnknownLevelID;
             }
 
