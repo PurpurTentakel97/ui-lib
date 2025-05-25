@@ -11,7 +11,7 @@ private:
     cpt::usize m_invalid_asset;
 
 public:
-    explicit AssetTestScene(cpt::Vec2_i resolution);
+    explicit AssetTestScene();
 
     void render(uil::UpdateContext const& context) const override;
 };

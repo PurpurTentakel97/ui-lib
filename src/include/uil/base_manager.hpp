@@ -22,21 +22,18 @@ namespace uil {
 
     private:
         ElementVector m_elements{};
-        cpt::Vec2_i m_resolution;
 
         template<std::derived_from<T> S, typename... Args>
         std::weak_ptr<S> emplace_element_with_offset(cpt::usize const offset, Args&&... args)
-            requires(std::constructible_from<S, cpt::Vec2_i, Args...>)
-        {
+            requires(std::constructible_from<S, Args...>) {
             return emplace_element_with_iterator<S>(m_elements.begin() + static_cast<cpt::i64>(offset),
                                                     std::forward<Args>(args)...);
         }
 
         template<std::derived_from<T> S, typename... Args>
         std::weak_ptr<S> emplace_element_with_iterator(typename ElementVector::iterator const& iterator, Args&&... args)
-            requires(std::constructible_from<S, cpt::Vec2_i, Args...>)
-        {
-            auto elem            = std::make_shared<S>(m_resolution, std::forward<Args>(args)...);
+            requires(std::constructible_from<S, Args...>) {
+            auto elem            = std::make_shared<S>(std::forward<Args>(args)...);
             std::weak_ptr<S> ptr = elem;
             m_elements.insert(iterator, std::move(elem));
             return ptr;
@@ -67,20 +64,12 @@ namespace uil {
         }
 
     public:
-        /**
-         *
-         * @param resolution current resolution
-         */
-        explicit BaseManager(cpt::Vec2_i const resolution) : m_resolution{ resolution } { }
+        BaseManager() = default;
 
         /**
          * only for polymorphism
          */
         virtual ~BaseManager() = default;
-
-        [[nodiscard]] cpt::Vec2_i resolution() const {
-            return m_resolution;
-        }
 
         /**
          * constructs the element S with parameters Args... and emplace it at the front of the element vector.
@@ -96,8 +85,7 @@ namespace uil {
          */
         template<std::derived_from<T> S, typename... Args>
         std::weak_ptr<S> emplace_top(Args&&... args)
-            requires(std::constructible_from<S, cpt::Vec2_i, Args...>)
-        {
+            requires(std::constructible_from<S, Args...>) {
             return emplace_element_with_offset<S>(0, std::forward<Args>(args)...);
         }
 
@@ -115,8 +103,7 @@ namespace uil {
          */
         template<std::derived_from<T> S, typename... Args>
         std::weak_ptr<S> emplace_bottom(Args&&... args)
-            requires(std::constructible_from<S, cpt::Vec2_i, Args...>)
-        {
+            requires(std::constructible_from<S, Args...>) {
             return emplace_element_with_iterator<S>(m_elements.end(), std::forward<Args>(args)...);
         }
 
@@ -136,8 +123,7 @@ namespace uil {
          */
         template<std::derived_from<T> S, typename... Args>
         std::weak_ptr<S> emplace_at(cpt::usize const index, Args&&... args)
-            requires(std::constructible_from<S, cpt::Vec2_i, Args...>)
-        {
+            requires(std::constructible_from<S, Args...>) {
             if (index > m_elements.size()) {
                 throw BadElementIndex("index is out of bounce");
             }
@@ -165,8 +151,7 @@ namespace uil {
          */
         template<std::derived_from<T> S, typename... Args>
         std::weak_ptr<S> emplace_before(std::weak_ptr<T> const& scene, Args... args)
-            requires(std::constructible_from<S, cpt::Vec2_i, Args...>)
-        {
+            requires(std::constructible_from<S, Args...>) {
             if (auto const shared_scene = scene.lock(); shared_scene) {
                 auto const iterator
                         = std::find_if(m_elements.begin(), m_elements.end(), [&b = shared_scene](auto const& elem) {
@@ -199,8 +184,7 @@ namespace uil {
          */
         template<std::derived_from<T> S, typename... Args>
         std::weak_ptr<S> emplace_after(std::weak_ptr<T> const& scene, Args... args)
-            requires(std::constructible_from<S, cpt::Vec2_i, Args...>)
-        {
+            requires(std::constructible_from<S, Args...>) {
             if (auto const shared_scene = scene.lock(); shared_scene) {
                 auto const iterator
                         = std::find_if(m_elements.begin(), m_elements.end(), [&a = shared_scene](auto const& elem) {
@@ -568,14 +552,6 @@ namespace uil {
             throw BadElementPointer("weak_ptr was expired");
         }
 
-
-        /**
-         * calls all emplace element to resize.
-         *
-         * @param context all changes of the last frame
-         */
-        virtual void resize(UpdateContext const& context) {
-            m_resolution = context.resolution;
-        }
+        virtual void resize() {};
     };
 } // namespace uil

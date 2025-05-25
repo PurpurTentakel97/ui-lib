@@ -4,7 +4,7 @@
 
 #include "input_test_scene.hpp"
 
-InputTestScene::InputTestScene(cpt::Vec2_i const resolution) : Scene{ resolution } {
+InputTestScene::InputTestScene() {
     for (auto const& entry : m_entries) {
         emplace_top<InputTestObject>(entry.relative, uil::Alignment::MidMid, entry.function);
     }
@@ -12,22 +12,23 @@ InputTestScene::InputTestScene(cpt::Vec2_i const resolution) : Scene{ resolution
 
 void InputTestScene::render(const uil::UpdateContext& context) const {
     Scene::render(context);
-    auto const font = GetFontDefault();
+    auto const font       = GetFontDefault();
+    auto const resolution = uil::AppContext::instance().resolution().resolution_vector();
 
-    auto const draw_label = [this, &font](Rectangle const rectangle,
-                                         Vector2 const spacer,
-                                         Vector2 const offset,
-                                         int const columns,
-                                         int const rows,
-                                         float const rotation,
-                                         char const* text) {
+    auto const draw_label = [this, &font, &resolution](Rectangle const rectangle,
+                                                       Vector2 const spacer,
+                                                       Vector2 const offset,
+                                                       int const columns,
+                                                       int const rows,
+                                                       float const rotation,
+                                                       char const* text) {
         DrawTextPro(font,
                     text,
-                    { (x(rectangle, spacer, columns) + offset.x) * static_cast<float>(resolution().x),
-                      (y(rectangle, spacer, rows) + offset.y) * static_cast<float>(resolution().y) },
+                    { (x(rectangle, spacer, columns) + offset.x) * static_cast<float>(resolution.x),
+                      (y(rectangle, spacer, rows) + offset.y) * static_cast<float>(resolution.y) },
                     { 0.0f, 0.0f },
                     rotation,
-                    0.02f * static_cast<float>(resolution().y),
+                    0.02f * static_cast<float>(resolution.y),
                     2.0f,
                     WHITE);
     };

@@ -46,7 +46,7 @@ private:
     };
 
 public:
-    explicit MusicTestScene(cpt::Vec2_i resolution);
+    explicit MusicTestScene();
 
     [[nodiscard]] bool handle_input(uil::UpdateContext const& context) const override;
     void render(const uil::UpdateContext& context) const override;

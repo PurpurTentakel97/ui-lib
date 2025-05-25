@@ -5,8 +5,7 @@
 #include "asset_test_scene.hpp"
 #include <uil/global/app_context.hpp>
 
-AssetTestScene::AssetTestScene(cpt::Vec2_i const resolution)
-        : Scene{resolution} {
+AssetTestScene::AssetTestScene() {
     auto& assets = uil::AppContext::instance().asset();
 
     m_valid_asset = assets.load("/assets/assets/arrow_down.png").value_or(0);

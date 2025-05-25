@@ -91,11 +91,10 @@ namespace uil {
 
         /**
          *
-         * @param resolution current resolution
          * @param relative relative position and size of the Element
          * @param alignment alignment for the relative position
          */
-        Text(cpt::Vec2_i resolution, Rectangle relative, Alignment alignment);
+        Text(Rectangle relative, Alignment alignment);
 
         /**
          *
@@ -205,9 +204,7 @@ namespace uil {
         void render(UpdateContext const& context) const override;
         /**
          * updated all absolute values and the UIElement
-         *
-         * @param context all changes of the last frame
          */
-        void resize(UpdateContext const& context) override;
+        void resize() override;
     };
 } // namespace uil

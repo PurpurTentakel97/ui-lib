@@ -14,7 +14,7 @@ namespace uil {
 
         auto const update = [&](bool const resize = true) {
             m_resolution = resolution.resolution();
-            m_scene_manager.resize(create_context());
+            m_scene_manager.resize();
             if (resize) {
                 auto const is_fullscreen  = IsWindowFullscreen();
                 if (is_fullscreen) {
@@ -52,7 +52,6 @@ namespace uil {
         return UpdateContext{
             GetMousePosition(),
             &m_font,
-            AppContext::instance().resolution().resolution_vector(),
             GetFrameTime(),
             m_scene_manager
         };

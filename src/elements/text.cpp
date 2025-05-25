@@ -7,11 +7,13 @@
 #include <uil/update_context.hpp>
 #include <uil/debug/debug_types.hpp>
 #include <uil/elements/text.hpp>
+#include <uil/global/app_context.hpp>
 
 namespace uil {
     void Text::align() {
 
-        if (not m_font) { // also checked in update_(). just to be sure because it could be called directly
+        if (not m_font) {
+            // also checked in update_(). just to be sure because it could be called directly
             return;
         }
 
@@ -27,7 +29,7 @@ namespace uil {
                 return single_line_size(m_draw_text.front().second).y;
             }
             return m_draw_text.back().first.y - m_draw_text.front().first.y
-                 + single_line_size(m_draw_text.back().second).y;
+                   + single_line_size(m_draw_text.back().second).y;
         }();
 
         auto const height = [&](VerticalAlignment const alignment) {
@@ -78,8 +80,8 @@ namespace uil {
 
         auto const calc_text_size
                 = [size = m_font_size, font = m_font, spacing = m_letter_spacing](std::string const& line) {
-                      return MeasureTextEx(*font, line.c_str(), size, spacing);
-                  };
+            return MeasureTextEx(*font, line.c_str(), size, spacing);
+        };
 
         auto const calc_text_size_by_offset = [calc_text_size, &lhs, text = m_raw_text](size_t const _rhs) {
             auto const& line = text.substr(lhs, _rhs - lhs);
@@ -192,12 +194,18 @@ namespace uil {
         return m_paragraph_spacing;
     }
 
-    Text::Text(cpt::Vec2_i const resolution, Rectangle const relative, Alignment const alignment)
-        : UIElement{ resolution, relative, alignment },
-          m_font_size{ m_relative_font_size * static_cast<float>(resolution.y) },
-          m_letter_spacing{ static_cast<float>(resolution.x) * m_relative_letter_spacing },
-          m_line_spacing{ static_cast<float>(resolution.y) * m_relative_line_spacing },
-          m_paragraph_spacing{ static_cast<float>(resolution.y) * m_relative_paragraph_spacing } { }
+    Text::Text(Rectangle const relative, Alignment const alignment)
+        : UIElement{ relative, alignment },
+          m_font_size{
+              m_relative_font_size * static_cast<float>(AppContext::instance().resolution().resolution_vector().y) },
+          m_letter_spacing{
+              static_cast<float>(AppContext::instance().resolution().resolution_vector().x) *
+              m_relative_letter_spacing },
+          m_line_spacing{
+              static_cast<float>(AppContext::instance().resolution().resolution_vector().y) * m_relative_line_spacing },
+          m_paragraph_spacing{
+              static_cast<float>(AppContext::instance().resolution().resolution_vector().y) *
+              m_relative_paragraph_spacing } {}
 
     void Text::set_text(std::string text) {
         auto const old = std::exchange(m_raw_text, std::move(text));
@@ -306,12 +314,13 @@ namespace uil {
         render_text(context, m_color);
     }
 
-    void Text::resize(UpdateContext const& context) {
-        UIElement::resize(context);
-        m_font_size         = m_relative_font_size * static_cast<float>(context.resolution.y);
-        m_letter_spacing    = m_relative_letter_spacing * static_cast<float>(context.resolution.x);
-        m_line_spacing      = m_relative_line_spacing * static_cast<float>(context.resolution.y);
-        m_paragraph_spacing = m_relative_paragraph_spacing * static_cast<float>(context.resolution.y);
+    void Text::resize() {
+        UIElement::resize();
+        auto const& resolution = AppContext::instance().resolution().resolution_vector();
+        m_font_size            = m_relative_font_size * static_cast<float>(resolution.y);
+        m_letter_spacing       = m_relative_letter_spacing * static_cast<float>(resolution.x);
+        m_line_spacing         = m_relative_line_spacing * static_cast<float>(resolution.y);
+        m_paragraph_spacing    = m_relative_paragraph_spacing * static_cast<float>(resolution.y);
         update_text();
     }
 } // namespace uil

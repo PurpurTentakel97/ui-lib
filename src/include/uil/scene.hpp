@@ -27,10 +27,8 @@ namespace uil {
         /**
          * this constructor can do exactly nothing.
          * I need it to be able to add the resolution in the scene_manager.
-         *
-         * @param resolution current resolution
          */
-        explicit Scene(cpt::Vec2_i resolution);
+        using BaseManager::BaseManager;
         Scene(Scene const&)            = delete; ///< deleted because it will be used in unique_ptr
         Scene(Scene&&)                 = delete; ///< deleted because it will be used in unique_ptr
         Scene& operator=(Scene const&) = delete; ///< deleted because it will be used in unique_ptr
@@ -69,9 +67,7 @@ namespace uil {
          *
          * override this when the derived scene has to resize additional stuff.
          * make sure to call Scene::resize().
-         *
-         * @param context all changes of the last frame
          */
-        void resize(UpdateContext const& context) override;
+        void resize() override;
     };
 }; // namespace uil
