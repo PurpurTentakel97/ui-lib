@@ -37,6 +37,5 @@ namespace uil {
 
         [[nodiscard]] tl::expected<cpt::usize, Error> load(std::filesystem::path const& path);
         [[nodiscard]] tl::expected<void, Error> unload(cpt::usize id);
-
     };
 }
