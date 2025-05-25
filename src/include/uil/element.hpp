@@ -12,7 +12,7 @@
 #include <uil/debug/debug_wrapper.hpp>
 
 namespace uil {
-    struct Context;
+    struct UpdateContext;
 
     /**
     * the basic element for all things that gets displayed into a scene.
@@ -264,7 +264,7 @@ namespace uil {
          * @param context all changes of the last frame
          * @return whether the next scene should keep checking
          */
-        [[nodiscard]] virtual bool handle_input(Context const& context);
+        [[nodiscard]] virtual bool handle_input(UpdateContext const& context);
         /**
          * updates current movement if element is moving.
          *
@@ -274,7 +274,7 @@ namespace uil {
          * @param context all changes of the last frame
          * @return whether the next scene should keep updating
          */
-        [[nodiscard]] virtual bool update(Context const& context);
+        [[nodiscard]] virtual bool update(UpdateContext const& context);
         /**
          * renders collider if configured.
          * this only works in debug build.
@@ -285,7 +285,7 @@ namespace uil {
          * @param context all changes of the last frame
          * @throw uil::BadMovementType unexpected movement enum. mostly happens when the enum has an non predefinded value.
          */
-        virtual void render(Context const& context) const;
+        virtual void render(UpdateContext const& context) const;
         /**
          * updates resolution and collider.
          *
@@ -294,6 +294,6 @@ namespace uil {
          *
          * @param context all changes of the last frame
          */
-        virtual void resize(Context const& context);
+        virtual void resize(UpdateContext const& context);
     };
 } // namespace uil

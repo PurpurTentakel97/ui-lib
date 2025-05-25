@@ -10,7 +10,7 @@
 #include <uil/element.hpp>
 
 namespace uil {
-    struct Context;
+    struct UpdateContext;
 
     /**
      * base class for all scenes in this library.
@@ -44,7 +44,7 @@ namespace uil {
          * @param context all changes of the last frame
          * @return whether the next scene should keep checking
          */
-        [[nodiscard]] virtual bool handle_input(Context const& context) const;
+        [[nodiscard]] virtual bool handle_input(UpdateContext const& context) const;
         /**
          * updating all elements in the scene. provides the context.
          *
@@ -54,7 +54,7 @@ namespace uil {
          * @param context all changes of the last frame
          * @return whether the next scene should keep updating
          */
-        [[nodiscard]] virtual bool update(Context const& context) const;
+        [[nodiscard]] virtual bool update(UpdateContext const& context) const;
         /**
          * rendering all elements in the scene. provides the context.
          *
@@ -63,7 +63,7 @@ namespace uil {
          *
          * @param context all changes of the last frame
          */
-        virtual void render(Context const& context) const;
+        virtual void render(UpdateContext const& context) const;
         /**
          * resizing all elements in the scene. provides the context.
          *
@@ -72,6 +72,6 @@ namespace uil {
          *
          * @param context all changes of the last frame
          */
-        void resize(Context const& context) override;
+        void resize(UpdateContext const& context) override;
     };
 }; // namespace uil

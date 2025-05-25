@@ -9,7 +9,7 @@
 #include <uil/global/resolution_enum.hpp>
 
 namespace uil {
-    struct Context;
+    struct UpdateContext;
     /**
      * provides the construct config for a window.
      * some config needs to be set that way because it can only be set bevor the window is initialized.
@@ -46,7 +46,7 @@ namespace uil {
         Font m_font{};
 
         void update_resolution();
-        [[nodiscard]] Context create_context();
+        [[nodiscard]] UpdateContext create_context();
 
         static void set_flag(ConfigFlags flag, bool active);
 

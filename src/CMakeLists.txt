@@ -19,10 +19,10 @@ target_sources(cpt__ui_lib
 
         alignment.cpp
         base_element.cpp
-        context.cpp
         element.cpp
         scene.cpp
         scene_manager.cpp
+        update_context.cpp
         window.cpp
 
 
@@ -51,11 +51,11 @@ target_sources(cpt__ui_lib
         include/uil/base_element.hpp
         include/uil/base_manager.hpp
         include/uil/callback.hpp
-        include/uil/context.hpp
         include/uil/element.hpp
         include/uil/exception.hpp
         include/uil/scene.hpp
         include/uil/scene_manager.hpp
+        include/uil/update_context.hpp
         include/uil/window.hpp
 )
 

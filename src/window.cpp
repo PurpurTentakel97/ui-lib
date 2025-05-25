@@ -5,7 +5,7 @@
 
 #include <uil/global/app_context.hpp>
 #include <raylib.h>
-#include <uil/context.hpp>
+#include <uil/update_context.hpp>
 #include <uil/window.hpp>
 
 namespace uil {
@@ -47,9 +47,9 @@ namespace uil {
         }
     }
 
-    Context Window::create_context() {
+    UpdateContext Window::create_context() {
         // clang-format off
-        return Context{
+        return UpdateContext{
             GetMousePosition(),
             &m_font,
             AppContext::instance().resolution().resolution_vector(),

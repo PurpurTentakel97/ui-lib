@@ -19,7 +19,7 @@ MusicTestScene::MusicTestScene(cpt::Vec2_i const resolution) : Scene{ resolution
     m_id_2 = sound.load_music_collection({ "/assets/music/music_4.mp3" }).value_or(0);
 }
 
-bool MusicTestScene::handle_input(uil::Context const& context) const {
+bool MusicTestScene::handle_input(uil::UpdateContext const& context) const {
     auto const keep_handle_input = Scene::handle_input(context);
 
     for (const auto& [rectangle,func] : m_buttons) {
@@ -37,7 +37,7 @@ bool MusicTestScene::handle_input(uil::Context const& context) const {
     return keep_handle_input;
 }
 
-void MusicTestScene::render(const uil::Context& context) const {
+void MusicTestScene::render(const uil::UpdateContext& context) const {
     Scene::render(context);
 
     auto const labels = {

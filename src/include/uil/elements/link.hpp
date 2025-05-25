@@ -81,7 +81,7 @@ namespace uil {
          * @param context all changes of the last frame
          * @return whether the next scene should keep checking or not
          */
-        [[nodiscard]] bool handle_input(Context const& context) override;
+        [[nodiscard]] bool handle_input(UpdateContext const& context) override;
 
         /**
          * renders the current state
@@ -92,6 +92,6 @@ namespace uil {
          *
          * @param context all changes of the last frame
          */
-        void render(Context const& context) const override;
+        void render(UpdateContext const& context) const override;
     };
 } // namespace uil

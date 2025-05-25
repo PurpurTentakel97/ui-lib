@@ -8,7 +8,7 @@
 #include <algorithm>
 #include <cpt/vec2.hpp>
 #include <memory>
-#include <uil/context.hpp>
+#include <uil/update_context.hpp>
 #include <uil/exception.hpp>
 #include <vector>
 
@@ -574,7 +574,7 @@ namespace uil {
          *
          * @param context all changes of the last frame
          */
-        virtual void resize(Context const& context) {
+        virtual void resize(UpdateContext const& context) {
             m_resolution = context.resolution;
         }
     };

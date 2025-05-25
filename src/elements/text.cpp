@@ -4,7 +4,7 @@
 //
 
 #include <ranges>
-#include <uil/context.hpp>
+#include <uil/update_context.hpp>
 #include <uil/debug/debug_types.hpp>
 #include <uil/elements/text.hpp>
 
@@ -148,7 +148,7 @@ namespace uil {
         }
     }
 
-    void Text::render_text(Context const& context, Color const color) const {
+    void Text::render_text(UpdateContext const& context, Color const color) const {
 
         for (auto const& [position, text] : m_draw_text) {
             // clang-format off
@@ -289,7 +289,7 @@ namespace uil {
         on_draw_text_updated.invoke(*this);
     }
 
-    bool Text::handle_input(Context const& context) {
+    bool Text::handle_input(UpdateContext const& context) {
         auto const keep_checking = UIElement::handle_input(context);
 
         if (m_font != context.font) {
@@ -300,13 +300,13 @@ namespace uil {
         return keep_checking;
     }
 
-    void Text::render(Context const& context) const {
+    void Text::render(UpdateContext const& context) const {
         UIElement::render(context);
 
         render_text(context, m_color);
     }
 
-    void Text::resize(Context const& context) {
+    void Text::resize(UpdateContext const& context) {
         UIElement::resize(context);
         m_font_size         = m_relative_font_size * static_cast<float>(context.resolution.y);
         m_letter_spacing    = m_relative_letter_spacing * static_cast<float>(context.resolution.x);
