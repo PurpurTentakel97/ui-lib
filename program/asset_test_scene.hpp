@@ -13,5 +13,5 @@ private:
 public:
     explicit AssetTestScene(cpt::Vec2_i resolution);
 
-    void render(uil::Context const& context) const override;
+    void render(uil::UpdateContext const& context) const override;
 };

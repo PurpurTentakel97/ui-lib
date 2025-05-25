@@ -23,7 +23,7 @@ public:
 
     using UIElement::UIElement;
 
-    [[nodiscard]] bool handle_input(const uil::Context& context) override {
+    [[nodiscard]] bool handle_input(const uil::UpdateContext& context) override {
         auto const keep_updating = UIElement::handle_input(context);
 
         m_render = check_function();
@@ -31,7 +31,7 @@ public:
         return keep_updating;
     }
 
-    void render(const uil::Context& context) const override {
+    void render(const uil::UpdateContext& context) const override {
         UIElement::render(context);
 
         m_render ? DrawRectangleRec(collider(),GREEN) : DrawRectangleRec(collider(),RED);
@@ -214,5 +214,5 @@ private:
 public:
     explicit InputTestScene(cpt::Vec2_i resolution);
 
-    void render(const uil::Context& context) const override;
+    void render(const uil::UpdateContext& context) const override;
 };

@@ -5,23 +5,54 @@
 
 #include <uil/global/app_context.hpp>
 #include <raylib.h>
-#include <uil/context.hpp>
+#include <uil/update_context.hpp>
 #include <uil/window.hpp>
 
 namespace uil {
     void Window::update_resolution() {
-        if (IsWindowResized()) {
-            m_resolution = cpt::Vec2_i{ GetRenderWidth(), GetRenderHeight() };
+        auto& resolution = AppContext::instance().resolution();
+
+        auto const update = [&](bool const resize = true) {
+            m_resolution = resolution.resolution();
             m_scene_manager.resize(create_context());
+            if (resize) {
+                auto const is_fullscreen  = IsWindowFullscreen();
+                if (is_fullscreen) {
+                    ToggleFullscreen();
+                }
+
+                auto const resolution_vec = resolution.resolution_vector();
+                SetWindowSize(resolution_vec.x, resolution_vec.y);
+                auto const screen_resolution = vec_from_resolution(Resolution::SCREEN);
+                SetWindowPosition(
+                    (screen_resolution.x - resolution_vec.x) / 2,
+                    (screen_resolution.y - resolution_vec.y) / 2
+                );
+
+                if (is_fullscreen) {
+                    ToggleFullscreen();
+                }
+            }
+        };
+
+        if (IsWindowResized()) {
+            resolution.set_resolution(Resolution::RESIZED);
+            update(false);
+            return;
+        }
+
+        if (m_resolution != resolution.resolution()) {
+            update();
+            return;
         }
     }
 
-    Context Window::create_context() {
+    UpdateContext Window::create_context() {
         // clang-format off
-        return Context{
+        return UpdateContext{
             GetMousePosition(),
             &m_font,
-            m_resolution,
+            AppContext::instance().resolution().resolution_vector(),
             GetFrameTime(),
             m_scene_manager
         };
@@ -32,9 +63,7 @@ namespace uil {
         active ? SetWindowState(flag) : ClearWindowState(flag);
     }
 
-    Window::Window(cpt::Vec2_i const resolution, char const* const title, WindowConfig config)
-        : m_resolution{ resolution },
-          m_scene_manager{ resolution } {
+    Window::Window(char const* const title, WindowConfig config) {
         using FlagVec           = std::vector<std::pair<ConfigFlags, bool>>;
         auto constexpr set_flag = [](ConfigFlags const flag, bool const active) {
             active ? SetWindowState(flag) : ClearWindowState(flag);
@@ -65,7 +94,7 @@ namespace uil {
             { ConfigFlags::FLAG_BORDERLESS_WINDOWED_MODE, config.borderless_window },
         };
         set_flags(pre);
-        InitWindow(resolution.x, resolution.y, title);
+        InitWindow(800, 600, title);
         set_flags(post);
         m_font = LoadFont("assets/font.ttf");
     }
@@ -131,8 +160,9 @@ namespace uil {
     }
 
     void Window::update() {
-        auto const context = create_context();
+        update_resolution();
         AppContext::instance().sound().update();
+        auto const context = create_context();
 
         // updating
         SetMouseCursor(MOUSE_CURSOR_DEFAULT);

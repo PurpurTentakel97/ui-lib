@@ -8,7 +8,7 @@
 #include <uil/scene.hpp>
 
 namespace uil {
-    struct Context;
+    struct UpdateContext;
 
     /**
      * manages all scene in the game.
@@ -17,11 +17,7 @@ namespace uil {
      */
     class SceneManager final : public BaseManager<Scene> {
     public:
-        /**
-         *
-         * @param resolution current resolution
-         */
-        explicit SceneManager(cpt::Vec2_i resolution);
+        explicit SceneManager();
 
         /**
          * calls all emplace scene from top to bottom to check.
@@ -30,7 +26,7 @@ namespace uil {
          * @param context all changes of the last frame
          * @return whether the next system should keep checking
          */
-        [[nodiscard]] bool handle_input(Context const& context) const;
+        [[nodiscard]] bool handle_input(UpdateContext const& context) const;
 
         /**
          * calls all emplace scene from top to bottom to update.
@@ -39,20 +35,20 @@ namespace uil {
          * @param context all changes of the last frame
          * @return whether the next system should keep updating
          */
-        [[nodiscard]] bool update(Context const& context) const;
+        [[nodiscard]] bool update(UpdateContext const& context) const;
 
         /**
          * calls all emplace scene from bottom to top to render.
          *
          * @param context all changes of the last frame
          */
-        void render(Context const& context) const;
+        void render(UpdateContext const& context) const;
 
         /**
          * calls all emplace scene to resize.
          *
          * @param context all changes of the last frame
          */
-        void resize(Context const& context) override;
+        void resize(UpdateContext const& context) override;
     };
 } // namespace uil

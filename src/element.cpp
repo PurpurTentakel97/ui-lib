@@ -3,7 +3,7 @@
 // 06.07.24
 //
 
-#include <uil/context.hpp>
+#include <uil/update_context.hpp>
 #include <uil/debug/debug_types.hpp>
 #include <uil/element.hpp>
 #include <uil/helper/vec.hpp>
@@ -238,14 +238,14 @@ namespace uil {
         return m_last_move_type != MoveType::None and m_move_type == MoveType::None;
     }
 
-    bool UIElement::handle_input(Context const& context) {
+    bool UIElement::handle_input(UpdateContext const& context) {
         m_last_move_type = m_move_type;
         m_hovered        = CheckCollisionPointRec(context.mouse_position, m_collider);
         on_check.invoke(*this);
         return true;
     }
 
-    bool UIElement::update(Context const& context) {
+    bool UIElement::update(UpdateContext const& context) {
         switch (m_move_type) {
                 // clang-format off
             case MoveType::None:                                           break;
@@ -261,7 +261,7 @@ namespace uil {
         return true;
     }
 
-    void UIElement::render(Context const&) const {
+    void UIElement::render(UpdateContext const&) const {
         debug_element.collider.exec(&m_collider);
         debug::MovementDrawDebugData const data{
             { m_relative.x, m_relative.y },
@@ -271,7 +271,7 @@ namespace uil {
         on_draw.invoke(*this);
     }
 
-    void UIElement::resize(Context const& context) {
+    void UIElement::resize(UpdateContext const& context) {
         m_resolution = context.resolution;
         m_collider   = collider_from_relative(m_relative, m_resolution);
         on_resize.invoke(*this);

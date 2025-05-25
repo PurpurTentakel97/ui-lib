@@ -46,7 +46,7 @@ namespace uil {
          * @param context all changes of the last frame
          * @param color text color
          */
-        void render_text(Context const& context, Color color) const;
+        void render_text(UpdateContext const& context, Color color) const;
         /**
          *
          * @return a vector of strings and absolute offsets in pixels
@@ -196,18 +196,18 @@ namespace uil {
          * @param context all changes of the last frame
          * @return whether the next scene should keep checking or not
          */
-        [[nodiscard]] bool handle_input(Context const& context) override;
+        [[nodiscard]] bool handle_input(UpdateContext const& context) override;
         /**
          * in debug build: renders line collider
          *
          * @param context all changes of the last frame
          */
-        void render(Context const& context) const override;
+        void render(UpdateContext const& context) const override;
         /**
          * updated all absolute values and the UIElement
          *
          * @param context all changes of the last frame
          */
-        void resize(Context const& context) override;
+        void resize(UpdateContext const& context) override;
     };
 } // namespace uil

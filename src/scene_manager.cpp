@@ -4,32 +4,35 @@
 //
 
 #include <ranges>
-#include <uil/context.hpp>
+#include <uil/update_context.hpp>
 #include <uil/scene_manager.hpp>
+#include <uil/global/app_context.hpp>
 
 namespace uil {
 
-    SceneManager::SceneManager(cpt::Vec2_i const resolution) : BaseManager{ resolution } { }
+    SceneManager::SceneManager() : BaseManager{ { 800, 600 } } {}
 
-    bool SceneManager::handle_input(Context const& context) const {
-        return std::ranges::all_of(elements(), [&c = context](auto const& s) {
-            if (s->active()) {
-                return s->handle_input(c);
-            }
-            return true;
-        });
+    bool SceneManager::handle_input(UpdateContext const& context) const {
+        return std::ranges::all_of(elements(),
+                                   [&c = context](auto const& s) {
+                                       if (s->active()) {
+                                           return s->handle_input(c);
+                                       }
+                                       return true;
+                                   });
     }
 
-    bool SceneManager::update(Context const& context) const {
-        return std::ranges::all_of(elements(), [&c = context](auto const& s) {
-            if (s->active()) {
-                return s->update(c);
-            }
-            return true;
-        });
+    bool SceneManager::update(UpdateContext const& context) const {
+        return std::ranges::all_of(elements(),
+                                   [&c = context](auto const& s) {
+                                       if (s->active()) {
+                                           return s->update(c);
+                                       }
+                                       return true;
+                                   });
     }
 
-    void SceneManager::render(Context const& context) const {
+    void SceneManager::render(UpdateContext const& context) const {
         for (auto const& s : std::ranges::views::reverse(elements())) {
             if (s->active()) {
                 s->render(context);
@@ -37,7 +40,7 @@ namespace uil {
         }
     }
 
-    void SceneManager::resize(Context const& context) {
+    void SceneManager::resize(UpdateContext const& context) {
         BaseManager::resize(context);
         for (auto const& s : elements()) {
             s->resize(context);

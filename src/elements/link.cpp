@@ -3,7 +3,7 @@
 // 27.07.24
 //
 
-#include <uil/context.hpp>
+#include <uil/update_context.hpp>
 #include <uil/elements/link.hpp>
 
 namespace uil {
@@ -39,7 +39,7 @@ namespace uil {
         return m_render_hover;
     }
 
-    bool Link::handle_input(Context const& context) {
+    bool Link::handle_input(UpdateContext const& context) {
         auto const keep_checking = Text::handle_input(context);
 
         if (not hovered()) {
@@ -68,7 +68,7 @@ namespace uil {
         return false;
     }
 
-    void Link::render(Context const& context) const {
+    void Link::render(UpdateContext const& context) const {
         // NOLINTNEXTLINE
         UIElement::render(context);
 

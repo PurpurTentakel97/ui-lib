@@ -13,7 +13,7 @@ AssetTestScene::AssetTestScene(cpt::Vec2_i const resolution)
     m_invalid_asset = assets.load("/assets/assets/invalid.png").value_or(0);
 }
 
-void AssetTestScene::render(uil::Context const& context) const {
+void AssetTestScene::render(uil::UpdateContext const& context) const {
     Scene::render(context);
     auto const& assets = uil::AppContext::instance().asset();
 

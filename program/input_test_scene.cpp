@@ -10,7 +10,7 @@ InputTestScene::InputTestScene(cpt::Vec2_i const resolution) : Scene{ resolution
     }
 }
 
-void InputTestScene::render(const uil::Context& context) const {
+void InputTestScene::render(const uil::UpdateContext& context) const {
     Scene::render(context);
     auto const font = GetFontDefault();
 
