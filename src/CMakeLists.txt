@@ -9,6 +9,7 @@ target_sources(cpt__ui_lib
 
         global/app_context.cpp
         global/asset.cpp
+        global/font.cpp
         global/input.cpp
         global/resolution.cpp
         global/resolution_enum.cpp
@@ -38,6 +39,7 @@ target_sources(cpt__ui_lib
 
         include/uil/global/app_context.hpp
         include/uil/global/asset.hpp
+        include/uil/global/font.hpp
         include/uil/global/input.hpp
         include/uil/global/input_enum.hpp
         include/uil/global/resolution.hpp

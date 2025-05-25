@@ -42,4 +42,12 @@ namespace uil {
     ResolutionManager const& AppContext::resolution() const {
         return m_resolution;
     }
+
+    FontManager& AppContext::font() {
+        return m_font;
+    }
+
+    FontManager const& AppContext::font() const {
+        return m_font;
+    }
 } // namespace ui
