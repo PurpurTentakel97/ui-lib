@@ -24,7 +24,6 @@ int main() {
 
     auto window = uil::Window(title, config);
     uil::AppContext::instance().resolution().set_resolution(uil::Resolution::FULL_HD);
-    window.debug_window.fps.set(true);
 
     auto const t1 = window.scene_manager().emplace_top<InputTestScene>();
     // auto const t2 = window.scene_manager().emplace_top<MusicTestScene>();

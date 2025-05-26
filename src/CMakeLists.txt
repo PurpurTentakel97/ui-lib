@@ -2,8 +2,6 @@ add_library(cpt__ui_lib STATIC)
 
 target_sources(cpt__ui_lib
         PRIVATE
-        debug/debug_classes.cpp
-
         global/app_context.cpp
         global/asset.cpp
         global/font.cpp
@@ -26,11 +24,6 @@ target_sources(cpt__ui_lib
 
         PUBLIC FILE_SET HEADERS
         BASE_DIRS include FILES
-        include/uil/debug/debug.hpp
-        include/uil/debug/debug_classes.hpp
-        include/uil/debug/debug_wrapper.hpp
-        include/uil/debug/debug_types.hpp
-
         include/uil/global/app_context.hpp
         include/uil/global/asset.hpp
         include/uil/global/font.hpp

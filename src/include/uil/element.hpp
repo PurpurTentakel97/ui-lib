@@ -8,8 +8,6 @@
 #include <uil/alignment.hpp>
 #include <uil/base_element.hpp>
 #include <uil/callback.hpp>
-#include <uil/helper/rect.hpp>
-#include <uil/debug/debug_wrapper.hpp>
 
 namespace uil {
     struct UpdateContext;
@@ -59,17 +57,7 @@ namespace uil {
         void slow_to_fast(float delta_time);
         void constant(float delta_time);
 
-
-    protected:
-        /**
-         *
-         * @return last resolution that was captured by last resize
-         */
-        [[nodiscard]] cpt::Vec2_i resolution() const;
-
     public:
-        debug::UIElementDebug debug_element{};
-
         Callback<UIElement&> on_movement_start{}; ///< contains UIElement
         Callback<UIElement&> on_movement_stop{};  ///< contains UIElement
         Callback<UIElement&> on_arrived{};        ///< contains UIElement

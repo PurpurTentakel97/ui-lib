@@ -4,7 +4,6 @@
 //
 
 #pragma once
-#include <uil/debug/debug_wrapper.hpp>
 #include <uil/scene_manager.hpp>
 #include <uil/global/resolution_enum.hpp>
 
@@ -50,8 +49,6 @@ namespace uil {
         static void set_flag(ConfigFlags flag, bool active);
 
     public:
-        debug::WindowDebug debug_window{};
-
         /**
          * initializes the window and sets all window flags.
          *
