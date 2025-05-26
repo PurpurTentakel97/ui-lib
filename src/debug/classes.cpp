@@ -18,6 +18,16 @@ namespace uil::debug {
 } // namespace uil::debug
 
 namespace uil::debug {
+    void MouseDraw::exec(void const*) const {
+#ifndef NDEBUG
+        if (m_active) {
+            DrawCircleLinesV(GetMousePosition(), 10.0f, WHITE);
+        }
+#endif
+    }
+} // namespace uil::debug
+
+namespace uil::debug {
     void RectangleDraw::exec(Rectangle const* rect) const {
 #ifndef NDEBUG
         if (m_active) {

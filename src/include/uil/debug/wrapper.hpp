@@ -10,6 +10,7 @@
 namespace uil::debug {
     struct Window final {
         FPSDraw fps{};
+        MouseDraw mouse{};
     };
 } // namespace uil::debug
 
