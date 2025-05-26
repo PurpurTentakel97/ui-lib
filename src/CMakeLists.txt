@@ -4,11 +4,9 @@ target_sources(cpt__ui_lib
         PRIVATE
         debug/debug_classes.cpp
 
-        elements/link.cpp
-        elements/text.cpp
-
         global/app_context.cpp
         global/asset.cpp
+        global/font.cpp
         global/input.cpp
         global/resolution.cpp
         global/resolution_enum.cpp
@@ -33,11 +31,9 @@ target_sources(cpt__ui_lib
         include/uil/debug/debug_wrapper.hpp
         include/uil/debug/debug_types.hpp
 
-        include/uil/elements/link.hpp
-        include/uil/elements/text.hpp
-
         include/uil/global/app_context.hpp
         include/uil/global/asset.hpp
+        include/uil/global/font.hpp
         include/uil/global/input.hpp
         include/uil/global/input_enum.hpp
         include/uil/global/resolution.hpp

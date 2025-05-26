@@ -17,7 +17,6 @@ namespace uil::debug {
     struct MovementDrawDebugData final {
         Vector2 start{};
         Vector2 end{};
-        cpt::Vec2_i resolution{};
     };
 
 } // namespace uil::debug

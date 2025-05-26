@@ -6,8 +6,7 @@
 
 #include <uil/scene.hpp>
 #include <uil/element.hpp>
-
-#include "uil/global/app_context.hpp"
+#include <uil/global/app_context.hpp>
 
 class InputTestObject final : public uil::UIElement {
 private:
@@ -15,11 +14,10 @@ private:
     std::function<bool()> check_function;
 
 public:
-    InputTestObject(cpt::Vec2_i const resolution,
-                    Rectangle const relative,
+    InputTestObject(Rectangle const relative,
                     uil::Alignment const alignment,
                     std::function<bool()> const& check_function_)
-        : UIElement{ resolution, relative, alignment }, check_function{ check_function_ } {}
+        : UIElement{ relative, alignment }, check_function{ check_function_ } {}
 
     using UIElement::UIElement;
 
@@ -212,7 +210,7 @@ private:
     };
 
 public:
-    explicit InputTestScene(cpt::Vec2_i resolution);
+    explicit InputTestScene();
 
     void render(const uil::UpdateContext& context) const override;
 };

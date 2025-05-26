@@ -1,14 +1,17 @@
 add_executable(cpt__ui_lib_program
-               temp.cpp
+        temp.cpp
 
-               asset_test_scene.hpp
-               asset_test_scene.cpp
+        asset_test_scene.hpp
+        asset_test_scene.cpp
 
-               input_test_scene.hpp
-               input_test_scene.cpp
+        input_test_scene.hpp
+        input_test_scene.cpp
 
-               music_test_scene.hpp
-               music_test_scene.cpp
+        music_test_scene.hpp
+        music_test_scene.cpp
+
+        font_test_scene.hpp
+        font_test_scene.cpp
 )
 
 target_include_directories(cpt__ui_lib_program

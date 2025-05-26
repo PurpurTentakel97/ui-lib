@@ -8,8 +8,6 @@
 #include <uil/scene.hpp>
 
 namespace uil {
-    Scene::Scene(cpt::Vec2_i const resolution) : BaseManager{ resolution } { }
-
     bool Scene::handle_input(UpdateContext const& context) const {
         auto keep_checking = true;
         for (auto const& e : elements()) {
@@ -41,10 +39,9 @@ namespace uil {
         on_render.invoke(*this);
     }
 
-    void Scene::resize(UpdateContext const& context) {
-        BaseManager::resize(context);
+    void Scene::resize() {
         for (auto const& e : elements()) {
-            e->resize(context);
+            e->resize();
         }
         on_resize.invoke(*this);
     }

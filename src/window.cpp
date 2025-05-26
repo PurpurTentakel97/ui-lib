@@ -14,7 +14,7 @@ namespace uil {
 
         auto const update = [&](bool const resize = true) {
             m_resolution = resolution.resolution();
-            m_scene_manager.resize(create_context());
+            m_scene_manager.resize();
             if (resize) {
                 auto const is_fullscreen  = IsWindowFullscreen();
                 if (is_fullscreen) {
@@ -51,8 +51,6 @@ namespace uil {
         // clang-format off
         return UpdateContext{
             GetMousePosition(),
-            &m_font,
-            AppContext::instance().resolution().resolution_vector(),
             GetFrameTime(),
             m_scene_manager
         };
@@ -96,7 +94,6 @@ namespace uil {
         set_flags(pre);
         InitWindow(800, 600, title);
         set_flags(post);
-        m_font = LoadFont("assets/font.ttf");
     }
 
     Window::~Window() {

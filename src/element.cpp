@@ -7,14 +7,15 @@
 #include <uil/debug/debug_types.hpp>
 #include <uil/element.hpp>
 #include <uil/helper/vec.hpp>
+#include <uil/global/app_context.hpp>
 
 namespace uil {
     void UIElement::update_relative() {
-        m_relative = relative_from_collider(m_collider, m_resolution);
+        m_relative = relative_from_collider(m_collider, AppContext::instance().resolution().resolution_vector());
     }
 
     void UIElement::update_collider() {
-        m_collider = collider_from_relative(m_relative, m_resolution);
+        m_collider = collider_from_relative(m_relative, AppContext::instance().resolution().resolution_vector());
     }
 
     bool UIElement::is_arriving(Vector2 const& distance) const {
@@ -100,15 +101,10 @@ namespace uil {
         move(distance);
     }
 
-    cpt::Vec2_i UIElement::resolution() const {
-        return m_resolution;
-    }
-
-    UIElement::UIElement(cpt::Vec2_i const resolution, Rectangle const relative, Alignment const alignment)
-        : m_resolution{ resolution },
-          m_alignment{ alignment },
+    UIElement::UIElement(Rectangle const relative, Alignment const alignment)
+        : m_alignment{ alignment },
           m_relative{ aligned_position(relative, alignment) },
-          m_collider{ collider_from_relative(m_relative, resolution) } { }
+          m_collider{ collider_from_relative(m_relative, AppContext::instance().resolution().resolution_vector()) } {}
 
     void UIElement::set_relative_position(Vector2 const position) {
         m_relative.x = position.x;
@@ -265,15 +261,14 @@ namespace uil {
         debug_element.collider.exec(&m_collider);
         debug::MovementDrawDebugData const data{
             { m_relative.x, m_relative.y },
-            m_relative_destination, m_resolution
+            m_relative_destination
         };
         debug_element.movement.exec(&data);
         on_draw.invoke(*this);
     }
 
-    void UIElement::resize(UpdateContext const& context) {
-        m_resolution = context.resolution;
-        m_collider   = collider_from_relative(m_relative, m_resolution);
+    void UIElement::resize() {
+        m_collider = collider_from_relative(m_relative, AppContext::instance().resolution().resolution_vector());
         on_resize.invoke(*this);
     }
 } // namespace uil

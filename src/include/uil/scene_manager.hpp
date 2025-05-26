@@ -17,7 +17,7 @@ namespace uil {
      */
     class SceneManager final : public BaseManager<Scene> {
     public:
-        explicit SceneManager();
+        using BaseManager::BaseManager;
 
         /**
          * calls all emplace scene from top to bottom to check.
@@ -46,9 +46,7 @@ namespace uil {
 
         /**
          * calls all emplace scene to resize.
-         *
-         * @param context all changes of the last frame
          */
-        void resize(UpdateContext const& context) override;
+        void resize() override;
     };
 } // namespace uil

@@ -3,6 +3,7 @@
 //
 
 #pragma once
+
 #include <uil/scene.hpp>
 
 class AssetTestScene final : public uil::Scene {
@@ -11,7 +12,7 @@ private:
     cpt::usize m_invalid_asset;
 
 public:
-    explicit AssetTestScene(cpt::Vec2_i resolution);
+    explicit AssetTestScene();
 
     void render(uil::UpdateContext const& context) const override;
 };

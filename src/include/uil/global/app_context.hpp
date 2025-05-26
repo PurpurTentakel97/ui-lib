@@ -9,6 +9,7 @@
 #include <uil/global/sound.hpp>
 #include <uil/global/asset.hpp>
 #include <uil/global/resolution.hpp>
+#include <uil/global/font.hpp>
 
 namespace uil {
     class Window;
@@ -22,6 +23,7 @@ namespace uil {
         SoundManager m_sound{};
         AssetManager m_asset{};
         ResolutionManager m_resolution{};
+        FontManager m_font{};
 
     public:
         AppContext()                             = default;
@@ -44,5 +46,8 @@ namespace uil {
 
         [[nodiscard]] ResolutionManager& resolution();
         [[nodiscard]] ResolutionManager const& resolution() const;
+
+        [[nodiscard]] FontManager& font();
+        [[nodiscard]] FontManager const& font() const;
     };
 } // namespace uil

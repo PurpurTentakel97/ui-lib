@@ -31,7 +31,6 @@ namespace uil {
         };
 
         // basic
-        cpt::Vec2_i m_resolution;
         Alignment m_alignment;
         Rectangle m_relative{}; // m_relative needs to be initialized bevor m_collider
         Rectangle m_collider{}; // m_relative needs to be initialized bevor m_collider
@@ -83,11 +82,10 @@ namespace uil {
          * aligns the relative position according to the provided alignment.
          * calculates the absolute collider out of the relative position and size and the resolution.
          *
-         * @param resolution current resolution for absolute position and size
          * @param relative relative position and size of the collider
          * @param alignment moves the relative position
          */
-        UIElement(cpt::Vec2_i resolution, Rectangle relative, Alignment alignment);
+        UIElement(Rectangle relative, Alignment alignment);
 
         UIElement(UIElement const&)            = delete; ///< no need because handle with unique_ptr
         UIElement(UIElement&&)                 = delete; ///< no need because handle with unique_ptr
@@ -291,9 +289,7 @@ namespace uil {
          *
          * override this when the derived element has to resize additional stuff.
          * make sure to call UIElement::resize().
-         *
-         * @param context all changes of the last frame
          */
-        virtual void resize(UpdateContext const& context);
+        virtual void resize();
     };
 } // namespace uil

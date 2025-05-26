@@ -9,9 +9,6 @@
 #include <uil/global/app_context.hpp>
 
 namespace uil {
-
-    SceneManager::SceneManager() : BaseManager{ { 800, 600 } } {}
-
     bool SceneManager::handle_input(UpdateContext const& context) const {
         return std::ranges::all_of(elements(),
                                    [&c = context](auto const& s) {
@@ -40,10 +37,10 @@ namespace uil {
         }
     }
 
-    void SceneManager::resize(UpdateContext const& context) {
-        BaseManager::resize(context);
+    void SceneManager::resize() {
+        BaseManager::resize();
         for (auto const& s : elements()) {
-            s->resize(context);
+            s->resize();
         }
     }
 } // namespace uil

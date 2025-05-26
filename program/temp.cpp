@@ -7,6 +7,7 @@
 #include "input_test_scene.hpp"
 #include "music_test_scene.hpp"
 #include "asset_test_scene.hpp"
+#include "font_test_scene.hpp"
 
 int main() {
 #ifndef NDEBUG
@@ -25,9 +26,10 @@ int main() {
     uil::AppContext::instance().resolution().set_resolution(uil::Resolution::FULL_HD);
     window.debug_window.fps.set(true);
 
-    // [[maybe_unused]] auto const t1 = window.scene_manager().emplace_top<InputTestScene>();
-    [[maybe_unused]] auto const t2 = window.scene_manager().emplace_top<MusicTestScene>();
-    // [[maybe_unused]] auto const t3 = window.scene_manager().emplace_top<AssetTestScene>();
+    auto const t1 = window.scene_manager().emplace_top<InputTestScene>();
+    // auto const t2 = window.scene_manager().emplace_top<MusicTestScene>();
+    // auto const t3 = window.scene_manager().emplace_top<AssetTestScene>();
+    // auto const t4 = window.scene_manager().emplace_top<FontTestScene>();
     while (not WindowShouldClose()) {
         window.update();
     }

@@ -9,7 +9,7 @@
 #include <cpt/log.hpp>
 
 
-MusicTestScene::MusicTestScene(cpt::Vec2_i const resolution) : Scene{ resolution } {
+MusicTestScene::MusicTestScene() {
     auto& sound = uil::AppContext::instance().sound();
 
     m_id_1 = sound.load_music_collection({ "/assets/music/music_1.mp3",
@@ -22,11 +22,12 @@ MusicTestScene::MusicTestScene(cpt::Vec2_i const resolution) : Scene{ resolution
 bool MusicTestScene::handle_input(uil::UpdateContext const& context) const {
     auto const keep_handle_input = Scene::handle_input(context);
 
+    auto const& resolution = uil::AppContext::instance().resolution().resolution_vector();
     for (const auto& [rectangle,func] : m_buttons) {
-        auto const col = Rectangle{ rectangle.x * static_cast<float>(context.resolution.x),
-                                    rectangle.y * static_cast<float>(context.resolution.y),
-                                    rectangle.width * static_cast<float>(context.resolution.x),
-                                    rectangle.height * static_cast<float>(context.resolution.y) };
+        auto const col = Rectangle{ rectangle.x * static_cast<float>(resolution.x),
+                                    rectangle.y * static_cast<float>(resolution.y),
+                                    rectangle.width * static_cast<float>(resolution.x),
+                                    rectangle.height * static_cast<float>(resolution.y) };
         if (CheckCollisionPointRec(context.mouse_position, col)) {
             if (uil::AppContext::instance().input().is_pressed(uil::Mouse::MOUSE_BUTTON_LEFT)) {
                 func();
@@ -55,12 +56,13 @@ void MusicTestScene::render(const uil::UpdateContext& context) const {
         return;
     }
 
+    auto const& resolution = uil::AppContext::instance().resolution().resolution_vector();
     for (auto const& [button, label] : std::views::zip(m_buttons, labels)) {
         auto const rect = button.first;
-        auto const col  = Rectangle{ rect.x * static_cast<float>(context.resolution.x),
-                                    rect.y * static_cast<float>(context.resolution.y),
-                                    rect.width * static_cast<float>(context.resolution.x),
-                                    rect.height * static_cast<float>(context.resolution.y) };
+        auto const col  = Rectangle{ rect.x * static_cast<float>(resolution.x),
+                                    rect.y * static_cast<float>(resolution.y),
+                                    rect.width * static_cast<float>(resolution.x),
+                                    rect.height * static_cast<float>(resolution.y) };
 
         DrawRectangleLinesEx(col, 1.0f, WHITE);
         DrawText(label, static_cast<int>(col.x), static_cast<int>(col.y), 30,WHITE);
