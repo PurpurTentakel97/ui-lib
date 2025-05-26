@@ -24,6 +24,7 @@ target_sources(cpt__ui_lib
 
         PUBLIC FILE_SET HEADERS
         BASE_DIRS include FILES
+        include/uil/debug/basic.hpp
         include/uil/global/app_context.hpp
         include/uil/global/asset.hpp
         include/uil/global/font.hpp
