@@ -3,6 +3,7 @@
 //
 
 #pragma once
+
 #include <uil/scene.hpp>
 
 class AssetTestScene final : public uil::Scene {

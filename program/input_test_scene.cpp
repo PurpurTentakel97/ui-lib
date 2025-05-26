@@ -15,13 +15,13 @@ void InputTestScene::render(const uil::UpdateContext& context) const {
     auto const font       = GetFontDefault();
     auto const resolution = uil::AppContext::instance().resolution().resolution_vector();
 
-    auto const draw_label = [this, &font, &resolution](Rectangle const rectangle,
-                                                       Vector2 const spacer,
-                                                       Vector2 const offset,
-                                                       int const columns,
-                                                       int const rows,
-                                                       float const rotation,
-                                                       char const* text) {
+    auto const draw_label = [&font, &resolution](Rectangle const rectangle,
+                                                 Vector2 const spacer,
+                                                 Vector2 const offset,
+                                                 int const columns,
+                                                 int const rows,
+                                                 float const rotation,
+                                                 char const* text) {
         DrawTextPro(font,
                     text,
                     { (x(rectangle, spacer, columns) + offset.x) * static_cast<float>(resolution.x),
