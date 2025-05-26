@@ -4,8 +4,10 @@
 //
 
 #pragma once
-#include <uil/scene_manager.hpp>
+
+#include <uil/debug/wrapper.hpp>
 #include <uil/global/resolution_enum.hpp>
+#include <uil/scene_manager.hpp>
 
 namespace uil {
     struct UpdateContext;
@@ -49,6 +51,8 @@ namespace uil {
         static void set_flag(ConfigFlags flag, bool active);
 
     public:
+        debug::Window debug{};
+
         /**
          * initializes the window and sets all window flags.
          *

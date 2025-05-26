@@ -172,6 +172,8 @@ namespace uil {
         ClearBackground(BLACK);
         m_scene_manager.render(context);
 
+        debug.fps.exec(nullptr);
+
         EndDrawing();
     }
 } // namespace uil
