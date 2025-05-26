@@ -28,7 +28,7 @@ namespace uil::debug {
 } // namespace uil::debug
 
 namespace uil::debug {
-    void RectangleDraw::exec(Rectangle const* rect) const {
+    void RectangleDraw::exec([[maybe_unused]] Rectangle const* rect) const {
 #ifndef NDEBUG
         if (m_active) {
             DrawRectangleLinesEx(*rect, 1.0f, WHITE);
