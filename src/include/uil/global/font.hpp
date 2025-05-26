@@ -36,10 +36,10 @@ namespace uil {
         FontManager& operator=(FontManager&&) noexcept = default;
         ~FontManager();
 
-        tl::expected<cpt::usize, Result> load_font(std::filesystem::path const& path);
+        tl::expected<cpt::usize, Result> load(std::filesystem::path const& path);
         Result unload(cpt::usize id);
 
-        Font& get(cpt::usize id);
-        Font* get_ptr(cpt::usize id);
+        [[nodiscard]] Font const& get(cpt::usize id) const;
+        [[nodiscard]] Font const* get_ptr(cpt::usize id) const;
     };
 }
