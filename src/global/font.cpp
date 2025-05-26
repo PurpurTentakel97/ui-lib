@@ -24,6 +24,24 @@ namespace uil {
         cpt::log::info("[[Font Manager]] | all font unloaded");
     }
 
+
+    Font const& FontManager::get(cpt::usize const id) const {
+        if (not m_font.contains(id)) {
+            static std::unordered_set<cpt::usize> already_warned{};
+            if (already_warned.insert(id).second) {
+                cpt::log::r_error("[[Font Manager]] | id '{}' missing", id);
+            }
+            return m_default_font;
+        }
+
+        return m_font.at(id);
+    }
+
+    Font const* FontManager::get_ptr(cpt::usize const id) const {
+        return &get(id);
+    }
+
+
     tl::expected<cpt::usize, FontManager::Result> FontManager::load(std::filesystem::path const& path) {
         auto const font = LoadFont(cpt::make_absolute_path(path).string().c_str());
         if (not IsFontValid(font)) {
@@ -47,21 +65,5 @@ namespace uil {
         m_font.erase(id);
         cpt::log::info("[[Font Manager]] | unloaded id '{}'", id);
         return Result::Success;
-    }
-
-    Font const& FontManager::get(cpt::usize const id) const {
-        if (not m_font.contains(id)) {
-            static std::unordered_set<cpt::usize> already_warned{};
-            if (already_warned.insert(id).second) {
-                cpt::log::r_error("[[Font Manager]] | id '{}' missing", id);
-            }
-            return m_default_font;
-        }
-
-        return m_font.at(id);
-    }
-
-    Font const* FontManager::get_ptr(cpt::usize const id) const {
-        return &get(id);
     }
 }
