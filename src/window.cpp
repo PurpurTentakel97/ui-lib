@@ -51,7 +51,6 @@ namespace uil {
         // clang-format off
         return UpdateContext{
             GetMousePosition(),
-            &m_font,
             GetFrameTime(),
             m_scene_manager
         };
@@ -95,7 +94,6 @@ namespace uil {
         set_flags(pre);
         InitWindow(800, 600, title);
         set_flags(post);
-        m_font = LoadFont("assets/font.ttf");
     }
 
     Window::~Window() {

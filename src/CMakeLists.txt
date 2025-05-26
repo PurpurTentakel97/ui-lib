@@ -4,9 +4,6 @@ target_sources(cpt__ui_lib
         PRIVATE
         debug/debug_classes.cpp
 
-        elements/link.cpp
-        elements/text.cpp
-
         global/app_context.cpp
         global/asset.cpp
         global/font.cpp
@@ -33,9 +30,6 @@ target_sources(cpt__ui_lib
         include/uil/debug/debug_classes.hpp
         include/uil/debug/debug_wrapper.hpp
         include/uil/debug/debug_types.hpp
-
-        include/uil/elements/link.hpp
-        include/uil/elements/text.hpp
 
         include/uil/global/app_context.hpp
         include/uil/global/asset.hpp

@@ -43,7 +43,6 @@ namespace uil {
     private:
         Resolution m_resolution{ Resolution::SVGA };
         SceneManager m_scene_manager;
-        Font m_font{};
 
         void update_resolution();
         [[nodiscard]] UpdateContext create_context();
