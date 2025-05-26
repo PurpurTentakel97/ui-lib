@@ -14,5 +14,5 @@ private:
 public:
     explicit AssetTestScene();
 
-    void render(uil::UpdateContext const& context) const override;
+    void render() const override;
 };

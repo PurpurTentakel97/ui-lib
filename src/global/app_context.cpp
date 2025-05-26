@@ -11,6 +11,7 @@ namespace uil {
         return app_context;
     }
 
+
     InputManager& AppContext::input() {
         return m_input;
     }
@@ -18,6 +19,7 @@ namespace uil {
     InputManager const& AppContext::input() const {
         return m_input;
     }
+
 
     SoundManager& AppContext::sound() {
         return m_sound;
@@ -27,6 +29,7 @@ namespace uil {
         return m_sound;
     }
 
+
     AssetManager& AppContext::asset() {
         return m_asset;
     }
@@ -34,6 +37,7 @@ namespace uil {
     AssetManager const& AppContext::asset() const {
         return m_asset;
     }
+
 
     ResolutionManager& AppContext::resolution() {
         return m_resolution;
@@ -43,6 +47,7 @@ namespace uil {
         return m_resolution;
     }
 
+
     FontManager& AppContext::font() {
         return m_font;
     }
@@ -50,4 +55,4 @@ namespace uil {
     FontManager const& AppContext::font() const {
         return m_font;
     }
-} // namespace ui
+} // namespace uil

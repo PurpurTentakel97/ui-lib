@@ -30,10 +30,10 @@ namespace uil {
         return keep_updating;
     }
 
-    void Scene::render(UpdateContext const& context) const {
+    void Scene::render() const {
         for (auto const& e : elements()) {
             if (e->active()) {
-                e->render(context);
+                e->render();
             }
         }
         on_render.invoke(*this);

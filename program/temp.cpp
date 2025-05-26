@@ -2,12 +2,12 @@
 // Created by marti on 17.05.2024.
 //
 
-#include <raylib.h>
-#include <uil/window.hpp>
-#include "input_test_scene.hpp"
-#include "music_test_scene.hpp"
 #include "asset_test_scene.hpp"
 #include "font_test_scene.hpp"
+#include "input_test_scene.hpp"
+#include "music_test_scene.hpp"
+#include <raylib.h>
+#include <uil/window.hpp>
 
 int main() {
 #ifndef NDEBUG
@@ -25,6 +25,7 @@ int main() {
     auto window = uil::Window(title, config);
     uil::AppContext::instance().resolution().set_resolution(uil::Resolution::FULL_HD);
     window.debug_window.fps.set(true);
+    window.debug_window.mouse.set(true);
 
     auto const t1 = window.scene_manager().emplace_top<InputTestScene>();
     // auto const t2 = window.scene_manager().emplace_top<MusicTestScene>();

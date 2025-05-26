@@ -49,5 +49,5 @@ public:
     explicit MusicTestScene();
 
     [[nodiscard]] bool handle_input(uil::UpdateContext const& context) const override;
-    void render(const uil::UpdateContext& context) const override;
+    void render() const override;
 };

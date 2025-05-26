@@ -3,8 +3,8 @@
 // 30.05.24
 //
 
-#include <uil/global/app_context.hpp>
 #include <raylib.h>
+#include <uil/global/app_context.hpp>
 #include <uil/update_context.hpp>
 #include <uil/window.hpp>
 
@@ -16,7 +16,7 @@ namespace uil {
             m_resolution = resolution.resolution();
             m_scene_manager.resize();
             if (resize) {
-                auto const is_fullscreen  = IsWindowFullscreen();
+                auto const is_fullscreen = IsWindowFullscreen();
                 if (is_fullscreen) {
                     ToggleFullscreen();
                 }
@@ -24,10 +24,8 @@ namespace uil {
                 auto const resolution_vec = resolution.resolution_vector();
                 SetWindowSize(resolution_vec.x, resolution_vec.y);
                 auto const screen_resolution = vec_from_resolution(Resolution::SCREEN);
-                SetWindowPosition(
-                    (screen_resolution.x - resolution_vec.x) / 2,
-                    (screen_resolution.y - resolution_vec.y) / 2
-                );
+                SetWindowPosition((screen_resolution.x - resolution_vec.x) / 2,
+                                  (screen_resolution.y - resolution_vec.y) / 2);
 
                 if (is_fullscreen) {
                     ToggleFullscreen();
@@ -72,22 +70,22 @@ namespace uil {
             }
         };
         auto const pre = FlagVec{
-            { ConfigFlags::FLAG_MSAA_4X_HINT, config.msaa },
-            { ConfigFlags::FLAG_WINDOW_HIGHDPI, config.high_dpi },
-            { ConfigFlags::FLAG_INTERLACED_HINT, config.interlaced },
+            { ConfigFlags::FLAG_MSAA_4X_HINT,       config.msaa        },
+            { ConfigFlags::FLAG_WINDOW_HIGHDPI,     config.high_dpi    },
+            { ConfigFlags::FLAG_INTERLACED_HINT,    config.interlaced  },
             { ConfigFlags::FLAG_WINDOW_TRANSPARENT, config.transparent },
         };
         auto const post = FlagVec{
-            { ConfigFlags::FLAG_VSYNC_HINT, config.v_sync },
-            { ConfigFlags::FLAG_FULLSCREEN_MODE, config.fullscreen },
-            { ConfigFlags::FLAG_WINDOW_RESIZABLE, config.resizable },
-            { ConfigFlags::FLAG_WINDOW_UNDECORATED, config.undecorated },
-            { ConfigFlags::FLAG_WINDOW_HIDDEN, config.hidden },
-            { ConfigFlags::FLAG_WINDOW_MINIMIZED, config.minimized },
-            { ConfigFlags::FLAG_WINDOW_MAXIMIZED, config.maximized },
-            { ConfigFlags::FLAG_WINDOW_UNFOCUSED, config.unfocused },
-            { ConfigFlags::FLAG_WINDOW_TOPMOST, config.top_most },
-            { ConfigFlags::FLAG_WINDOW_ALWAYS_RUN, config.always_run },
+            { ConfigFlags::FLAG_VSYNC_HINT,               config.v_sync            },
+            { ConfigFlags::FLAG_FULLSCREEN_MODE,          config.fullscreen        },
+            { ConfigFlags::FLAG_WINDOW_RESIZABLE,         config.resizable         },
+            { ConfigFlags::FLAG_WINDOW_UNDECORATED,       config.undecorated       },
+            { ConfigFlags::FLAG_WINDOW_HIDDEN,            config.hidden            },
+            { ConfigFlags::FLAG_WINDOW_MINIMIZED,         config.minimized         },
+            { ConfigFlags::FLAG_WINDOW_MAXIMIZED,         config.maximized         },
+            { ConfigFlags::FLAG_WINDOW_UNFOCUSED,         config.unfocused         },
+            { ConfigFlags::FLAG_WINDOW_TOPMOST,           config.top_most          },
+            { ConfigFlags::FLAG_WINDOW_ALWAYS_RUN,        config.always_run        },
             { ConfigFlags::FLAG_WINDOW_MOUSE_PASSTHROUGH, config.mouse_passthrough },
             { ConfigFlags::FLAG_BORDERLESS_WINDOWED_MODE, config.borderless_window },
         };
@@ -157,23 +155,20 @@ namespace uil {
     }
 
     void Window::update() {
+        // updating
         update_resolution();
         AppContext::instance().sound().update();
         auto const context = create_context();
-
-        // updating
         SetMouseCursor(MOUSE_CURSOR_DEFAULT);
-        update_resolution();
         [[maybe_unused]] auto const t1 = m_scene_manager.handle_input(context);
         [[maybe_unused]] auto const t2 = m_scene_manager.update(context);
 
         // rendering
         BeginDrawing();
         ClearBackground(BLACK);
-        m_scene_manager.render(context);
-
-        debug_window.fps.exec(this);
-
+        m_scene_manager.render();
+        debug_window.fps.exec(nullptr);
+        debug_window.mouse.exec(nullptr);
         EndDrawing();
     }
 } // namespace uil

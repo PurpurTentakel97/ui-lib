@@ -4,9 +4,10 @@
 //
 
 #pragma once
-#include <uil/debug/debug_wrapper.hpp>
-#include <uil/scene_manager.hpp>
+
+#include <uil/debug/wrapper.hpp>
 #include <uil/global/resolution_enum.hpp>
+#include <uil/scene_manager.hpp>
 
 namespace uil {
     struct UpdateContext;
@@ -50,7 +51,7 @@ namespace uil {
         static void set_flag(ConfigFlags flag, bool active);
 
     public:
-        debug::WindowDebug debug_window{};
+        debug::Window debug_window{};
 
         /**
          * initializes the window and sets all window flags.
@@ -160,7 +161,6 @@ namespace uil {
         /**
          * creates the context and checks, updates and render the scene manager.
          * renders fps in debug mode when activated.
-         *
          */
         void update();
     };

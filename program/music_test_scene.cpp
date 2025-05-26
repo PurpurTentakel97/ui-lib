@@ -38,8 +38,8 @@ bool MusicTestScene::handle_input(uil::UpdateContext const& context) const {
     return keep_handle_input;
 }
 
-void MusicTestScene::render(const uil::UpdateContext& context) const {
-    Scene::render(context);
+void MusicTestScene::render() const {
+    Scene::render();
 
     auto const labels = {
         " start 1",

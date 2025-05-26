@@ -8,8 +8,7 @@
 #include <uil/alignment.hpp>
 #include <uil/base_element.hpp>
 #include <uil/callback.hpp>
-#include <uil/helper/rect.hpp>
-#include <uil/debug/debug_wrapper.hpp>
+#include <uil/debug/wrapper.hpp>
 
 namespace uil {
     struct UpdateContext;
@@ -59,16 +58,8 @@ namespace uil {
         void slow_to_fast(float delta_time);
         void constant(float delta_time);
 
-
-    protected:
-        /**
-         *
-         * @return last resolution that was captured by last resize
-         */
-        [[nodiscard]] cpt::Vec2_i resolution() const;
-
     public:
-        debug::UIElementDebug debug_element{};
+        debug::Element debug_element{};
 
         Callback<UIElement&> on_movement_start{}; ///< contains UIElement
         Callback<UIElement&> on_movement_stop{};  ///< contains UIElement
@@ -274,16 +265,12 @@ namespace uil {
          */
         [[nodiscard]] virtual bool update(UpdateContext const& context);
         /**
-         * renders collider if configured.
-         * this only works in debug build.
-         *
          * override this when the derived element has to render additional stuff.
          * make sure to call UIElement::render().
          *
-         * @param context all changes of the last frame
          * @throw uil::BadMovementType unexpected movement enum. mostly happens when the enum has an non predefinded value.
          */
-        virtual void render(UpdateContext const& context) const;
+        virtual void render() const;
         /**
          * updates resolution and collider.
          *

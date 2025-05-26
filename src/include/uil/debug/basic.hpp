@@ -1,32 +1,31 @@
 //
 // Purpur Tentakel
-// 15.03.25
+// 26.05.25
 //
 
 #pragma once
 
 namespace uil::debug {
     template<class T>
-    class Debug {
+    class BasicDebug {
     protected:
 #ifndef NDEBUG
-        bool m_value = false;
+        bool m_active = false;
 #endif
 
     public:
-        virtual ~Debug() = default;
-
+        virtual ~BasicDebug()       = default;
         virtual void exec(T const*) const = 0;
 
-        void set([[maybe_unused]] bool const value) {
+        void set([[maybe_unused]] bool const active) {
 #ifndef NDEBUG
-            m_value = value;
+            m_active = active;
 #endif
         }
 
-        [[nodiscard]] bool get() const {
+        [[nodiscard]] bool active() const {
 #ifndef NDEBUG
-            return m_value;
+            return m_active;
 #else
             return false;
 #endif

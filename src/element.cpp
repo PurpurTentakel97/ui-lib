@@ -3,11 +3,11 @@
 // 06.07.24
 //
 
-#include <uil/update_context.hpp>
-#include <uil/debug/debug_types.hpp>
+#include <uil/helper/rect.hpp>
 #include <uil/element.hpp>
-#include <uil/helper/vec.hpp>
 #include <uil/global/app_context.hpp>
+#include <uil/helper/vec.hpp>
+#include <uil/update_context.hpp>
 
 namespace uil {
     void UIElement::update_relative() {
@@ -257,13 +257,8 @@ namespace uil {
         return true;
     }
 
-    void UIElement::render(UpdateContext const&) const {
+    void UIElement::render() const {
         debug_element.collider.exec(&m_collider);
-        debug::MovementDrawDebugData const data{
-            { m_relative.x, m_relative.y },
-            m_relative_destination
-        };
-        debug_element.movement.exec(&data);
         on_draw.invoke(*this);
     }
 
