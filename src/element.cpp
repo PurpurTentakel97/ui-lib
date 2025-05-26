@@ -3,9 +3,9 @@
 // 06.07.24
 //
 
-#include <uil/helper/rect.hpp>
 #include <uil/element.hpp>
 #include <uil/global/app_context.hpp>
+#include <uil/helper/rect.hpp>
 #include <uil/helper/vec.hpp>
 #include <uil/update_context.hpp>
 
@@ -104,7 +104,7 @@ namespace uil {
     UIElement::UIElement(Rectangle const relative, Alignment const alignment)
         : m_alignment{ alignment },
           m_relative{ aligned_position(relative, alignment) },
-          m_collider{ collider_from_relative(m_relative, AppContext::instance().resolution().resolution_vector()) } {}
+          m_collider{ collider_from_relative(m_relative, AppContext::instance().resolution().resolution_vector()) } { }
 
     void UIElement::set_relative_position(Vector2 const position) {
         m_relative.x = position.x;
@@ -178,6 +178,10 @@ namespace uil {
         return m_hovered;
     }
 
+    bool UIElement::last_frame_hovered() const {
+        return m_last_frame_hovered;
+    }
+
     bool UIElement::is_moving() const {
         return m_move_type != MoveType::None;
     }
@@ -235,8 +239,9 @@ namespace uil {
     }
 
     bool UIElement::handle_input(UpdateContext const& context) {
-        m_last_move_type = m_move_type;
-        m_hovered        = CheckCollisionPointRec(context.mouse_position, m_collider);
+        m_last_move_type     = m_move_type;
+        m_last_frame_hovered = m_hovered;
+        m_hovered            = CheckCollisionPointRec(context.mouse_position, m_collider);
         on_check.invoke(*this);
         return true;
     }

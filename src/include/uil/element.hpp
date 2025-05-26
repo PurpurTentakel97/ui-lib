@@ -32,8 +32,8 @@ namespace uil {
         // basic
         Alignment m_alignment;
         Rectangle m_relative{}; // m_relative needs to be initialized bevor m_collider
-        Rectangle m_collider{}; // m_relative needs to be initialized bevor m_collider
-        bool m_hovered = false;
+        bool m_hovered            = false;
+        bool m_last_frame_hovered = false;
 
         // movement
         MoveType m_move_type      = MoveType::None;
@@ -57,6 +57,9 @@ namespace uil {
         void fast_to_slow(float delta_time);
         void slow_to_fast(float delta_time);
         void constant(float delta_time);
+
+    protected:
+        Rectangle m_collider{}; // m_relative needs to be initialized bevor m_collider
 
     public:
         debug::Element debug_element{};
@@ -170,9 +173,15 @@ namespace uil {
 
         /**
          *
-         * @return if element is currently hovered
+         * @return if an element is currently hovered
          */
         [[nodiscard]] bool hovered() const;
+
+        /**
+         *
+         * @return if an element was hovered last frame
+         */
+        [[nodiscard]] bool last_frame_hovered() const;
 
         // movement
         /**

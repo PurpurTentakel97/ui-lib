@@ -4,6 +4,8 @@ target_sources(cpt__ui_lib
         PRIVATE
         debug/classes.cpp
 
+        elements/button.cpp
+
         global/app_context.cpp
         global/asset.cpp
         global/focus.cpp
@@ -30,6 +32,8 @@ target_sources(cpt__ui_lib
         include/uil/debug/basic.hpp
         include/uil/debug/classes.hpp
         include/uil/debug/wrapper.hpp
+
+        include/uil/elements/button.hpp
 
         include/uil/global/app_context.hpp
         include/uil/global/asset.hpp
