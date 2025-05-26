@@ -3,17 +3,19 @@
 // 06.07.24
 //
 
-#include <uil/context.hpp>
+#include <uil/helper/rect.hpp>
 #include <uil/element.hpp>
+#include <uil/global/app_context.hpp>
 #include <uil/helper/vec.hpp>
+#include <uil/update_context.hpp>
 
 namespace uil {
     void UIElement::update_relative() {
-        m_relative = relative_from_collider(m_collider, m_resolution);
+        m_relative = relative_from_collider(m_collider, AppContext::instance().resolution().resolution_vector());
     }
 
     void UIElement::update_collider() {
-        m_collider = collider_from_relative(m_relative, m_resolution);
+        m_collider = collider_from_relative(m_relative, AppContext::instance().resolution().resolution_vector());
     }
 
     bool UIElement::is_arriving(Vector2 const& distance) const {
@@ -99,15 +101,10 @@ namespace uil {
         move(distance);
     }
 
-    cpt::Vec2_i UIElement::resolution() const {
-        return m_resolution;
-    }
-
-    UIElement::UIElement(cpt::Vec2_i const resolution, Rectangle const relative, Alignment const alignment)
-        : m_resolution{ resolution },
-          m_alignment{ alignment },
+    UIElement::UIElement(Rectangle const relative, Alignment const alignment)
+        : m_alignment{ alignment },
           m_relative{ aligned_position(relative, alignment) },
-          m_collider{ collider_from_relative(m_relative, resolution) } { }
+          m_collider{ collider_from_relative(m_relative, AppContext::instance().resolution().resolution_vector()) } {}
 
     void UIElement::set_relative_position(Vector2 const position) {
         m_relative.x = position.x;
@@ -177,14 +174,6 @@ namespace uil {
         return m_alignment;
     }
 
-    void UIElement::set_render_collider_debug(bool const render) {
-        m_render_collider = render;
-    }
-
-    bool UIElement::render_collider_debug() const {
-        return m_render_collider;
-    }
-
     bool UIElement::hovered() const {
         return m_hovered;
     }
@@ -245,14 +234,14 @@ namespace uil {
         return m_last_move_type != MoveType::None and m_move_type == MoveType::None;
     }
 
-    bool UIElement::handle_input(Context const& context) {
+    bool UIElement::handle_input(UpdateContext const& context) {
         m_last_move_type = m_move_type;
         m_hovered        = CheckCollisionPointRec(context.mouse_position, m_collider);
         on_check.invoke(*this);
         return true;
     }
 
-    bool UIElement::update(Context const& context) {
+    bool UIElement::update(UpdateContext const& context) {
         switch (m_move_type) {
                 // clang-format off
             case MoveType::None:                                           break;
@@ -268,18 +257,13 @@ namespace uil {
         return true;
     }
 
-    void UIElement::render(Context const&) const {
-#ifndef NDEBUG
-        if (m_render_collider) {
-            DrawRectangleLinesEx(m_collider, 2.0f, WHITE);
-        }
-#endif
+    void UIElement::render() const {
+        debug_element.collider.exec(&m_collider);
         on_draw.invoke(*this);
     }
 
-    void UIElement::resize(Context const& context) {
-        m_resolution = context.resolution;
-        m_collider   = collider_from_relative(m_relative, m_resolution);
+    void UIElement::resize() {
+        m_collider = collider_from_relative(m_relative, AppContext::instance().resolution().resolution_vector());
         on_resize.invoke(*this);
     }
 } // namespace uil

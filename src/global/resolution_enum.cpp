@@ -7,7 +7,8 @@
 #include <functional>
 #include <raylib.h>
 #include <uil/exception.hpp>
-#include <uil/resolution.hpp>
+#include <uil/global/resolution_enum.hpp>
+#include <uil/global/app_context.hpp>
 
 namespace uil {
     cpt::Vec2_i vec_from_resolution(Resolution const resolution) {
@@ -47,8 +48,16 @@ namespace uil {
             case Resolution::VGA:        return { 640,  480  };
             case Resolution::QSVGA:      return { 400,  300  };
             case Resolution::QVGA:       return { 320,  240  };
-                // clang-format on
+            // clang-format on
 
+            case Resolution::RESIZED: {
+                auto const with   = GetRenderWidth();
+                auto const height = GetRenderHeight();
+                return { with, height };
+            }
+            case Resolution::CUSTOM: {
+                return AppContext::instance().resolution().custom_resolution_vector();
+            }
             case Resolution::SCREEN: {
                 auto const screen{ GetCurrentMonitor() };
                 auto const height{ GetMonitorHeight(screen) };
@@ -102,6 +111,8 @@ namespace uil {
             case Resolution::VGA:        return std::format("VGA ({} x {})",        res.x, res.y);
             case Resolution::QSVGA:      return std::format("QSVGA ({} x {})",      res.x, res.y);
             case Resolution::QVGA:       return std::format("QVGA ({} x {})",       res.x, res.y);
+            case Resolution::RESIZED:    return std::format("RESIZED ({} x {})",    res.x, res.y);
+            case Resolution::CUSTOM:     return std::format("CUSTOM ({} x {})",     res.x, res.y);
             case Resolution::SCREEN:     return std::format("SCREEN ({} x {})",     res.x, res.y);
                 // clang-format on
         }

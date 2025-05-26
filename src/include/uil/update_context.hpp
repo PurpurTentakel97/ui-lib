@@ -14,10 +14,8 @@ namespace uil {
     /**
      * provides all values for check, update, render and resize
      */
-    struct Context final {
+    struct UpdateContext final {
         Vector2 mouse_position;
-        Font const* font;
-        cpt::Vec2_i resolution;
         float delta_time;
         SceneManager& scene_manager;
 
@@ -25,12 +23,12 @@ namespace uil {
          * all values should be from the beginning of the frame
          *
          * @param _mouse_position current mouse position
-         * @param _font current font pointer
-         * @param _resolution current resolution
          * @param _delta_time time of the last frame
          * @param _scene_manager reference of the scene_manager
          */
-        Context(Vector2 _mouse_position, Font const* _font, cpt::Vec2_i _resolution, float _delta_time, SceneManager& _scene_manager);
-        Context() = delete;
+        UpdateContext(Vector2 _mouse_position,
+                      float _delta_time,
+                      SceneManager& _scene_manager);
+        UpdateContext() = delete;
     };
 }

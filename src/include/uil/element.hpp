@@ -8,10 +8,10 @@
 #include <uil/alignment.hpp>
 #include <uil/base_element.hpp>
 #include <uil/callback.hpp>
-#include <uil/helper/rect.hpp>
+#include <uil/debug/wrapper.hpp>
 
 namespace uil {
-    struct Context;
+    struct UpdateContext;
 
     /**
     * the basic element for all things that gets displayed into a scene.
@@ -30,12 +30,10 @@ namespace uil {
         };
 
         // basic
-        cpt::Vec2_i m_resolution;
         Alignment m_alignment;
         Rectangle m_relative{}; // m_relative needs to be initialized bevor m_collider
         Rectangle m_collider{}; // m_relative needs to be initialized bevor m_collider
-        bool m_render_collider = false;
-        bool m_hovered         = false;
+        bool m_hovered = false;
 
         // movement
         MoveType m_move_type      = MoveType::None;
@@ -60,15 +58,9 @@ namespace uil {
         void slow_to_fast(float delta_time);
         void constant(float delta_time);
 
-
-    protected:
-        /**
-         *
-         * @return last resolution that was captured by last resize
-         */
-        [[nodiscard]] cpt::Vec2_i resolution() const;
-
     public:
+        debug::Element debug_element{};
+
         Callback<UIElement&> on_movement_start{}; ///< contains UIElement
         Callback<UIElement&> on_movement_stop{};  ///< contains UIElement
         Callback<UIElement&> on_arrived{};        ///< contains UIElement
@@ -81,11 +73,10 @@ namespace uil {
          * aligns the relative position according to the provided alignment.
          * calculates the absolute collider out of the relative position and size and the resolution.
          *
-         * @param resolution current resolution for absolute position and size
          * @param relative relative position and size of the collider
          * @param alignment moves the relative position
          */
-        UIElement(cpt::Vec2_i resolution, Rectangle relative, Alignment alignment);
+        UIElement(Rectangle relative, Alignment alignment);
 
         UIElement(UIElement const&)            = delete; ///< no need because handle with unique_ptr
         UIElement(UIElement&&)                 = delete; ///< no need because handle with unique_ptr
@@ -178,18 +169,6 @@ namespace uil {
         [[nodiscard]] Alignment alignment() const;
 
         /**
-         * this will only render in debug mode.
-         *
-         * @param render defines if the collider gets rendered
-         */
-        void set_render_collider_debug(bool render);
-        /**
-         *
-         * @return if collider gets currently rendered
-         */
-        [[nodiscard]] bool render_collider_debug() const;
-
-        /**
          *
          * @return if element is currently hovered
          */
@@ -274,7 +253,7 @@ namespace uil {
          * @param context all changes of the last frame
          * @return whether the next scene should keep checking
          */
-        [[nodiscard]] virtual bool handle_input(Context const& context);
+        [[nodiscard]] virtual bool handle_input(UpdateContext const& context);
         /**
          * updates current movement if element is moving.
          *
@@ -284,26 +263,20 @@ namespace uil {
          * @param context all changes of the last frame
          * @return whether the next scene should keep updating
          */
-        [[nodiscard]] virtual bool update(Context const& context);
+        [[nodiscard]] virtual bool update(UpdateContext const& context);
         /**
-         * renders collider if configured.
-         * this only works in debug build.
-         *
          * override this when the derived element has to render additional stuff.
          * make sure to call UIElement::render().
          *
-         * @param context all changes of the last frame
          * @throw uil::BadMovementType unexpected movement enum. mostly happens when the enum has an non predefinded value.
          */
-        virtual void render(Context const& context) const;
+        virtual void render() const;
         /**
          * updates resolution and collider.
          *
          * override this when the derived element has to resize additional stuff.
          * make sure to call UIElement::resize().
-         *
-         * @param context all changes of the last frame
          */
-        virtual void resize(Context const& context);
+        virtual void resize();
     };
 } // namespace uil

@@ -10,7 +10,7 @@
 #include <uil/element.hpp>
 
 namespace uil {
-    struct Context;
+    struct UpdateContext;
 
     /**
      * base class for all scenes in this library.
@@ -27,10 +27,8 @@ namespace uil {
         /**
          * this constructor can do exactly nothing.
          * I need it to be able to add the resolution in the scene_manager.
-         *
-         * @param resolution current resolution
          */
-        explicit Scene(cpt::Vec2_i resolution);
+        using BaseManager::BaseManager;
         Scene(Scene const&)            = delete; ///< deleted because it will be used in unique_ptr
         Scene(Scene&&)                 = delete; ///< deleted because it will be used in unique_ptr
         Scene& operator=(Scene const&) = delete; ///< deleted because it will be used in unique_ptr
@@ -44,7 +42,7 @@ namespace uil {
          * @param context all changes of the last frame
          * @return whether the next scene should keep checking
          */
-        [[nodiscard]] virtual bool handle_input(Context const& context) const;
+        [[nodiscard]] virtual bool handle_input(UpdateContext const& context) const;
         /**
          * updating all elements in the scene. provides the context.
          *
@@ -54,24 +52,20 @@ namespace uil {
          * @param context all changes of the last frame
          * @return whether the next scene should keep updating
          */
-        [[nodiscard]] virtual bool update(Context const& context) const;
+        [[nodiscard]] virtual bool update(UpdateContext const& context) const;
         /**
          * rendering all elements in the scene. provides the context.
          *
          * override this when the derived scene has to render additional stuff.
          * make sure to call Scene::render().
-         *
-         * @param context all changes of the last frame
          */
-        virtual void render(Context const& context) const;
+        virtual void render() const;
         /**
          * resizing all elements in the scene. provides the context.
          *
          * override this when the derived scene has to resize additional stuff.
          * make sure to call Scene::resize().
-         *
-         * @param context all changes of the last frame
          */
-        void resize(Context const& context) override;
+        void resize() override;
     };
 }; // namespace uil

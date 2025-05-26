@@ -3,14 +3,12 @@
 // 06.07.24
 //
 
-#include <uil/context.hpp>
+#include <uil/update_context.hpp>
 #include <uil/element.hpp>
 #include <uil/scene.hpp>
 
 namespace uil {
-    Scene::Scene(cpt::Vec2_i const resolution) : BaseManager{ resolution } { }
-
-    bool Scene::handle_input(Context const& context) const {
+    bool Scene::handle_input(UpdateContext const& context) const {
         auto keep_checking = true;
         for (auto const& e : elements()) {
             if (e->active()) {
@@ -21,7 +19,7 @@ namespace uil {
         return keep_checking;
     }
 
-    bool Scene::update(Context const& context) const {
+    bool Scene::update(UpdateContext const& context) const {
         auto keep_updating = true;
         for (auto const& e : elements()) {
             if (e->active()) {
@@ -32,19 +30,18 @@ namespace uil {
         return keep_updating;
     }
 
-    void Scene::render(Context const& context) const {
+    void Scene::render() const {
         for (auto const& e : elements()) {
             if (e->active()) {
-                e->render(context);
+                e->render();
             }
         }
         on_render.invoke(*this);
     }
 
-    void Scene::resize(Context const& context) {
-        BaseManager::resize(context);
+    void Scene::resize() {
         for (auto const& e : elements()) {
-            e->resize(context);
+            e->resize();
         }
         on_resize.invoke(*this);
     }

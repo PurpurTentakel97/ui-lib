@@ -4,15 +4,16 @@
 //
 
 #pragma once
-#include <cpt/vec2.hpp>
+
+#include <uil/debug/wrapper.hpp>
+#include <uil/global/resolution_enum.hpp>
 #include <uil/scene_manager.hpp>
 
 namespace uil {
-    struct Context;
-
+    struct UpdateContext;
     /**
      * provides the construct config for a window.
-     * some config need to be set that way because it can only be set bevor the window is initialized.
+     * some config needs to be set that way because it can only be set bevor the window is initialized.
      */
     struct WindowConfig final {
         bool v_sync            = false;
@@ -33,6 +34,7 @@ namespace uil {
         bool interlaced        = false;
     };
 
+
     /**
      * main window of the game.
      * you can only have one instance.
@@ -40,31 +42,30 @@ namespace uil {
      */
     class Window final {
     private:
-        bool m_draw_fps = true;
-        cpt::Vec2_i m_resolution;
+        Resolution m_resolution{ Resolution::SVGA };
         SceneManager m_scene_manager;
-        Font m_font{};
 
         void update_resolution();
-        [[nodiscard]] Context create_context();
+        [[nodiscard]] UpdateContext create_context();
 
         static void set_flag(ConfigFlags flag, bool active);
 
     public:
+        debug::Window debug_window{};
+
         /**
          * initializes the window and sets all window flags.
          *
-         * @param resolution initial window dimensions
          * @param title window title
          * @param config window state config
          */
-        Window(cpt::Vec2_i resolution, char const* title, WindowConfig config);
+        Window(char const* title, WindowConfig config);
         Window(Window const&)              = delete; ///< deleted because only one instance is allowed
         Window(Window&& window)            = delete; ///< deleted because not necessary
         Window& operator=(Window const&)   = delete; ///< deleted because only one instance is allowed
         Window& operator=(Window&& window) = delete; ///< deleted because not necessary
         /**
-         * closes window.
+         * closes the window.
          */
         ~Window();
 
@@ -160,21 +161,7 @@ namespace uil {
         /**
          * creates the context and checks, updates and render the scene manager.
          * renders fps in debug mode when activated.
-         *
          */
         void update();
-
-        /**
-         * draws current fps in the top left corner if the screen.
-         * this only works in debug mode.
-         *
-         * @param draw_fps defines if draw_fps is active
-         */
-        void set_draw_fps_debug(bool draw_fps);
-        /**
-         *
-         * @return if are fps currently drawn
-         */
-        [[nodiscard]] bool draw_fps_debug() const;
     };
 } // namespace uil
