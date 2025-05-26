@@ -12,3 +12,9 @@ namespace uil::debug {
         FPSDraw fps{};
     };
 } // namespace uil::debug
+
+namespace uil::debug {
+    struct Element final {
+        RectangleDraw collider{};
+    };
+} // namespace uil::debug

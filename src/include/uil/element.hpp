@@ -8,6 +8,7 @@
 #include <uil/alignment.hpp>
 #include <uil/base_element.hpp>
 #include <uil/callback.hpp>
+#include <uil/debug/wrapper.hpp>
 
 namespace uil {
     struct UpdateContext;
@@ -58,6 +59,8 @@ namespace uil {
         void constant(float delta_time);
 
     public:
+        debug::Element debug_element{};
+
         Callback<UIElement&> on_movement_start{}; ///< contains UIElement
         Callback<UIElement&> on_movement_stop{};  ///< contains UIElement
         Callback<UIElement&> on_arrived{};        ///< contains UIElement

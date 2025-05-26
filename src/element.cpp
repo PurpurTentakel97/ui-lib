@@ -258,6 +258,7 @@ namespace uil {
     }
 
     void UIElement::render(UpdateContext const&) const {
+        debug_element.collider.exec(&m_collider);
         on_draw.invoke(*this);
     }
 
