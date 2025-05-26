@@ -172,7 +172,7 @@ namespace uil {
         ClearBackground(BLACK);
         m_scene_manager.render(context);
 
-        debug.fps.exec(nullptr);
+        debug_window.fps.exec(nullptr);
 
         EndDrawing();
     }

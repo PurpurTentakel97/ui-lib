@@ -51,7 +51,7 @@ namespace uil {
         static void set_flag(ConfigFlags flag, bool active);
 
     public:
-        debug::Window debug{};
+        debug::Window debug_window{};
 
         /**
          * initializes the window and sets all window flags.
