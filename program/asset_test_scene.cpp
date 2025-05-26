@@ -12,8 +12,8 @@ AssetTestScene::AssetTestScene() {
     m_invalid_asset = assets.load("/assets/assets/invalid.png").value_or(0);
 }
 
-void AssetTestScene::render(uil::UpdateContext const& context) const {
-    Scene::render(context);
+void AssetTestScene::render() const {
+    Scene::render();
     auto const& assets = uil::AppContext::instance().asset();
 
     auto const& asset_1 = assets.get(m_valid_asset);

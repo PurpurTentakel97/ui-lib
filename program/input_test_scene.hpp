@@ -29,8 +29,8 @@ public:
         return keep_updating;
     }
 
-    void render(const uil::UpdateContext& context) const override {
-        UIElement::render(context);
+    void render() const override {
+        UIElement::render();
 
         m_render ? DrawRectangleRec(collider(),GREEN) : DrawRectangleRec(collider(),RED);
     }
@@ -212,5 +212,5 @@ private:
 public:
     explicit InputTestScene();
 
-    void render(const uil::UpdateContext& context) const override;
+    void render() const override;
 };

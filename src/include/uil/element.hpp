@@ -265,16 +265,12 @@ namespace uil {
          */
         [[nodiscard]] virtual bool update(UpdateContext const& context);
         /**
-         * renders collider if configured.
-         * this only works in debug build.
-         *
          * override this when the derived element has to render additional stuff.
          * make sure to call UIElement::render().
          *
-         * @param context all changes of the last frame
          * @throw uil::BadMovementType unexpected movement enum. mostly happens when the enum has an non predefinded value.
          */
-        virtual void render(UpdateContext const& context) const;
+        virtual void render() const;
         /**
          * updates resolution and collider.
          *

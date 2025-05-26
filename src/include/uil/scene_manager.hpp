@@ -38,11 +38,9 @@ namespace uil {
         [[nodiscard]] bool update(UpdateContext const& context) const;
 
         /**
-         * calls all emplace scene from bottom to top to render.
-         *
-         * @param context all changes of the last frame
+         * calls all emplace scenes from bottom to top to render.
          */
-        void render(UpdateContext const& context) const;
+        void render() const;
 
         /**
          * calls all emplace scene to resize.

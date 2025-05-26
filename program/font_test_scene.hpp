@@ -15,5 +15,5 @@ private:
 public:
     explicit FontTestScene();
 
-    void render(uil::UpdateContext const& context) const override;
+    void render() const override;
 };

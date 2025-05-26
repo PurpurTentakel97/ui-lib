@@ -29,10 +29,10 @@ namespace uil {
                                    });
     }
 
-    void SceneManager::render(UpdateContext const& context) const {
+    void SceneManager::render() const {
         for (auto const& s : std::ranges::views::reverse(elements())) {
             if (s->active()) {
-                s->render(context);
+                s->render();
             }
         }
     }

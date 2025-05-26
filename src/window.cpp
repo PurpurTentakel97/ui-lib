@@ -157,23 +157,19 @@ namespace uil {
     }
 
     void Window::update() {
+        // updating
         update_resolution();
         AppContext::instance().sound().update();
         auto const context = create_context();
-
-        // updating
         SetMouseCursor(MOUSE_CURSOR_DEFAULT);
-        update_resolution();
         [[maybe_unused]] auto const t1 = m_scene_manager.handle_input(context);
         [[maybe_unused]] auto const t2 = m_scene_manager.update(context);
 
         // rendering
         BeginDrawing();
         ClearBackground(BLACK);
-        m_scene_manager.render(context);
-
+        m_scene_manager.render();
         debug_window.fps.exec(nullptr);
-
         EndDrawing();
     }
 } // namespace uil

@@ -58,10 +58,8 @@ namespace uil {
          *
          * override this when the derived scene has to render additional stuff.
          * make sure to call Scene::render().
-         *
-         * @param context all changes of the last frame
          */
-        virtual void render(UpdateContext const& context) const;
+        virtual void render() const;
         /**
          * resizing all elements in the scene. provides the context.
          *

@@ -13,8 +13,8 @@ FontTestScene::FontTestScene() {
     m_font_id_2 = font.load("/assets/font/invalid.ttf").value_or(0);
 }
 
-void FontTestScene::render(uil::UpdateContext const& context) const {
-    Scene::render(context);
+void FontTestScene::render() const {
+    Scene::render();
     auto const& font = uil::AppContext::instance().font();
 
     auto const& font_1 = font.get(m_font_id_1);

@@ -161,7 +161,6 @@ namespace uil {
         /**
          * creates the context and checks, updates and render the scene manager.
          * renders fps in debug mode when activated.
-         *
          */
         void update();
     };

@@ -10,8 +10,8 @@ InputTestScene::InputTestScene() {
     }
 }
 
-void InputTestScene::render(const uil::UpdateContext& context) const {
-    Scene::render(context);
+void InputTestScene::render() const {
+    Scene::render();
     auto const font       = GetFontDefault();
     auto const resolution = uil::AppContext::instance().resolution().resolution_vector();
 
