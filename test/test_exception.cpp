@@ -6,16 +6,6 @@
 #include <gtest/gtest.h>
 #include <uil/exception.hpp>
 
-TEST(Exception, CallbackException) {
-    try {
-        throw uil::CallbackException("some callback fail");
-    } catch (std::runtime_error const& e) {
-        EXPECT_STREQ(e.what(), "some callback fail");
-    } catch ([[maybe_unused]] std::exception const& e) {
-        GTEST_FAIL() << "uil::CallbackException is no std::runtime_error";
-    }
-}
-
 TEST(Exception, DivideByZero) {
     try {
         throw uil::DivideByZero("some divide by zero fail");

@@ -3,7 +3,6 @@ add_executable(cpt__ui_lib_tests
         test_alignment_horizontal.cpp
         test_alignment_standard.cpp
         test_alignment_vertical.cpp
-        test_callbacks.cpp
         test_exception.cpp
         test_rect.cpp
         test_resolution.cpp

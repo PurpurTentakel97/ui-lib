@@ -47,7 +47,6 @@ target_sources(cpt__ui_lib
         include/uil/alignment.hpp
         include/uil/base_element.hpp
         include/uil/base_manager.hpp
-        include/uil/callback.hpp
         include/uil/element.hpp
         include/uil/focus_element.hpp
         include/uil/exception.hpp
