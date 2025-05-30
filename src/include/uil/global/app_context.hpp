@@ -34,6 +34,7 @@ namespace uil {
         ~AppContext()                            = default;
 
         [[nodiscard]] static AppContext& instance();
+        void update();
 
         [[nodiscard]] InputManager& input();
         [[nodiscard]] InputManager const& input() const;

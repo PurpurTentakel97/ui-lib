@@ -11,6 +11,9 @@ namespace uil {
         return app_context;
     }
 
+    void AppContext::update() {
+        m_sound.update();
+    }
 
     InputManager& AppContext::input() {
         return m_input;
