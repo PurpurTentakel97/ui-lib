@@ -5,7 +5,6 @@
 
 #pragma once
 
-#include <cpt/vec2.hpp>
 #include <raylib.h>
 
 namespace uil {
