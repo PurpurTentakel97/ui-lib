@@ -30,8 +30,6 @@ namespace uil {
         using VectorInput  = std::vector<VariantInput>;
 
     private:
-        int m_current_controller_index{ 0 };
-
         // #region Ray
         template<IsRayKey R>
         [[nodiscard]] bool is_ray(auto const func_keyboard,
@@ -45,7 +43,7 @@ namespace uil {
                 return func_mouse(key);
             }
             if constexpr (std::is_same_v<R, GamepadButton>) {
-                return func_gamepad(m_current_controller_index, key);
+                return func_gamepad(0, key);
             }
         }
 
@@ -246,11 +244,6 @@ namespace uil {
             return check_vec_input([&](auto const key) { return is_single_released(key); }, KeyOp, ModOp, input);
         }
 
-        // #endregion
-
-        // #region GamePad
-        void set_current_gamepad_index(int index);
-        [[nodiscard]] int current_gamepad_index() const;
         // #endregion
     };
 } // namespace uil
