@@ -6,8 +6,8 @@ target_sources(cpt__ui_lib
 
         global/app_context.cpp
         global/asset.cpp
+        global/focus.cpp
         global/font.cpp
-        global/input.cpp
         global/resolution.cpp
         global/resolution_enum.cpp
         global/sound.cpp
@@ -18,6 +18,7 @@ target_sources(cpt__ui_lib
         alignment.cpp
         base_element.cpp
         element.cpp
+        focus_element.cpp
         scene.cpp
         scene_manager.cpp
         update_context.cpp
@@ -32,6 +33,7 @@ target_sources(cpt__ui_lib
 
         include/uil/global/app_context.hpp
         include/uil/global/asset.hpp
+        include/uil/global/focus.hpp
         include/uil/global/font.hpp
         include/uil/global/input.hpp
         include/uil/global/input_enum.hpp
@@ -47,6 +49,7 @@ target_sources(cpt__ui_lib
         include/uil/base_manager.hpp
         include/uil/callback.hpp
         include/uil/element.hpp
+        include/uil/focus_element.hpp
         include/uil/exception.hpp
         include/uil/scene.hpp
         include/uil/scene_manager.hpp

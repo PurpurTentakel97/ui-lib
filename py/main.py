@@ -72,6 +72,7 @@ def get_enum_class(list_name: str, entry_prefix: str, my_enum:str, ray_enum: str
     return f"""enum class {my_enum}{modifier_postfix} {{
 \t#define {entry_prefix}(name) name = static_cast<int>({ray_enum}::name),
 \t\t{list_name}
+\t#undef {entry_prefix}
 \t}};
 """
 
@@ -118,6 +119,7 @@ if __name__ == '__main__':
 #pragma once
 
 #include <concepts>
+#include <raylib.h>
 
 namespace uil {{
 \t
@@ -126,19 +128,21 @@ namespace uil {{
 \t
 \t{get_enum_class(keyboard.macro_list, keyboard.macro_prefix, keyboard.my_enum, keyboard.ray_enum, '')}
 \t{get_enum_class(keyboard.macro_list, keyboard.macro_prefix, keyboard.my_enum,keyboard.ray_enum, keyboard.modifier_postfix)}
+\t#undef {keyboard.macro_list}
 \t
 // {'-' * 10} Mouse {'-' * 10}
 \t{get_enum_list(mouse_keys, mouse.macro_list, mouse.macro_prefix)}
 \t
 \t{get_enum_class(mouse.macro_list, mouse.macro_prefix, mouse.my_enum,mouse.ray_enum, '')}
 \t{get_enum_class(mouse.macro_list, mouse.macro_prefix, mouse.my_enum,mouse.ray_enum, mouse.modifier_postfix)}
+\t#undef {mouse.macro_list}
 \t
 // {'-' * 10} Gamepad {'-' * 10}
 \t{get_enum_list(gamepad_keys, gamepad.macro_list, gamepad.macro_prefix)}
 \t
 \t{get_enum_class(gamepad.macro_list, gamepad.macro_prefix, gamepad.my_enum,gamepad.ray_enum, '')}
 \t{get_enum_class(gamepad.macro_list, gamepad.macro_prefix, gamepad.my_enum,gamepad.ray_enum, gamepad.modifier_postfix)}
-
+\t#undef {gamepad.macro_list}
 
 // {'-' * 10} Concepts {'-' * 10}
 \t{get_concepts()}
