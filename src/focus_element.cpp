@@ -3,6 +3,7 @@
 // 26.05.25
 //
 
+#include <uil/global/app_context.hpp>
 #include <uil/focus_element.hpp>
 
 namespace uil {
@@ -11,6 +12,12 @@ namespace uil {
     }
     void FocusElement::unfocus() {
         m_is_focused = false;
+    }
+
+    FocusElement::~FocusElement() {
+        if (m_is_focused) {
+            AppContext::instance().focus().pop_back();
+        }
     }
 
     void FocusElement::set_focus_config(FocusConfig const& config) {

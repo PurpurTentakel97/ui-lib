@@ -6,7 +6,8 @@
 #pragma once
 
 #include <tl/optional.hpp>
-#include <uil/global/input_enum.hpp>
+#include <uil/global/input.hpp>
+#include <memory>
 
 namespace uil {
     class FocusElement;
@@ -23,12 +24,9 @@ namespace uil {
     };
 
     struct FocusInputBindings final {
-        tl::optional<Keyboard> key_1;
-        tl::optional<Keyboard> key_2;
-        tl::optional<KeyboardMod> key_mod_1;
-        tl::optional<KeyboardMod> key_mod_2;
-        tl::optional<Gamepad> pad_1;
-        tl::optional<Gamepad> pad_2;
+        InputManager::VectorInput layer_1{};
+        InputManager::VectorInput layer_2{};
+        InputManager::VectorInput layer_3{};
     };
 
 
@@ -38,9 +36,13 @@ namespace uil {
 
     private:
         bool m_is_locked = false;
-        std::vector<FocusElement*> m_current{};
+        std::vector<std::shared_ptr<FocusElement>> m_current{};
         FocusBindingConfig m_bindings;
-        [[nodiscard]] tl::optional<FocusElement*> current();
+
+        [[nodiscard]] tl::optional<std::shared_ptr<FocusElement>> current();
+        void unfocus_current();
+        void focus_current();
+        void set_new_focus(std::shared_ptr<FocusElement> const& next);
 
     public:
         FocusManager();
@@ -49,6 +51,10 @@ namespace uil {
         void unlock();
         [[nodiscard]] bool is_locked() const;
 
+        void push_back(std::weak_ptr<FocusElement> element);
+        void pop_back();
+        void set_current(std::weak_ptr<FocusElement> element);
+        void clear();
 
         void set_config(FocusBindingConfig config);
         [[nodiscard]] FocusBindingConfig config() const;

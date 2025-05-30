@@ -8,7 +8,6 @@ target_sources(cpt__ui_lib
         global/asset.cpp
         global/focus.cpp
         global/font.cpp
-        global/input.cpp
         global/resolution.cpp
         global/resolution_enum.cpp
         global/sound.cpp

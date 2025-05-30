@@ -4,16 +4,21 @@
 //
 
 #pragma once
-#include <uil/global/focus.hpp>
+
+#include <memory>
+
+namespace uil {
+    class FocusElement;
+}
 
 namespace uil {
     struct FocusConfig final {
-        FocusElement* previous = nullptr;
-        FocusElement* next     = nullptr;
-        FocusElement* left     = nullptr;
-        FocusElement* right    = nullptr;
-        FocusElement* up       = nullptr;
-        FocusElement* down     = nullptr;
+        std::weak_ptr<FocusElement> previous;
+        std::weak_ptr<FocusElement> next;
+        std::weak_ptr<FocusElement> left;
+        std::weak_ptr<FocusElement> right;
+        std::weak_ptr<FocusElement> up;
+        std::weak_ptr<FocusElement> down;
     };
 
     class FocusElement {
@@ -27,6 +32,8 @@ namespace uil {
         void unfocus();
 
     public:
+        ~FocusElement();
+
         void set_focus_config(FocusConfig const& config);
         [[nodiscard]] FocusConfig const& focus_config() const;
 
