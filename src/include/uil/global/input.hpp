@@ -6,10 +6,12 @@
 #pragma once
 
 #include <raylib.h>
+#include <tl/expected.hpp>
 #include <uil/global/input_enum.hpp>
-#include <utility>
+#include <unordered_map>
 #include <variant>
 #include <vector>
+#include <cpt/log.hpp>
 
 namespace uil {
     enum class ModOp {
@@ -24,12 +26,44 @@ namespace uil {
 
     class InputManager final {
     public:
+        enum class Result {
+            MissingBindings,
+        };
+
         template<IsInput... I>
         using VariantType  = std::variant<I...>;
         using VariantInput = VariantType<Keyboard, KeyboardMod, Mouse, MouseMod, Gamepad, GamepadMod>;
         using VectorInput  = std::vector<VariantInput>;
 
+        struct Bindings final {
+            VectorInput layer_1{};
+            VectorInput layer_2{};
+            VectorInput layer_3{};
+        };
+
+        enum class Pattern {
+            Jump,
+            Crouch,
+            Up,
+            Down,
+            Left,
+            Right,
+            Forwards,
+            Backwards,
+            Accept,
+            Deny,
+
+            Custom_1,
+            Custom_2,
+            Custom_3,
+            Custom_4,
+            Custom_5,
+        };
+        using BindingsConfig = std::unordered_map<Pattern, Bindings>;
+
     private:
+        BindingsConfig m_bindings{};
+
         // #region Ray
         template<IsRayKey R>
         [[nodiscard]] bool is_ray(auto const func_keyboard,
@@ -198,12 +232,19 @@ namespace uil {
 
     public:
         // #region Constructor
-        InputManager()                               = default;
+        InputManager();
         InputManager(InputManager const&)            = delete;
         InputManager(InputManager&&)                 = delete;
         InputManager& operator=(InputManager const&) = delete;
         InputManager& operator=(InputManager&&)      = delete;
         ~InputManager()                              = default;
+        // #endregion
+
+        // #region Bindings
+        void set_bindings(BindingsConfig const& bindings);
+        [[nodiscard]] BindingsConfig const& bindings() const;
+        void set_specific_binding(Pattern pattern, Bindings const& bindings);
+        [[nodiscard]] tl::expected<Bindings, Result> specific_binding(Pattern pattern) const;
         // #endregion
 
         // #region Input
@@ -215,6 +256,21 @@ namespace uil {
         [[nodiscard]] bool is_down(VectorInput const& input) const {
             return check_vec_input([&](auto const key) { return is_single_down(key); }, KeyOp, ModOp, input);
         }
+        template<KeyOp KeyOp = KeyOp::Or, ModOp ModOp = ModOp::Or>
+        [[nodiscard]] bool is_down(Pattern const pattern) {
+            if (not m_bindings.contains(pattern)) {
+                cpt::log::r_error("[[Input Manager]] | Missing Pattern while in down lookup: {}",
+                                  static_cast<int>(pattern));
+                return false;
+            }
+
+            auto const& [layer_1, layer_2, layer_3] = m_bindings.at(pattern);
+            auto const check                        = [&](auto const& binding) {
+                return check_vec_input([&](auto const key) { return is_single_down(key); }, KeyOp, ModOp, binding);
+            };
+
+            return check(layer_1) or check(layer_2) or check(layer_3);
+        }
 
         template<KeyOp KeyOp = KeyOp::Or, ModOp ModOp = ModOp::Or, IsInput... I>
         [[nodiscard]] bool is_up(I const... input) const {
@@ -223,6 +279,21 @@ namespace uil {
         template<KeyOp KeyOp = KeyOp::Or, ModOp ModOp = ModOp::Or>
         [[nodiscard]] bool is_up(VectorInput const& input) const {
             return check_vec_input([&](auto const key) { return is_single_up(key); }, KeyOp, ModOp, input);
+        }
+        template<KeyOp KeyOp = KeyOp::Or, ModOp ModOp = ModOp::Or>
+        [[nodiscard]] bool is_up(Pattern const pattern) {
+            if (not m_bindings.contains(pattern)) {
+                cpt::log::r_error("[[Input Manager]] | Missing Pattern while in up lookup: {}",
+                                  static_cast<int>(pattern));
+                return false;
+            }
+
+            auto const& [layer_1, layer_2, layer_3] = m_bindings.at(pattern);
+            auto const check                        = [&](auto const& binding) {
+                return check_vec_input([&](auto const key) { return is_single_up(key); }, KeyOp, ModOp, binding);
+            };
+
+            return check(layer_1) or check(layer_2) or check(layer_3);
         }
 
         template<KeyOp KeyOp = KeyOp::Or, ModOp ModOp = ModOp::Or, IsInput... I>
@@ -233,6 +304,21 @@ namespace uil {
         [[nodiscard]] bool is_pressed(VectorInput const& input) const {
             return check_vec_input([&](auto const key) { return is_single_pressed(key); }, KeyOp, ModOp, input);
         }
+        template<KeyOp KeyOp = KeyOp::Or, ModOp ModOp = ModOp::Or>
+        [[nodiscard]] bool is_pressed(Pattern const pattern) {
+            if (not m_bindings.contains(pattern)) {
+                cpt::log::r_error("[[Input Manager]] | Missing Pattern while in pressed lookup: {}",
+                                  static_cast<int>(pattern));
+                return false;
+            }
+
+            auto const& [layer_1, layer_2, layer_3] = m_bindings.at(pattern);
+            auto const check                        = [&](auto const& binding) {
+                return check_vec_input([&](auto const key) { return is_single_pressed(key); }, KeyOp, ModOp, binding);
+            };
+
+            return check(layer_1) or check(layer_2) or check(layer_3);
+        }
 
         template<KeyOp KeyOp = KeyOp::Or, ModOp ModOp = ModOp::Or, IsInput... I>
         [[nodiscard]] bool is_released(I const... input) const {
@@ -242,6 +328,21 @@ namespace uil {
         template<KeyOp KeyOp = KeyOp::Or, ModOp ModOp = ModOp::Or>
         [[nodiscard]] bool is_released(VectorInput const& input) const {
             return check_vec_input([&](auto const key) { return is_single_released(key); }, KeyOp, ModOp, input);
+        }
+        template<KeyOp KeyOp = KeyOp::Or, ModOp ModOp = ModOp::Or>
+        [[nodiscard]] bool is_released(Pattern const pattern) {
+            if (not m_bindings.contains(pattern)) {
+                cpt::log::r_error("[[Input Manager]] | Missing Pattern while in released lookup: {}",
+                                  static_cast<int>(pattern));
+                return false;
+            }
+
+            auto const& [layer_1, layer_2, layer_3] = m_bindings.at(pattern);
+            auto const check                        = [&](auto const& binding) {
+                return check_vec_input([&](auto const key) { return is_single_released(key); }, KeyOp, ModOp, binding);
+            };
+
+            return check(layer_1) or check(layer_2) or check(layer_3);
         }
 
         // #endregion
