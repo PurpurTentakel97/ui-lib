@@ -3,15 +3,17 @@
 // 26.05.25
 //
 
-#include <uil/global/app_context.hpp>
 #include <uil/focus_element.hpp>
+#include <uil/global/app_context.hpp>
 
 namespace uil {
     void FocusElement::focus() {
         m_is_focused = true;
+        on_focus.invoke(*this);
     }
     void FocusElement::unfocus() {
         m_is_focused = false;
+        on_unfocus.invoke(*this);
     }
 
     FocusElement::~FocusElement() {

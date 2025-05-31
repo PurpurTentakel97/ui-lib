@@ -8,6 +8,7 @@
 #include <uil/base_element.hpp>
 #include <uil/base_manager.hpp>
 #include <uil/element.hpp>
+#include <cpt/callback.hpp>
 
 namespace uil {
     struct UpdateContext;
@@ -19,10 +20,10 @@ namespace uil {
      */
     class Scene : public BaseManager<UIElement>, public BaseElement {
     public:
-        Callback<Scene const&> on_check{};  ///< contains Scene
-        Callback<Scene const&> on_update{}; ///< contains Scene
-        Callback<Scene const&> on_render{}; ///< contains Scene
-        Callback<Scene const&> on_resize{}; ///< contains Scene
+        cpt::Callback<Scene const&> on_check{};  ///< contains Scene
+        cpt::Callback<Scene const&> on_update{}; ///< contains Scene
+        cpt::Callback<Scene const&> on_render{}; ///< contains Scene
+        cpt::Callback<Scene const&> on_resize{}; ///< contains Scene
 
         /**
          * this constructor can do exactly nothing.

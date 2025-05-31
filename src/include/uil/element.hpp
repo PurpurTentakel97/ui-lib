@@ -4,10 +4,10 @@
 //
 
 #pragma once
+#include <cpt/callback.hpp>
 #include <raylib.h>
 #include <uil/alignment.hpp>
 #include <uil/base_element.hpp>
-#include <uil/callback.hpp>
 #include <uil/debug/wrapper.hpp>
 
 namespace uil {
@@ -61,13 +61,13 @@ namespace uil {
     public:
         debug::Element debug_element{};
 
-        Callback<UIElement&> on_movement_start{}; ///< contains UIElement
-        Callback<UIElement&> on_movement_stop{};  ///< contains UIElement
-        Callback<UIElement&> on_arrived{};        ///< contains UIElement
-        Callback<UIElement&> on_check{};          ///< contains UIElement
-        Callback<UIElement&> on_update{};         ///< contains UIElement
-        Callback<UIElement const&> on_draw{};     ///< contains UIElement
-        Callback<UIElement&> on_resize{};         ///< contains UIElement
+        cpt::Callback<UIElement&> on_movement_start{}; ///< contains UIElement
+        cpt::Callback<UIElement&> on_movement_stop{};  ///< contains UIElement
+        cpt::Callback<UIElement&> on_arrived{};        ///< contains UIElement
+        cpt::Callback<UIElement&> on_check{};          ///< contains UIElement
+        cpt::Callback<UIElement&> on_update{};         ///< contains UIElement
+        cpt::Callback<UIElement const&> on_draw{};     ///< contains UIElement
+        cpt::Callback<UIElement&> on_resize{};         ///< contains UIElement
 
         /**
          * aligns the relative position according to the provided alignment.
