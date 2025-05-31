@@ -255,9 +255,19 @@ namespace uil {
             case MoveType::Slow_To_Fast: slow_to_fast(context.delta_time); break;
             case MoveType::Fast_To_Slow: fast_to_slow(context.delta_time); break;
             case MoveType::Constant:     constant(context.delta_time);     break;
-            // extra no default case because update should not throw anything itself.
+            // extra no default case because the update should not throw anything itself.
                 // clang-format on
         }
+        if (m_hovered) {
+            on_hovered.invoke(*this);
+        }
+        if (m_hovered and not m_last_frame_hovered) {
+            on_hover_enter.invoke(*this);
+        }
+        if (not m_hovered and m_last_frame_hovered) {
+            on_hover_leave.invoke(*this);
+        }
+
         on_update.invoke(*this);
         return true;
     }
