@@ -5,7 +5,11 @@
 #include "input_test_scene.hpp"
 
 InputTestScene::InputTestScene() {
-    for (auto const& entry : m_entries) {
+    for (auto const& entry : m_entries_variadic) {
+        emplace_top<InputTestObject>(entry.relative, uil::Alignment::MidMid, entry.function);
+    }
+
+    for (auto const& entry : m_entry_vec) {
         emplace_top<InputTestObject>(entry.relative, uil::Alignment::MidMid, entry.function);
     }
 }
@@ -47,5 +51,10 @@ void InputTestScene::render() const {
     draw_label(rectangle_mouse_input, spacer_mouse_input, offset_mouse_top, 1, 0, -90.0f, "is_up");
     draw_label(rectangle_mouse_input, spacer_mouse_input, offset_mouse_top, 2, 0, -90.0f, "is_pressed");
     draw_label(rectangle_mouse_input, spacer_mouse_input, offset_mouse_top, 3, 0, -90.0f, "is_released");
+
+    draw_label(rectangle_mouse_input, spacer_mouse_input, offset_mouse_top, 5, 0, -90.0f, "is_down");
+    draw_label(rectangle_mouse_input, spacer_mouse_input, offset_mouse_top, 6, 0, -90.0f, "is_up");
+    draw_label(rectangle_mouse_input, spacer_mouse_input, offset_mouse_top, 7, 0, -90.0f, "is_pressed");
+    draw_label(rectangle_mouse_input, spacer_mouse_input, offset_mouse_top, 8, 0, -90.0f, "is_released");
 
 }

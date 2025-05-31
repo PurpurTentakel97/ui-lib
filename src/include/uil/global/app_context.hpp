@@ -9,6 +9,7 @@
 #include <uil/global/sound.hpp>
 #include <uil/global/asset.hpp>
 #include <uil/global/resolution.hpp>
+#include <uil/global/focus.hpp>
 #include <uil/global/font.hpp>
 
 namespace uil {
@@ -24,6 +25,7 @@ namespace uil {
         AssetManager m_asset{};
         ResolutionManager m_resolution{};
         FontManager m_font{};
+        FocusManager m_focus{};
 
     public:
         AppContext()                             = default;
@@ -34,6 +36,7 @@ namespace uil {
         ~AppContext()                            = default;
 
         [[nodiscard]] static AppContext& instance();
+        void update();
 
         [[nodiscard]] InputManager& input();
         [[nodiscard]] InputManager const& input() const;
@@ -46,6 +49,9 @@ namespace uil {
 
         [[nodiscard]] ResolutionManager& resolution();
         [[nodiscard]] ResolutionManager const& resolution() const;
+
+        [[nodiscard]] FocusManager& focus();
+        [[nodiscard]] FocusManager const& focus() const;
 
         [[nodiscard]] FontManager& font();
         [[nodiscard]] FontManager const& font() const;

@@ -157,7 +157,7 @@ namespace uil {
     void Window::update() {
         // updating
         update_resolution();
-        AppContext::instance().sound().update();
+        AppContext::instance().update();
         auto const context = create_context();
         SetMouseCursor(MOUSE_CURSOR_DEFAULT);
         [[maybe_unused]] auto const t1 = m_scene_manager.handle_input(context);

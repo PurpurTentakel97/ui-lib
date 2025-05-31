@@ -8,6 +8,8 @@
 #include <raylib.h>
 #include <uil/global/input_enum.hpp>
 #include <utility>
+#include <variant>
+#include <vector>
 
 namespace uil {
     enum class ModOp {
@@ -21,9 +23,13 @@ namespace uil {
     };
 
     class InputManager final {
-    private:
-        int m_current_controller_index{ 0 };
+    public:
+        template<IsInput... I>
+        using VariantType  = std::variant<I...>;
+        using VariantInput = VariantType<Keyboard, KeyboardMod, Mouse, MouseMod, Gamepad, GamepadMod>;
+        using VectorInput  = std::vector<VariantInput>;
 
+    private:
         // #region Ray
         template<IsRayKey R>
         [[nodiscard]] bool is_ray(auto const func_keyboard,
@@ -37,7 +43,7 @@ namespace uil {
                 return func_mouse(key);
             }
             if constexpr (std::is_same_v<R, GamepadButton>) {
-                return func_gamepad(m_current_controller_index, key);
+                return func_gamepad(0, key);
             }
         }
 
@@ -97,38 +103,86 @@ namespace uil {
             return is_released_ray(ray_key_from_input(input));
         }
 
-        template<IsInput... I>
-        [[nodiscard]] bool check_input(auto const& func_keys,
-                                       KeyOp const type_key,
-                                       ModOp const type_mod,
-                                       I const... input) const {
+        template<IsInput I>
+        void perform_single_check(auto const& func_keys,
+                                  KeyOp const type_key,
+                                  ModOp const type_mod,
+                                  I const input,
+                                  bool& is_missing_keys,
+                                  bool& is_keys,
+                                  bool& is_missing_modifiers,
+                                  bool& is_modifiers) const {
+            if constexpr (IsButton<I>) {
+                is_missing_keys = false;
+                switch (type_key) {
+                    case KeyOp::Or: is_keys = is_keys or func_keys(input); break;
+                    case KeyOp::And: is_keys = is_keys and func_keys(input); break;
+                }
+            }
+            if constexpr (IsModifier<I>) {
+                is_missing_modifiers = false;
+                switch (type_mod) {
+                    case ModOp::Or: is_modifiers = is_modifiers or is_single_down(input); break;
+                    case ModOp::And: is_modifiers = is_modifiers and is_single_down(input); break;
+                }
+            }
+        }
+
+        [[nodiscard]] bool check_vec_input(auto const& func_keys,
+                                           KeyOp type_key,
+                                           ModOp type_mod,
+                                           VectorInput const& input) const {
             auto is_missing_keys      = true;
             auto is_keys              = type_key == KeyOp::And;
             auto is_missing_modifiers = true;
             auto is_modifiers         = type_mod == ModOp::And;
 
-            auto const perform_single_check = [&]<IsInput T>(T const key) {
-                if constexpr (IsButton<T>) {
-                    is_missing_keys = false;
-                    switch (type_key) {
-                        case KeyOp::Or: is_keys = is_keys or func_keys(key);
-                            break;
-                        case KeyOp::And: is_keys = is_keys and func_keys(key);
-                            break;
-                    }
-                }
-                if constexpr (IsModifier<T>) {
-                    is_missing_modifiers = false;
-                    switch (type_mod) {
-                        case ModOp::Or: is_modifiers = is_modifiers or is_single_down(key);
-                            break;
-                        case ModOp::And: is_modifiers = is_modifiers and is_single_down(key);
-                            break;
-                    }
-                }
-            };
 
-            (perform_single_check(input), ...);
+            for (auto const& key : input) {
+                std::visit(
+                        [&](auto const k) {
+                            perform_single_check(func_keys,
+                                                 type_key,
+                                                 type_mod,
+                                                 k,
+                                                 is_missing_keys,
+                                                 is_keys,
+                                                 is_missing_modifiers,
+                                                 is_modifiers);
+                        },
+                        key);
+            }
+
+            if (is_missing_keys) {
+                return false;
+            }
+            if (is_missing_modifiers) {
+                return is_keys;
+            }
+
+            return is_keys and is_modifiers;
+        }
+
+
+        template<IsInput... I>
+        [[nodiscard]] bool check_variadic_input(auto const& func_keys,
+                                                KeyOp const type_key,
+                                                ModOp const type_mod,
+                                                I const... input) const {
+            auto is_missing_keys      = true;
+            auto is_keys              = type_key == KeyOp::And;
+            auto is_missing_modifiers = true;
+            auto is_modifiers         = type_mod == ModOp::And;
+
+            (perform_single_check(func_keys,
+                                  type_key,
+                                  type_mod,
+                                  input,
+                                  is_missing_keys,
+                                  is_keys,
+                                  is_missing_modifiers,
+                                  is_modifiers),
+             ...);
 
             if (is_missing_keys) {
                 return false;
@@ -155,29 +209,41 @@ namespace uil {
         // #region Input
         template<KeyOp KeyOp = KeyOp::Or, ModOp ModOp = ModOp::Or, IsInput... I>
         [[nodiscard]] bool is_down(I const... input) const {
-            return check_input([&](auto const key) { return is_single_down(key); }, KeyOp, ModOp, input...);
+            return check_variadic_input([&](auto const key) { return is_single_down(key); }, KeyOp, ModOp, input...);
+        }
+        template<KeyOp KeyOp = KeyOp::Or, ModOp ModOp = ModOp::Or>
+        [[nodiscard]] bool is_down(VectorInput const& input) const {
+            return check_vec_input([&](auto const key) { return is_single_down(key); }, KeyOp, ModOp, input);
         }
 
         template<KeyOp KeyOp = KeyOp::Or, ModOp ModOp = ModOp::Or, IsInput... I>
         [[nodiscard]] bool is_up(I const... input) const {
-            return check_input([&](auto const key) { return is_single_up(key); }, KeyOp, ModOp, input...);
+            return check_variadic_input([&](auto const key) { return is_single_up(key); }, KeyOp, ModOp, input...);
+        }
+        template<KeyOp KeyOp = KeyOp::Or, ModOp ModOp = ModOp::Or>
+        [[nodiscard]] bool is_up(VectorInput const& input) const {
+            return check_vec_input([&](auto const key) { return is_single_up(key); }, KeyOp, ModOp, input);
         }
 
         template<KeyOp KeyOp = KeyOp::Or, ModOp ModOp = ModOp::Or, IsInput... I>
         [[nodiscard]] bool is_pressed(I const... input) const {
-            return check_input([&](auto const key) { return is_single_pressed(key); }, KeyOp, ModOp, input...);
+            return check_variadic_input([&](auto const key) { return is_single_pressed(key); }, KeyOp, ModOp, input...);
+        }
+        template<KeyOp KeyOp = KeyOp::Or, ModOp ModOp = ModOp::Or>
+        [[nodiscard]] bool is_pressed(VectorInput const& input) const {
+            return check_vec_input([&](auto const key) { return is_single_pressed(key); }, KeyOp, ModOp, input);
         }
 
         template<KeyOp KeyOp = KeyOp::Or, ModOp ModOp = ModOp::Or, IsInput... I>
         [[nodiscard]] bool is_released(I const... input) const {
-            return check_input([&](auto const key) { return is_single_released(key); }, KeyOp, ModOp, input...);
+            return check_variadic_input(
+                    [&](auto const key) { return is_single_released(key); }, KeyOp, ModOp, input...);
+        }
+        template<KeyOp KeyOp = KeyOp::Or, ModOp ModOp = ModOp::Or>
+        [[nodiscard]] bool is_released(VectorInput const& input) const {
+            return check_vec_input([&](auto const key) { return is_single_released(key); }, KeyOp, ModOp, input);
         }
 
-        // #endregion
-
-        // #region GamePad
-        void set_current_gamepad_index(int index);
-        [[nodiscard]] int current_gamepad_index() const;
         // #endregion
     };
 } // namespace uil

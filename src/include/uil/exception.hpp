@@ -9,13 +9,6 @@
 
 namespace uil {
     /**
-     * use for any kind of error inside the uil::Callback class.
-     */
-    class CallbackException final : public std::runtime_error {
-        using std::runtime_error::runtime_error;
-    };
-
-    /**
      * use if a division would need to divide by zero.
      */
     class DivideByZero final : public std::runtime_error {
