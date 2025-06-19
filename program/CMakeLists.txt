@@ -4,6 +4,9 @@ add_executable(cpt__ui_lib_program
         asset_test_scene.hpp
         asset_test_scene.cpp
 
+        button_test_scene.hpp
+        button_test_scene.cpp
+
         focus_test_scene.hpp
         focus_test_scene.cpp
 
