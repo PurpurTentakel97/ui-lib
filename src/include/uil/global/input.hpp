@@ -257,7 +257,7 @@ namespace uil {
             return check_vec_input([&](auto const key) { return is_single_down(key); }, KeyOp, ModOp, input);
         }
         template<KeyOp KeyOp = KeyOp::Or, ModOp ModOp = ModOp::Or>
-        [[nodiscard]] bool is_down(Pattern const pattern) {
+        [[nodiscard]] bool is_down(Pattern const pattern) const {
             if (not m_bindings.contains(pattern)) {
                 cpt::log::r_error("[[Input Manager]] | Missing Pattern while in down lookup: {}",
                                   static_cast<int>(pattern));
@@ -281,7 +281,7 @@ namespace uil {
             return check_vec_input([&](auto const key) { return is_single_up(key); }, KeyOp, ModOp, input);
         }
         template<KeyOp KeyOp = KeyOp::Or, ModOp ModOp = ModOp::Or>
-        [[nodiscard]] bool is_up(Pattern const pattern) {
+        [[nodiscard]] bool is_up(Pattern const pattern) const {
             if (not m_bindings.contains(pattern)) {
                 cpt::log::r_error("[[Input Manager]] | Missing Pattern while in up lookup: {}",
                                   static_cast<int>(pattern));
@@ -305,7 +305,7 @@ namespace uil {
             return check_vec_input([&](auto const key) { return is_single_pressed(key); }, KeyOp, ModOp, input);
         }
         template<KeyOp KeyOp = KeyOp::Or, ModOp ModOp = ModOp::Or>
-        [[nodiscard]] bool is_pressed(Pattern const pattern) {
+        [[nodiscard]] bool is_pressed(Pattern const pattern) const {
             if (not m_bindings.contains(pattern)) {
                 cpt::log::r_error("[[Input Manager]] | Missing Pattern while in pressed lookup: {}",
                                   static_cast<int>(pattern));
@@ -330,7 +330,7 @@ namespace uil {
             return check_vec_input([&](auto const key) { return is_single_released(key); }, KeyOp, ModOp, input);
         }
         template<KeyOp KeyOp = KeyOp::Or, ModOp ModOp = ModOp::Or>
-        [[nodiscard]] bool is_released(Pattern const pattern) {
+        [[nodiscard]] bool is_released(Pattern const pattern) const {
             if (not m_bindings.contains(pattern)) {
                 cpt::log::r_error("[[Input Manager]] | Missing Pattern while in released lookup: {}",
                                   static_cast<int>(pattern));

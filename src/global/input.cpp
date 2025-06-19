@@ -9,7 +9,6 @@ namespace uil {
     static const inline InputManager::BindingsConfig s_default_bindings{
         { InputManager::Pattern::Accept,
          { {
-                    Mouse::MOUSE_BUTTON_LEFT,
                     Keyboard::KEY_ENTER,
                     Keyboard::KEY_KP_ENTER,
             },
