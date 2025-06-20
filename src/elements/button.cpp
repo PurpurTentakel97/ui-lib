@@ -78,6 +78,7 @@ namespace uil {
                     handle_state_switch(State::Pressed, m_asset_config.pressed_sound_id, { on_pressed });
                     break;
                 }
+                break;
             }
 
             case State::Hovered: {
