@@ -15,8 +15,6 @@ ButtonTestScene::ButtonTestScene() {
     locked_1->on_released += [](auto const&) { cpt::log::r_info("Button Test Scene: Button 1: on_released"); };
     locked_1->on_enabled += [](auto const&) { cpt::log::r_info("Button Test Scene: Button 1: on_enabled"); };
     locked_1->on_disabled += [](auto const&) { cpt::log::r_info("Button Test Scene: Button 1: on_disabled"); };
-    locked_1->on_hovered += [](auto const&) { cpt::log::r_info("Button Test Scene: Button 1: on_hovered"); };
-
     m_button_2          = emplace_top<uil::Button>(Rectangle{ 0.5f, 0.7f, 0.2f, 0.1f }, uil::Alignment::MidMid);
     auto const locked_2 = m_button_2.lock();
     locked_2->on_clicked += [](auto const&) { cpt::log::r_info("Button Test Scene: Button 2: on_clicked"); };
@@ -24,7 +22,6 @@ ButtonTestScene::ButtonTestScene() {
     locked_2->on_released += [](auto const&) { cpt::log::r_info("Button Test Scene: Button 2: on_released"); };
     locked_2->on_enabled += [](auto const&) { cpt::log::r_info("Button Test Scene: Button 2: on_enabled"); };
     locked_2->on_disabled += [](auto const&) { cpt::log::r_info("Button Test Scene: Button 2: on_disabled"); };
-    locked_2->on_hovered += [](auto const&) { cpt::log::r_info("Button Test Scene: Button 2: on_hovered"); };
     locked_2->disable();
 
     auto config_1     = uil::FocusConfig{};
@@ -32,8 +29,6 @@ ButtonTestScene::ButtonTestScene() {
     config_1.next     = m_button_2;
     config_1.previous = m_button_2;
     locked_1->set_focus_config(config_1);
-
-
 
     auto config_2     = uil::FocusConfig{};
     config_2.down     = m_button_1;
