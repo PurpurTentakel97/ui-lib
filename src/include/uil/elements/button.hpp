@@ -23,6 +23,7 @@ namespace uil {
         cpt::usize hovered_off_sound_id = 0;
         cpt::usize pressed_sound_id     = 0;
         cpt::usize released_sound_id    = 0;
+        cpt::usize clicked_sound_id     = 0;
         cpt::usize disabled_sound_id    = 0;
     };
 
@@ -50,7 +51,6 @@ namespace uil {
         cpt::Callback<Button&> on_released{};
         cpt::Callback<Button&> on_disabled{};
         cpt::Callback<Button&> on_enabled{};
-        cpt::Callback<Button&> on_hovered{};
 
         [[nodiscard]] ButtonAssetConfig const& asset_config() const;
         void set_asset_config(ButtonAssetConfig const& config);

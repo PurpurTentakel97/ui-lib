@@ -56,41 +56,43 @@ namespace uil {
         auto const& input = AppContext::instance().input();
         auto& sound       = AppContext::instance().sound();
 
-        auto const handle_state_switch =
-                [&](auto const& state, cpt::usize const sound_id, tl::optional<cpt::Callback<Button&>> const& callback) {
-                    m_state = state;
-                    sound.play_sound(sound_id);
-                    update_texture();
-                    if (callback.has_value()) {
-                        callback.value().invoke(*this);
-                    }
-                };
+        auto const handle_state_switch = [&](auto const& state,
+                                             cpt::usize const sound_id,
+                                             std::vector<cpt::Callback<Button&>> const& callbacks) {
+            m_state = state;
+            sound.play_sound(sound_id);
+            update_texture();
+
+            for (auto const& c : callbacks) {
+                c.invoke(*this);
+            }
+        };
 
         switch (m_state) {
             case State::Enabled: {
                 if (hovered()) {
-                    handle_state_switch(State::Hovered, m_asset_config.hovered_on_sound_id, on_hovered);
+                    handle_state_switch(State::Hovered, m_asset_config.hovered_on_sound_id, {});
                     break;
                 }
                 if (is_focused() and input.is_down(InputManager::Pattern::Accept)) {
-                    handle_state_switch(State::Pressed, m_asset_config.pressed_sound_id, on_pressed);
+                    handle_state_switch(State::Pressed, m_asset_config.pressed_sound_id, { on_pressed });
                     break;
                 }
             }
 
             case State::Hovered: {
                 if (!hovered()) {
-                    handle_state_switch(State::Enabled, m_asset_config.hovered_off_sound_id, tl::nullopt);
+                    handle_state_switch(State::Enabled, m_asset_config.hovered_off_sound_id, {});
                     break;
                 }
 
                 if (input.is_down(Mouse::MOUSE_BUTTON_LEFT)) {
-                    handle_state_switch(State::Pressed, m_asset_config.pressed_sound_id, on_pressed);
+                    handle_state_switch(State::Pressed, m_asset_config.pressed_sound_id, { on_pressed });
                     break;
                 }
 
                 if (is_focused() and input.is_down(InputManager::Pattern::Accept)) {
-                    handle_state_switch(State::Pressed, m_asset_config.pressed_sound_id, on_pressed);
+                    handle_state_switch(State::Pressed, m_asset_config.pressed_sound_id, { on_pressed });
                     break;
                 }
                 break;
@@ -104,15 +106,15 @@ namespace uil {
 
                 auto const next_state = hovered() ? State::Hovered : State::Enabled;
                 if (input.is_released(InputManager::Pattern::Accept)) {
-                    handle_state_switch(next_state, m_asset_config.released_sound_id, on_released);
+                    handle_state_switch(next_state, m_asset_config.clicked_sound_id, { on_clicked, on_released });
                     break;
                 }
 
                 if (input.is_released(Mouse::MOUSE_BUTTON_LEFT)) {
                     if (hovered()) {
-                        handle_state_switch(next_state, m_asset_config.released_sound_id, on_released);
+                        handle_state_switch(next_state, m_asset_config.clicked_sound_id, { on_clicked, on_released });
                     } else {
-                        handle_state_switch(next_state, m_asset_config.released_sound_id, tl::nullopt);
+                        handle_state_switch(next_state, m_asset_config.released_sound_id, { on_released });
                     }
                     break;
                 }
