@@ -17,8 +17,6 @@ namespace uil {
         cpt::usize pressed_texture_id  = 0;
         cpt::usize enabled_texture_id  = 0;
 
-        cpt::usize font_id = 0;
-
         cpt::usize hovered_on_sound_id  = 0;
         cpt::usize hovered_off_sound_id = 0;
         cpt::usize pressed_sound_id     = 0;
