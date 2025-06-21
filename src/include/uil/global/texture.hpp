@@ -12,7 +12,7 @@
 #include <tl/expected.hpp>
 
 namespace uil {
-    class AssetManager final {
+    class TextureManager final {
     public:
         enum class Error {
             InvalidPath,
@@ -25,12 +25,12 @@ namespace uil {
         Texture2D m_fallback_texture;
 
     public:
-        AssetManager();
-        AssetManager(const AssetManager&)            = delete;
-        AssetManager(AssetManager&&)                 = delete;
-        AssetManager& operator=(AssetManager const&) = delete;
-        AssetManager& operator=(AssetManager&&)      = delete;
-        ~AssetManager();
+        TextureManager();
+        TextureManager(const TextureManager&)            = delete;
+        TextureManager(TextureManager&&)                 = delete;
+        TextureManager& operator=(TextureManager const&) = delete;
+        TextureManager& operator=(TextureManager&&)      = delete;
+        ~TextureManager();
 
         [[nodiscard]] Texture2D const& get(cpt::usize id) const;
         [[nodiscard]] Texture2D const* get_ptr(cpt::usize id) const;

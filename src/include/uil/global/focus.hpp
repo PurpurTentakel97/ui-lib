@@ -5,9 +5,9 @@
 
 #pragma once
 
+#include <memory>
 #include <tl/optional.hpp>
 #include <uil/global/input.hpp>
-#include <memory>
 
 namespace uil {
     class FocusElement;
@@ -23,16 +23,10 @@ namespace uil {
         Right,
     };
 
-    struct FocusInputBindings final {
-        InputManager::VectorInput layer_1{};
-        InputManager::VectorInput layer_2{};
-        InputManager::VectorInput layer_3{};
-    };
-
 
     class FocusManager final {
     public:
-        using FocusBindingConfig = std::unordered_map<FocusAction, FocusInputBindings>;
+        using FocusBindingConfig = std::unordered_map<FocusAction, InputManager::Bindings>;
 
     private:
         bool m_is_locked = false;
@@ -58,8 +52,8 @@ namespace uil {
 
         void set_config(FocusBindingConfig config);
         [[nodiscard]] FocusBindingConfig config() const;
-        void set_single_config(FocusAction action, FocusInputBindings const& bindings);
-        [[nodiscard]] FocusInputBindings single_config(FocusAction action) const;
+        void set_single_config(FocusAction action, InputManager::Bindings const& bindings);
+        [[nodiscard]] InputManager::Bindings single_config(FocusAction action) const;
 
         void update();
     };

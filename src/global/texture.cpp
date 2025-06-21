@@ -6,18 +6,18 @@
 #include <cpt/files.hpp>
 #include <cpt/log.hpp>
 #include <ranges>
-#include <uil/global/asset.hpp>
+#include <uil/global/texture.hpp>
 #include <unordered_set>
 
 namespace uil {
-    AssetManager::AssetManager() : m_fallback_texture{ Texture2D{} } {
+    TextureManager::TextureManager() : m_fallback_texture{ Texture2D{} } {
         auto const image   = GenImageColor(1, 1, MAGENTA);
         m_fallback_texture = LoadTextureFromImage(image);
         UnloadImage(image);
         cpt::log::info("[[Asset Manager]] | loaded fallback texture");
     }
 
-    AssetManager::~AssetManager() {
+    TextureManager::~TextureManager() {
         for (auto const& asset : m_assets | std::views::values) {
             UnloadTexture(asset);
         }
@@ -26,7 +26,7 @@ namespace uil {
     }
 
 
-    Texture2D const& AssetManager::get(cpt::usize const id) const {
+    Texture2D const& TextureManager::get(cpt::usize const id) const {
         if (m_assets.contains(id)) {
             return m_assets.at(id);
         }
@@ -40,12 +40,12 @@ namespace uil {
         return m_fallback_texture;
     }
 
-    Texture2D const* AssetManager::get_ptr(cpt::usize const id) const {
+    Texture2D const* TextureManager::get_ptr(cpt::usize const id) const {
         return &get(id);
     }
 
 
-    tl::expected<cpt::usize, AssetManager::Error> AssetManager::load(std::filesystem::path const& path) {
+    tl::expected<cpt::usize, TextureManager::Error> TextureManager::load(std::filesystem::path const& path) {
         auto const texture = LoadTexture(cpt::make_absolute_path(path).string().c_str());
         if (not IsTextureValid(texture)) {
             cpt::log::r_error("[[Asset Manager]] | failed to load texture from the path '{}'", path.string());
@@ -61,7 +61,7 @@ namespace uil {
         return id;
     }
 
-    tl::expected<void, AssetManager::Error> AssetManager::unload(cpt::usize const id) {
+    tl::expected<void, TextureManager::Error> TextureManager::unload(cpt::usize const id) {
         if (not m_assets.contains(id)) {
             cpt::log::r_error("[[Asset Manager]] | failed to unload id '{}'", id);
             return tl::unexpected(Error::InvalidId);

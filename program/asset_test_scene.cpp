@@ -6,7 +6,7 @@
 #include <uil/global/app_context.hpp>
 
 AssetTestScene::AssetTestScene() {
-    auto& assets = uil::AppContext::instance().asset();
+    auto& assets = uil::AppContext::instance().texture();
 
     m_valid_asset = assets.load("/assets/assets/arrow_down.png").value_or(0);
     m_invalid_asset = assets.load("/assets/assets/invalid.png").value_or(0);
@@ -14,7 +14,7 @@ AssetTestScene::AssetTestScene() {
 
 void AssetTestScene::render() const {
     Scene::render();
-    auto const& assets = uil::AppContext::instance().asset();
+    auto const& assets = uil::AppContext::instance().texture();
 
     auto const& asset_1 = assets.get(m_valid_asset);
     DrawTexturePro(asset_1, {0.0f,0.0f,static_cast<float>(asset_1.width), static_cast<float>(asset_1.height)}, {100.0f,100.0f,100.0f,100.0f}, {0.0f,0.0f}, 0.0f, WHITE );
