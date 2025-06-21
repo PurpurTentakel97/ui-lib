@@ -139,7 +139,7 @@ namespace uil {
     }
 
     void Button::render() const {
-        auto const texture = AppContext::instance().asset().get(m_current_texture_id);
+        auto const texture = AppContext::instance().texture().get(m_current_texture_id);
         DrawTexturePro(texture, rect_from_texture(texture), m_collider, { 0.0f, 0.0f }, 0.0f, WHITE);
         UIElement::render();
     }

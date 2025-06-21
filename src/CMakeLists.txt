@@ -7,13 +7,13 @@ target_sources(cpt__ui_lib
         elements/button.cpp
 
         global/app_context.cpp
-        global/asset.cpp
         global/focus.cpp
         global/font.cpp
         global/input.cpp
         global/resolution.cpp
         global/resolution_enum.cpp
         global/sound.cpp
+        global/texture.cpp
 
         helper/rect.cpp
         helper/vec.cpp
@@ -37,7 +37,6 @@ target_sources(cpt__ui_lib
         include/uil/elements/button.hpp
 
         include/uil/global/app_context.hpp
-        include/uil/global/asset.hpp
         include/uil/global/focus.hpp
         include/uil/global/font.hpp
         include/uil/global/input.hpp
@@ -45,6 +44,7 @@ target_sources(cpt__ui_lib
         include/uil/global/resolution.hpp
         include/uil/global/resolution_enum.hpp
         include/uil/global/sound.hpp
+        include/uil/global/texture.hpp
 
         include/uil/helper/rect.hpp
         include/uil/helper/vec.hpp

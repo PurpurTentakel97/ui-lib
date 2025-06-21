@@ -33,12 +33,12 @@ namespace uil {
     }
 
 
-    AssetManager& AppContext::asset() {
-        return m_asset;
+    TextureManager& AppContext::texture() {
+        return m_texture;
     }
 
-    AssetManager const& AppContext::asset() const {
-        return m_asset;
+    TextureManager const& AppContext::texture() const {
+        return m_texture;
     }
 
 
