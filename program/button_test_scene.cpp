@@ -9,6 +9,25 @@
 
 uil::ButtonAssetConfig ButtonTestScene::gen_button_asset_config() {
     auto assets = uil::ButtonAssetConfig{};
+
+    auto& texture = uil::AppContext::instance().texture();
+
+    if (auto const result = texture.load("/assets/assets/btn_default.png"); result.has_value()) {
+        assets.enabled_texture_id = result.value();
+    }
+
+    if (auto const result = texture.load("/assets/assets/btn_hover.png"); result.has_value()) {
+        assets.hovered_texture_id = result.value();
+    }
+
+    if (auto const result = texture.load("/assets/assets/btn_click.png"); result.has_value()) {
+        assets.pressed_texture_id = result.value();
+    }
+
+    if (auto const result = texture.load("/assets/assets/btn_disabled.png"); result.has_value()) {
+        assets.disabled_texture_id = result.value();
+    }
+
     auto& sound = uil::AppContext::instance().sound();
 
     if (auto const result = sound.load_sound("/assets/sounds/clicked_accepted_std.mp3"); result.has_value()) {
