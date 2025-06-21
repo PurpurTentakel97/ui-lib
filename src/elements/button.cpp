@@ -34,6 +34,7 @@ namespace uil {
     }
     void Button::set_asset_config(ButtonAssetConfig const& config) {
         m_asset_config = config;
+        update_texture();
     }
 
     void Button::enable() {
