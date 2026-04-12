@@ -35,4 +35,7 @@ namespace uil {
     Rectangle rect_from_point_and_size(Vector2 const& point, Vector2 const& size) {
         return { point.x, point.y, size.x, size.y };
     }
+    Rectangle rect_from_texture(Texture2D const& texture) {
+        return { 0.0f, 0.0f, static_cast<float>(texture.width), static_cast<float>(texture.height) };
+    }
 } // namespace uil

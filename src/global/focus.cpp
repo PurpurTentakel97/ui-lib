@@ -9,7 +9,7 @@
 #include <uil/global/focus.hpp>
 
 namespace uil {
-    static FocusManager::FocusBindingConfig default_config{
+    static const inline FocusManager::FocusBindingConfig default_config{
         { FocusAction::Next,
          {
                   {
@@ -19,7 +19,6 @@ namespace uil {
                           Gamepad::GAMEPAD_BUTTON_RIGHT_TRIGGER_1,
                   },
           } },
-
         { FocusAction::Previous,
          {
                   {
@@ -31,7 +30,6 @@ namespace uil {
                           Gamepad::GAMEPAD_BUTTON_LEFT_TRIGGER_1,
                   },
           } },
-
         { FocusAction::Left,
          {
                   {
@@ -42,7 +40,6 @@ namespace uil {
                           Gamepad::GAMEPAD_BUTTON_LEFT_FACE_LEFT,
                   },
           } },
-
         { FocusAction::Right,
          {
                   {
@@ -53,7 +50,6 @@ namespace uil {
                           Gamepad::GAMEPAD_BUTTON_LEFT_FACE_RIGHT,
                   },
           } },
-
         { FocusAction::Up,
          {
                   {
@@ -156,10 +152,10 @@ namespace uil {
     FocusManager::FocusBindingConfig FocusManager::config() const {
         return m_bindings;
     }
-    void FocusManager::set_single_config(FocusAction const action, FocusInputBindings const& bindings) {
+    void FocusManager::set_single_config(FocusAction const action, InputManager::Bindings const& bindings) {
         m_bindings[action] = bindings;
     }
-    FocusInputBindings FocusManager::single_config(FocusAction const action) const {
+    InputManager::Bindings FocusManager::single_config(FocusAction const action) const {
         if (not m_bindings.contains(action)) {
             cpt::log::error("No binding for requested action is present. Enum value: {}", static_cast<int>(action));
             return {};

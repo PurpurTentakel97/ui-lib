@@ -54,4 +54,11 @@ namespace uil {
      * @return position and size
      */
     [[nodiscard]] Rectangle rect_from_point_and_size(Vector2 const& point, Vector2 const& size);
+
+    /**
+     *
+     * @param texture provides height and with for the rect
+     * @return returns a rectangle that contains the texture height and with and sets the origin to 0
+     */
+    [[nodiscard]] Rectangle rect_from_texture(Texture2D const& texture);
 } // namespace uil

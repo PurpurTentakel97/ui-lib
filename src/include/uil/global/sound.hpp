@@ -31,6 +31,8 @@ namespace uil {
             UnknownSoundID,
             UnknownMusicCollectionID,
 
+            MissingSoundFile,
+
             StillMusicPlaying,
             NoMusicPlaying,
             NoCurrentMusic,
@@ -73,6 +75,8 @@ namespace uil {
         std::optional<Music*> m_current_music{};
         cpt::usize m_next_music_index{ 0 };
         bool m_is_music_paused{ false };
+        cpt::usize m_next_sound_id{ 1 };
+        cpt::usize m_next_music_collection_id{ 1 };
 
         [[nodiscard]] LevelEntry& main_level();
         [[nodiscard]] static bool is_main_level(cpt::usize level_id);
@@ -183,6 +187,7 @@ namespace uil {
          */
         tl::expected<cpt::usize, Result> load_sound(std::filesystem::path const& path,
                                                     cpt::usize alias_pre_load_count = 0);
+        Result unload_sound(cpt::usize id);
         /**
          * you need to add the sound and set the soundlevel first to make sure both ids are present.
          *
@@ -213,6 +218,7 @@ namespace uil {
          * @return returns either the id or an error
          */
         tl::expected<cpt::usize, Result> load_music_collection(std::vector<std::filesystem::path> const& path);
+        Result unload_music_collection(cpt::usize id);
         /**
          *
          * @param music_collection_id provides the collection ID the gets linked

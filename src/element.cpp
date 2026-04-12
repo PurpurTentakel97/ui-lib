@@ -3,9 +3,9 @@
 // 06.07.24
 //
 
-#include <uil/helper/rect.hpp>
 #include <uil/element.hpp>
 #include <uil/global/app_context.hpp>
+#include <uil/helper/rect.hpp>
 #include <uil/helper/vec.hpp>
 #include <uil/update_context.hpp>
 
@@ -104,7 +104,7 @@ namespace uil {
     UIElement::UIElement(Rectangle const relative, Alignment const alignment)
         : m_alignment{ alignment },
           m_relative{ aligned_position(relative, alignment) },
-          m_collider{ collider_from_relative(m_relative, AppContext::instance().resolution().resolution_vector()) } {}
+          m_collider{ collider_from_relative(m_relative, AppContext::instance().resolution().resolution_vector()) } { }
 
     void UIElement::set_relative_position(Vector2 const position) {
         m_relative.x = position.x;
@@ -178,6 +178,10 @@ namespace uil {
         return m_hovered;
     }
 
+    bool UIElement::last_frame_hovered() const {
+        return m_last_frame_hovered;
+    }
+
     bool UIElement::is_moving() const {
         return m_move_type != MoveType::None;
     }
@@ -235,8 +239,9 @@ namespace uil {
     }
 
     bool UIElement::handle_input(UpdateContext const& context) {
-        m_last_move_type = m_move_type;
-        m_hovered        = CheckCollisionPointRec(context.mouse_position, m_collider);
+        m_last_move_type     = m_move_type;
+        m_last_frame_hovered = m_hovered;
+        m_hovered            = CheckCollisionPointRec(context.mouse_position, m_collider);
         on_check.invoke(*this);
         return true;
     }
@@ -250,9 +255,19 @@ namespace uil {
             case MoveType::Slow_To_Fast: slow_to_fast(context.delta_time); break;
             case MoveType::Fast_To_Slow: fast_to_slow(context.delta_time); break;
             case MoveType::Constant:     constant(context.delta_time);     break;
-            // extra no default case because update should not throw anything itself.
+            // extra no default case because the update should not throw anything itself.
                 // clang-format on
         }
+        if (m_hovered) {
+            on_hovered.invoke(*this);
+        }
+        if (m_hovered and not m_last_frame_hovered) {
+            on_hover_enter.invoke(*this);
+        }
+        if (not m_hovered and m_last_frame_hovered) {
+            on_hover_leave.invoke(*this);
+        }
+
         on_update.invoke(*this);
         return true;
     }

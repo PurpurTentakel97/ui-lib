@@ -4,11 +4,11 @@
 //
 
 #include <algorithm>
+#include <cpt/files.hpp>
 #include <ranges>
 #include <raylib.h>
-#include <unordered_set>
 #include <uil/global/sound.hpp>
-#include <cpt/files.hpp>
+#include <unordered_set>
 
 namespace uil {
     // #region Result
@@ -28,16 +28,26 @@ namespace uil {
     }
 
     void SoundManager::update_current_music_level(cpt::usize const level_id) {
-        if (not m_levels.contains(level_id)) { return; }
-        if (not m_current_music) { return; }
-        if (not m_current_music_collection) { return; }
-        if (m_current_music_collection.value()->level_id != level_id) { return; }
+        if (not m_levels.contains(level_id)) {
+            return;
+        }
+        if (not m_current_music) {
+            return;
+        }
+        if (not m_current_music_collection) {
+            return;
+        }
+        if (m_current_music_collection.value()->level_id != level_id) {
+            return;
+        }
 
         set_level_ray(*m_current_music.value(), m_current_music_collection.value()->level_id);
     }
 
     void SoundManager::update_current_music_collection() {
-        if (not m_current_music_collection) { return; }
+        if (not m_current_music_collection) {
+            return;
+        }
         if (not is_music_playing() && not m_is_music_paused) {
             if (m_next_music_index >= m_current_music_collection.value()->music.size()) {
                 m_next_music_index = 0;
@@ -63,18 +73,19 @@ namespace uil {
     }
 
     SoundManager::~SoundManager() {
-        for (const auto& sounds : m_sounds | std::views::values) {
-            if (sounds.sound.empty()) { continue; }
+        for (auto const& sounds : m_sounds | std::views::values) {
+            if (sounds.sound.empty()) {
+                continue;
+            }
             if (sounds.sound.size() > 1) {
                 std::ranges::for_each(sounds.sound.begin() + 1, sounds.sound.end(), UnloadSoundAlias);
             }
             UnloadSound(sounds.sound[0]);
         }
 
-        std::ranges::for_each(m_music_collections,
-                              [](auto const& music_collection) {
-                                  std::ranges::for_each(music_collection.second.music, UnloadMusicStream);
-                              });
+        std::ranges::for_each(m_music_collections, [](auto const& music_collection) {
+            std::ranges::for_each(music_collection.second.music, UnloadMusicStream);
+        });
         cpt::log::info("[[Sound Manager]] | unloaded all sounds and music");
 
         CloseAudioDevice();
@@ -130,7 +141,9 @@ namespace uil {
     }
 
     bool SoundManager::is_sound_level_muted(cpt::usize const id) const {
-        if (not m_levels.contains(id)) { return false; }
+        if (not m_levels.contains(id)) {
+            return false;
+        }
         return m_levels.at(id).muted;
     }
 
@@ -145,7 +158,7 @@ namespace uil {
             return tl::unexpected{ Result::InvalidPath };
         }
 
-        auto const id = cpt::usize{ m_sounds.size() + 1 };
+        auto const id = m_next_sound_id++;
         m_sounds.insert({ id, SoundEntry{ std::vector{ sound } } });
         for (cpt::usize i = 0; i < alias_pre_load_count; ++i) {
             m_sounds[id].sound.push_back(LoadSoundAlias(sound));
@@ -155,6 +168,28 @@ namespace uil {
                        path.string(),
                        alias_pre_load_count);
         return id;
+    }
+
+    SoundManager::Result SoundManager::unload_sound(cpt::usize const id) {
+        if (not m_sounds.contains(id)) {
+            cpt::log::r_error("[[Sound Manager]] | sound with id '{}' not found while unloading", id);
+            return Result::UnknownSoundID;
+        }
+
+        auto const sounds = m_sounds.extract(id).mapped();
+
+        if (sounds.sound.empty()) {
+            return Result::MissingSoundFile;
+        }
+
+        if (sounds.sound.size() > 1) {
+            std::ranges::for_each(sounds.sound.begin() + 1, sounds.sound.end(), UnloadSoundAlias);
+        }
+
+        UnloadSound(sounds.sound[0]);
+
+        cpt::log::info("[[Sound Manager]] | unloaded sound and all of its aliasses with id '{}'", id);
+        return Result::Success;
     }
 
     SoundManager::Result SoundManager::link_sound_to_level(cpt::usize const sound_id, cpt::usize const level_id) {
@@ -207,10 +242,7 @@ namespace uil {
             cpt::log::r_error("[[Sound Manager]] | sound with id '{}' not found", id);
             return false;
         }
-        return std::ranges::any_of(m_sounds.at(id).sound,
-                                   [](auto const& sound) {
-                                       return IsSoundPlaying(sound);
-                                   });
+        return std::ranges::any_of(m_sounds.at(id).sound, [](auto const& sound) { return IsSoundPlaying(sound); });
     }
 
     // #endregion
@@ -244,11 +276,24 @@ namespace uil {
             return tl::unexpected{ result };
         }
 
-        auto const id = m_music_collections.size() + 1;
+        auto const id = m_next_music_collection_id++;
         m_music_collections.insert({ id, std::move(music_collection) });
 
         cpt::log::info("[[Sound Manager]] | loaded a music collection with id '{}'", id);
         return id;
+    }
+
+    SoundManager::Result SoundManager::unload_music_collection(cpt::usize const id) {
+        if (not m_music_collections.contains(id)) {
+            cpt::log::r_error("[[Sound Manager]] | music collection with id '{}' not found while unloading", id);
+            return Result::UnknownMusicCollectionID;
+        }
+
+        auto const music_collection = m_music_collections.extract(id).mapped();
+        std::ranges::for_each(music_collection.music, UnloadMusicStream);
+
+        cpt::log::info("[[Sound Manager]] | unloaded music collection with id '{}'", id);
+        return Result::Success;
     }
 
     SoundManager::Result SoundManager::link_music_collection_to_level(cpt::usize const music_collection_id,
@@ -346,15 +391,15 @@ namespace uil {
             return false;
         }
         return std::ranges::any_of(m_music_collections.at(id).music,
-                                   [](auto const& music) {
-                                       return IsMusicStreamPlaying(music);
-                                   });
+                                   [](auto const& music) { return IsMusicStreamPlaying(music); });
     }
 
     bool SoundManager::is_music_playing() const {
-        if (not m_current_music.has_value()) { return false; }
+        if (not m_current_music.has_value()) {
+            return false;
+        }
         return IsMusicStreamPlaying(*m_current_music.value());
     }
 
     // #endregion
-}
+} // namespace uil

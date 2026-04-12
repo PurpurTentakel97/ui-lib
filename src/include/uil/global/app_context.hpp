@@ -5,12 +5,12 @@
 
 #pragma once
 
-#include <uil/global/input.hpp>
-#include <uil/global/sound.hpp>
-#include <uil/global/asset.hpp>
-#include <uil/global/resolution.hpp>
 #include <uil/global/focus.hpp>
 #include <uil/global/font.hpp>
+#include <uil/global/input.hpp>
+#include <uil/global/resolution.hpp>
+#include <uil/global/sound.hpp>
+#include <uil/global/texture.hpp>
 
 namespace uil {
     class Window;
@@ -22,7 +22,7 @@ namespace uil {
     private:
         InputManager m_input{};
         SoundManager m_sound{};
-        AssetManager m_asset{};
+        TextureManager m_texture{};
         ResolutionManager m_resolution{};
         FontManager m_font{};
         FocusManager m_focus{};
@@ -44,8 +44,8 @@ namespace uil {
         [[nodiscard]] SoundManager& sound();
         [[nodiscard]] SoundManager const& sound() const;
 
-        [[nodiscard]] AssetManager& asset();
-        [[nodiscard]] AssetManager const& asset() const;
+        [[nodiscard]] TextureManager& texture();
+        [[nodiscard]] TextureManager const& texture() const;
 
         [[nodiscard]] ResolutionManager& resolution();
         [[nodiscard]] ResolutionManager const& resolution() const;

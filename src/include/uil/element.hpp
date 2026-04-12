@@ -32,8 +32,8 @@ namespace uil {
         // basic
         Alignment m_alignment;
         Rectangle m_relative{}; // m_relative needs to be initialized bevor m_collider
-        Rectangle m_collider{}; // m_relative needs to be initialized bevor m_collider
-        bool m_hovered = false;
+        bool m_hovered            = false;
+        bool m_last_frame_hovered = false;
 
         // movement
         MoveType m_move_type      = MoveType::None;
@@ -58,16 +58,22 @@ namespace uil {
         void slow_to_fast(float delta_time);
         void constant(float delta_time);
 
+    protected:
+        Rectangle m_collider{}; // m_relative needs to be initialized bevor m_collider
+
     public:
         debug::Element debug_element{};
 
-        cpt::Callback<UIElement&> on_movement_start{}; ///< contains UIElement
-        cpt::Callback<UIElement&> on_movement_stop{};  ///< contains UIElement
-        cpt::Callback<UIElement&> on_arrived{};        ///< contains UIElement
-        cpt::Callback<UIElement&> on_check{};          ///< contains UIElement
-        cpt::Callback<UIElement&> on_update{};         ///< contains UIElement
-        cpt::Callback<UIElement const&> on_draw{};     ///< contains UIElement
-        cpt::Callback<UIElement&> on_resize{};         ///< contains UIElement
+        cpt::Callback<UIElement&> on_movement_start{};
+        cpt::Callback<UIElement&> on_movement_stop{};
+        cpt::Callback<UIElement&> on_arrived{};
+        cpt::Callback<UIElement&> on_check{};
+        cpt::Callback<UIElement&> on_update{};
+        cpt::Callback<UIElement const&> on_draw{};
+        cpt::Callback<UIElement&> on_resize{};
+        cpt::Callback<UIElement&> on_hovered{};
+        cpt::Callback<UIElement&> on_hover_enter{};
+        cpt::Callback<UIElement&> on_hover_leave{};
 
         /**
          * aligns the relative position according to the provided alignment.
@@ -170,9 +176,15 @@ namespace uil {
 
         /**
          *
-         * @return if element is currently hovered
+         * @return if an element is currently hovered
          */
         [[nodiscard]] bool hovered() const;
+
+        /**
+         *
+         * @return if an element was hovered last frame
+         */
+        [[nodiscard]] bool last_frame_hovered() const;
 
         // movement
         /**
@@ -255,7 +267,7 @@ namespace uil {
          */
         [[nodiscard]] virtual bool handle_input(UpdateContext const& context);
         /**
-         * updates current movement if element is moving.
+         * updates the current movement if an element is moving.
          *
          * override this when the derived element has to update additional stuff.
          * make sure to call UIElement::update().
