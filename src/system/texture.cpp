@@ -3,10 +3,10 @@
 // 17.05.25
 //
 
+#include <system/texture.hpp>
 #include <cpt/files.hpp>
 #include <cpt/log.hpp>
 #include <ranges>
-#include <uil/global/texture.hpp>
 #include <unordered_set>
 
 namespace uil {

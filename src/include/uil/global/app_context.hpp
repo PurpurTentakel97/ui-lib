@@ -5,12 +5,12 @@
 
 #pragma once
 
-#include <uil/global/focus.hpp>
-#include <uil/global/font.hpp>
-#include <uil/global/input.hpp>
-#include <uil/global/resolution.hpp>
-#include <uil/global/sound.hpp>
-#include <uil/global/texture.hpp>
+#include <system/font.hpp>
+#include <system/resolution.hpp>
+#include <system/texture.hpp>
+#include <system/focus.hpp>
+#include <system/input.hpp>
+#include <system/sound.hpp>
 
 namespace uil {
     class Window;

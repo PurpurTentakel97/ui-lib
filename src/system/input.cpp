@@ -3,7 +3,7 @@
 // 31.05.25
 //
 
-#include "uil/global/input.hpp"
+#include <system/input.hpp>
 
 namespace uil {
     static const inline InputManager::BindingsConfig s_default_bindings{

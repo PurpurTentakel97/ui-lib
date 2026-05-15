@@ -3,10 +3,10 @@
 // 26.05.25
 //
 
+#include <system/focus.hpp>
 #include <tuple>
 #include <uil/focus_element.hpp>
 #include <uil/global/app_context.hpp>
-#include <uil/global/focus.hpp>
 
 namespace uil {
     static const inline FocusManager::FocusBindingConfig default_config{

@@ -5,9 +5,9 @@
 
 #pragma once
 
+#include <system/input.hpp>
 #include <memory>
 #include <tl/optional.hpp>
-#include <uil/global/input.hpp>
 
 namespace uil {
     class FocusElement;

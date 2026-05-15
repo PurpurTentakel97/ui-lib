@@ -12,6 +12,7 @@
 #include <optional>
 #include <tl/expected.hpp>
 #include <cpt/log.hpp>
+#include <raylib.h>
 
 namespace uil {
     template<typename T>
