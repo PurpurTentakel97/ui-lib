@@ -6,6 +6,8 @@ target_sources(cpt__ui_lib
         debug/draw_mouse.cpp
         debug/draw_rectangle.cpp
 
+        element/text.cpp
+
         global/alignment.cpp
         global/app_context.cpp
         global/element.cpp
@@ -33,6 +35,8 @@ target_sources(cpt__ui_lib
         include/uil/debug/draw_fps.hpp
         include/uil/debug/draw_mouse.hpp
         include/uil/debug/draw_rectangle.hpp
+
+        include/uil/element/text/text.hpp
 
         include/uil/global/app_context.hpp
         include/uil/global/alignment.hpp
