@@ -24,9 +24,9 @@ target_sources(cpt__ui_lib
         system/resolution.cpp
         system/sound.cpp
         system/texture.cpp
+        system/scene_manager.cpp
 
         focus_element.cpp
-        scene_manager.cpp
 
 
         PUBLIC FILE_SET HEADERS
@@ -51,7 +51,6 @@ target_sources(cpt__ui_lib
         include/uil/helper/vec.hpp
 
         include/uil/focus_element.hpp
-        include/uil/scene_manager.hpp
 
         include/system/base_element.hpp
         include/system/base_manager.hpp
@@ -60,6 +59,7 @@ target_sources(cpt__ui_lib
         include/system/input.hpp
         include/system/resolution.hpp
         include/system/sound.hpp
+        include/system/scene_manager.hpp
         include/system/texture.hpp
 )
 

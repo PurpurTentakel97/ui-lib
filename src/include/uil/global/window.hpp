@@ -5,9 +5,9 @@
 
 #pragma once
 
+#include <system/scene_manager.hpp>
 #include <uil/debug/wrapper.hpp>
 #include <uil/global/resolution_enum.hpp>
-#include <uil/scene_manager.hpp>
 
 namespace uil {
     struct UpdateContext;

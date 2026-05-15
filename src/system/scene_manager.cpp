@@ -3,10 +3,10 @@
 // 06.07.24
 //
 
-#include <uil/global/update_context.hpp>
+#include <system/scene_manager.hpp>
 #include <ranges>
 #include <uil/global/app_context.hpp>
-#include <uil/scene_manager.hpp>
+#include <uil/global/update_context.hpp>
 
 namespace uil {
     bool SceneManager::handle_input(UpdateContext const& context) const {
