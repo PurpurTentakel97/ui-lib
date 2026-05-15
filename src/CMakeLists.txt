@@ -6,6 +6,8 @@ target_sources(cpt__ui_lib
         debug/draw_mouse.cpp
         debug/draw_rectangle.cpp
 
+        elements/tooltip.cpp
+
         global/alignment.cpp
         global/app_context.cpp
         global/element.cpp
@@ -24,6 +26,7 @@ target_sources(cpt__ui_lib
         system/sound.cpp
         system/texture.cpp
         system/scene_manager.cpp
+        system/tooltip_manager.cpp
 
 
         PUBLIC FILE_SET HEADERS
@@ -32,6 +35,8 @@ target_sources(cpt__ui_lib
         include/uil/debug/draw_fps.hpp
         include/uil/debug/draw_mouse.hpp
         include/uil/debug/draw_rectangle.hpp
+
+        include/uil/elements/tooltip.hpp
 
         include/uil/global/app_context.hpp
         include/uil/global/alignment.hpp
@@ -54,6 +59,7 @@ target_sources(cpt__ui_lib
         include/system/sound.hpp
         include/system/scene_manager.hpp
         include/system/texture.hpp
+        include/system/tooltip_manager.hpp
 
         include/system/debug/window.hpp
         include/system/debug/element.hpp

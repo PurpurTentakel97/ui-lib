@@ -56,4 +56,12 @@ namespace uil {
     FontManager const& AppContext::font() const {
         return m_font;
     }
+
+    TooltipManager& AppContext::tooltip_manager() {
+        return m_tooltip_manager;
+    }
+
+    TooltipManager const& AppContext::tooltip_manager() const {
+        return m_tooltip_manager;
+    }
 } // namespace uil

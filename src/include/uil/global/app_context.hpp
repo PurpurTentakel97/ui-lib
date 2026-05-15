@@ -5,11 +5,12 @@
 
 #pragma once
 
+#include "system/tooltip_manager.hpp"
 #include <system/font.hpp>
-#include <system/resolution.hpp>
-#include <system/texture.hpp>
 #include <system/input.hpp>
+#include <system/resolution.hpp>
 #include <system/sound.hpp>
+#include <system/texture.hpp>
 
 namespace uil {
     class Window;
@@ -24,6 +25,7 @@ namespace uil {
         TextureManager m_texture{};
         ResolutionManager m_resolution{};
         FontManager m_font{};
+        TooltipManager m_tooltip_manager{};
 
     public:
         AppContext()                             = default;
@@ -50,5 +52,8 @@ namespace uil {
 
         [[nodiscard]] FontManager& font();
         [[nodiscard]] FontManager const& font() const;
+
+        [[nodiscard]] TooltipManager& tooltip_manager();
+        [[nodiscard]] TooltipManager const& tooltip_manager() const;
     };
 } // namespace uil
