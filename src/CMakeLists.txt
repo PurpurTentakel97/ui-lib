@@ -2,7 +2,9 @@ add_library(cpt__ui_lib STATIC)
 
 target_sources(cpt__ui_lib
         PRIVATE
-        debug/classes.cpp
+        debug/draw_fps.cpp
+        debug/draw_mouse.cpp
+        debug/draw_rectangle.cpp
 
         global/alignment.cpp
         global/app_context.cpp
@@ -27,7 +29,9 @@ target_sources(cpt__ui_lib
         PUBLIC FILE_SET HEADERS
         BASE_DIRS include FILES
         include/uil/debug/basic.hpp
-        include/uil/debug/classes.hpp
+        include/uil/debug/draw_fps.hpp
+        include/uil/debug/draw_mouse.hpp
+        include/uil/debug/draw_rectangle.hpp
 
         include/uil/global/app_context.hpp
         include/uil/global/alignment.hpp

@@ -5,7 +5,9 @@
 
 #pragma once
 
-#include <uil/debug/classes.hpp>
+#include <uil/debug/draw_fps.hpp>
+#include <uil/debug/draw_mouse.hpp>
+#include <uil/debug/draw_rectangle.hpp>
 
 namespace uil::debug {
     struct Window final {
