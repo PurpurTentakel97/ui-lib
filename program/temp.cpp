@@ -3,8 +3,6 @@
 //
 
 #include "asset_test_scene.hpp"
-#include "button_test_scene.hpp"
-#include "focus_test_scene.hpp"
 #include "font_test_scene.hpp"
 #include "input_test_scene.hpp"
 #include "music_test_scene.hpp"
@@ -35,8 +33,6 @@ int main() {
     // auto const t2 = window.scene_manager().emplace_top<MusicTestScene>();
     // auto const t3 = window.scene_manager().emplace_top<AssetTestScene>();
     // auto const t4 = window.scene_manager().emplace_top<FontTestScene>();
-    // auto const t5 = window.scene_manager().emplace_top<FocusTestScene>();
-    auto const t6 = window.scene_manager().emplace_top<ButtonTestScene>();
     while (not WindowShouldClose()) {
         window.update();
     }

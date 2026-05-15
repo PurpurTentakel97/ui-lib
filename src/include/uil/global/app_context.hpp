@@ -8,7 +8,6 @@
 #include <system/font.hpp>
 #include <system/resolution.hpp>
 #include <system/texture.hpp>
-#include <system/focus.hpp>
 #include <system/input.hpp>
 #include <system/sound.hpp>
 
@@ -25,7 +24,6 @@ namespace uil {
         TextureManager m_texture{};
         ResolutionManager m_resolution{};
         FontManager m_font{};
-        FocusManager m_focus{};
 
     public:
         AppContext()                             = default;
@@ -49,9 +47,6 @@ namespace uil {
 
         [[nodiscard]] ResolutionManager& resolution();
         [[nodiscard]] ResolutionManager const& resolution() const;
-
-        [[nodiscard]] FocusManager& focus();
-        [[nodiscard]] FocusManager const& focus() const;
 
         [[nodiscard]] FontManager& font();
         [[nodiscard]] FontManager const& font() const;

@@ -12,7 +12,6 @@ namespace uil {
     }
     void AppContext::update() {
         m_sound.update();
-        m_focus.update();
     }
 
     InputManager& AppContext::input() {
@@ -48,13 +47,6 @@ namespace uil {
 
     ResolutionManager const& AppContext::resolution() const {
         return m_resolution;
-    }
-
-    FocusManager& AppContext::focus() {
-        return m_focus;
-    }
-    FocusManager const& AppContext::focus() const {
-        return m_focus;
     }
 
     FontManager& AppContext::font() {

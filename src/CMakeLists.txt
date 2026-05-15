@@ -4,8 +4,6 @@ target_sources(cpt__ui_lib
         PRIVATE
         debug/classes.cpp
 
-        elements/button.cpp
-
         global/alignment.cpp
         global/app_context.cpp
         global/element.cpp
@@ -18,7 +16,6 @@ target_sources(cpt__ui_lib
         helper/vec.cpp
 
         system/base_element.cpp
-        system/focus.cpp
         system/font.cpp
         system/input.cpp
         system/resolution.cpp
@@ -26,16 +23,12 @@ target_sources(cpt__ui_lib
         system/texture.cpp
         system/scene_manager.cpp
 
-        focus_element.cpp
-
 
         PUBLIC FILE_SET HEADERS
         BASE_DIRS include FILES
         include/uil/debug/basic.hpp
         include/uil/debug/classes.hpp
         include/uil/debug/wrapper.hpp
-
-        include/uil/elements/button.hpp
 
         include/uil/global/app_context.hpp
         include/uil/global/alignment.hpp
@@ -50,11 +43,8 @@ target_sources(cpt__ui_lib
         include/uil/helper/rect.hpp
         include/uil/helper/vec.hpp
 
-        include/uil/focus_element.hpp
-
         include/system/base_element.hpp
         include/system/base_manager.hpp
-        include/system/focus.hpp
         include/system/font.hpp
         include/system/input.hpp
         include/system/resolution.hpp
