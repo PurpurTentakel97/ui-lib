@@ -5,8 +5,8 @@
 
 #pragma once
 
+#include <system/debug/wrapper.hpp>
 #include <system/scene_manager.hpp>
-#include <uil/debug/wrapper.hpp>
 #include <uil/global/resolution_enum.hpp>
 
 namespace uil {

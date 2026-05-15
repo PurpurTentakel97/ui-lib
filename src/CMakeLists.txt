@@ -28,7 +28,6 @@ target_sources(cpt__ui_lib
         BASE_DIRS include FILES
         include/uil/debug/basic.hpp
         include/uil/debug/classes.hpp
-        include/uil/debug/wrapper.hpp
 
         include/uil/global/app_context.hpp
         include/uil/global/alignment.hpp
@@ -51,6 +50,8 @@ target_sources(cpt__ui_lib
         include/system/sound.hpp
         include/system/scene_manager.hpp
         include/system/texture.hpp
+
+        include/system/debug/wrapper.hpp
 )
 
 target_include_directories(cpt__ui_lib

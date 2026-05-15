@@ -1,12 +1,12 @@
 Window
 
 Systems:
-- Focus | rewrite
 - Input | ok
 - Sound | ok
 - texture | ok
 - popup | todo
 - Tooltip | todo
+- Focus | todo
 
 
 - debug system rewrite?
