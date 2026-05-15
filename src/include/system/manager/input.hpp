@@ -9,21 +9,10 @@
 #include <raylib.h>
 #include <tl/expected.hpp>
 #include <uil/global/input_enum.hpp>
+#include <uil/global/input_operator.hpp>
 #include <unordered_map>
 #include <variant>
 #include <vector>
-
-namespace uil {
-    enum class ModOp {
-        Or,
-        And,
-    };
-
-    enum class KeyOp {
-        Or,
-        And,
-    };
-} // namespace uil
 
 namespace uil::sys {
     class InputManager final {

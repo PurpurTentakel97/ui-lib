@@ -39,6 +39,7 @@ target_sources(cpt__ui_lib
         include/uil/global/element.hpp
         include/uil/global/exception.hpp
         include/uil/global/input_enum.hpp
+        include/uil/global/input_operator.hpp
         include/uil/global/resolution_enum.hpp
         include/uil/global/scene.hpp
         include/uil/global/update_context.hpp
