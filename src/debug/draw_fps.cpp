@@ -8,7 +8,7 @@
 #include <uil/debug/draw_fps.hpp>
 
 namespace uil::debug {
-    void FPSDraw::exec(void const*) const {
+    void DebugFPSDraw::exec(void const*) const {
 #ifndef NDEBUG
         if (m_active) {
             DrawText(std::to_string(GetFPS()).c_str(), 10, 10, 50, WHITE);

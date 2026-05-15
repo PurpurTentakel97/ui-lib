@@ -10,7 +10,7 @@
 struct Rectangle;
 
 namespace uil::debug {
-    class RectangleDraw final : public BasicDebug<Rectangle> {
+    class DebugRectangleDraw final : public DebugBase<Rectangle> {
     public:
         void exec(Rectangle const*) const override;
     };

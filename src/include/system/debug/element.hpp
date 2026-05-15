@@ -8,7 +8,7 @@
 #include <uil/debug/draw_rectangle.hpp>
 
 namespace uil::debug {
-    struct Element final {
-        RectangleDraw collider{};
+    struct DebugElement final {
+        DebugRectangleDraw collider{};
     };
 } // namespace uil::debug

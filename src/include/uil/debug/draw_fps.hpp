@@ -8,7 +8,7 @@
 #include <uil/debug/basic.hpp>
 
 namespace uil::debug {
-    class FPSDraw final : public BasicDebug<void> {
+    class DebugFPSDraw final : public DebugBase<void> {
     public:
         void exec(void const*) const override;
     };

@@ -8,7 +8,7 @@
 #include <uil/debug/basic.hpp>
 
 namespace uil::debug {
-    class MouseDraw final: public BasicDebug<void> {
+    class DebugMouseDraw final: public DebugBase<void> {
     public:
         void exec(void const*) const override;
     };

@@ -7,7 +7,7 @@
 #include <uil/debug/draw_mouse.hpp>
 
 namespace uil::debug {
-    void MouseDraw::exec(void const*) const {
+    void DebugMouseDraw::exec(void const*) const {
 #ifndef NDEBUG
         if (m_active) {
             DrawCircleLinesV(GetMousePosition(), 10.0f, WHITE);

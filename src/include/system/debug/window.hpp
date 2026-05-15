@@ -9,8 +9,8 @@
 #include <uil/debug/draw_mouse.hpp>
 
 namespace uil::debug {
-    struct Window final {
-        FPSDraw fps{};
-        MouseDraw mouse{};
+    struct DebugWindow final {
+        DebugFPSDraw fps{};
+        DebugMouseDraw mouse{};
     };
 } // namespace uil::debug

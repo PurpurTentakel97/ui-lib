@@ -7,7 +7,7 @@
 #include <uil/debug/draw_rectangle.hpp>
 
 namespace uil::debug {
-    void RectangleDraw::exec([[maybe_unused]] Rectangle const* rect) const {
+    void DebugRectangleDraw::exec([[maybe_unused]] Rectangle const* rect) const {
 #ifndef NDEBUG
         if (m_active) {
             DrawRectangleLinesEx(*rect, 1.0f, WHITE);

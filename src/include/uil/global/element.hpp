@@ -62,7 +62,7 @@ namespace uil {
         Rectangle m_collider{}; // m_relative needs to be initialized bevor m_collider
 
     public:
-        debug::Element debug_element{};
+        debug::DebugElement debug_element{};
 
         cpt::Callback<UIElement&> on_movement_start{};
         cpt::Callback<UIElement&> on_movement_stop{};

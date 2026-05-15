@@ -7,14 +7,14 @@
 
 namespace uil::debug {
     template<class T>
-    class BasicDebug {
+    class DebugBase {
     protected:
 #ifndef NDEBUG
         bool m_active = false;
 #endif
 
     public:
-        virtual ~BasicDebug()       = default;
+        virtual ~DebugBase()       = default;
         virtual void exec(T const*) const = 0;
 
         void set([[maybe_unused]] bool const active) {
