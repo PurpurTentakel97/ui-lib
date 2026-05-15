@@ -4,10 +4,10 @@
 //
 
 #pragma once
-#include <system/debug/wrapper.hpp>
 #include <cpt/callback.hpp>
 #include <raylib.h>
 #include <system/base_element.hpp>
+#include <system/debug/element.hpp>
 #include <uil/global/alignment.hpp>
 
 namespace uil {

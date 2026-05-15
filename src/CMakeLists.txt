@@ -55,7 +55,8 @@ target_sources(cpt__ui_lib
         include/system/scene_manager.hpp
         include/system/texture.hpp
 
-        include/system/debug/wrapper.hpp
+        include/system/debug/window.hpp
+        include/system/debug/element.hpp
 )
 
 target_include_directories(cpt__ui_lib
