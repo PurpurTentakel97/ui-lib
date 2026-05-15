@@ -3,7 +3,7 @@
 // 25.05.25
 //
 
-#include <system/resolution.hpp>
+#include <../include/system/manager/resolution.hpp>
 
 namespace uil {
     void ResolutionManager::set_resolution(Resolution const& resolution) {

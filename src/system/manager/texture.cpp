@@ -3,7 +3,7 @@
 // 17.05.25
 //
 
-#include <system/texture.hpp>
+#include <../include/system/manager/texture.hpp>
 #include <cpt/files.hpp>
 #include <cpt/log.hpp>
 #include <ranges>

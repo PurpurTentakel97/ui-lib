@@ -3,7 +3,7 @@
 // 06.07.24
 //
 
-#include <system/scene_manager.hpp>
+#include <../include/system/manager/scene_manager.hpp>
 #include <ranges>
 #include <uil/global/app_context.hpp>
 #include <uil/global/update_context.hpp>

@@ -3,7 +3,7 @@
 // 17.04.25
 //
 
-#include <system/sound.hpp>
+#include <../include/system/manager/sound.hpp>
 #include <algorithm>
 #include <cpt/files.hpp>
 #include <ranges>

@@ -4,7 +4,7 @@
 //
 
 #pragma once
-#include <system/base_manager.hpp>
+#include <system/manager/base_manager.hpp>
 #include <uil/global/scene.hpp>
 
 namespace uil {

@@ -6,7 +6,7 @@
 #pragma once
 
 #include <system/debug/window.hpp>
-#include <system/scene_manager.hpp>
+#include <system/manager/scene_manager.hpp>
 #include <uil/global/resolution_enum.hpp>
 
 namespace uil {

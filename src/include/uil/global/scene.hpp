@@ -5,9 +5,9 @@
 
 #pragma once
 
-#include <system/base_element.hpp>
-#include <system/base_manager.hpp>
 #include <cpt/callback.hpp>
+#include <system/global/base_element.hpp>
+#include <system/manager/base_manager.hpp>
 #include <uil/global/element.hpp>
 
 namespace uil {

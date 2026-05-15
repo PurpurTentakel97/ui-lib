@@ -17,13 +17,14 @@ target_sources(cpt__ui_lib
         helper/rect.cpp
         helper/vec.cpp
 
-        system/base_element.cpp
-        system/font.cpp
-        system/input.cpp
-        system/resolution.cpp
-        system/sound.cpp
-        system/texture.cpp
-        system/scene_manager.cpp
+        system/global/base_element.cpp
+
+        system/manager/font.cpp
+        system/manager/input.cpp
+        system/manager/resolution.cpp
+        system/manager/sound.cpp
+        system/manager/texture.cpp
+        system/manager/scene_manager.cpp
 
 
         PUBLIC FILE_SET HEADERS
@@ -46,14 +47,15 @@ target_sources(cpt__ui_lib
         include/uil/helper/rect.hpp
         include/uil/helper/vec.hpp
 
-        include/system/base_element.hpp
-        include/system/base_manager.hpp
-        include/system/font.hpp
-        include/system/input.hpp
-        include/system/resolution.hpp
-        include/system/sound.hpp
-        include/system/scene_manager.hpp
-        include/system/texture.hpp
+        include/system/global/base_element.hpp
+
+        include/system/manager/base_manager.hpp
+        include/system/manager/font.hpp
+        include/system/manager/input.hpp
+        include/system/manager/resolution.hpp
+        include/system/manager/sound.hpp
+        include/system/manager/scene_manager.hpp
+        include/system/manager/texture.hpp
 
         include/system/debug/window.hpp
         include/system/debug/element.hpp
