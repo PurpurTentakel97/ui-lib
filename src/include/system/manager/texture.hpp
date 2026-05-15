@@ -11,7 +11,7 @@
 #include <cpt/types.hpp>
 #include <tl/expected.hpp>
 
-namespace uil {
+namespace uil::sys {
     class TextureManager final {
     public:
         enum class Error {

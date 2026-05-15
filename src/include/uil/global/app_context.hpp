@@ -19,11 +19,11 @@ namespace uil {
 
     class AppContext final {
     private:
-        InputManager m_input{};
-        SoundManager m_sound{};
-        TextureManager m_texture{};
-        ResolutionManager m_resolution{};
-        FontManager m_font{};
+        sys::InputManager m_input{};
+        sys::SoundManager m_sound{};
+        sys::TextureManager m_texture{};
+        sys::ResolutionManager m_resolution{};
+        sys::FontManager m_font{};
 
     public:
         AppContext()                             = default;
@@ -36,19 +36,19 @@ namespace uil {
         [[nodiscard]] static AppContext& instance();
         void update();
 
-        [[nodiscard]] InputManager& input();
-        [[nodiscard]] InputManager const& input() const;
+        [[nodiscard]] sys::InputManager& input();
+        [[nodiscard]] sys::InputManager const& input() const;
 
-        [[nodiscard]] SoundManager& sound();
-        [[nodiscard]] SoundManager const& sound() const;
+        [[nodiscard]] sys::SoundManager& sound();
+        [[nodiscard]] sys::SoundManager const& sound() const;
 
-        [[nodiscard]] TextureManager& texture();
-        [[nodiscard]] TextureManager const& texture() const;
+        [[nodiscard]] sys::TextureManager& texture();
+        [[nodiscard]] sys::TextureManager const& texture() const;
 
-        [[nodiscard]] ResolutionManager& resolution();
-        [[nodiscard]] ResolutionManager const& resolution() const;
+        [[nodiscard]] sys::ResolutionManager& resolution();
+        [[nodiscard]] sys::ResolutionManager const& resolution() const;
 
-        [[nodiscard]] FontManager& font();
-        [[nodiscard]] FontManager const& font() const;
+        [[nodiscard]] sys::FontManager& font();
+        [[nodiscard]] sys::FontManager const& font() const;
     };
 } // namespace uil

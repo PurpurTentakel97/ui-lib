@@ -18,7 +18,7 @@ namespace uil {
      * it contains all elements within a scene.
      * the scene checks, updates, renders and resizes all elements.
      */
-    class Scene : public BaseManager<UIElement>, public BaseElement {
+    class Scene : public sys::BaseManager<UIElement>, public sys::BaseElement {
     public:
         cpt::Callback<Scene const&> on_check{};  ///< contains Scene
         cpt::Callback<Scene const&> on_update{}; ///< contains Scene

@@ -5,13 +5,13 @@
 
 #pragma once
 
+#include <cpt/log.hpp>
 #include <raylib.h>
 #include <tl/expected.hpp>
 #include <uil/global/input_enum.hpp>
 #include <unordered_map>
 #include <variant>
 #include <vector>
-#include <cpt/log.hpp>
 
 namespace uil {
     enum class ModOp {
@@ -23,7 +23,9 @@ namespace uil {
         Or,
         And,
     };
+} // namespace uil
 
+namespace uil::sys {
     class InputManager final {
     public:
         enum class Result {
@@ -64,7 +66,6 @@ namespace uil {
     private:
         BindingsConfig m_bindings{};
 
-        // #region Ray
         template<IsRayKey R>
         [[nodiscard]] bool is_ray(auto const func_keyboard,
                                   auto const func_mouse,
@@ -114,9 +115,7 @@ namespace uil {
             }
         }
 
-        // #endregion
 
-        // #region Internal
         template<IsInput I>
         [[nodiscard]] bool is_single_down(I const input) const {
             return is_down_ray(ray_key_from_input(input));
@@ -228,26 +227,22 @@ namespace uil {
             return is_keys and is_modifiers;
         }
 
-        // #endregion
 
     public:
-        // #region Constructor
         InputManager();
         InputManager(InputManager const&)            = delete;
         InputManager(InputManager&&)                 = delete;
         InputManager& operator=(InputManager const&) = delete;
         InputManager& operator=(InputManager&&)      = delete;
         ~InputManager()                              = default;
-        // #endregion
 
-        // #region Bindings
+
         void set_bindings(BindingsConfig const& bindings);
         [[nodiscard]] BindingsConfig const& bindings() const;
         void set_specific_binding(Pattern pattern, Bindings const& bindings);
         [[nodiscard]] tl::expected<Bindings, Result> specific_binding(Pattern pattern) const;
-        // #endregion
 
-        // #region Input
+
         template<KeyOp KeyOp = KeyOp::Or, ModOp ModOp = ModOp::Or, IsInput... I>
         [[nodiscard]] bool is_down(I const... input) const {
             return check_variadic_input([&](auto const key) { return is_single_down(key); }, KeyOp, ModOp, input...);
@@ -347,4 +342,4 @@ namespace uil {
 
         // #endregion
     };
-} // namespace uil
+} // namespace uil::sys

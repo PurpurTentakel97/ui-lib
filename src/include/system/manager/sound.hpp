@@ -14,16 +14,12 @@
 #include <cpt/log.hpp>
 #include <raylib.h>
 
-namespace uil {
+namespace uil::sys {
     template<typename T>
     concept IsSoundFile = std::is_same_v<T, Sound> or std::is_same_v<T, Music>;
 
     class SoundManager final {
     public:
-        // #region Result
-        /**
-         * Describes the Result of a Sound Operation
-         */
         enum class Result {
             InvalidPath,
             EmptyContainer,
@@ -41,16 +37,9 @@ namespace uil {
             Success,
         };
 
-        /**
-         *
-         * @param result to check
-         * @return if the provided result indicates a success
-         */
         [[nodiscard]] static bool is_success(Result result);
-        // #endregion
 
     private:
-        // #region Internal
         struct LevelEntry final {
             float value{};
             bool muted{ false };
@@ -86,9 +75,7 @@ namespace uil {
         void update_current_music_level(cpt::usize level_id);
 
         void update_current_music_collection();
-        // #endregion
 
-        // #region Ray
         template<IsSoundFile T>
         Result set_level_ray(T const& file, cpt::usize const level_id) {
             // If the main level ID is provided here, I assume that there is no specific level id. Otherwise, provide the specific one.
@@ -117,98 +104,34 @@ namespace uil {
             }
         }
 
-        // #endregion
-
     public:
-        // #region Constructor
         SoundManager();
         SoundManager(SoundManager const&)            = delete;
         SoundManager(SoundManager&&)                 = delete;
         SoundManager& operator=(SoundManager const&) = delete;
         SoundManager& operator=(SoundManager&&)      = delete;
         ~SoundManager();
-        // #endregion
 
-        // #region Global
-        /**
-         * updates the music streams and fades.
-         */
         void update();
-        // #endregion
 
-        // #region Level
-        /**
-         * call this to add a new level id by just providing an unknown id here.
-         * call this with id 0 to set the global level
-         *
-         * @param id of the level to set (0 is the global level)
-         * @param level amount that the level gets set to. 0.0f - 1.0f
-         */
         void set_level(cpt::usize id, float level);
 
-        /**
-         * call it with id 0 to get the main level.
-         * it returns 0 when the id is not existing.
-         * note that the main level also affects every other level.
-         *
-         * @param id of the level to get (0 == main level)
-         * @return the current value of the provided level id
-         */
         [[nodiscard]] float get_level(cpt::usize id) const;
 
-        /**
-         *
-         * @param id of the sound level to toggle
-         * @return if the toggle was successful
-         */
         Result toggle_mute_sound_level(cpt::usize id);
 
-        /**
-         *
-         * @param id of the sound level to set
-         * @param is_mute the value the sound level gets sets to
-         * @return if the set was successful
-         */
         Result set_mute_sound_level(cpt::usize id, bool is_mute);
 
-        /**
-         *
-         * @param id of the sound level to check
-         * @return if the provided sound level is muted. returns false if the provided id is not existing
-         */
         [[nodiscard]] bool is_sound_level_muted(cpt::usize id) const;
-        // #endregion
 
-        // #region Sound
-        /**
-         *
-         * @param path provides the path of the loaded sound. Can be a relative or an absolute path. A relative Path will be called with the working directory
-         * @param alias_pre_load_count loads an initial amound of aliases. Use this if sounds should overlap
-         * @return returns either the id or an error
-         */
         tl::expected<cpt::usize, Result> load_sound(std::filesystem::path const& path,
                                                     cpt::usize alias_pre_load_count = 0);
         Result unload_sound(cpt::usize id);
-        /**
-         * you need to add the sound and set the soundlevel first to make sure both ids are present.
-         *
-         * @param sound_id id of the to link sound
-         * @param level_id id of the level the sound gets linked to
-         * @return returns if the linkage was successfully
-         */
+
         Result link_sound_to_level(cpt::usize sound_id, cpt::usize level_id);
 
-        /**
-         *
-         * @param id id of the sound (or alias) to play
-         * @return returns if the sound was successfully played
-         */
         Result play_sound(cpt::usize id);
-        /**
-         *
-         * @param id id of the sound (or alias) to check
-         * @return returns if the sound or at least one of its aliases is currently playing.
-         */
+
         [[nodiscard]] bool is_sound_playing(cpt::usize id) const;
         // #endregion
 

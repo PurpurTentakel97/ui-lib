@@ -8,7 +8,7 @@
 #include <uil/global/app_context.hpp>
 #include <uil/global/update_context.hpp>
 
-namespace uil {
+namespace uil::sys {
     bool SceneManager::handle_input(UpdateContext const& context) const {
         return std::ranges::all_of(elements(),
                                    [&c = context](auto const& s) {

@@ -9,7 +9,7 @@
 #include <ranges>
 #include <unordered_set>
 
-namespace uil {
+namespace uil::sys {
     bool FontManager::is_success(Result const& result) {
         return result == Result::Success;
     }

@@ -5,7 +5,7 @@
 
 #include <../include/system/manager/input.hpp>
 
-namespace uil {
+namespace uil::sys {
     static const inline InputManager::BindingsConfig s_default_bindings{
         { InputManager::Pattern::Accept,
          { {
@@ -25,7 +25,7 @@ namespace uil {
     };
 }
 
-namespace uil {
+namespace uil::sys {
 
     InputManager::InputManager() : m_bindings{ s_default_bindings } { }
     void InputManager::set_bindings(BindingsConfig const& bindings) {

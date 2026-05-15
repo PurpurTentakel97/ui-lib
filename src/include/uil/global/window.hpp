@@ -11,6 +11,7 @@
 
 namespace uil {
     struct UpdateContext;
+
     /**
      * provides the construct config for a window.
      * some config needs to be set that way because it can only be set bevor the window is initialized.
@@ -43,7 +44,7 @@ namespace uil {
     class Window final {
     private:
         Resolution m_resolution{ Resolution::SVGA };
-        SceneManager m_scene_manager;
+        sys::SceneManager m_scene_manager;
 
         void update_resolution();
         [[nodiscard]] UpdateContext create_context();
@@ -74,7 +75,7 @@ namespace uil {
          *
          * @return scene manager holding by the window
          */
-        SceneManager& scene_manager();
+        sys::SceneManager& scene_manager();
 
         /**
          * Set to try enabling V-Sync on GPU. (raylib)

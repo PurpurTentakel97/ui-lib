@@ -18,7 +18,7 @@ namespace uil {
     * override this for own elements.
     * make sure to call check, update, render, and resize of UIElement when you override it.
     */
-    class UIElement : public BaseElement {
+    class UIElement : public sys::BaseElement {
     private:
         enum class MoveType {
             None,

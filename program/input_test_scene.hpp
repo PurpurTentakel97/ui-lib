@@ -233,7 +233,7 @@ private:
             rectangle_mouse_input.height },
          []() -> bool {
               return uil::AppContext::instance().input().is_down(
-                      uil::InputManager::VectorInput{ s_key_1, s_key_2, s_mod_1, s_mod_2 });
+                      uil::sys::InputManager::VectorInput{ s_key_1, s_key_2, s_mod_1, s_mod_2 });
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 5),
             y(rectangle_mouse_input, spacer_mouse_input, 1),
@@ -241,7 +241,7 @@ private:
             rectangle_mouse_input.height },
          []() -> bool {
               return uil::AppContext::instance().input().is_down<uil::KeyOp::And>(
-                      uil::InputManager::VectorInput{ s_key_1, s_key_2, s_mod_1, s_mod_2 });
+                      uil::sys::InputManager::VectorInput{ s_key_1, s_key_2, s_mod_1, s_mod_2 });
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 5),
             y(rectangle_mouse_input, spacer_mouse_input, 2),
@@ -249,7 +249,7 @@ private:
             rectangle_mouse_input.height },
          []() -> bool {
               return uil::AppContext::instance().input().is_down<uil::KeyOp::Or, uil::ModOp::And>(
-                      uil::InputManager::VectorInput{ s_key_1, s_key_2, s_mod_1, s_mod_2 });
+                      uil::sys::InputManager::VectorInput{ s_key_1, s_key_2, s_mod_1, s_mod_2 });
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 5),
             y(rectangle_mouse_input, spacer_mouse_input, 3),
@@ -257,14 +257,14 @@ private:
             rectangle_mouse_input.height },
          []() -> bool {
               return uil::AppContext::instance().input().is_down<uil::KeyOp::And, uil::ModOp::And>(
-                      uil::InputManager::VectorInput{ s_key_1, s_key_2, s_mod_1, s_mod_2 });
+                      uil::sys::InputManager::VectorInput{ s_key_1, s_key_2, s_mod_1, s_mod_2 });
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 5),
             y(rectangle_mouse_input, spacer_mouse_input, 4),
             rectangle_mouse_input.width,
             rectangle_mouse_input.height },
          []() -> bool {
-              return uil::AppContext::instance().input().is_down(uil::InputManager::VectorInput{ s_key_1, s_key_2 });
+              return uil::AppContext::instance().input().is_down(uil::sys::InputManager::VectorInput{ s_key_1, s_key_2 });
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 5),
             y(rectangle_mouse_input, spacer_mouse_input, 5),
@@ -272,7 +272,7 @@ private:
             rectangle_mouse_input.height },
          []() -> bool {
               return uil::AppContext::instance().input().is_down<uil::KeyOp::And>(
-                      uil::InputManager::VectorInput{ s_key_1, s_key_2 });
+                      uil::sys::InputManager::VectorInput{ s_key_1, s_key_2 });
           } },
 
         // is_up
@@ -282,7 +282,7 @@ private:
             rectangle_mouse_input.height },
          []() -> bool {
               return uil::AppContext::instance().input().is_up(
-                      uil::InputManager::VectorInput{ s_key_1, s_key_2, s_mod_1, s_mod_2 });
+                      uil::sys::InputManager::VectorInput{ s_key_1, s_key_2, s_mod_1, s_mod_2 });
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 6),
             y(rectangle_mouse_input, spacer_mouse_input, 1),
@@ -290,7 +290,7 @@ private:
             rectangle_mouse_input.height },
          []() -> bool {
               return uil::AppContext::instance().input().is_up<uil::KeyOp::And>(
-                      uil::InputManager::VectorInput{ s_key_1, s_key_2, s_mod_1, s_mod_2 });
+                      uil::sys::InputManager::VectorInput{ s_key_1, s_key_2, s_mod_1, s_mod_2 });
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 6),
             y(rectangle_mouse_input, spacer_mouse_input, 2),
@@ -298,7 +298,7 @@ private:
             rectangle_mouse_input.height },
          []() -> bool {
               return uil::AppContext::instance().input().is_up<uil::KeyOp::Or, uil::ModOp::And>(
-                      uil::InputManager::VectorInput{ s_key_1, s_key_2, s_mod_1, s_mod_2 });
+                      uil::sys::InputManager::VectorInput{ s_key_1, s_key_2, s_mod_1, s_mod_2 });
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 6),
             y(rectangle_mouse_input, spacer_mouse_input, 3),
@@ -306,14 +306,14 @@ private:
             rectangle_mouse_input.height },
          []() -> bool {
               return uil::AppContext::instance().input().is_up<uil::KeyOp::And, uil::ModOp::And>(
-                      uil::InputManager::VectorInput{ s_key_1, s_key_2, s_mod_1, s_mod_2 });
+                      uil::sys::InputManager::VectorInput{ s_key_1, s_key_2, s_mod_1, s_mod_2 });
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 6),
             y(rectangle_mouse_input, spacer_mouse_input, 4),
             rectangle_mouse_input.width,
             rectangle_mouse_input.height },
          []() -> bool {
-              return uil::AppContext::instance().input().is_up(uil::InputManager::VectorInput{ s_key_1, s_key_2 });
+              return uil::AppContext::instance().input().is_up(uil::sys::InputManager::VectorInput{ s_key_1, s_key_2 });
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 6),
             y(rectangle_mouse_input, spacer_mouse_input, 5),
@@ -321,7 +321,7 @@ private:
             rectangle_mouse_input.height },
          []() -> bool {
               return uil::AppContext::instance().input().is_up<uil::KeyOp::And>(
-                      uil::InputManager::VectorInput{ s_key_1, s_key_2 });
+                      uil::sys::InputManager::VectorInput{ s_key_1, s_key_2 });
           } },
 
         // is_pressed
@@ -331,7 +331,7 @@ private:
             rectangle_mouse_input.height },
          []() -> bool {
               return uil::AppContext::instance().input().is_pressed(
-                      uil::InputManager::VectorInput{ s_key_1, s_key_2, s_mod_1, s_mod_2 });
+                      uil::sys::InputManager::VectorInput{ s_key_1, s_key_2, s_mod_1, s_mod_2 });
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 7),
             y(rectangle_mouse_input, spacer_mouse_input, 1),
@@ -339,7 +339,7 @@ private:
             rectangle_mouse_input.height },
          []() -> bool {
               return uil::AppContext::instance().input().is_pressed<uil::KeyOp::And>(
-                      uil::InputManager::VectorInput{ s_key_1, s_key_2, s_mod_1, s_mod_2 });
+                      uil::sys::InputManager::VectorInput{ s_key_1, s_key_2, s_mod_1, s_mod_2 });
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 7),
             y(rectangle_mouse_input, spacer_mouse_input, 2),
@@ -347,7 +347,7 @@ private:
             rectangle_mouse_input.height },
          []() -> bool {
               return uil::AppContext::instance().input().is_pressed<uil::KeyOp::Or, uil::ModOp::And>(
-                      uil::InputManager::VectorInput{ s_key_1, s_key_2, s_mod_1, s_mod_2 });
+                      uil::sys::InputManager::VectorInput{ s_key_1, s_key_2, s_mod_1, s_mod_2 });
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 7),
             y(rectangle_mouse_input, spacer_mouse_input, 3),
@@ -355,14 +355,14 @@ private:
             rectangle_mouse_input.height },
          []() -> bool {
               return uil::AppContext::instance().input().is_pressed<uil::KeyOp::And, uil::ModOp::And>(
-                      uil::InputManager::VectorInput{ s_key_1, s_key_2, s_mod_1, s_mod_2 });
+                      uil::sys::InputManager::VectorInput{ s_key_1, s_key_2, s_mod_1, s_mod_2 });
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 7),
             y(rectangle_mouse_input, spacer_mouse_input, 4),
             rectangle_mouse_input.width,
             rectangle_mouse_input.height },
          []() -> bool {
-              return uil::AppContext::instance().input().is_pressed(uil::InputManager::VectorInput{ s_key_1, s_key_2 });
+              return uil::AppContext::instance().input().is_pressed(uil::sys::InputManager::VectorInput{ s_key_1, s_key_2 });
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 7),
             y(rectangle_mouse_input, spacer_mouse_input, 5),
@@ -370,7 +370,7 @@ private:
             rectangle_mouse_input.height },
          []() -> bool {
               return uil::AppContext::instance().input().is_pressed<uil::KeyOp::And>(
-                      uil::InputManager::VectorInput{ s_key_1, s_key_2 });
+                      uil::sys::InputManager::VectorInput{ s_key_1, s_key_2 });
           } },
 
         // is_released
@@ -380,7 +380,7 @@ private:
             rectangle_mouse_input.height },
          []() -> bool {
               return uil::AppContext::instance().input().is_released(
-                      uil::InputManager::VectorInput{ s_key_1, s_key_2, s_mod_1, s_mod_2 });
+                      uil::sys::InputManager::VectorInput{ s_key_1, s_key_2, s_mod_1, s_mod_2 });
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 8),
             y(rectangle_mouse_input, spacer_mouse_input, 1),
@@ -388,7 +388,7 @@ private:
             rectangle_mouse_input.height },
          []() -> bool {
               return uil::AppContext::instance().input().is_released<uil::KeyOp::And>(
-                      uil::InputManager::VectorInput{ s_key_1, s_key_2, s_mod_1, s_mod_2 });
+                      uil::sys::InputManager::VectorInput{ s_key_1, s_key_2, s_mod_1, s_mod_2 });
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 8),
             y(rectangle_mouse_input, spacer_mouse_input, 2),
@@ -396,7 +396,7 @@ private:
             rectangle_mouse_input.height },
          []() -> bool {
               return uil::AppContext::instance().input().is_released<uil::KeyOp::Or, uil::ModOp::And>(
-                      uil::InputManager::VectorInput{ s_key_1, s_key_2, s_mod_1, s_mod_2 });
+                      uil::sys::InputManager::VectorInput{ s_key_1, s_key_2, s_mod_1, s_mod_2 });
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 8),
             y(rectangle_mouse_input, spacer_mouse_input, 3),
@@ -404,7 +404,7 @@ private:
             rectangle_mouse_input.height },
          []() -> bool {
               return uil::AppContext::instance().input().is_released<uil::KeyOp::And, uil::ModOp::And>(
-                      uil::InputManager::VectorInput{ s_key_1, s_key_2, s_mod_1, s_mod_2 });
+                      uil::sys::InputManager::VectorInput{ s_key_1, s_key_2, s_mod_1, s_mod_2 });
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 8),
             y(rectangle_mouse_input, spacer_mouse_input, 4),
@@ -412,7 +412,7 @@ private:
             rectangle_mouse_input.height },
          []() -> bool {
               return uil::AppContext::instance().input().is_released(
-                      uil::InputManager::VectorInput{ s_key_1, s_key_2 });
+                      uil::sys::InputManager::VectorInput{ s_key_1, s_key_2 });
           } },
         { { x(rectangle_mouse_input, spacer_mouse_input, 8),
             y(rectangle_mouse_input, spacer_mouse_input, 5),
@@ -420,7 +420,7 @@ private:
             rectangle_mouse_input.height },
          []() -> bool {
               return uil::AppContext::instance().input().is_released<uil::KeyOp::And>(
-                      uil::InputManager::VectorInput{ s_key_1, s_key_2 });
+                      uil::sys::InputManager::VectorInput{ s_key_1, s_key_2 });
           } },
     };
 

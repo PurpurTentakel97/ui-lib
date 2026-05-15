@@ -9,7 +9,7 @@
 #include <ranges>
 #include <unordered_set>
 
-namespace uil {
+namespace uil::sys {
     TextureManager::TextureManager() : m_fallback_texture{ Texture2D{} } {
         auto const image   = GenImageColor(1, 1, MAGENTA);
         m_fallback_texture = LoadTextureFromImage(image);
@@ -74,4 +74,4 @@ namespace uil {
 
         return {};
     }
-} // namespace uil
+} // namespace uil::sys

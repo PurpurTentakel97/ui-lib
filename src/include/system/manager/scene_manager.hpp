@@ -9,7 +9,9 @@
 
 namespace uil {
     struct UpdateContext;
+}
 
+namespace uil::sys {
     /**
      * manages all scene in the game.
      * checks, updates, renders and resizes all emplace scenes.
@@ -47,4 +49,4 @@ namespace uil {
          */
         void resize() override;
     };
-} // namespace uil
+} // namespace uil::sys

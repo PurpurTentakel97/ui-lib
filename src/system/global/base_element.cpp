@@ -5,7 +5,7 @@
 
 #include <../include/system/global/base_element.hpp>
 
-namespace uil {
+namespace uil::sys {
     bool BaseElement::active() const {
         return m_active;
     }

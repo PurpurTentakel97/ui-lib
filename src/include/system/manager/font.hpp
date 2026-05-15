@@ -5,13 +5,13 @@
 
 #pragma once
 
-#include <filesystem>
-#include <unordered_map>
 #include <cpt/types.hpp>
+#include <filesystem>
 #include <raylib.h>
 #include <tl/expected.hpp>
+#include <unordered_map>
 
-namespace uil {
+namespace uil::sys {
     class FontManager final {
     public:
         enum class Result {
@@ -42,4 +42,4 @@ namespace uil {
         tl::expected<cpt::usize, Result> load(std::filesystem::path const& path);
         Result unload(cpt::usize id);
     };
-}
+} // namespace uil::sys

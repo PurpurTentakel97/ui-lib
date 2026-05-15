@@ -98,7 +98,7 @@ namespace uil {
         CloseWindow();
     }
 
-    SceneManager& Window::scene_manager() {
+    sys::SceneManager& Window::scene_manager() {
         return m_scene_manager;
     }
 

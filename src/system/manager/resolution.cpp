@@ -5,7 +5,7 @@
 
 #include <../include/system/manager/resolution.hpp>
 
-namespace uil {
+namespace uil::sys {
     void ResolutionManager::set_resolution(Resolution const& resolution) {
         m_resolution        = resolution;
         m_resolution_vector = vec_from_resolution(resolution);

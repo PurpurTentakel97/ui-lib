@@ -6,13 +6,12 @@
 #pragma once
 
 #include <uil/global/exception.hpp>
-#include <uil/global/update_context.hpp>
 #include <algorithm>
 #include <cpt/vec2.hpp>
 #include <memory>
 #include <vector>
 
-namespace uil {
+namespace uil::sys {
     template<class T>
     class BaseManager {
     public:
@@ -66,61 +65,21 @@ namespace uil {
     public:
         BaseManager() = default;
 
-        /**
-         * only for polymorphism
-         */
         virtual ~BaseManager() = default;
 
-        /**
-         * constructs the element S with parameters Args... and emplace it at the front of the element vector.
-         * all emplace elements will be handled_input, updated, rendered and resized.
-         *
-         * S needs to be derived from T.
-         * S needs to be constructable with parameters Args...
-         *
-         * @tparam S element that will be emplace into the manager
-         * @tparam Args all Types the element needs to be constructed
-         * @param args all Parameters the element needs to be constructed
-         * @return pointer of the constructed element as a weak_ptr
-         */
         template<std::derived_from<T> S, typename... Args>
         std::weak_ptr<S> emplace_top(Args&&... args)
             requires(std::constructible_from<S, Args...>) {
             return emplace_element_with_offset<S>(0, std::forward<Args>(args)...);
         }
 
-        /**
-         * construct the element S with parameters Args... and emplace it at the end of the element vector.
-         * all emplace elements will be handle_input, updated, rendered and resized.
-         *
-         * S needs to be derived from T.
-         * S needs to be constructable with parameters Args...
-         *
-         * @tparam S element that will be emplace into the manager
-         * @tparam Args all Types the element needs to be constructed
-         * @param args all Parameters the element needs to be constructed
-         * @return pointer of the constructed element as a weak_ptr
-         */
         template<std::derived_from<T> S, typename... Args>
         std::weak_ptr<S> emplace_bottom(Args&&... args)
             requires(std::constructible_from<S, Args...>) {
             return emplace_element_with_iterator<S>(m_elements.end(), std::forward<Args>(args)...);
         }
 
-        /**
-         * construct the element S with parameters Args... and emplace it at a certain index of the element vector.
-         * all emplace elements will be handle_input, updated, rendered and resized.
-         *
-         * S needs to be derived from T.
-         * S needs to be constructable with parameters Args...
-         *
-         * @tparam S element that will be emplace into the manager
-         * @tparam Args all Types the element needs to be constructed
-         * @param index  provides the index the new element is emplace to
-         * @param args all Parameters the element needs to be constructed
-         * @return pointer of the constructed element as a weak_ptr
-         * @throw BadElementIndex will throw when index is out of range
-         */
+
         template<std::derived_from<T> S, typename... Args>
         std::weak_ptr<S> emplace_at(cpt::usize const index, Args&&... args)
             requires(std::constructible_from<S, Args...>) {
@@ -134,21 +93,6 @@ namespace uil {
             return emplace_emelent_with_offset<S>(index, std::forward<Args>(args)...);
         }
 
-        /**
-         * construct the element S with parameters Args... and emplace it before a provided element of the element vector.
-         * all emplace elements will be handle_input, updated, rendered and resized.
-         *
-         * S needs to be derived from T.
-         * S needs to be constructable with parameters Args...
-         *
-         * @tparam S element that will be emplace into the manager
-         * @tparam Args all Types the element needs to be constructed
-         * @param scene provides the element pointer the new element gets emplace before
-         * @param args all Parameters the element needs to be constructed
-         * @return pointer of the constructed element as a weak_ptr
-         * @throw BadElementPointer throws when provided scene element can not be found in the elements vector
-         * @throw BadElementPointer throws when provided scene element is expired
-         */
         template<std::derived_from<T> S, typename... Args>
         std::weak_ptr<S> emplace_before(std::weak_ptr<T> const& scene, Args... args)
             requires(std::constructible_from<S, Args...>) {
@@ -167,21 +111,6 @@ namespace uil {
             throw BadElementPointer("weak_ptr was expired");
         }
 
-        /**
-         * construct the element S with parameters Args... and emplace it after a provided element of the element vector.
-         * all emplace elements will be handle_input, updated, rendered and resized.
-         *
-         * S needs to be derived from T.
-         * S needs to be constructable with parameters Args...
-         *
-         * @tparam S element that will be emplace into the manager
-         * @tparam Args all Types the element needs to be constructed
-         * @param scene provides the element pointer the new element gets emplace after
-         * @param args all Parameters the element needs to be constructed
-         * @return pointer of the constructed element as a weak_ptr
-         * @throw BadElementPointer throws when provided scene element can not be found in the elements vector
-         * @throw BadElementPointer throws when provided scene element is expired
-         */
         template<std::derived_from<T> S, typename... Args>
         std::weak_ptr<S> emplace_after(std::weak_ptr<T> const& scene, Args... args)
             requires(std::constructible_from<S, Args...>) {
@@ -200,37 +129,14 @@ namespace uil {
             throw BadElementPointer("weak_ptr was expired");
         }
 
-        /**
-         * pushed the element at the front of the element vector.
-         * all pushed elements will be handle_input, updated, rendered and resized.
-         *
-         * @param to_push the element that gets pushed into the vector
-         * @return pointer of the pushed element as a weak_ptr
-         */
         ElementPtr_Weak push_top(ElementPtr to_push) {
             return insert_element_with_offset(0, std::move(to_push));
         }
 
-        /**
-         * pushed the element at the end of the element vector.
-         * all pushed elements will be handle_input, updated, rendered and resized.
-         *
-         * @param to_push the element that gets pushed into the vector
-         * @return pointer of the pushed element as a weak_ptr
-         */
         ElementPtr_Weak push_bottom(ElementPtr to_push) {
             return insert_element_with_iterator(m_elements.end(), std::move(to_push));
         }
 
-        /**
-         * pushes the element at a certain index of the element vector.
-         * all emplace elements will be handle_input, updated, rendered and resized.
-         *
-         * @param index provides the index the new element is pushed to
-         * @param to_push the element that gets pushed into the vector
-         * @return pointer of the pushed element as a weak_ptr
-         * @throw BadElementIndex will throw when index is out of range
-         */
         ElementPtr_Weak push_at(cpt::usize const index, ElementPtr to_push) {
             if (index > m_elements.size()) {
                 throw BadElementIndex("index is out of bounce");
@@ -243,16 +149,6 @@ namespace uil {
             return insert_element_with_offset(index, std::move(to_push));
         }
 
-        /**
-         * pushes the element before a provided element of the element vector.
-         * all pushed elements will be handle_input, updated, rendered and resized.
-         *
-         * @param element provides an element pointer that holds the element before the pushed element
-         * @param to_push the element that gets pushed
-         * @return pointer of the pushed element as a weak_ptr
-         * @throw BadElementPointer throws when provided element can not be found in the elements vector
-         * @throw BadElementPointer throws when provided element is expired
-         */
         ElementPtr_Weak push_before(ElementPtr_Weak element, ElementPtr to_push) {
             if (auto const shared_element = element.lock(); shared_element) {
                 auto const iterator
@@ -268,16 +164,6 @@ namespace uil {
             throw BadElementPointer("weak_ptr was expired");
         }
 
-        /**
-         * pushes the element after a provided element of the element vector.
-         * all pushed elements will be handle_input, updated, rendered and resized.
-         *
-         * @param element provides an element pointer that holds the element after the pushed element
-         * @param to_push the element that gets pushed
-         * @return pointer of the pushed element as a weak_ptr
-         * @throw BadElementPointer throws when provided element can not be found in the elements vector
-         * @throw BadElementPointer throws when provided element is expired
-         */
         ElementPtr_Weak push_after(ElementPtr_Weak element, ElementPtr to_push) {
             if (auto const shared_element = element.lock(); shared_element) {
                 auto const iterator
@@ -294,13 +180,6 @@ namespace uil {
             throw BadElementPointer("weak_ptr was expired");
         }
 
-        /**
-         * pops the first element of the vector.
-         * that is the most bottom rendered element.
-         *
-         * @return shared_ptr of the popped element
-         * @throw BadElementErase throws when elements vector is empty
-         */
         ElementPtr pop_top() {
             if (m_elements.empty()) {
                 throw BadElementErase("empty elements vector");
@@ -311,13 +190,6 @@ namespace uil {
             return temp;
         }
 
-        /**
-         * pops the last element of the vector.
-         * that is the most front rendered element.
-         *
-         * @return shared_ptr of the popped element
-         * @throw BadElementErase throws when elements vector is empty
-         */
         ElementPtr pop_bottom() {
             if (m_elements.empty()) {
                 throw BadElementErase("empty elements vector");
@@ -328,14 +200,6 @@ namespace uil {
             return temp;
         }
 
-        /**
-         * pops a specific index in the element vector.
-         * notice that index 0 is the most bottom rendered element.
-         *
-         * @param index provides the index that will be popped
-         * @return shared_ptr of the popped element
-         * @throw BadElementIndex will throw when index is out of range
-         */
         ElementPtr pop_at(cpt::usize const index) {
             if (index >= m_elements.size()) {
                 throw BadElementIndex("index out of range while pop at");
@@ -346,16 +210,6 @@ namespace uil {
             return temp;
         }
 
-        /**
-         * pops a element that is located one before the provided element in the elements vector.
-         * that is the element that gets rendered behind the provided one.
-         *
-         * @param element the element before the element that will be popped
-         * @return shared_ptr of the popped element
-         * @throw BadElementPointer throws when provided before element can not be found in the elements vector
-         * @throw BadElementPointer throws when provided before element is expired
-         * @throw BadElementErase throws when provided before element is the first element in the elements vector
-         */
         ElementPtr pop_before(ElementPtr_Weak element) {
             if (auto const shared_element = element.lock(); shared_element) {
                 auto const iterator
@@ -376,16 +230,6 @@ namespace uil {
             throw BadElementPointer("weak_ptr was expired");
         }
 
-        /**
-         * pops an element that is located one after the provided element in the elements vector.
-         * that is the element that gets rendered behind the provided one.
-         *
-         * @param element the element after the element that will be deleted
-         * @return shared_ptr of the popped element
-         * @throw BadElementPointer throws when provided after element can not be found in the elements vector
-         * @throw BadElementPointer throws when provided after element is expired
-         * @throw BadElementErase throws when provided after element is the last element in the elements vector
-         */
         ElementPtr pop_after(ElementPtr_Weak element) {
             if (auto const shared_element = element.lock(); shared_element) {
                 auto const iterator
@@ -406,14 +250,6 @@ namespace uil {
             throw BadElementPointer("weak_ptr was expired");
         }
 
-        /**
-         * pops the provided element.
-         * if there are no more shared_ptr the element will get deleted.
-         *
-         * @param to_pop element that gets popped
-         * @return shared_ptr of the popped element
-         * @throw BadElementPointer throws when provided element can not be found in the elements vector
-         */
         ElementPtr pop_this(ElementPtr_Weak to_pop) {
             if (auto const shared_to_pop = to_pop.lock(); shared_to_pop) {
                 auto const iterator
@@ -431,12 +267,6 @@ namespace uil {
             throw BadElementPointer("weak_ptr was expired");
         }
 
-        /**
-         * erases the first element of the vector.
-         * that is the most bottom rendered element.
-         *
-         * @throw BadElementErase throws when elements vector is empty
-         */
         void erase_top() {
             if (m_elements.empty()) {
                 throw BadElementErase("empty elements vector");
@@ -444,12 +274,6 @@ namespace uil {
             erase_with_iterator(m_elements.begin());
         }
 
-        /**
-         * erases the last element of the vector.
-         * that is the most front rendered element.
-         *
-         * @throw BadElementErase throws when elements vector is empty
-         */
         void erase_bottom() {
             if (m_elements.empty()) {
                 throw BadElementErase("empty elements vector");
@@ -457,13 +281,6 @@ namespace uil {
             m_elements.pop_back();
         }
 
-        /**
-         * erases a specific index in the element vector.
-         * notice that index 0 is the most bottom rendered element.
-         *
-         * @param index provides the index that will be erased
-         * @throw BadElementIndex will throw when index is out of range
-         */
         void erase_at(cpt::usize const index) {
             if (index >= m_elements.size()) {
                 throw BadElementIndex("index out of range while erasing an element");
@@ -472,16 +289,6 @@ namespace uil {
             erase_with_offset(index);
         }
 
-
-        /**
-         * erases an element that is located one before the provided element in the elements vector.
-         * that is the element that gets rendered behind the provided one.
-         *
-         * @param element the element before the element that will be deleted
-         * @throw BadElementPointer throws when provided before element can not be found in the elements vector
-         * @throw BadElementPointer throws when provided before element is expired
-         * @throw BadElementErase throws when provided before element is the first element in the elements vector
-         */
         void erase_before(ElementPtr_Weak element) {
             if (auto const shared_element = element.lock(); shared_element) {
                 auto const iterator
@@ -501,15 +308,6 @@ namespace uil {
             throw BadElementPointer("weak_ptr was expired");
         }
 
-        /**
-         * erases an element that is located one after the provided element in the elements vector.
-         * that is the element that gets rendered behind the provided one.
-         *
-         * @param element the element after the element that will be deleted
-         * @throw BadElementPointer throws when provided after element can not be found in the elements vector
-         * @throw BadElementPointer throws when provided after element is expired
-         * @throw BadElementErase throws when provided after element is the last element in the elements vector
-         */
         void erase_after(ElementPtr_Weak element) {
             if (auto const shared_element = element.lock(); shared_element) {
                 auto const iterator
@@ -529,13 +327,6 @@ namespace uil {
             throw BadElementPointer("weak_ptr was expired");
         }
 
-        /**
-         * erases the provided element.
-         * if there are no more shared_ptr the element will get deleted.
-         *
-         * @param to_delete element that gets deleted
-         * @throw BadElementPointer throws when provided element can not be found in the elements vector
-         */
         void erase_this(ElementPtr_Weak to_delete) {
             if (auto const shared_to_delete = to_delete.lock(); shared_to_delete) {
                 auto const iterator

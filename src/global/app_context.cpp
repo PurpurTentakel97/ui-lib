@@ -14,46 +14,43 @@ namespace uil {
         m_sound.update();
     }
 
-    InputManager& AppContext::input() {
+    sys::InputManager& AppContext::input() {
         return m_input;
     }
 
-    InputManager const& AppContext::input() const {
+    sys::InputManager const& AppContext::input() const {
         return m_input;
     }
 
-
-    SoundManager& AppContext::sound() {
+    sys::SoundManager& AppContext::sound() {
         return m_sound;
     }
 
-    SoundManager const& AppContext::sound() const {
+    sys::SoundManager const& AppContext::sound() const {
         return m_sound;
     }
 
-
-    TextureManager& AppContext::texture() {
+    sys::TextureManager& AppContext::texture() {
         return m_texture;
     }
 
-    TextureManager const& AppContext::texture() const {
+    sys::TextureManager const& AppContext::texture() const {
         return m_texture;
     }
 
-
-    ResolutionManager& AppContext::resolution() {
+    sys::ResolutionManager& AppContext::resolution() {
         return m_resolution;
     }
 
-    ResolutionManager const& AppContext::resolution() const {
+    sys::ResolutionManager const& AppContext::resolution() const {
         return m_resolution;
     }
 
-    FontManager& AppContext::font() {
+    sys::FontManager& AppContext::font() {
         return m_font;
     }
 
-    FontManager const& AppContext::font() const {
+    sys::FontManager const& AppContext::font() const {
         return m_font;
     }
 } // namespace uil

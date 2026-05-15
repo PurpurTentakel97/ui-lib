@@ -34,7 +34,7 @@ private:
     static constexpr Rectangle s_switch_2{ x(s_size, 1, s_spacer), y(s_size, 4, s_spacer), s_size.width,
                                            s_size.height };
 
-    std::vector<std::pair<Rectangle, std::function<uil::SoundManager::Result()>>> m_buttons{
+    std::vector<std::pair<Rectangle, std::function<uil::sys::SoundManager::Result()>>> m_buttons{
         { s_start_1, [this]() { return uil::AppContext::instance().sound().start_music_collection(m_id_1); } },
         { s_start_2, [this]() { return uil::AppContext::instance().sound().start_music_collection(m_id_2); } },
         { s_pause_1, []() { return uil::AppContext::instance().sound().pause_music_collection(); } },

@@ -10,7 +10,7 @@
 #include <raylib.h>
 #include <unordered_set>
 
-namespace uil {
+namespace uil::sys {
     // #region Result
     bool SoundManager::is_success(Result const result) {
         return result == Result::Success;
