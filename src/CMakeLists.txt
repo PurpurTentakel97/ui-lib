@@ -6,12 +6,18 @@ target_sources(cpt__ui_lib
 
         elements/button.cpp
 
+        global/alignment.cpp
         global/app_context.cpp
+        global/element.cpp
         global/resolution_enum.cpp
+        global/scene.cpp
+        global/update_context.cpp
+        global/window.cpp
 
         helper/rect.cpp
         helper/vec.cpp
 
+        system/base_element.cpp
         system/focus.cpp
         system/font.cpp
         system/input.cpp
@@ -19,14 +25,8 @@ target_sources(cpt__ui_lib
         system/sound.cpp
         system/texture.cpp
 
-        alignment.cpp
-        base_element.cpp
-        element.cpp
         focus_element.cpp
-        scene.cpp
         scene_manager.cpp
-        update_context.cpp
-        window.cpp
 
 
         PUBLIC FILE_SET HEADERS
@@ -38,23 +38,23 @@ target_sources(cpt__ui_lib
         include/uil/elements/button.hpp
 
         include/uil/global/app_context.hpp
+        include/uil/global/alignment.hpp
+        include/uil/global/element.hpp
+        include/uil/global/exception.hpp
         include/uil/global/input_enum.hpp
         include/uil/global/resolution_enum.hpp
+        include/uil/global/scene.hpp
+        include/uil/global/update_context.hpp
+        include/uil/global/window.hpp
 
         include/uil/helper/rect.hpp
         include/uil/helper/vec.hpp
 
-        include/uil/alignment.hpp
-        include/uil/base_element.hpp
-        include/uil/base_manager.hpp
-        include/uil/element.hpp
         include/uil/focus_element.hpp
-        include/uil/exception.hpp
-        include/uil/scene.hpp
         include/uil/scene_manager.hpp
-        include/uil/update_context.hpp
-        include/uil/window.hpp
 
+        include/system/base_element.hpp
+        include/system/base_manager.hpp
         include/system/focus.hpp
         include/system/font.hpp
         include/system/input.hpp

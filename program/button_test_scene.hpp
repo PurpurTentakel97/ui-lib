@@ -3,8 +3,8 @@
 //
 
 #pragma once
+#include <uil/global/scene.hpp>
 #include <uil/elements/button.hpp>
-#include <uil/scene.hpp>
 
 namespace uil {
     class Button;

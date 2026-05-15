@@ -3,9 +3,9 @@
 // 06.07.24
 //
 
+#include <../src/include/uil/global/alignment.hpp>
+#include <../src/include/uil/global/exception.hpp>
 #include <gtest/gtest.h>
-#include <uil/alignment.hpp>
-#include <uil/exception.hpp>
 
 class AlignmentFicturesVertical
     : public testing::TestWithParam<std::tuple<Rectangle, uil::VerticalAlignment, Rectangle>> { };

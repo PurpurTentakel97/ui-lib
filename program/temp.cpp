@@ -8,8 +8,8 @@
 #include "font_test_scene.hpp"
 #include "input_test_scene.hpp"
 #include "music_test_scene.hpp"
+#include <uil/global/window.hpp>
 #include <raylib.h>
-#include <uil/window.hpp>
 
 int main() {
 #ifndef NDEBUG

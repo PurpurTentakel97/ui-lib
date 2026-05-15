@@ -3,12 +3,12 @@
 // 24.05.24
 //
 
+#include <../include/uil/global/exception.hpp>
 #include <format>
 #include <functional>
 #include <raylib.h>
-#include <uil/exception.hpp>
-#include <uil/global/resolution_enum.hpp>
 #include <uil/global/app_context.hpp>
+#include <uil/global/resolution_enum.hpp>
 
 namespace uil {
     cpt::Vec2_i vec_from_resolution(Resolution const resolution) {

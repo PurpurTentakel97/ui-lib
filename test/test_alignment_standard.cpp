@@ -3,10 +3,10 @@
 // 23.05.24
 //
 
+#include <../src/include/uil/global/alignment.hpp>
+#include <../src/include/uil/global/exception.hpp>
 #include <gtest/gtest.h>
 #include <tuple>
-#include <uil/alignment.hpp>
-#include <uil/exception.hpp>
 
 
 class AlignmentFictures : public testing::TestWithParam<std::tuple<Rectangle, uil::Alignment, Rectangle>> { };

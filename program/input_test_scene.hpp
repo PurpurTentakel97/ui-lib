@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include <uil/element.hpp>
+#include <uil/global/element.hpp>
+#include <uil/global/scene.hpp>
 #include <uil/global/app_context.hpp>
-#include <uil/scene.hpp>
 
 class InputTestObject final : public uil::UIElement {
 private:

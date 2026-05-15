@@ -4,9 +4,9 @@
 //
 
 #pragma once
+#include <uil/global/exception.hpp>
 #include <cpt/vec2.hpp>
 #include <raylib.h>
-#include <uil/exception.hpp>
 
 namespace uil {
     /**

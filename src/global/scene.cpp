@@ -3,9 +3,9 @@
 // 06.07.24
 //
 
-#include <uil/update_context.hpp>
-#include <uil/element.hpp>
-#include <uil/scene.hpp>
+#include <../include/uil/global/element.hpp>
+#include <../include/uil/global/scene.hpp>
+#include <../include/uil/global/update_context.hpp>
 
 namespace uil {
     bool Scene::handle_input(UpdateContext const& context) const {

@@ -3,9 +3,9 @@
 // 23.05.24
 //
 
+#include <../include/uil/global/alignment.hpp>
+#include <../include/uil/global/exception.hpp>
 #include <uil/helper/rect.hpp>
-#include <uil/alignment.hpp>
-#include <uil/exception.hpp>
 
 namespace uil {
     Rectangle aligned_position(Rectangle relative, Alignment const alignment) {

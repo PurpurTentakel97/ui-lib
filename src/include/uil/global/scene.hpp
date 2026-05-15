@@ -5,10 +5,10 @@
 
 #pragma once
 
-#include <uil/base_element.hpp>
-#include <uil/base_manager.hpp>
-#include <uil/element.hpp>
+#include <system/base_element.hpp>
+#include <system/base_manager.hpp>
 #include <cpt/callback.hpp>
+#include <uil/global/element.hpp>
 
 namespace uil {
     struct UpdateContext;

@@ -4,8 +4,8 @@
 //
 
 #pragma once
-#include <uil/base_manager.hpp>
-#include <uil/scene.hpp>
+#include <system/base_manager.hpp>
+#include <uil/global/scene.hpp>
 
 namespace uil {
     struct UpdateContext;

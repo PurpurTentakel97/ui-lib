@@ -3,7 +3,7 @@
 // 24.05.24
 //
 
-#include <uil/exception.hpp>
+#include <../include/uil/global/exception.hpp>
 #include <uil/helper/rect.hpp>
 
 namespace uil {

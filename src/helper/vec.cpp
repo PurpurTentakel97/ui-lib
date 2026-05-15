@@ -3,8 +3,8 @@
 // 06.07.24
 //
 
+#include <../include/uil/global/exception.hpp>
 #include <cmath>
-#include <uil/exception.hpp>
 #include <uil/helper/vec.hpp>
 
 namespace uil {

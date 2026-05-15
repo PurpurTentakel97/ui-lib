@@ -5,11 +5,11 @@
 
 #pragma once
 
+#include <uil/global/exception.hpp>
+#include <uil/global/update_context.hpp>
 #include <algorithm>
 #include <cpt/vec2.hpp>
 #include <memory>
-#include <uil/update_context.hpp>
-#include <uil/exception.hpp>
 #include <vector>
 
 namespace uil {

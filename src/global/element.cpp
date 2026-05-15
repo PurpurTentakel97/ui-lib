@@ -3,11 +3,11 @@
 // 06.07.24
 //
 
-#include <uil/element.hpp>
+#include <../include/uil/global/element.hpp>
+#include <../include/uil/global/update_context.hpp>
 #include <uil/global/app_context.hpp>
 #include <uil/helper/rect.hpp>
 #include <uil/helper/vec.hpp>
-#include <uil/update_context.hpp>
 
 namespace uil {
     void UIElement::update_relative() {

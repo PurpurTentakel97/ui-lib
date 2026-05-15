@@ -6,6 +6,7 @@
 #pragma once
 
 #include <uil/debug/basic.hpp>
+#include <raylib.h>
 
 namespace uil::debug {
     class FPSDraw final: public BasicDebug<void> {

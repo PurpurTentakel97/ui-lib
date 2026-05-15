@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include <uil/scene.hpp>
+#include <uil/global/scene.hpp>
 
 class FontTestScene final : public uil::Scene {
 private:

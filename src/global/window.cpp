@@ -3,10 +3,10 @@
 // 30.05.24
 //
 
+#include <uil/global/window.hpp>
 #include <raylib.h>
 #include <uil/global/app_context.hpp>
-#include <uil/update_context.hpp>
-#include <uil/window.hpp>
+#include <uil/global/update_context.hpp>
 
 namespace uil {
     void Window::update_resolution() {

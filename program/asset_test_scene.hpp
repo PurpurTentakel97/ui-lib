@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <uil/scene.hpp>
+#include <uil/global/scene.hpp>
 
 class AssetTestScene final : public uil::Scene {
 private:

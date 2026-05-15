@@ -4,8 +4,8 @@
 
 #pragma once
 
+#include <uil/global/scene.hpp>
 #include <uil/focus_element.hpp>
-#include <uil/scene.hpp>
 
 struct Element final : uil::FocusElement, uil::UIElement {
     using UIElement::UIElement;

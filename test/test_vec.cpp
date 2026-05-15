@@ -3,7 +3,7 @@
 // 12.07.24
 //
 
-#include "uil/exception.hpp"
+#include "../src/include/uil/global/exception.hpp"
 #include <gtest/gtest.h>
 #include <tuple>
 #include <uil/helper/vec.hpp>

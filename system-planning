@@ -1,10 +1,9 @@
 Window
 
 Systems:
-- SceneManager
-- Focus
-- Input
-- Sound
-- texture
-- popup
-- Tooltip
+- Focus | rewrite
+- Input | ok
+- Sound | ok
+- texture | ok
+- popup | todo
+- Tooltip | todo

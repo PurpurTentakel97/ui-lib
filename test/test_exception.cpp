@@ -3,8 +3,8 @@
 // 27.05.24
 //
 
+#include <../src/include/uil/global/exception.hpp>
 #include <gtest/gtest.h>
-#include <uil/exception.hpp>
 
 TEST(Exception, DivideByZero) {
     try {

@@ -3,11 +3,11 @@
 // 27.05.24
 //
 
+#include <../src/include/uil/global/exception.hpp>
 #include <array>
 #include <cpt/vec2.hpp>
 #include <gtest/gtest.h>
 #include <tuple>
-#include <uil/exception.hpp>
 #include <uil/helper/rect.hpp>
 
 
